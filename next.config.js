@@ -1,11 +1,16 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
-  exportPathMap: async function (
-    defaultPathMap,
-    { dev, dir, outDir, distDir, buildId }
-  ) {
+  exportPathMap: () => {
     return {
-      "/": { page: "/home/home" }
+      "/": { page: "/home/home" },
+      "/tournaments": { page: "/tournaments/tournaments" },
     };
   },
+  env: {
+    RELAY_API_ENDPOINT: "http://localhost:8080",
+    RELAY_API_ENDPOINT_AUTH_TOKEN: "",
+  },
 };
+
+module.exports = nextConfig;
