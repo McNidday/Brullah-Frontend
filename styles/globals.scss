@@ -1,16 +1,65 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@font-face {
+  font-family: "Monoglyceride", sans-serif;
+  src: url("./fonts/monoglyceride/Monoglyceride.ttf") format("truetype");
+  font-weight: normal;
 }
 
+@font-face {
+  font-family: "Monoglyceride", sans-serif;
+  src: url("./fonts/monoglyceride/MonoglycerideBold.ttf") format("truetype");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Monoglyceride", sans-serif;
+  src: url("./fonts/monoglyceride/MonoglycerideExtraBold.ttf")
+    format("truetype");
+  font-weight: bolder;
+}
+
+@font-face {
+  font-family: "Monoglyceride", sans-serif;
+  src: url("./fonts/monoglyceride/MonoglycerideDemiBold.ttf") format("truetype");
+  font-weight: 600;
+}
+
+// Normalize the html body and next root to fit in to window
+html,
+body,
+#__next {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, Monoglyceride, BlinkMacSystemFont, Segoe UI,
+    Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+    sans-serif;
+}
+
+// Link should have no decoration
 a {
   color: inherit;
   text-decoration: none;
 }
 
+// Borer box everthing
 * {
   box-sizing: border-box;
+}
+
+// Display grid for grid pages
+.page-grid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: 60px 1fr 30px;
+  grid-template-areas:
+    "navigationtop navigationtop"
+    "navigationside maincontent"
+    "footer footer";
+
+  footer {
+    grid-area: footer;
+  }
 }

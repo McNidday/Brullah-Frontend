@@ -1,0 +1,6 @@
+@use "../../../styles/theme" as *;
+
+.footer {
+  color: $background;
+  background-color: $backgroundLight;
+}

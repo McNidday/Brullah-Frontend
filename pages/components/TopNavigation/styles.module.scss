@@ -1,0 +1,9 @@
+@use "../../../styles/theme" as *;
+
+.container {
+  position: relative;
+  grid-area: navigationtop;
+  background-color: $backgroundLight;
+  display: flex;
+  justify-content: space-between;
+}

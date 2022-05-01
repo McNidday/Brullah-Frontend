@@ -2,10 +2,14 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import SideNavigation from "../components/SideNavigation/SideNavigation";
 import TopNavigation from "../components/TopNavigation/TopNavigation";
+import classNames from "classnames";
+import styles from "./styles.module.scss";
+import Footer from "../components/Footer/Footer";
+const cn = classNames.bind(styles);
 
 const Home: NextPage = () => {
   return (
-    <div>
+    <div className={cn("page-grid")}>
       <Head>
         <title>Home | Brullah</title>
         <meta
@@ -17,7 +21,7 @@ const Home: NextPage = () => {
       <TopNavigation></TopNavigation>
       <SideNavigation></SideNavigation>
       <main></main>
-      <footer></footer>
+      <Footer></Footer>
     </div>
   );
 };
