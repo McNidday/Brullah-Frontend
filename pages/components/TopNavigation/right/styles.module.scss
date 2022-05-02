@@ -74,6 +74,8 @@
       height: 135px;
       background-color: $backgroundLight;
       border-bottom-left-radius: 20px;
+      border-bottom: 1px solid $background;
+      border-left: 1px solid $background;
       li {
         margin-left: 10px;
         div:nth-child(1) {

@@ -5,6 +5,7 @@ import TopNavigation from "../components/TopNavigation/TopNavigation";
 import classNames from "classnames";
 import styles from "./styles.module.scss";
 import Footer from "../components/Footer/Footer";
+import HomeMain from "./main/HomeMain";
 const cn = classNames.bind(styles);
 
 const Home: NextPage = () => {
@@ -20,7 +21,7 @@ const Home: NextPage = () => {
       </Head>
       <TopNavigation></TopNavigation>
       <SideNavigation></SideNavigation>
-      <main></main>
+      <HomeMain></HomeMain>
       <Footer></Footer>
     </div>
   );

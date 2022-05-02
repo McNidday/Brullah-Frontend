@@ -2,6 +2,7 @@ import anime from "animejs";
 import classNames from "classnames";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import Icon from "../../Icon/Icon";
 import styles from "./styles.module.scss";
 const cn = classNames.bind(styles);
 
@@ -50,14 +51,11 @@ const TopNavigationRight = () => {
               onMouseLeave={() => setDashboardHover(false)}
             >
               <div>
-                <Image
-                  src={
-                    dashboardHover
-                      ? "/icons/dashboard/active.svg"
-                      : "/icons/dashboard/inactive.svg"
-                  }
-                  layout="fill"
-                ></Image>
+                <Icon
+                  activeLink="/icons/dashboard/active.svg"
+                  inactiveLink="/icons/dashboard/inactive.svg"
+                  hover={dashboardHover}
+                ></Icon>
               </div>
               <div>Dashboard</div>
             </li>
@@ -66,14 +64,11 @@ const TopNavigationRight = () => {
               onMouseLeave={() => setLogoutHover(false)}
             >
               <div>
-                <Image
-                  src={
-                    logoutHover
-                      ? "/icons/logout/active.svg"
-                      : "/icons/logout/inactive.svg"
-                  }
-                  layout="fill"
-                ></Image>
+                <Icon
+                  activeLink="/icons/logout/active.svg"
+                  inactiveLink="/icons/logout/inactive.svg"
+                  hover={logoutHover}
+                ></Icon>
               </div>
               <div>Logout</div>
             </li>
