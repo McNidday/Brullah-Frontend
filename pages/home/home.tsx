@@ -6,6 +6,8 @@ import classNames from "classnames";
 import styles from "./styles.module.scss";
 import Footer from "../components/Footer/Footer";
 import HomeMain from "./main/HomeMain";
+import ApolloClientOnly from "../components/Apollo/ApolloClientOnly";
+import TournamentListLoading from "./main/tournaments/Loading/TournamentListLoading";
 const cn = classNames.bind(styles);
 
 const Home: NextPage = () => {
@@ -21,7 +23,11 @@ const Home: NextPage = () => {
       </Head>
       <TopNavigation></TopNavigation>
       <SideNavigation></SideNavigation>
-      <HomeMain></HomeMain>
+      <ApolloClientOnly
+        fallback={<TournamentListLoading></TournamentListLoading>}
+      >
+        <HomeMain></HomeMain>
+      </ApolloClientOnly>
       <Footer></Footer>
     </div>
   );
