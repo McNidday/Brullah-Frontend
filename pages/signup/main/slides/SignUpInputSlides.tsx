@@ -1,9 +1,8 @@
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { Parallax, Pagination } from "swiper";
 import cn from "classnames";
 
 import "swiper/css/bundle";
-import debounce from "lodash.debounce";
 import momenttz from "moment-timezone";
 import styles from "./styles.module.scss";
 import SignUpFullName from "./names/SignUpFullName";
@@ -54,15 +53,20 @@ const SignUpInputSlides = () => {
     await createUser({ variables: { input: profile } });
   };
 
-  if (error) {
-    if (error.graphQLErrors.length <= 0) {
-      return <div>{error.message}</div>;
-    }
-  }
-
   useEffect(() => {
+    // If there is an error reset it after 5 seconds
     if (error) setTimeout(reset, 5000);
   }, [error]);
+
+  if (error) {
+    if (error.graphQLErrors.length <= 0) {
+      return (
+        <div className={cn(styles.error)}>
+          <h2>{error.message}</h2>
+        </div>
+      );
+    }
+  }
 
   return (
     <>
@@ -94,41 +98,61 @@ const SignUpInputSlides = () => {
           ></Logo>
         </div>
         <SwiperSlide className={cn(styles.swiperSlide)}>
-          <SignUpFullName
-            updateProfile={updateProfile}
-            first_name={profile.first_name}
-            last_name={profile.last_name}
-            error={error}
-          ></SignUpFullName>
+          {({ isActive }) => {
+            return (
+              <SignUpFullName
+                updateProfile={updateProfile}
+                first_name={profile.first_name}
+                last_name={profile.last_name}
+                error={error}
+                isActive={isActive}
+              ></SignUpFullName>
+            );
+          }}
         </SwiperSlide>
         <SwiperSlide className={cn(styles.swiperSlide)}>
-          <SignupEmail
-            updateProfile={updateProfile}
-            email={profile.email}
-            error={error}
-          ></SignupEmail>
+          {({ isActive }) => {
+            return (
+              <SignupEmail
+                updateProfile={updateProfile}
+                email={profile.email}
+                error={error}
+                isActive={isActive}
+              ></SignupEmail>
+            );
+          }}
         </SwiperSlide>
         <SwiperSlide className={cn(styles.swiperSlide)}>
-          <SignUpArenaName
-            updateProfile={updateProfile}
-            arena_name={profile.arena_name}
-            error={error}
-          ></SignUpArenaName>
+          {({ isActive }) => {
+            return (
+              <SignUpArenaName
+                updateProfile={updateProfile}
+                arena_name={profile.arena_name}
+                error={error}
+                isActive={isActive}
+              ></SignUpArenaName>
+            );
+          }}
         </SwiperSlide>
         <SwiperSlide className={cn(styles.swiperSlide)}>
           <SignUpAvatar updateProfile={updateProfile}></SignUpAvatar>
         </SwiperSlide>
         <SwiperSlide className={cn(styles.swiperSlide)}>
-          <SignupPassword
-            updateProfile={updateProfile}
-            signup={signup}
-            password={profile.password}
-            confirm_password={profile.confirm_password}
-            errors={error}
-          ></SignupPassword>
+          {({ isActive }) => {
+            return (
+              <SignupPassword
+                updateProfile={updateProfile}
+                signup={signup}
+                password={profile.password}
+                confirm_password={profile.confirm_password}
+                errors={error}
+                isActive={isActive}
+              ></SignupPassword>
+            );
+          }}
         </SwiperSlide>
         <SwiperSlide className={cn(styles.swiperSlide)}>
-          <SignUpComplete></SignUpComplete>
+          <SignUpComplete data={data}></SignUpComplete>
         </SwiperSlide>
       </Swiper>
     </>

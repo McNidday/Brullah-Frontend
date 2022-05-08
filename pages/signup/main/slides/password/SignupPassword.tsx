@@ -12,6 +12,7 @@ interface Props {
   password: string;
   confirm_password: string;
   errors: ApolloError | undefined;
+  isActive: boolean;
 }
 
 const SignupPassword = ({
@@ -20,6 +21,7 @@ const SignupPassword = ({
   confirm_password,
   signup,
   errors,
+  isActive,
 }: Props) => {
   const swiper = useSwiper();
 
@@ -80,6 +82,7 @@ const SignupPassword = ({
         )}
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
           <input
+            tabIndex={isActive ? 0 : -1}
             type="text"
             placeholder="Password"
             value={password || ""}
@@ -90,6 +93,7 @@ const SignupPassword = ({
             }}
           ></input>
           <input
+            tabIndex={isActive ? 0 : -1}
             type="text"
             placeholder="Confirm Password"
             value={confirm_password || ""}

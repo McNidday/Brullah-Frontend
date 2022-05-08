@@ -10,9 +10,10 @@ interface Props {
   updateProfile: Function;
   email: string;
   error: ApolloError | undefined;
+  isActive: boolean;
 }
 
-const SignupEmail = ({ updateProfile, email, error }: Props) => {
+const SignupEmail = ({ updateProfile, email, error, isActive }: Props) => {
   const swiper = useSwiper();
   const [emailError, setEmailError] = useState<string | null>(null);
   // if error exists split it and check if it's related to the email
@@ -46,6 +47,7 @@ const SignupEmail = ({ updateProfile, email, error }: Props) => {
         )}
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
           <input
+            tabIndex={isActive ? 0 : -1}
             type="text"
             placeholder="Email"
             value={email || ""}

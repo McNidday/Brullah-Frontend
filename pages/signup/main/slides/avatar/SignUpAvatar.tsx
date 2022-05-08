@@ -9,21 +9,6 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { validateImageUpload } from "../../../../functions/helpers";
 import { useSwiper } from "swiper/react";
 
-const updateAvatar = debounce(async function (
-  crop: Croppie | null,
-  updateProfile: Function
-) {
-  if (crop) {
-    const imageBlob = await crop.result({
-      type: "blob",
-    });
-    updateProfile("avatar", imageBlob);
-  } else {
-    updateProfile("avatar", null);
-  }
-},
-500);
-
 interface Props {
   updateProfile: Function;
 }
@@ -57,6 +42,8 @@ const SignUpAvatar = ({ updateProfile }: Props) => {
       setAvaratUrl(null);
       return;
     }
+    // Update the file upload
+    updateProfile("avatar", file);
     // Validate the file extention
     const cropReader = new FileReader();
     cropReader.readAsDataURL(file);
@@ -67,19 +54,6 @@ const SignUpAvatar = ({ updateProfile }: Props) => {
       setAvaratUrl(null);
     };
   };
-
-  useEffect(() => {
-    const avatarObserver = new MutationObserver(function (mutations) {
-      mutations.forEach(() => {
-        updateAvatar(crop, updateProfile);
-      });
-    });
-
-    avatarObserver.observe(cropRef.current!, {
-      subtree: true,
-      attributes: true,
-    });
-  });
 
   useEffect(() => {
     if (!avatarUrl) return;
@@ -131,7 +105,19 @@ const SignUpAvatar = ({ updateProfile }: Props) => {
           data-swiper-parallax="-500"
         >
           <label className={cn(styles.imageButton)} htmlFor="avatar"></label>
-          <div ref={cropRef}>
+          <div
+            ref={cropRef}
+            onBlur={async () => {
+              if (crop) {
+                const imageBlob = await crop.result({
+                  type: "blob",
+                });
+                updateProfile("avatar", imageBlob);
+              } else {
+                updateProfile("avatar", null);
+              }
+            }}
+          >
             {!avatarUrl && !uploadError ? (
               <div className={cn(styles.imagePlaceholder)}>
                 <p>Click the picture icon to upload your avatar</p>

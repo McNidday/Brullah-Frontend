@@ -11,6 +11,7 @@ interface Props {
   first_name: string | undefined;
   last_name: string | undefined;
   error: ApolloError | undefined;
+  isActive: boolean;
 }
 
 const SignUpFullName = ({
@@ -18,6 +19,7 @@ const SignUpFullName = ({
   first_name,
   last_name,
   error,
+  isActive,
 }: Props) => {
   const swiper = useSwiper();
   const [namesError, setNamesError] = useState<string | null>(null);
@@ -50,6 +52,7 @@ const SignUpFullName = ({
         )}
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
           <input
+            tabIndex={isActive ? 0 : -1}
             type="text"
             placeholder="First Name"
             value={first_name || ""}
@@ -60,6 +63,7 @@ const SignUpFullName = ({
             }}
           ></input>
           <input
+            tabIndex={isActive ? 0 : -1}
             type="text"
             placeholder="Last Name"
             value={last_name || ""}

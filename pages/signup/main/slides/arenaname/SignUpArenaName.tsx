@@ -10,9 +10,15 @@ interface Props {
   updateProfile: Function;
   arena_name: string;
   error: ApolloError | undefined;
+  isActive: boolean;
 }
 
-const SignUpArenaName = ({ updateProfile, arena_name, error }: Props) => {
+const SignUpArenaName = ({
+  updateProfile,
+  arena_name,
+  error,
+  isActive,
+}: Props) => {
   const swiper = useSwiper();
   const [nameError, setNameError] = useState<string | null>(null);
   useEffect(() => {
@@ -44,6 +50,7 @@ const SignUpArenaName = ({ updateProfile, arena_name, error }: Props) => {
         )}
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
           <input
+            tabIndex={isActive ? 0 : -1}
             type="text"
             placeholder="Arena Name"
             value={arena_name || ""}

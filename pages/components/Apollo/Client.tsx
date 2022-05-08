@@ -1,4 +1,4 @@
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloLink, InMemoryCache } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
 
 const ENDPOINTS: { [key: string]: string } = {
@@ -24,11 +24,13 @@ const customFetch = (uri: string, options: any) => {
   return fetch(`${uri}/${ENDPOINTS[operationName]}`, options);
 };
 
+const uploadLink = createUploadLink({
+  fetch: customFetch,
+  uri: "http://localhost:8080",
+});
+
 const client = new ApolloClient({
-  link: createUploadLink({
-    fetch: customFetch,
-    uri: "http://localhost:8080",
-  }),
+  link: uploadLink as unknown as ApolloLink,
   cache: new InMemoryCache(),
 });
 
