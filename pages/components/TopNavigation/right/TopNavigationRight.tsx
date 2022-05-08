@@ -1,4 +1,4 @@
-import { ApolloError, useQuery, gql } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import anime from "animejs";
 import classNames from "classnames";
 import Image from "next/image";

@@ -4,11 +4,15 @@ import styles from "./styles.module.scss";
 interface Props {
   text: string;
   disabled: boolean;
+  onClick?: Function | null;
 }
 
 const Button = (props: Props) => {
   return (
     <div
+      onClick={() => {
+        props.onClick ? props.onClick() : "";
+      }}
       className={classNames(
         styles.button,
         props.disabled ? styles.disabled : ""

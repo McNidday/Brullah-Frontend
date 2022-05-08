@@ -1,0 +1,21 @@
+@use "../../../styles/theme" as *;
+
+.container {
+  grid-area: maincontent;
+  background-color: $background;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.miniContainer {
+  border: 1px solid $backgroundLight;
+  height: 95%;
+  width: 98%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.11fr minmax(0, 1fr);
+  grid-template-areas: "search" "tournaments";
+  background-color: $backgroundLight;
+  border-radius: 20px;
+}

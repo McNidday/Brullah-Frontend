@@ -3,8 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   exportPathMap: () => {
     return {
-      "/": { page: "/home/home" },
-      "/tournaments": { page: "/tournaments/tournaments" },
+      "/": { page: "/home/Home" },
+      "/signup": { page: "/signup/Signup" },
+      "/tournaments": { page: "/tournaments/Tournaments" },
     };
   },
   env: {

@@ -1,12 +1,23 @@
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { createUploadLink } from "apollo-upload-client";
 
 const ENDPOINTS: { [key: string]: string } = {
   GetUser: "users",
   GetPublicTournaments: "public/tournaments",
+  CreateUser: "auth",
 };
 
 const customFetch = (uri: string, options: any) => {
-  const { operationName } = JSON.parse(options.body);
+  let operationName;
+  if (options.body instanceof FormData) {
+    for (let pair of options.body.entries()) {
+      if (pair[0] === "operations") {
+        operationName = JSON.parse(pair[1]).operationName;
+      }
+    }
+  } else {
+    operationName = JSON.parse(options.body).operationName;
+  }
   // Get the auth token if present
   const token = localStorage.getItem("token");
   options.headers.Authorization = `Bearer ${token}`;
@@ -14,7 +25,7 @@ const customFetch = (uri: string, options: any) => {
 };
 
 const client = new ApolloClient({
-  link: new HttpLink({
+  link: createUploadLink({
     fetch: customFetch,
     uri: "http://localhost:8080",
   }),
