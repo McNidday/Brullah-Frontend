@@ -4,8 +4,15 @@ import cn from "classnames";
 import TopNavigation from "../components/TopNavigation/TopNavigation";
 import Footer from "../components/Footer/Footer";
 import SignupMain from "./main/SignupMain";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Signup: NextPage = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) router.replace("/dashboard");
+  });
   return (
     <div className={cn("page-grid")}>
       <Head>

@@ -1,26 +1,26 @@
-import debounce from "lodash.debounce";
 import Croppie from "croppie";
 import cn from "classnames";
-
 import "croppie/croppie.css";
 import styles from "./styles.module.scss";
 import Button from "../../../../components/Button/Button";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { validateImageUpload } from "../../../../functions/helpers";
+import { blobToFile, validateImageUpload } from "../../../../functions/helpers";
 import { useSwiper } from "swiper/react";
+import { ApolloError } from "@apollo/client";
 
 interface Props {
   updateProfile: Function;
+  error: ApolloError | undefined;
 }
 
-const SignUpAvatar = ({ updateProfile }: Props) => {
+const SignUpAvatar = ({ updateProfile, error }: Props) => {
   const swiper = useSwiper();
 
+  // const [pervAvatarUrl, setPrevAvaratUrl] = useState<string | ArrayBuffer | null>(null);
   const [avatarUrl, setAvaratUrl] = useState<string | ArrayBuffer | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
-
+  const crop = useRef<Croppie | null>(null);
   const cropRef = useRef(null);
-  let crop: Croppie | null;
 
   const handleAvatar = (
     e: ChangeEvent & { target: Element & { [key: string]: any } }
@@ -30,8 +30,8 @@ const SignUpAvatar = ({ updateProfile }: Props) => {
     if (!file || !validateImageUpload(file)) {
       // Destroy crop if any
       if (crop) {
-        crop.destroy();
-        crop = null;
+        crop.current!.destroy();
+        crop.current = null;
       }
       // Set the upload errors
       if (!file) {
@@ -42,8 +42,6 @@ const SignUpAvatar = ({ updateProfile }: Props) => {
       setAvaratUrl(null);
       return;
     }
-    // Update the file upload
-    updateProfile("avatar", file);
     // Validate the file extention
     const cropReader = new FileReader();
     cropReader.readAsDataURL(file);
@@ -56,8 +54,19 @@ const SignUpAvatar = ({ updateProfile }: Props) => {
   };
 
   useEffect(() => {
+    if (error) {
+      const errorArray = error.message.split(":");
+      if (errorArray[0] === "blurhash") {
+        setAvaratUrl(null);
+        setUploadError(errorArray[1].trim());
+        swiper.slideTo(3);
+      }
+    }
+  }, [error]);
+
+  useEffect(() => {
     if (!avatarUrl) return;
-    crop = new Croppie(cropRef.current!, {
+    crop.current = new Croppie(cropRef.current!, {
       enableExif: true,
       enableZoom: true,
       showZoomer: true,
@@ -73,15 +82,21 @@ const SignUpAvatar = ({ updateProfile }: Props) => {
         height: 150,
       },
     });
-    crop.bind({
+    crop.current.bind({
       url: typeof avatarUrl === "string" ? avatarUrl : "",
       orientation: 1,
     });
+    // Update the file upload
+    crop.current
+      .result({
+        type: "blob",
+      })
+      .then((imageBlob) => {
+        updateProfile("avatar", blobToFile(imageBlob));
+      });
     return () => {
-      if (crop) {
-        crop.destroy();
-        crop = null;
-      }
+      crop?.current!.destroy();
+      crop.current = null;
     };
   }, [avatarUrl]);
 
@@ -108,11 +123,11 @@ const SignUpAvatar = ({ updateProfile }: Props) => {
           <div
             ref={cropRef}
             onBlur={async () => {
-              if (crop) {
-                const imageBlob = await crop.result({
+              if (crop.current) {
+                const imageBlob = await crop.current.result({
                   type: "blob",
                 });
-                updateProfile("avatar", imageBlob);
+                updateProfile("avatar", blobToFile(imageBlob));
               } else {
                 updateProfile("avatar", null);
               }

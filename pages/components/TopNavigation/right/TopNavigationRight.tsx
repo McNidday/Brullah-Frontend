@@ -4,9 +4,13 @@ import classNames from "classnames";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import Icon from "../../Icon/Icon";
+import { decode } from "blurhash";
 import TopNavigationRightLoading from "./Loading/TopNavigationRightLoading";
 import TopRightNavigationLogin from "./Login/TopRightNavigationLogin";
 import styles from "./styles.module.scss";
+import { decodeBlurHash } from "../../../functions/helpers";
+import { useRouter } from "next/router";
+import Link from "next/link";
 const cn = classNames.bind(styles);
 
 const USER = gql`
@@ -15,12 +19,17 @@ const USER = gql`
       id
       identity {
         arena_name
+        avatar {
+          image
+          blurhash
+        }
       }
     }
   }
 `;
 
 const TopNavigationRight = () => {
+  const router = useRouter();
   const { loading, error, data } = useQuery(USER);
   const [dashboardHover, setDashboardHover] = useState(false);
   const [logoutHover, setLogoutHover] = useState(false);
@@ -43,6 +52,10 @@ const TopNavigationRight = () => {
       opacity: 0,
     });
   };
+  const logout = () => {
+    localStorage.removeItem("token");
+    router.reload();
+  };
 
   if (loading) return <TopNavigationRightLoading></TopNavigationRightLoading>;
   if (error) return <TopRightNavigationLogin></TopRightNavigationLogin>;
@@ -52,9 +65,20 @@ const TopNavigationRight = () => {
         <ul onMouseEnter={dropDropDown} onMouseLeave={closeDropDropDown}>
           <li>
             <div className={cn(styles.profileImage)}>
-              <Image src="/icons/duck.png" layout="fill"></Image>
+              <Image
+                src={data.user.identity.avatar.image}
+                layout="fill"
+                placeholder="blur"
+                blurDataURL={decodeBlurHash(
+                  data.user.identity.avatar.blurhash,
+                  100,
+                  100
+                )}
+              ></Image>
             </div>
-            <div className={cn(styles.profileName)}>{data.user.arena_name}</div>
+            <div className={cn(styles.profileName)}>
+              {data.user.identity.arena_name}
+            </div>
           </li>
           <span
             className={cn(dropDownHover ? styles.dropDownActive : "")}
@@ -74,11 +98,14 @@ const TopNavigationRight = () => {
                   hover={dashboardHover}
                 ></Icon>
               </div>
-              <div>Dashboard</div>
+              <div>
+                <Link href={"/dashboard"}>Dashboard</Link>{" "}
+              </div>
             </li>
             <li
               onMouseEnter={() => setLogoutHover(true)}
               onMouseLeave={() => setLogoutHover(false)}
+              onClick={logout}
             >
               <div>
                 <Icon

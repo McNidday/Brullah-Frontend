@@ -1,4 +1,4 @@
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { Parallax, Pagination } from "swiper";
 import cn from "classnames";
 
@@ -14,12 +14,16 @@ import SignUpComplete from "./complete/SignUpComplete";
 import { gql, useMutation } from "@apollo/client";
 import SignupEmail from "./email/SignupEmail";
 import Logo from "../../../components/Logo/Logo";
+import { encodeImageToBlurHash } from "../../../functions/helpers";
 
 const CREATE_USER = gql`
   mutation CreateUser($input: SignupInput) {
     signup(input: $input) {
       identity {
-        arena_avatar
+        avatar {
+          image
+          blurhash
+        }
         arena_name
         first_name
         last_name
@@ -40,7 +44,6 @@ const SignUpInputSlides = () => {
       errorPolicy: "all",
     }
   );
-
   const updateProfile = (name: string, value: string) => {
     setProfile((prev) => {
       prev[name] = value;
@@ -49,8 +52,19 @@ const SignUpInputSlides = () => {
   };
 
   const signup = async () => {
+    const imageHash = await new Promise((resolve) => {
+      const image = new FileReader();
+      image.readAsDataURL(profile.avatar);
+      image.onload = async () => {
+        const imageHash = await encodeImageToBlurHash(
+          typeof image.result! === "string" ? image.result : ""
+        );
+        resolve(imageHash);
+      };
+    });
     delete profile.confirm_password;
-    await createUser({ variables: { input: profile } });
+    const profileInput = { ...profile, blurhash: imageHash };
+    await createUser({ variables: { input: profileInput } });
   };
 
   useEffect(() => {
@@ -135,7 +149,10 @@ const SignUpInputSlides = () => {
           }}
         </SwiperSlide>
         <SwiperSlide className={cn(styles.swiperSlide)}>
-          <SignUpAvatar updateProfile={updateProfile}></SignUpAvatar>
+          <SignUpAvatar
+            updateProfile={updateProfile}
+            error={error}
+          ></SignUpAvatar>
         </SwiperSlide>
         <SwiperSlide className={cn(styles.swiperSlide)}>
           {({ isActive }) => {

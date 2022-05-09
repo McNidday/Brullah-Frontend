@@ -1,7 +1,7 @@
 import TournamentSearch from "./search/TournamentSearch";
-import TournamentsMain, {
-  TournamentsMainFragment,
-} from "./tournaments/TournamentsMain";
+import TournamentsParentList, {
+  TournamentsParentListFragment,
+} from "./tournaments/TournamentsParentList";
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import { gql, useQuery } from "@apollo/client";
@@ -10,13 +10,13 @@ import TournamentListLoading from "./tournaments/Loading/TournamentListLoading";
 const TOURNAMENTS = gql`
   query GetPublicTournaments {
     tournaments(page: 1, limit: 10) {
-      ...TournamentsMain_PaginatedTournament
+      ...TournamentsParentList_PaginatedTournament
     }
   }
-  ${TournamentsMainFragment}
+  ${TournamentsParentListFragment}
 `;
 
-const HomeMain = () => {
+const TournamentsMain = () => {
   const { loading, error, data } = useQuery(TOURNAMENTS);
   if (loading) return <TournamentListLoading></TournamentListLoading>;
   if (error) {
@@ -26,10 +26,12 @@ const HomeMain = () => {
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
         <TournamentSearch></TournamentSearch>
-        <TournamentsMain tournaments={data.tournaments.docs}></TournamentsMain>
+        <TournamentsParentList
+          tournaments={data.tournaments.docs}
+        ></TournamentsParentList>
       </div>
     </div>
   );
 };
 
-export default HomeMain;
+export default TournamentsMain;

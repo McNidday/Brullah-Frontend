@@ -5,6 +5,7 @@ const ENDPOINTS: { [key: string]: string } = {
   GetUser: "users",
   GetPublicTournaments: "public/tournaments",
   CreateUser: "auth",
+  UserLogin: "auth",
 };
 
 const customFetch = (uri: string, options: any) => {
