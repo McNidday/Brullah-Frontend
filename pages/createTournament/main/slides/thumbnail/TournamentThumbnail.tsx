@@ -6,15 +6,20 @@ import Button from "../../../../components/Button/Button";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { blobToFile, validateImageUpload } from "../../../../functions/helpers";
 import { useSwiper } from "swiper/react";
-import { ApolloError } from "@apollo/client";
 
 interface Props {
   isActive: boolean;
   setThumbnail: Function;
-  error: ApolloError | undefined;
+  error: Error | undefined;
+  createTournament: Function;
 }
 
-const TournamentThumbnail = ({ setThumbnail, isActive, error }: Props) => {
+const TournamentThumbnail = ({
+  setThumbnail,
+  createTournament,
+  isActive,
+  error,
+}: Props) => {
   const swiper = useSwiper();
 
   // const [pervAvatarUrl, setPrevAvaratUrl] = useState<string | ArrayBuffer | null>(null);
@@ -40,6 +45,7 @@ const TournamentThumbnail = ({ setThumbnail, isActive, error }: Props) => {
       } else {
         setUploadError(() => "Only JPG, JPEG and PNG files allowed.");
       }
+      setThumbnail(null);
       setAvaratUrl(null);
       return;
     }
@@ -56,12 +62,9 @@ const TournamentThumbnail = ({ setThumbnail, isActive, error }: Props) => {
 
   useEffect(() => {
     if (error) {
-      const errorArray = error.message.split(":");
-      if (errorArray[0] === "blurhash") {
-        setAvaratUrl(null);
-        setUploadError(errorArray[1].trim());
-        swiper.slideTo(3);
-      }
+      setUploadError(error.message);
+      setAvaratUrl(null);
+      swiper.slideTo(6);
     }
   }, [error]);
 
@@ -95,8 +98,10 @@ const TournamentThumbnail = ({ setThumbnail, isActive, error }: Props) => {
         setThumbnail(blobToFile(imageBlob));
       });
     return () => {
-      crop?.current!.destroy();
-      crop.current = null;
+      if (crop.current) {
+        crop?.current!.destroy();
+        crop.current = null;
+      }
     };
   }, [avatarUrl]);
 
@@ -154,9 +159,9 @@ const TournamentThumbnail = ({ setThumbnail, isActive, error }: Props) => {
             onClick={() => swiper.slidePrev()}
           ></Button>
           <Button
-            text="next"
+            text="Let's go!"
             disabled={false}
-            onClick={() => swiper.slideNext()}
+            onClick={() => createTournament()}
           ></Button>
         </div>
       </div>

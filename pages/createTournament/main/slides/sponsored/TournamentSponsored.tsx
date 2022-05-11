@@ -46,8 +46,9 @@ const TournamentSponsored = ({
   useEffect(() => {
     if (error) {
       const errorArray = error.message.split(":");
-      if (errorArray[0] === "blurhash") {
+      if (errorArray[0] === "reward") {
         setNameError(errorArray[1].trim());
+        swiper.slideTo(3);
       }
     }
   }, [error]);
@@ -58,7 +59,11 @@ const TournamentSponsored = ({
         <div className={cn(styles.title)} data-swiper-parallax="-1000">
           <label>
             <h2>Will you sponsor this tournament? tick for yes.</h2>
-            {isSponsored ? <h3>If yes, for how much?</h3> : ""}
+            {isSponsored ? (
+              <h3>If yes, for how much? The max is 160 BRC and min is 3 BRC</h3>
+            ) : (
+              ""
+            )}
           </label>
         </div>
         {nameError ? (
@@ -82,7 +87,7 @@ const TournamentSponsored = ({
               tabIndex={isActive ? 0 : -1}
               type="number"
               placeholder="BRC AMOUNT"
-              value={sponsorAmount}
+              value={sponsorAmount || ""}
               onInput={handleBrcChange}
             />
           </div>

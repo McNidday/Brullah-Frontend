@@ -2,7 +2,7 @@ import cn from "classnames";
 
 import styles from "./styles.module.scss";
 import Button from "../../../../components/Button/Button";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useSwiper } from "swiper/react";
 import { ApolloError } from "@apollo/client";
 
@@ -15,7 +15,20 @@ interface Props {
 
 const TournamentName = ({ setName, name, error, isActive }: Props) => {
   const swiper = useSwiper();
-  const [nameError, setnameError] = useState<string | null>(null);
+  const [nameError, setNameError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (error) {
+      const errorArray = error.message.split(":");
+      if (errorArray[0] === "information.name") {
+        setNameError(errorArray[1].trim());
+        swiper.slideTo(0);
+      }
+    } else {
+      setNameError(null);
+    }
+  }, [error]);
+
   return (
     <>
       <div>

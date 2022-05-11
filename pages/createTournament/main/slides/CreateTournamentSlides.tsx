@@ -1,9 +1,10 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Parallax, Pagination } from "swiper";
+import uniqid from "uniqid";
 import cn from "classnames";
 
 import "swiper/css/bundle";
-import momenttz from "moment-timezone";
+import moment from "moment";
 import styles from "./styles.module.scss";
 import { useEffect, useState } from "react";
 import { gql, useMutation } from "@apollo/client";
@@ -16,6 +17,18 @@ import TournamentSponsored from "./sponsored/TournamentSponsored";
 import TournamentAccess from "./access/TournamentAccess";
 import TournamentStartDate from "./startDate/TournamentStartDate";
 import TournamentThumbnail from "./thumbnail/TournamentThumbnail";
+import TournamentCreationComplete from "./complete/TournamentCreationComplete";
+
+const CREATE_TOURNAMENT = gql`
+  mutation CreateTournament($input: TournamentInput) {
+    createTournament(input: $input) {
+      id
+      information {
+        name
+      }
+    }
+  }
+`;
 
 const CreateTournamentSlides = () => {
   // Tournament name
@@ -37,16 +50,99 @@ const CreateTournamentSlides = () => {
   const [accessType, setAccessType] = useState<string>("PUBLIC");
 
   // Start Date
-  const [date, setDate] = useState<{ unix: number; date: string }>();
+  const [date, setDate] = useState<{ unix: number; date: string }>({
+    unix: 0,
+    date: "",
+  });
 
   // Thumbnail
-  const [thumbnail, setThumbnail] = useState<File>();
+  const [thumbnail, setThumbnail] = useState<File | Blob>();
+  const [thumbnailError, setThumbnailError] = useState<Error>();
 
   // Tournament description
   const [description, setDescription] = useState<string | undefined>(undefined);
 
-  const loading = false;
-  const error = undefined;
+  const [create, { data, loading, error, reset }] = useMutation(
+    CREATE_TOURNAMENT,
+    {
+      errorPolicy: "all",
+    }
+  );
+
+  const createTournament = async () => {
+    if (!thumbnail) {
+      setThumbnailError(new Error("No image has been selected"));
+      return;
+    }
+    const thumbnailHash = await new Promise((resolve) => {
+      if (!thumbnail) return resolve(undefined);
+      const image = new FileReader();
+      image.readAsDataURL(thumbnail!);
+      image.onload = async () => {
+        const imageHash = await encodeImageToBlurHash(
+          typeof image.result! === "string" ? image.result : ""
+        );
+        resolve(imageHash);
+      };
+    });
+    const TData = {
+      variables: {
+        input: {
+          game: {
+            id: uniqid(),
+            name: "Checkers",
+          },
+          information: {
+            name: name,
+            description: description,
+            thumbnail: {
+              image: thumbnail,
+              blurhash: thumbnailHash,
+            },
+          },
+          contribution: {
+            contributed: isContributed,
+            per_user: {
+              currency: "BRC",
+              value: contribution,
+            },
+          },
+          sponsor: {
+            sponsored: isSponsored,
+            balance: {
+              currency: "BRC",
+              value: sponsorAmount,
+            },
+          },
+          reward:
+            isSponsored || isContributed
+              ? isSponsored
+                ? "SPONSORED"
+                : "CONTRIBUTION"
+              : "NONE",
+          start_date: date?.unix,
+        },
+      },
+    };
+    create(TData);
+  };
+
+  useEffect(() => {
+    // If there is an error reset it after 5 seconds
+    if (thumbnailError) setTimeout(() => setThumbnailError(undefined), 5000);
+    if (error) setTimeout(reset, 5000);
+  }, [error]);
+
+  if (error) {
+    if (error.graphQLErrors.length <= 0) {
+      return (
+        <div className={cn(styles.error)}>
+          <h2>{error.message}</h2>
+        </div>
+      );
+    }
+  }
+
   return (
     <>
       <Swiper
@@ -104,7 +200,6 @@ const CreateTournamentSlides = () => {
           {({ isActive }) => {
             return (
               <TournamentContribution
-                error={error}
                 contribution={contribution}
                 isContributed={isContributed}
                 setIsContributed={(val: boolean) => setIsContributed(val)}
@@ -137,7 +232,6 @@ const CreateTournamentSlides = () => {
                 setAccessType={(val: string) => setAccessType(val)}
                 accessType={accessType}
                 isActive={isActive}
-                error={error}
               ></TournamentAccess>
             );
           }}
@@ -158,12 +252,16 @@ const CreateTournamentSlides = () => {
           {({ isActive }) => {
             return (
               <TournamentThumbnail
+                createTournament={() => createTournament()}
                 setThumbnail={(val: File) => setThumbnail(val)}
                 isActive={isActive}
-                error={error}
+                error={thumbnailError}
               ></TournamentThumbnail>
             );
           }}
+        </SwiperSlide>
+        <SwiperSlide className={cn(styles.swiperSlide)}>
+          <TournamentCreationComplete data={data}></TournamentCreationComplete>
         </SwiperSlide>
       </Swiper>
     </>

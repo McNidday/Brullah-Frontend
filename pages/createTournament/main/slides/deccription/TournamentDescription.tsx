@@ -2,7 +2,7 @@ import cn from "classnames";
 
 import styles from "./styles.module.scss";
 import Button from "../../../../components/Button/Button";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { useSwiper } from "swiper/react";
 import { ApolloError } from "@apollo/client";
 
@@ -20,7 +20,18 @@ const TournamentDescription = ({
   isActive,
 }: Props) => {
   const swiper = useSwiper();
-  const [nameError, setnameError] = useState<string | null>(null);
+  const [descriptionError, setDescriptionError] = useState<string | null>(null);
+  useEffect(() => {
+    if (error) {
+      const errorArray = error.message.split(":");
+      if (errorArray[0] === "information.description") {
+        setDescriptionError(errorArray[1].trim());
+        swiper.slideTo(1);
+      }
+    } else {
+      setDescriptionError(null);
+    }
+  }, [error]);
   return (
     <>
       <div>
@@ -31,9 +42,9 @@ const TournamentDescription = ({
             </h2>
           </label>
         </div>
-        {nameError ? (
+        {descriptionError ? (
           <div className={cn(styles.errors)} data-swiper-parallax="-750">
-            <p>{nameError}</p>
+            <p>{descriptionError}</p>
           </div>
         ) : (
           ""

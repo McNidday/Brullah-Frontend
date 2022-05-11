@@ -27,9 +27,12 @@ const TournamentStartDate = ({ setDate, date, error, isActive }: Props) => {
   useEffect(() => {
     if (error) {
       const errorArray = error.message.split(":");
-      if (errorArray[0] === "blurhash") {
+      if (errorArray[0] === "start_date") {
         setNameError(errorArray[1].trim());
+        swiper.slideTo(5);
       }
+    } else {
+      setNameError(null);
     }
   }, [error]);
 

@@ -2,40 +2,22 @@ import cn from "classnames";
 
 import styles from "./styles.module.scss";
 import Button from "../../../../components/Button/Button";
-import { useEffect, ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import { useSwiper } from "swiper/react";
-import { ApolloError } from "@apollo/client";
 
 interface Props {
   accessType: string;
   setAccessType: Function;
-  error: ApolloError | undefined;
   isActive: boolean;
 }
 
-const TournamentAccess = ({
-  accessType,
-  setAccessType,
-  error,
-  isActive,
-}: Props) => {
+const TournamentAccess = ({ accessType, setAccessType, isActive }: Props) => {
   const swiper = useSwiper();
-  const [nameError, setNameError] = useState<string | null>(null);
-
   const handleTickChange = (
     e: ChangeEvent & { target: Element & { [key: string]: any } }
   ) => {
     setAccessType(e.target.value);
   };
-
-  useEffect(() => {
-    if (error) {
-      const errorArray = error.message.split(":");
-      if (errorArray[0] === "blurhash") {
-        setNameError(errorArray[1].trim());
-      }
-    }
-  }, [error]);
 
   return (
     <>
@@ -57,13 +39,6 @@ const TournamentAccess = ({
             )}
           </label>
         </div>
-        {nameError ? (
-          <div className={cn(styles.errors)} data-swiper-parallax="-750">
-            <p>{nameError}</p>
-          </div>
-        ) : (
-          ""
-        )}
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
           <label className={cn(styles.checkbox)}>
             <input

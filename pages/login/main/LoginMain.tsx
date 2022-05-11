@@ -48,8 +48,6 @@ const LoginMain = () => {
           <h2>{error.message}</h2>
         </div>
       );
-    } else {
-      console.log(error);
     }
   }
 
