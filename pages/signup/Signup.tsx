@@ -4,15 +4,10 @@ import cn from "classnames";
 import TopNavigation from "../components/TopNavigation/TopNavigation";
 import Footer from "../components/Footer/Footer";
 import SignupMain from "./main/SignupMain";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import ApolloClientOnly from "../components/Apollo/ApolloClientOnly";
+import Fallback from "../components/Fallback/Fallback";
 
 const Signup: NextPage = () => {
-  const router = useRouter();
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) router.replace("/dashboard");
-  });
   return (
     <div className={cn("page-grid")}>
       <Head>
@@ -24,7 +19,9 @@ const Signup: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <TopNavigation></TopNavigation>
-      <SignupMain></SignupMain>
+      <ApolloClientOnly fallback={<Fallback></Fallback>}>
+        <SignupMain></SignupMain>
+      </ApolloClientOnly>
       <Footer></Footer>
     </div>
   );

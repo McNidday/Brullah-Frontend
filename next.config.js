@@ -6,6 +6,7 @@ const nextConfig = {
       "/": { page: "/home/Home" },
       "/signup": { page: "/signup/Signup" },
       "/login": { page: "/login/Login" },
+      "/dashboard": { page: "/dashboard/Dashboard" },
       "/tournaments": { page: "/tournaments/Tournaments" },
       "/createtournament": { page: "/createTournament/CreateTournament" },
     };

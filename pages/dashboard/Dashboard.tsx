@@ -3,28 +3,25 @@ import Head from "next/head";
 import cn from "classnames";
 import TopNavigation from "../components/TopNavigation/TopNavigation";
 import Footer from "../components/Footer/Footer";
-import CreateTournamentMain from "./main/CreateTournamentMain";
 import ApolloClientOnly from "../components/Apollo/ApolloClientOnly";
 import Fallback from "../components/Fallback/Fallback";
+import SideNavigation from "../components/SideNavigation/SideNavigation";
+import DashboardMain from "./main/DashboardMain";
 
-const CreateTournament: NextPage = () => {
+const Dashboard: NextPage = () => {
   return (
     <div className={cn("page-grid")}>
       <Head>
-        <title>Create Tournament | Brullah</title>
-        <meta
-          name="Create a new brullah tournament"
-          content="Brullah tournaments would fripple your earnings. Make your mullah brain more happy."
-        />
+        <title>Dashboard | Brullah</title>
+        <meta name="Brullah dashboard" content="Manage your brullah account" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <TopNavigation></TopNavigation>
-      <ApolloClientOnly fallback={<Fallback></Fallback>}>
-        <CreateTournamentMain></CreateTournamentMain>
-      </ApolloClientOnly>
+      <SideNavigation></SideNavigation>
+      <DashboardMain></DashboardMain>
       <Footer></Footer>
     </div>
   );
 };
 
-export default CreateTournament;
+export default Dashboard;

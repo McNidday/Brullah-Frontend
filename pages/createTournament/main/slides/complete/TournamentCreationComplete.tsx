@@ -27,7 +27,6 @@ const TournamentCreationComplete = ({ data }: { data: undefined | any }) => {
 
   useEffect(() => {
     if (countDown === 0) {
-      console.log("Interval is done bitch ass nigga!");
       setCountDown(undefined);
       Router.replace("/mytournaments");
     }

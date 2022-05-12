@@ -4,7 +4,6 @@ import classNames from "classnames";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import Icon from "../../Icon/Icon";
-import { decode } from "blurhash";
 import TopNavigationRightLoading from "./Loading/TopNavigationRightLoading";
 import TopRightNavigationLogin from "./Login/TopRightNavigationLogin";
 import styles from "./styles.module.scss";
