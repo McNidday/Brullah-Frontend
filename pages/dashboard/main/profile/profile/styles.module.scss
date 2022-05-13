@@ -1,0 +1,48 @@
+@use "../../../../../styles/theme" as *;
+
+.profile {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+
+  & > div:nth-child(1) {
+    width: 120px;
+    height: 120px;
+    min-height: 120px;
+    position: relative;
+    border: 1px solid $backgroundLight;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  & > div:nth-child(2) {
+    color: $textColor;
+    h3 {
+      margin: 0px;
+    }
+  }
+
+  & > div:nth-child(3) {
+    color: $textColor;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    h3 {
+      margin: 0px;
+    }
+    & > div {
+      width: 30px;
+      height: 30px;
+      position: relative;
+      margin-left: 5px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

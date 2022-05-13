@@ -1,0 +1,21 @@
+@use "../../../../styles/theme" as *;
+
+.container {
+  grid-area: profile;
+  background-color: $backgroundLight;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-left-radius: 20px;
+}
+
+.miniContainer {
+  position: relative;
+  background-color: $background;
+  width: 90%;
+  height: 90%;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}

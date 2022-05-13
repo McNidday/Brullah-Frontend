@@ -13,7 +13,7 @@
   height: 95%;
   width: 98%;
   display: grid;
-  grid-template-columns: 0.5fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr minmax(0, 1fr);
   grid-template-areas: "profile graph" "transactions transactions";
   background-color: $backgroundLight;

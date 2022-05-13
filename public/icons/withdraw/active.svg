@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="cash-withdrawal"
+   width="40.428"
+   height="26"
+   viewBox="0 0 40.428 26"
+   version="1.1"
+   sodipodi:docname="active.svg"
+   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs6" />
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="21.5"
+     inkscape:cx="20.209302"
+     inkscape:cy="13.023256"
+     inkscape:window-width="1366"
+     inkscape:window-height="745"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="cash-withdrawal" />
+  <path
+     id="Path_196"
+     data-name="Path 196"
+     d="M29.175,3.2V26H11.256V3.2H4.771a1.514,1.514,0,0,0-1.4,1.178A3.4,3.4,0,0,0,3.2,5.459a3.4,3.4,0,0,0,.161,1.076,1.514,1.514,0,0,0,1.4,1.178H7.232a1.6,1.6,0,1,1,0,3.2H4.771A4.558,4.558,0,0,1,.336,7.535a6.6,6.6,0,0,1,0-4.156A4.559,4.559,0,0,1,4.771,0H35.657a4.558,4.558,0,0,1,4.435,3.382,6.61,6.61,0,0,1,0,4.159,4.558,4.558,0,0,1-4.435,3.382h-3.1a1.6,1.6,0,0,1,0-3.2h3.1a1.514,1.514,0,0,0,1.4-1.178,3.4,3.4,0,0,0,.161-1.076,3.4,3.4,0,0,0-.161-1.076,1.514,1.514,0,0,0-1.4-1.178H29.175Zm-15.106,0v17a2.65,2.65,0,0,1,2.645,2.649H23.8a2.653,2.653,0,0,1,2.645-2.649V3.2Zm6.255,2.422A3.019,3.019,0,1,1,17.3,8.647a3.018,3.018,0,0,1,3.021-3.021Zm5.159,3.149A5.274,5.274,0,1,1,20.209,3.5a5.269,5.269,0,0,1,5.274,5.274Z"
+     fill="#950740"
+     fill-rule="evenodd"
+     style="fill:#c3073f;fill-opacity:1" />
+</svg>
