@@ -2,12 +2,26 @@ import cn from "classnames";
 import { useState } from "react";
 import Icon from "../../../../../components/Icon/Icon";
 import styles from "./styles.module.scss";
+import dinero from "dinero.js";
+import { gql } from "@apollo/client";
 
 interface Props {
   setOverflowTab: (tab: string | null) => void;
+  user: {
+    finance: {
+      cash_balance: {
+        value: number;
+        currency: dinero.Currency;
+      };
+      brc_balance: {
+        value: number;
+        currency: dinero.Currency;
+      };
+    };
+  };
 }
 
-const DahboardButtonsDefault = ({ setOverflowTab }: Props) => {
+const DashboardButtonsDefault = ({ setOverflowTab, user }: Props) => {
   const [exchangeHover, setExchanheHover] = useState<boolean>(false);
   const [withdrawHover, setWithdrawHover] = useState<boolean>(false);
   const [depositHover, setDepositHover] = useState<boolean>(false);
@@ -19,10 +33,16 @@ const DahboardButtonsDefault = ({ setOverflowTab }: Props) => {
           <h2 className={cn(styles.brullahCoinsTitle)}>Brullah Coins (BRC)</h2>
           <div>
             <div>
-              <h3>1200.00</h3>
+              <h3>
+                {dinero({
+                  amount: user.finance.brc_balance.value,
+                  currency: user.finance.brc_balance.currency,
+                }).toFormat("0,0.00")}
+              </h3>
               <div
                 onMouseEnter={() => setExchanheHover(true)}
                 onMouseLeave={() => setExchanheHover(false)}
+                onClick={() => setOverflowTab("exchange")}
               >
                 <Icon
                   hover={exchangeHover}
@@ -39,7 +59,12 @@ const DahboardButtonsDefault = ({ setOverflowTab }: Props) => {
           <h2 className={cn(styles.actualMullahTitle)}>Actual Mullah</h2>
           <div>
             <div>
-              <h3>1200.00</h3>
+              <h3>
+                {dinero({
+                  amount: user.finance.cash_balance.value,
+                  currency: user.finance.cash_balance.currency,
+                }).toFormat("0,0.00")}
+              </h3>
               <div
                 onMouseEnter={() => setWithdrawHover(true)}
                 onMouseLeave={() => setWithdrawHover(false)}
@@ -69,4 +94,19 @@ const DahboardButtonsDefault = ({ setOverflowTab }: Props) => {
   );
 };
 
-export default DahboardButtonsDefault;
+export const DashboardButtonsDefaultFragment = gql`
+  fragment DashboardButtonsDefault_User on User {
+    finance {
+      cash_balance {
+        value
+        currency
+      }
+      brc_balance {
+        value
+        currency
+      }
+    }
+  }
+`;
+
+export default DashboardButtonsDefault;

@@ -1,0 +1,111 @@
+@use "../../../../../styles/theme" as *;
+
+.container {
+  width: 100%;
+  height: 100%;
+  background-color: $background;
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-105%);
+
+  h3 {
+    color: white;
+    text-align: center;
+  }
+
+  & [class~="convertion-success"] {
+    color: $moneyColor;
+  }
+}
+
+.converterInputs {
+  width: 80%;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  margin: 10px;
+  margin-bottom: 20px;
+  & [class~="input-wrapper"] {
+    width: 40%;
+    height: 100%;
+    position: relative;
+
+    label {
+      position: absolute;
+      color: rgba(0, 0, 0, 0.5);
+      text-align: center;
+      top: 19%;
+      margin-left: 5px;
+      pointer-events: none;
+      left: 0;
+      background-color: white;
+      font-size: 1rem;
+      white-space: nowrap;
+      text-overflow: clip;
+      transition: all 0.2s linear;
+
+      &[class~="turn-left"] {
+        left: 100%;
+        opacity: 0;
+      }
+
+      &[class~="turn-right"] {
+        left: -100%;
+        opacity: 0;
+      }
+
+      &[class~="writting"] {
+        top: -60%;
+        font-size: 0.8rem;
+        background-color: $background;
+        color: white;
+      }
+    }
+
+    input {
+      width: 100%;
+      height: 100%;
+      padding: 5px;
+      margin-bottom: 5px;
+      border-radius: 5px;
+      border: 1px solid grey;
+      outline: none;
+    }
+  }
+  & [class~="transfer-icon"] {
+    position: relative;
+    width: 30px;
+    height: 30px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.convertButton {
+  position: relative;
+  width: 30px;
+  height: 30px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.navBack {
+  position: absolute;
+  top: 45%;
+  left: 2px;
+  width: 30px;
+  height: 30px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

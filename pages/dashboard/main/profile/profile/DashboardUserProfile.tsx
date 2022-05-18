@@ -1,19 +1,39 @@
+import { gql } from "@apollo/client";
 import cn from "classnames";
 import Image from "next/image";
 import Icon from "../../../../components/Icon/Icon";
+import { decodeBlurHash } from "../../../../functions/helpers";
 import styles from "./styles.module.scss";
 
-const DashboardUserProfile = () => {
+interface Props {
+  user: {
+    identity: {
+      arena_name: string;
+      arena_id: string;
+      avatar: {
+        image: string;
+        blurhash: string;
+      };
+    };
+  };
+}
+
+const DashboardUserProfile = ({ user }: Props) => {
   return (
     <div className={cn(styles.profile)}>
       <div>
-        <Image src="/icons/duck.png" layout="fill"></Image>
+        <Image
+          src={user.identity.avatar.image}
+          layout="fill"
+          placeholder="blur"
+          blurDataURL={decodeBlurHash(user.identity.avatar.blurhash, 100, 100)}
+        ></Image>
       </div>
       <div>
-        <h3>nidday</h3>
+        <h3>{user.identity.arena_name}</h3>
       </div>
       <div>
-        <h3>joijdjou09u8</h3>
+        <h3>{user.identity.arena_id}</h3>
         <div>
           <Icon
             hover={false}
@@ -25,5 +45,18 @@ const DashboardUserProfile = () => {
     </div>
   );
 };
+
+export const DashboardUserProfileFragment = gql`
+  fragment DashboardUserProfile_User on User {
+    identity {
+      arena_name
+      arena_id
+      avatar {
+        image
+        blurhash
+      }
+    }
+  }
+`;
 
 export default DashboardUserProfile;

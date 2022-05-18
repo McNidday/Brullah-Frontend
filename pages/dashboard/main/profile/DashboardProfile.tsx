@@ -1,13 +1,24 @@
+import { gql } from "@apollo/client";
 import cn from "classnames";
 import { useState } from "react";
-import DahboardMoneyButtons from "./buttons/DahboardMoneyButtons";
+import DashboardMoneyButtons, {
+  DashboardMoneyButtonsFragment,
+} from "./buttons/DashboardMoneyButtons";
 import DashboardProfileError from "./error/DashboardProfileError";
+import CurrencyExchange from "./exchange/CurrencyExchange";
 import PaypalDeposit from "./paypal/PaypalDeposit";
-import DashboardUserProfile from "./profile/DashboardUserProfile";
+import DashboardUserProfile, {
+  DashboardUserProfileFragment,
+} from "./profile/DashboardUserProfile";
 import styles from "./styles.module.scss";
 import DashboardProfileSuccess from "./success/DashboardProfileSuccess";
 
-const DashboardProfile = () => {
+interface Props {
+  refreshUser: () => void;
+  user: any;
+}
+
+const DashboardProfile = ({ user, refreshUser }: Props) => {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<
     string | JSX.Element | null
@@ -17,6 +28,12 @@ const DashboardProfile = () => {
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
+        <CurrencyExchange
+          overflowTab={overflowTab}
+          setOverflowTab={(val: string | null) => {
+            setOverflowTab(val);
+          }}
+        ></CurrencyExchange>
         <DashboardProfileError
           error={error}
           setError={(val: string | null) => setError(val)}
@@ -28,6 +45,7 @@ const DashboardProfile = () => {
           }
         ></DashboardProfileSuccess>
         <PaypalDeposit
+          refreshUser={refreshUser}
           overflowTab={overflowTab}
           setOverflowTab={(val: string | null) => {
             setOverflowTab(val);
@@ -37,15 +55,25 @@ const DashboardProfile = () => {
           }
           setError={(val: string) => setError(val)}
         ></PaypalDeposit>
-        <DashboardUserProfile></DashboardUserProfile>
-        <DahboardMoneyButtons
+        <DashboardUserProfile user={user}></DashboardUserProfile>
+        <DashboardMoneyButtons
+          user={user}
           setOverflowTab={(val: string | null) => {
             setOverflowTab(val);
           }}
-        ></DahboardMoneyButtons>
+        ></DashboardMoneyButtons>
       </div>
     </div>
   );
 };
+
+export const DashboardProfileFragment = gql`
+  fragment DashboardProfile_User on User {
+    ...DashboardUserProfile_User
+    ...DashboardMoneyButtons_User
+  }
+  ${DashboardUserProfileFragment}
+  ${DashboardMoneyButtonsFragment}
+`;
 
 export default DashboardProfile;

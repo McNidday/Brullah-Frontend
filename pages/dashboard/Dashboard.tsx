@@ -18,7 +18,9 @@ const Dashboard: NextPage = () => {
       </Head>
       <TopNavigation></TopNavigation>
       <SideNavigation></SideNavigation>
-      <DashboardMain></DashboardMain>
+      <ApolloClientOnly fallback={<Fallback></Fallback>}>
+        <DashboardMain></DashboardMain>
+      </ApolloClientOnly>
       <Footer></Footer>
     </div>
   );

@@ -1,16 +1,18 @@
 import cn from "classnames";
 import styles from "./styles.module.scss";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { formatNumber, inputSelection } from "../../../../../functions/helpers";
 import getSymbolFromCurrency from "currency-symbol-map";
 
 interface Props {
   activeCurrency: string;
-  setDepositAmount: Function;
+  setDepositAmount: (amount: number) => void;
 }
 
 const PaypalInput = ({ activeCurrency, setDepositAmount }: Props) => {
   const [formattedAmount, setFormattedAmount] = useState("");
+  const [curretPos, setCurretPosition] = useState<number>(0);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const formatPlaceHolder = () => {
     // appends $ to value, validates decimal side
@@ -20,17 +22,17 @@ const PaypalInput = ({ activeCurrency, setDepositAmount }: Props) => {
     let input_val = "999.00";
 
     // original length
-    var original_len = input_val.length;
+    let original_len = input_val.length;
     // check for decimal
     if (input_val.indexOf(".") >= 0) {
       // get position of first decimal
       // this prevents multiple decimals from
       // being entered
-      var decimal_pos = input_val.indexOf(".");
+      let decimal_pos = input_val.indexOf(".");
 
       // split number by decimal point
-      var left_side = input_val.substring(0, decimal_pos);
-      var right_side = input_val.substring(decimal_pos);
+      let left_side = input_val.substring(0, decimal_pos);
+      let right_side = input_val.substring(decimal_pos);
 
       // add commas to left side of number
       left_side = formatNumber(left_side);
@@ -84,20 +86,20 @@ const PaypalInput = ({ activeCurrency, setDepositAmount }: Props) => {
     }
 
     // original length
-    var original_len = input_val.length;
+    let original_len = input_val.length;
 
     // initial caret position
-    var caret_pos = inputSelection(e.target).start;
+    let caret_pos = inputSelection(e.target).start;
     // check for decimal
     if (input_val.indexOf(".") >= 0) {
       // get position of first decimal
       // this prevents multiple decimals from
       // being entered
-      var decimal_pos = input_val.indexOf(".");
+      let decimal_pos = input_val.indexOf(".");
 
       // split number by decimal point
-      var left_side = input_val.substring(0, decimal_pos);
-      var right_side = input_val.substring(decimal_pos);
+      let left_side = input_val.substring(0, decimal_pos);
+      let right_side = input_val.substring(decimal_pos);
 
       // add commas to left side of number
       left_side = formatNumber(left_side);
@@ -124,7 +126,6 @@ const PaypalInput = ({ activeCurrency, setDepositAmount }: Props) => {
       // add commas to number
       // remove all non-digits
       input_val = formatNumber(input_val);
-      // input_val = "$" + input_val;
 
       // final formatting
       if (blur && activeCurrency !== "JPY" && activeCurrency !== "AC") {
@@ -135,11 +136,10 @@ const PaypalInput = ({ activeCurrency, setDepositAmount }: Props) => {
     }
     // send updated string to input
     setFormattedAmount(input_val);
-
-    // put caret back in the right position
-    var updated_len = input_val.length;
+    //  put caret back in the right position
+    let updated_len = input_val.length;
     caret_pos = updated_len - original_len + caret_pos;
-    e.target.setSelectionRange(caret_pos, caret_pos);
+    setCurretPosition(caret_pos);
   };
 
   const setAmount = () => {
@@ -159,6 +159,10 @@ const PaypalInput = ({ activeCurrency, setDepositAmount }: Props) => {
   };
 
   useEffect(() => {
+    inputRef?.current!.setSelectionRange(curretPos, curretPos);
+  }, [curretPos]);
+
+  useEffect(() => {
     setAmount();
   }, [formattedAmount]);
 
@@ -166,6 +170,7 @@ const PaypalInput = ({ activeCurrency, setDepositAmount }: Props) => {
     <div className={cn(styles.container)}>
       <h3>{getSymbolFromCurrency(activeCurrency)}</h3>
       <input
+        ref={inputRef}
         data-symbol={getSymbolFromCurrency(activeCurrency)}
         type={"text"}
         placeholder={formatPlaceHolder()}

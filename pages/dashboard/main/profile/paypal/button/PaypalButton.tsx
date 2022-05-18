@@ -9,6 +9,7 @@ interface Props {
   depositAmount: number;
   setError: (message: string) => void;
   setSuccessMessage: (message: string | JSX.Element) => void;
+  refreshUser: () => void;
 }
 
 const PaypalButton = ({
@@ -17,6 +18,7 @@ const PaypalButton = ({
   depositAmount,
   setError,
   setSuccessMessage,
+  refreshUser,
 }: Props) => {
   return (
     <div className={cn(styles.container)}>
@@ -28,6 +30,7 @@ const PaypalButton = ({
           }}
         >
           <PaypalButtonWrapper
+            refreshUser={refreshUser}
             setSuccessMessage={setSuccessMessage}
             setError={setError}
             depositAmount={depositAmount}

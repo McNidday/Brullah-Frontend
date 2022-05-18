@@ -15,6 +15,7 @@ interface Props {
   setOverflowTab: (tab: string | null) => void;
   setError: (message: string) => void;
   overflowTab: string | null;
+  refreshUser: () => void;
 }
 
 const PaypalDeposit = ({
@@ -22,6 +23,7 @@ const PaypalDeposit = ({
   setSuccessMessage,
   setOverflowTab,
   overflowTab,
+  refreshUser,
 }: Props) => {
   const [activeCurrency, setCurrency] = useState<string>("USD");
   const [depositAmount, setDepositAmount] = useState<number>(0);
@@ -91,6 +93,7 @@ const PaypalDeposit = ({
         setDepositAmount={(val: number) => setDepositAmount(val)}
       ></PaypalInput>
       <PaypalButton
+        refreshUser={refreshUser}
         setSuccessMessage={setSuccessMessage}
         setError={setError}
         depositAmount={depositAmount}

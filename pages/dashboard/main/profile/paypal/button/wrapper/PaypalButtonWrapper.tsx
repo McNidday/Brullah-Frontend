@@ -13,6 +13,7 @@ interface Props {
   depositAmount: number;
   setError: (message: string) => void;
   setSuccessMessage: (message: string | JSX.Element) => void;
+  refreshUser: () => void;
 }
 
 let amount = 0;
@@ -23,6 +24,7 @@ const PaypalButtonWrapper = ({
   depositAmount,
   setError,
   setSuccessMessage,
+  refreshUser,
 }: Props) => {
   const [{ options, isPending, isResolved, isRejected }, dispatch] =
     usePayPalScriptReducer();
@@ -121,6 +123,8 @@ const PaypalButtonWrapper = ({
               on!
             </>
           );
+
+          refreshUser();
         }}
         onCancel={async () => {
           setError(
