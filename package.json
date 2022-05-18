@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.0",
+    "@paypal/react-paypal-js": "^7.7.0",
     "@types/animejs": "^3.1.4",
     "@types/apollo-upload-client": "^17.0.0",
     "@types/country-data": "^0.0.2",

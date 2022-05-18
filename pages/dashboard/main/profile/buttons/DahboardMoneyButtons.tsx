@@ -2,10 +2,16 @@ import cn from "classnames";
 import DahboardButtonsDefault from "./default/DahboardButtonsDefault";
 import styles from "./styles.module.scss";
 
-const DahboardMoneyButtons = () => {
+interface Props {
+  setOverflowTab: (tab: string | null) => void;
+}
+
+const DahboardMoneyButtons = ({ setOverflowTab }: Props) => {
   return (
     <div className={cn(styles.moneyButtons)}>
-      <DahboardButtonsDefault></DahboardButtonsDefault>
+      <DahboardButtonsDefault
+        setOverflowTab={setOverflowTab}
+      ></DahboardButtonsDefault>
     </div>
   );
 };

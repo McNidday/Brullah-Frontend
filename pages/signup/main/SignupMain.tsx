@@ -18,15 +18,11 @@ const USER = gql`
 
 const SignupMain = () => {
   const { loading, error, data } = useQuery(USER);
-  if (error) {
-    if (error.graphQLErrors.length <= 0) {
-      <SignupError
-        arena_name={data.user.identity.arena_name}
-        errorNum={1}
-        error={error}
-      ></SignupError>;
-    }
+
+  if (error && (error?.networkError as any).statusCode !== 401) {
+    <SignupError errorNum={1} error={error}></SignupError>;
   }
+
   if (loading) return <SignupLoading></SignupLoading>;
   if (data?.user?.id)
     return (

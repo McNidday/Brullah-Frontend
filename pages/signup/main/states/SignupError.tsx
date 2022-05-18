@@ -6,7 +6,7 @@ import cn from "classnames";
 import Router from "next/router";
 
 interface Props {
-  arena_name: string;
+  arena_name?: string;
   errorNum: number;
   error: ApolloError;
 }

@@ -7,10 +7,10 @@ import ReactCountryFlag from "react-country-flag";
 import { EffectCoverflow } from "swiper";
 
 interface Props {
-  activeCurrency: string;
   setActiveCurrency: Function;
+  paypalScriptState: string;
 }
-const PaypalCountries = ({ activeCurrency, setActiveCurrency }: Props) => {
+const PaypalCountries = ({ setActiveCurrency, paypalScriptState }: Props) => {
   // List all the supported currencies
   const supportedCurrencies = [
     "USD",
@@ -31,7 +31,12 @@ const PaypalCountries = ({ activeCurrency, setActiveCurrency }: Props) => {
   ];
 
   return (
-    <div className={cn(styles.countries)}>
+    <div
+      className={cn(
+        styles.countries,
+        paypalScriptState !== "resolved" ? "disabled" : ""
+      )}
+    >
       <Swiper
         effect="coverflow"
         coverflowEffect={{
@@ -50,6 +55,13 @@ const PaypalCountries = ({ activeCurrency, setActiveCurrency }: Props) => {
         direction={"horizontal"}
         noSwipingClass="swiper-no-swiping"
       >
+        <div
+          slot="container-start"
+          className={cn(
+            styles.notDisabled,
+            paypalScriptState !== "resolved" ? styles.disabled : ""
+          )}
+        ></div>
         {supportedCurrencies.map((v) => {
           const country = cd.lookup.countries({ currencies: v })[0];
           return (

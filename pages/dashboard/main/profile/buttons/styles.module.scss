@@ -48,35 +48,3 @@
     }
   }
 }
-
-.actualMullahTitle {
-  position: relative;
-  &::before {
-    content: "";
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-image: url("/icons/mullah/inactive.svg");
-    background-repeat: no-repeat;
-    background-size: 50%;
-    background-position: center;
-    top: 0px;
-    left: -30px;
-  }
-}
-
-.brullahCoinsTitle {
-  position: relative;
-  &::before {
-    content: "";
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background-image: url("/icons/logo/active.svg");
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: center;
-    top: 0px;
-    left: -40px;
-  }
-}

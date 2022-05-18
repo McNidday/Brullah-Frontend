@@ -8,8 +8,10 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding-top: 15px;
+  transform: translateX(-105%);
 
   & [class~="swiper-slide"] {
     width: 40px;
@@ -32,5 +34,17 @@
         height: 110% !important;
       }
     }
+  }
+}
+
+.navBack {
+  position: absolute;
+  top: 45%;
+  left: 2px;
+  width: 30px;
+  height: 30px;
+
+  &:hover {
+    cursor: pointer;
   }
 }

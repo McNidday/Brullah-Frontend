@@ -7,6 +7,8 @@ const ENDPOINTS: { [key: string]: string } = {
   CreateUser: "auth",
   UserLogin: "auth",
   CreateTournament: "tournaments",
+  PaypalDepositOrder: "payments",
+  CapturePaypalDepositOrder: "payments",
 };
 
 const customFetch = (uri: string, options: any) => {

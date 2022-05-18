@@ -3,7 +3,11 @@ import { useState } from "react";
 import Icon from "../../../../../components/Icon/Icon";
 import styles from "./styles.module.scss";
 
-const DahboardButtonsDefault = () => {
+interface Props {
+  setOverflowTab: (tab: string | null) => void;
+}
+
+const DahboardButtonsDefault = ({ setOverflowTab }: Props) => {
   const [exchangeHover, setExchanheHover] = useState<boolean>(false);
   const [withdrawHover, setWithdrawHover] = useState<boolean>(false);
   const [depositHover, setDepositHover] = useState<boolean>(false);
@@ -49,6 +53,7 @@ const DahboardButtonsDefault = () => {
               <div
                 onMouseEnter={() => setDepositHover(true)}
                 onMouseLeave={() => setDepositHover(false)}
+                onClick={() => setOverflowTab("deposit")}
               >
                 <Icon
                   hover={depositHover}

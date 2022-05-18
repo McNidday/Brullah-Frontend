@@ -16,19 +16,14 @@ const USER = gql`
 
 const LoginMain = () => {
   const { loading, error, data } = useQuery(USER);
-  if (error) {
-    if (error.graphQLErrors.length <= 0) {
-      return (
-        <LoginError
-          arena_name={data.user.identity.arena_name}
-          errorNum={1}
-          error={error}
-        ></LoginError>
-      );
-    }
+
+  if (error && (error?.networkError as any).statusCode !== 401) {
+    return <LoginError errorNum={1} error={error!}></LoginError>;
   }
+
   if (loading) return <LoginLoading></LoginLoading>;
-  if (data.user.id)
+
+  if (data && data.user && data.user.id)
     return (
       <LoginError
         arena_name={data.user.identity.arena_name}
