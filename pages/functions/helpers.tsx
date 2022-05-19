@@ -114,3 +114,18 @@ export const inputSelection = (el: EventTarget & { [key: string]: any }) => {
     end: end,
   };
 };
+
+export const cleanAmount = (amount: string) => {
+  // Check if a dot exitsts and get rid of it
+  let money = amount.split(".");
+  let rightMoney = money[0];
+  // Remove all the comas
+  let comaClensed = rightMoney.split("").map((v) => {
+    if (v !== ",") return v;
+    return "";
+  });
+  if (Number.isNaN(parseInt(comaClensed.join("")))) {
+    return 0;
+  }
+  return parseInt(comaClensed.join(""));
+};

@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import cn from "classnames";
 import Image from "next/image";
+import { useState } from "react";
 import Icon from "../../../../components/Icon/Icon";
 import { decodeBlurHash } from "../../../../functions/helpers";
 import styles from "./styles.module.scss";
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const DashboardUserProfile = ({ user }: Props) => {
+  const [copyHover, setCopyHover] = useState(false);
   return (
     <div className={cn(styles.profile)}>
       <div>
@@ -34,11 +36,14 @@ const DashboardUserProfile = ({ user }: Props) => {
       </div>
       <div>
         <h3>{user.identity.arena_id}</h3>
-        <div>
+        <div
+          onMouseEnter={() => setCopyHover(true)}
+          onMouseLeave={() => setCopyHover(false)}
+        >
           <Icon
-            hover={false}
+            hover={copyHover}
             activeLink="/icons/copy/active.svg"
-            inactiveLink="/icons/copy/active.svg"
+            inactiveLink="/icons/copy/inactive.svg"
           ></Icon>
         </div>
       </div>

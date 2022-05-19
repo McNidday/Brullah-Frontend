@@ -1,7 +1,11 @@
 import cn from "classnames";
 import styles from "./styles.module.scss";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { formatNumber, inputSelection } from "../../../../../functions/helpers";
+import {
+  cleanAmount,
+  formatNumber,
+  inputSelection,
+} from "../../../../../functions/helpers";
 import getSymbolFromCurrency from "currency-symbol-map";
 
 interface Props {
@@ -108,14 +112,14 @@ const PaypalInput = ({ activeCurrency, setDepositAmount }: Props) => {
       right_side = formatNumber(right_side);
 
       // On blur make sure 2 numbers after decimal
-      if (blur && activeCurrency !== "JPY" && activeCurrency !== "AC") {
+      if (blur && activeCurrency !== "JPY") {
         right_side += "00";
       }
 
       // Limit decimal to only 2 digits
       right_side = right_side.substring(0, 2);
 
-      if (activeCurrency !== "JPY" && activeCurrency !== "AC") {
+      if (activeCurrency !== "JPY") {
         // join number by .
         input_val = left_side + "." + right_side;
       } else {
@@ -128,7 +132,7 @@ const PaypalInput = ({ activeCurrency, setDepositAmount }: Props) => {
       input_val = formatNumber(input_val);
 
       // final formatting
-      if (blur && activeCurrency !== "JPY" && activeCurrency !== "AC") {
+      if (blur && activeCurrency !== "JPY") {
         if (input_val) {
           input_val += ".00";
         }
@@ -142,28 +146,12 @@ const PaypalInput = ({ activeCurrency, setDepositAmount }: Props) => {
     setCurretPosition(caret_pos);
   };
 
-  const setAmount = () => {
-    // Check if a dot exitsts and get rid of it
-    let money = formattedAmount.split(".");
-    let rightMoney = money[0];
-    // Remove all the comas
-    let comaClensed = rightMoney.split("").map((v) => {
-      if (v !== ",") return v;
-      return "";
-    });
-    if (Number.isNaN(parseInt(comaClensed.join("")))) {
-      setDepositAmount(0);
-      return;
-    }
-    setDepositAmount(parseInt(comaClensed.join("")));
-  };
-
   useEffect(() => {
     inputRef?.current!.setSelectionRange(curretPos, curretPos);
   }, [curretPos]);
 
   useEffect(() => {
-    setAmount();
+    setDepositAmount(cleanAmount(formattedAmount));
   }, [formattedAmount]);
 
   return (

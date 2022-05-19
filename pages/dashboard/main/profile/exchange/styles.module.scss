@@ -16,8 +16,18 @@
     text-align: center;
   }
 
+  [class~="convertion-success"],
+  [class~="convertion-error"] {
+    width: 90%;
+    text-align: center;
+  }
+
   & [class~="convertion-success"] {
     color: $moneyColor;
+  }
+
+  & [class~="convertion-error"] {
+    color: red;
   }
 }
 
@@ -108,4 +118,9 @@
   &:hover {
     cursor: pointer;
   }
+}
+
+.inputDisabled {
+  pointer-events: none;
+  background-color: $backgroundLight;
 }

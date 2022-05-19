@@ -9,6 +9,7 @@ const ENDPOINTS: { [key: string]: string } = {
   CreateTournament: "tournaments",
   PaypalDepositOrder: "payments",
   CapturePaypalDepositOrder: "payments",
+  CurrencyExchange: "payments",
 };
 
 const customFetch = (uri: string, options: any) => {

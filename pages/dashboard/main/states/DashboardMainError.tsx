@@ -25,7 +25,7 @@ const DashboardMainError = ({ errorNum, error }: Props) => {
   useEffect(() => {
     if (countDown === 0) {
       setCountDown(undefined);
-      // Router.replace(redirect!);
+      Router.replace(redirect!);
     }
   }, [countDown]);
 

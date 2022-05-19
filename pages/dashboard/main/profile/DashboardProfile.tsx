@@ -29,6 +29,7 @@ const DashboardProfile = ({ user, refreshUser }: Props) => {
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
         <CurrencyExchange
+          refreshUser={refreshUser}
           overflowTab={overflowTab}
           setOverflowTab={(val: string | null) => {
             setOverflowTab(val);
