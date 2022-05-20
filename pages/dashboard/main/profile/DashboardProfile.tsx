@@ -6,6 +6,7 @@ import DashboardMoneyButtons, {
 } from "./buttons/DashboardMoneyButtons";
 import DashboardProfileError from "./error/DashboardProfileError";
 import CurrencyExchange from "./exchange/CurrencyExchange";
+import PaypalPayouts from "./payout/PaypalPayouts";
 import PaypalDeposit from "./paypal/PaypalDeposit";
 import DashboardUserProfile, {
   DashboardUserProfileFragment,
@@ -28,6 +29,13 @@ const DashboardProfile = ({ user, refreshUser }: Props) => {
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
+        <PaypalPayouts
+          refreshUser={refreshUser}
+          overflowTab={overflowTab}
+          setOverflowTab={(val: string | null) => {
+            setOverflowTab(val);
+          }}
+        ></PaypalPayouts>
         <CurrencyExchange
           refreshUser={refreshUser}
           overflowTab={overflowTab}

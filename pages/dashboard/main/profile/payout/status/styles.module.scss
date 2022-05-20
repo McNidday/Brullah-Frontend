@@ -1,0 +1,13 @@
+@use "../../../../../../styles/theme" as *;
+
+.warn {
+  color: yellow !important;
+}
+
+.good {
+  color: $moneyColor !important;
+}
+
+.error {
+  color: red !important;
+}

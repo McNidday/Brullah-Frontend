@@ -124,3 +124,7 @@
   pointer-events: none;
   background-color: $backgroundLight;
 }
+
+.labelDisabled {
+  background-color: $backgroundLight !important;
+}

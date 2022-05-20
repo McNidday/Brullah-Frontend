@@ -220,7 +220,12 @@ const CurrencyExchange = ({
       </h3>
       <div className={cn(styles.converterInputs)}>
         <div className="input-wrapper">
-          <label className={cn(fromFocused ? "writting" : "")}>
+          <label
+            className={cn(
+              fromFocused ? "writting" : "",
+              data?.convert || error ? styles.labelDisabled : ""
+            )}
+          >
             {currencyFrom === "USD" ? "Base (USD)" : "Base (BRC)"}
           </label>
           <input
@@ -250,7 +255,12 @@ const CurrencyExchange = ({
           ></Icon>
         </div>
         <div className="input-wrapper">
-          <label className={cn(toFocused ? "writting" : "")}>
+          <label
+            className={cn(
+              toFocused ? "writting" : "",
+              data?.convert || error ? styles.labelDisabled : ""
+            )}
+          >
             {currencyFrom === "USD" ? "Target (BRC)" : "Target (USD)"}
           </label>
           <input

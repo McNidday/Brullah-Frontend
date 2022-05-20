@@ -68,6 +68,7 @@ const DashboardButtonsDefault = ({ setOverflowTab, user }: Props) => {
               <div
                 onMouseEnter={() => setWithdrawHover(true)}
                 onMouseLeave={() => setWithdrawHover(false)}
+                onClick={() => setOverflowTab("payout")}
               >
                 <Icon
                   hover={withdrawHover}
