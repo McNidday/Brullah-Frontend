@@ -17,5 +17,5 @@
   grid-template-rows: 1fr minmax(0, 0.8fr);
   grid-template-areas: "profile graph" "transactions transactions";
   background-color: $backgroundLight;
-  border-radius: 20px;
+  border-radius: $borderRadius;
 }

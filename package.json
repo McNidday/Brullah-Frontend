@@ -38,6 +38,7 @@
     "react-country-flag": "^3.0.2",
     "react-dom": "18.1.0",
     "react-inlinesvg": "^3.0.0",
+    "recharts": "^2.1.10",
     "sass": "^1.51.0",
     "swiper": "^8.1.4",
     "uniqid": "^5.4.0"

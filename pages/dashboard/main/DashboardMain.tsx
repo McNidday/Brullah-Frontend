@@ -1,11 +1,13 @@
 import { gql, useQuery } from "@apollo/client";
 import cn from "classnames";
+import DashboardGraph from "./graph/DashboardGraph";
 import DashboardProfile, {
   DashboardProfileFragment,
 } from "./profile/DashboardProfile";
 import DashboardMainError from "./states/DashboardMainError";
 import DashboardMainLoading from "./states/DashboardMainLoading";
 import styles from "./styles.module.scss";
+import DashboardTransactions from "./transactions/DashboardTransactions";
 
 const USER = gql`
   query GetUser {
@@ -36,6 +38,8 @@ const DashboardMain = () => {
           user={data.user}
           refreshUser={() => refetch()}
         ></DashboardProfile>
+        <DashboardGraph></DashboardGraph>
+        <DashboardTransactions></DashboardTransactions>
       </div>
     </div>
   );

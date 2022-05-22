@@ -1,8 +1,8 @@
 @use "../../../../styles/theme" as *;
 
 .container {
-  grid-area: profile;
-  background-color: $backgroundLight;
+  position: relative;
+  grid-area: transactions;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,10 +12,11 @@
 .miniContainer {
   position: relative;
   background-color: $background;
-  width: 90%;
+  width: 95%;
   height: 90%;
   border-radius: $borderRadius;
   display: flex;
   flex-direction: row;
   overflow: hidden;
+  padding: 10px 0px 10px 0px;
 }

@@ -37,7 +37,7 @@ const LoginInputs = () => {
     if (error) setTimeout(reset, 5000);
     if (data?.login) {
       localStorage.setItem("token", data.login.token);
-      router.replace("/tournaments");
+      router.replace("/dashboard");
     }
   }, [error, data]);
 

@@ -5,7 +5,7 @@
   width: 90%;
   margin-top: 10px;
   height: 150px;
-  border-radius: 20px;
+  border-radius: $borderRadius;
   position: relative;
 
   & > div:nth-child(1) {

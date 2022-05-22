@@ -17,5 +17,5 @@
   grid-template-rows: 0.11fr minmax(0, 1fr);
   grid-template-areas: "search" "tournaments";
   background-color: $backgroundLight;
-  border-radius: 20px;
+  border-radius: $borderRadius;
 }

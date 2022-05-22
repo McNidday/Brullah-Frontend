@@ -16,7 +16,7 @@
   justify-content: center;
   align-items: center;
   background-color: $backgroundLight;
-  border-radius: 20px;
+  border-radius: $borderRadius;
 
   & > div {
     position: relative;

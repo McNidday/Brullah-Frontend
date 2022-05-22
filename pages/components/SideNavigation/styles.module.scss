@@ -14,7 +14,7 @@
   flex-direction: column;
   width: 90%;
   height: 95%;
-  border-radius: 20px;
+  border-radius: $borderRadius;
   background-color: $backgroundLight;
   padding-bottom: 5px;
   & > div:nth-child(1) {
