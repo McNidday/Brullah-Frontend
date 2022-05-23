@@ -12,6 +12,7 @@ const ENDPOINTS: { [key: string]: string } = {
   CurrencyExchange: "payments",
   PaypalPayoutOrder: "payments",
   PayoutOrderStatus: "payments",
+  GetGameTransactions: "payments",
 };
 
 const customFetch = (uri: string, options: any) => {

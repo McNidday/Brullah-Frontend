@@ -1,0 +1,30 @@
+@use "../../../../../styles/theme" as *;
+
+.title {
+  padding: 10px;
+  grid-area: transactiontitle;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $backgroundLight;
+  h2 {
+    color: $textColor;
+    margin: 5px 0px 5px 0px;
+  }
+}
+
+.links {
+  padding: 10px;
+  grid-area: transactionlinks;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  a {
+    color: $textColor;
+    &:hover {
+      color: $activeColor;
+    }
+    * {
+      margin: 5px 0px 5px 0px;
+    }
+  }
+}

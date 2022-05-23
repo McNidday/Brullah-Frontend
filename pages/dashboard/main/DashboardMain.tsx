@@ -38,7 +38,7 @@ const DashboardMain = () => {
           user={data.user}
           refreshUser={() => refetch()}
         ></DashboardProfile>
-        <DashboardGraph></DashboardGraph>
+        <DashboardGraph user={data.user}></DashboardGraph>
         <DashboardTransactions></DashboardTransactions>
       </div>
     </div>
