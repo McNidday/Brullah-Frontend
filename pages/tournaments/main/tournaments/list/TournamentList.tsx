@@ -3,6 +3,7 @@ import cn from "classnames";
 import Image from "next/image";
 import Button from "../../../../components/Button/Button";
 import { gql } from "@apollo/client";
+import { decodeBlurHash } from "../../../../functions/helpers";
 
 interface Props {
   id: string;
@@ -11,6 +12,7 @@ interface Props {
   creator: { identity: { arena_name: string } };
   sponsor: { sponsored: boolean };
   contribution: { contributed: boolean };
+  thumbnail: { image: string; blurhash: string };
 }
 
 const TournamentList = (props: Props) => {
@@ -32,12 +34,31 @@ const TournamentList = (props: Props) => {
           <Image src="/icons/bit.svg" layout="fill"></Image>
         </div>
         <div>
-          <span>{props.analytics.joined_users} joined</span>
-          <p>{props.analytics.joined_users}</p>
+          <span>
+            {props?.analytics?.joined_users
+              ? props?.analytics?.joined_users
+              : 0}{" "}
+            joined
+          </span>
+          <p>
+            {props?.analytics?.joined_users
+              ? props?.analytics?.joined_users
+              : 0}
+          </p>
         </div>
       </div>
       <div>
         <Image src="/icons/pig.jpg" layout="fill"></Image>
+        <Image
+          src={props.information.thumbnail.image}
+          layout="fill"
+          placeholder="blur"
+          blurDataURL={decodeBlurHash(
+            props.information.thumbnail.blurhash,
+            200,
+            100
+          )}
+        ></Image>
       </div>
       <div>
         <h3>{props.information.name}</h3>
@@ -71,6 +92,10 @@ export const TournamentListFragment = gql`
     information {
       name
       description
+      thumbnail {
+        image
+        blurhash
+      }
     }
   }
 `;

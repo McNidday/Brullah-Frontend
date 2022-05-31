@@ -22,37 +22,22 @@ interface Props {
   handleModalClose: () => void;
 }
 
-const DEPOSIT_TRANSACTIONS = gql`
-  query PaypalDepositTransactions($page: Int!, $limit: Int!) {
-    paypalDepositTransactions(page: $page, limit: $limit) {
+const PAYPAL_TRANSACTIONS = gql`
+  query PaypalPayoutTransactions($page: Int!, $limit: Int!) {
+    paypalPayoutTransactions(page: $page, limit: $limit) {
       docs {
-        payer {
+        sender_item_id {
           identity {
             arena_name
           }
         }
         id
-        gross_amount {
-          value
-          currency
-        }
-        deposit_final_amount {
-          value
-          currency
-        }
-        gateway_fee {
-          value
-          currency
-        }
-        service_fee {
-          value
-          currency
-        }
-        exchange_rate {
-          target_currency
-          value
-        }
-        status
+        service_fee
+        original_amount
+        time_processed
+        payout_item_amount
+        payout_item_fee
+        transaction_status
       }
       totalDocs
       limit
@@ -60,35 +45,25 @@ const DEPOSIT_TRANSACTIONS = gql`
   }
 `;
 
-const DepositTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
+const PayoutTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
   const [transactions, setTransactions] = useState<
     Array<{
-      payer: {
-        identity: { arena_name: string };
+      sender_item_id: {
+        identity: {
+          arena_name: string;
+        };
       };
-      gross_amount: {
-        value: number;
-        currency: dinero.Currency;
-      };
-      deposit_final_amount: { value: number; currency: dinero.Currency };
-      gateway_fee: {
-        value: number;
-        currency: dinero.Currency;
-      };
-      service_fee: {
-        value: number;
-        currency: dinero.Currency;
-      };
-      paypal_fee: {
-        value: number;
-        currency: dinero.Currency;
-      };
-      status: string;
       id: string;
+      service_fee: number;
+      original_amount: number;
+      time_processed: number;
+      payout_item_amount: number;
+      payout_item_fee: number;
+      transaction_status: string;
     }>
   >([]);
   const { data, error, refetch, loading, networkStatus } = useQuery(
-    DEPOSIT_TRANSACTIONS,
+    PAYPAL_TRANSACTIONS,
     {
       variables: {
         limit: 10,
@@ -104,8 +79,8 @@ const DepositTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
   };
 
   useEffect(() => {
-    if (data?.paypalDepositTransactions) {
-      setTransactions(data?.paypalDepositTransactions.docs);
+    if (data?.paypalPayoutTransactions) {
+      setTransactions(data?.paypalPayoutTransactions.docs);
     }
   }, [data]);
 
@@ -120,7 +95,7 @@ const DepositTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
       >
         <Box className={cn(styles.parentModal)}>
           <div className={cn(styles.headingContainer)}>
-            <h2 className={cn(styles.modalHeading)}>Deposit Transactions</h2>
+            <h2 className={cn(styles.modalHeading)}>Payout Transactions</h2>
             {loading ||
             networkStatus === NetworkStatus.refetch ||
             networkStatus === NetworkStatus.setVariables ? (
@@ -154,9 +129,9 @@ const DepositTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
                 <TableHead>
                   <TableRow>
                     <TableCell>Transaction Id</TableCell>
-                    <TableCell align="center">Depositor</TableCell>
+                    <TableCell align="center">Reciever</TableCell>
                     <TableCell align="center">Amount</TableCell>
-                    <TableCell align="center">Deposited</TableCell>
+                    <TableCell align="center">Recieved</TableCell>
                     <TableCell align="center">Paypal Fee</TableCell>
                     <TableCell align="center">Service Fee</TableCell>
                     <TableCell align="center">Status</TableCell>
@@ -169,38 +144,31 @@ const DepositTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
                         {transaction.id}
                       </TableCell>
                       <TableCell align="center">
-                        {transaction.payer.identity.arena_name}
+                        {transaction.sender_item_id.identity.arena_name}
                       </TableCell>
                       <TableCell align="center">
                         {dinero({
-                          currency: transaction.gross_amount.currency,
-                          amount: transaction.gross_amount.value,
+                          amount: transaction.original_amount,
                         }).toFormat()}
-                      </TableCell>
-                      <TableCell align="center">
-                        {transaction?.deposit_final_amount?.value
-                          ? dinero({
-                              currency:
-                                transaction.deposit_final_amount.currency,
-                              amount: transaction.deposit_final_amount.value,
-                            }).toFormat()
-                          : "_"}
-                      </TableCell>
-                      <TableCell align="center">
-                        {transaction?.gateway_fee?.value
-                          ? dinero({
-                              currency: transaction?.gateway_fee?.currency,
-                              amount: transaction?.gateway_fee?.value,
-                            }).toFormat()
-                          : "_"}
                       </TableCell>
                       <TableCell align="center">
                         {dinero({
-                          amount: transaction.service_fee.value,
-                          currency: transaction.service_fee.currency,
+                          amount: transaction.payout_item_amount,
                         }).toFormat()}
                       </TableCell>
-                      <TableCell align="center">{transaction.status}</TableCell>
+                      <TableCell align="center">
+                        {dinero({
+                          amount: transaction.payout_item_fee,
+                        }).toFormat()}
+                      </TableCell>
+                      <TableCell align="center">
+                        {dinero({
+                          amount: transaction.service_fee,
+                        }).toFormat()}
+                      </TableCell>
+                      <TableCell align="center">
+                        {transaction.transaction_status}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -208,19 +176,19 @@ const DepositTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
               <TablePagination
                 component="div"
                 count={
-                  data?.paypalDepositTransactions?.totalDocs
-                    ? data?.paypalDepositTransactions.totalDocs
+                  data?.paypalPayoutTransactions?.totalDocs
+                    ? data?.paypalPayoutTransactions.totalDocs
                     : 0
                 }
                 rowsPerPage={
-                  data?.paypalDepositTransactions?.limit
-                    ? data?.paypalDepositTransactions.limit
+                  data?.paypalPayoutTransactions?.limit
+                    ? data?.paypalPayoutTransactions.limit
                     : 0
                 }
                 page={page}
                 rowsPerPageOptions={[
-                  data?.paypalDepositTransactions?.limit
-                    ? data?.paypalDepositTransactions.limit
+                  data?.paypalPayoutTransactions?.limit
+                    ? data?.paypalPayoutTransactions.limit
                     : 0,
                 ]}
                 onPageChange={handleChangePage}
@@ -233,4 +201,4 @@ const DepositTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
   );
 };
 
-export default DepositTransactionsModal;
+export default PayoutTransactionsModal;

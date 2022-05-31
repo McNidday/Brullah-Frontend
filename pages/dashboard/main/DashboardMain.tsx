@@ -24,6 +24,7 @@ const USER = gql`
 const DashboardMain = () => {
   const { loading, error, data, refetch } = useQuery(USER);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalName, setModalName] = useState("depositTransactions");
   const handleModalClose = () => setModalOpen(false);
   const handleModalOpen = () => setModalOpen(true);
 
@@ -46,10 +47,12 @@ const DashboardMain = () => {
         <DashboardGraph user={data.user}></DashboardGraph>
         <DashboardTransactions
           handleModalOpen={handleModalOpen}
+          setModalName={(val: string) => setModalName(val)}
         ></DashboardTransactions>
         <DashboardModal
           modalOpen={modalOpen}
           handleModalClose={handleModalClose}
+          modalName={modalName}
         ></DashboardModal>
       </div>
     </div>

@@ -4,9 +4,13 @@ import styles from "./styles.module.scss";
 
 interface Props {
   handleModalOpen: () => void;
+  setModalName: (name: string) => void;
 }
 
-const DashboardTransactionLinks = ({ handleModalOpen }: Props) => {
+const DashboardTransactionLinks = ({
+  handleModalOpen,
+  setModalName,
+}: Props) => {
   return (
     <>
       <div className={cn(styles.title)}>
@@ -17,6 +21,7 @@ const DashboardTransactionLinks = ({ handleModalOpen }: Props) => {
           <a
             onClick={(e) => {
               e.preventDefault();
+              setModalName("depositTransactions");
               handleModalOpen();
             }}
           >
@@ -24,12 +29,24 @@ const DashboardTransactionLinks = ({ handleModalOpen }: Props) => {
           </a>
         </Link>
         <Link href={""}>
-          <a>
+          <a
+            onClick={(e) => {
+              e.preventDefault();
+              setModalName("payoutTransactions");
+              handleModalOpen();
+            }}
+          >
             <h4>Payouts</h4>
           </a>
         </Link>
         <Link href={""}>
-          <a>
+          <a
+            onClick={(e) => {
+              e.preventDefault();
+              setModalName("tournamentTransactions");
+              handleModalOpen();
+            }}
+          >
             <h4>Tournaments</h4>
           </a>
         </Link>

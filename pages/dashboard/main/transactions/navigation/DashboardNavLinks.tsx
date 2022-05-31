@@ -9,17 +9,17 @@ const DashboardNavLinks = () => {
         <h2>Navigation</h2>
       </div>
       <div className={cn(styles.links)}>
-        <Link href={""} passHref>
+        <Link href={"/mytournaments"} passHref>
           <a>
             <h4>My tournaments</h4>
           </a>
         </Link>
-        <Link href={""}>
+        <Link href={"/tournaments"}>
           <a>
-            <h4>Tournaents</h4>
+            <h4>Tournaments</h4>
           </a>
         </Link>
-        <Link href={""}>
+        <Link href={"/play"}>
           <a>
             <h4>Play</h4>
           </a>
