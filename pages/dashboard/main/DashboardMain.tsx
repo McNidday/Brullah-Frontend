@@ -1,6 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
 import cn from "classnames";
+import { useState } from "react";
 import DashboardGraph from "./graph/DashboardGraph";
+import DashboardModal from "./modal/DashboardModal";
 import DashboardProfile, {
   DashboardProfileFragment,
 } from "./profile/DashboardProfile";
@@ -21,6 +23,9 @@ const USER = gql`
 
 const DashboardMain = () => {
   const { loading, error, data, refetch } = useQuery(USER);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const handleModalClose = () => setModalOpen(false);
+  const handleModalOpen = () => setModalOpen(true);
 
   if (error && (error?.networkError as any).statusCode !== 401) {
     <DashboardMainError errorNum={1} error={error}></DashboardMainError>;
@@ -39,7 +44,13 @@ const DashboardMain = () => {
           refreshUser={() => refetch()}
         ></DashboardProfile>
         <DashboardGraph user={data.user}></DashboardGraph>
-        <DashboardTransactions></DashboardTransactions>
+        <DashboardTransactions
+          handleModalOpen={handleModalOpen}
+        ></DashboardTransactions>
+        <DashboardModal
+          modalOpen={modalOpen}
+          handleModalClose={handleModalClose}
+        ></DashboardModal>
       </div>
     </div>
   );

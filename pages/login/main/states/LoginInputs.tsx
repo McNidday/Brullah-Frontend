@@ -106,7 +106,11 @@ const LoginInputs = () => {
             ></input>
           </div>
           <div className={cn(styles.buttons)} data-swiper-parallax="-100">
-            <Button text="Login" disabled={loading} onClick={login}></Button>
+            <Button
+              text="Login"
+              disabled={loading || data?.login ? true : false}
+              onClick={login}
+            ></Button>
           </div>
         </div>
       </div>

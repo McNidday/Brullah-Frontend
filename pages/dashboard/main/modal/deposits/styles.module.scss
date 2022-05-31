@@ -1,0 +1,58 @@
+@use "../../../../../styles/theme" as *;
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.parentModal {
+  background-color: white;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 0.1fr minmax(0, 1fr);
+  grid-template-areas: "heading" "table";
+  margin: 0 auto;
+  height: 80%;
+  width: 80%;
+  border-radius: $borderRadius;
+  overflow: hidden;
+}
+
+.table {
+  grid-area: table;
+  position: relative;
+
+  [class~="MuiTable-root"] {
+    * {
+      @include themeFont;
+    }
+  }
+
+  [class~="MuiTableBody-root"] > [class~="MuiTableRow-root"]:nth-child(odd) * {
+    background-color: #f5f5f5;
+  }
+
+  [class~="MuiTableBody-root"] > [class~="MuiTableRow-root"]:nth-child(even) * {
+    background-color: white;
+  }
+
+  [class~="MuiTableRow-head"] * {
+    background-color: black;
+  }
+
+  [class~="MuiTableRow-head"] {
+    border-radius: 0px;
+  }
+
+  [class~="MuiTableCell-head"] {
+    color: white;
+    font-weight: bold;
+  }
+}
+
+.modalHeading {
+  grid-area: heading;
+  padding: 10px;
+  margin: 5px 0px 0px 0px;
+}

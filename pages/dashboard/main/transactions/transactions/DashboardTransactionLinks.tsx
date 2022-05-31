@@ -2,7 +2,11 @@ import Link from "next/link";
 import cn from "classnames";
 import styles from "./styles.module.scss";
 
-const DashboardTransactionLinks = () => {
+interface Props {
+  handleModalOpen: () => void;
+}
+
+const DashboardTransactionLinks = ({ handleModalOpen }: Props) => {
   return (
     <>
       <div className={cn(styles.title)}>
@@ -10,7 +14,12 @@ const DashboardTransactionLinks = () => {
       </div>
       <div className={cn(styles.links)}>
         <Link href={""} passHref>
-          <a>
+          <a
+            onClick={(e) => {
+              e.preventDefault();
+              handleModalOpen();
+            }}
+          >
             <h4>Deposits</h4>
           </a>
         </Link>
