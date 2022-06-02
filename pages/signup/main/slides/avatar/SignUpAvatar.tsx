@@ -82,17 +82,20 @@ const SignUpAvatar = ({ updateProfile, error }: Props) => {
         height: 150,
       },
     });
-    crop.current.bind({
-      url: typeof avatarUrl === "string" ? avatarUrl : "",
-      orientation: 1,
-    });
-    // Update the file upload
     crop.current
-      .result({
-        type: "blob",
+      .bind({
+        url: typeof avatarUrl === "string" ? avatarUrl : "",
+        orientation: 1,
       })
-      .then((imageBlob) => {
-        updateProfile("avatar", blobToFile(imageBlob));
+      .then(() => {
+        // Update the file upload
+        crop
+          .current!.result({
+            type: "blob",
+          })
+          .then((imageBlob) => {
+            updateProfile("avatar", blobToFile(imageBlob));
+          });
       });
     return () => {
       crop?.current!.destroy();

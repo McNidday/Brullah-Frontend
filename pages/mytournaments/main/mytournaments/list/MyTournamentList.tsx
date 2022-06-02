@@ -1,8 +1,8 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
-import Button from "../../../../components/Button/Button";
 import { gql } from "@apollo/client";
+import Button from "../../../../components/Button/Button";
 import { decodeBlurHash } from "../../../../functions/helpers";
 
 interface Props {
@@ -16,9 +16,10 @@ interface Props {
   creator: { identity: { arena_name: string } };
   sponsor: { sponsored: boolean };
   contribution: { contributed: boolean };
+  setEditId: (id: string) => void;
 }
 
-const TournamentList = (props: Props) => {
+const MyTournamentList = (props: Props) => {
   return (
     <li className={cn(styles.container)}>
       <div>
@@ -51,7 +52,6 @@ const TournamentList = (props: Props) => {
         </div>
       </div>
       <div>
-        <Image src="/icons/pig.jpg" layout="fill"></Image>
         <Image
           src={props.information.thumbnail.image}
           layout="fill"
@@ -70,14 +70,18 @@ const TournamentList = (props: Props) => {
         <p>{props.information.description}</p>
       </div>
       <div>
-        <Button text="join" disabled={false}></Button>
+        <Button
+          text="edit"
+          disabled={false}
+          onClick={() => props.setEditId(props.id)}
+        ></Button>
       </div>
     </li>
   );
 };
 
-export const TournamentListFragment = gql`
-  fragment TournamentList_Tournament on Tournament {
+export const MyTournamentListFragment = gql`
+  fragment MyTournamentList_Tournament on Tournament {
     creator {
       identity {
         arena_name
@@ -103,4 +107,4 @@ export const TournamentListFragment = gql`
   }
 `;
 
-export default TournamentList;
+export default MyTournamentList;

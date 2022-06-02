@@ -14,12 +14,12 @@ const DashboardNavLinks = () => {
             <h4>My tournaments</h4>
           </a>
         </Link>
-        <Link href={"/tournaments"}>
+        <Link href={"/tournaments"} passHref>
           <a>
             <h4>Tournaments</h4>
           </a>
         </Link>
-        <Link href={"/play"}>
+        <Link href={"/play"} passHref>
           <a>
             <h4>Play</h4>
           </a>

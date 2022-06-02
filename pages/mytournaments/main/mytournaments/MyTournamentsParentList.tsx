@@ -1,11 +1,14 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import TournamentList, { TournamentListFragment } from "./list/TournamentList";
 import { gql } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
+import MyTournamentList, {
+  MyTournamentListFragment,
+} from "./list/MyTournamentList";
 
 interface Props {
+  setEditId: (id: string) => void;
   tournaments: Array<{
     id: string;
     information: {
@@ -20,7 +23,7 @@ interface Props {
   }>;
 }
 
-const TournamentsParentList = ({ tournaments }: Props) => {
+const MyTournamentsParentList = ({ tournaments, setEditId }: Props) => {
   if (tournaments.length === 0) {
     return (
       <div className={cn(styles.noTournaments, styles.container)}>
@@ -29,7 +32,7 @@ const TournamentsParentList = ({ tournaments }: Props) => {
         </div>
         <div>
           <h3>
-            No tournaments currently.{" "}
+            You have no tornaments currenctly.{" "}
             <Link href="/createtournament">Create</Link> one to play with
             friends or jump right into the <Link href={""}>game</Link> .
           </h3>
@@ -41,21 +44,27 @@ const TournamentsParentList = ({ tournaments }: Props) => {
     <div className={cn(styles.container)}>
       <ul>
         {tournaments.map((t) => {
-          return <TournamentList key={t.id} {...t}></TournamentList>;
+          return (
+            <MyTournamentList
+              key={t.id}
+              {...t}
+              setEditId={setEditId}
+            ></MyTournamentList>
+          );
         })}
       </ul>
     </div>
   );
 };
 
-export const TournamentsParentListFragment = gql`
-  fragment TournamentsParentList_PaginatedTournament on PaginatedTournamentType {
+export const MyTournamentsParentListFragment = gql`
+  fragment MyTournamentsParentList_PaginatedTournament on PaginatedTournament {
     docs {
       id
-      ...TournamentList_Tournament
+      ...MyTournamentList_Tournament
     }
   }
-  ${TournamentListFragment}
+  ${MyTournamentListFragment}
 `;
 
-export default TournamentsParentList;
+export default MyTournamentsParentList;

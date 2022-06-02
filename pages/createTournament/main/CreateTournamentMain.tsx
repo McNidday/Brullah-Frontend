@@ -38,13 +38,12 @@ const CreateTournamentMain = () => {
   }, [countDown]);
 
   useEffect(() => {
-    console.log(error, data);
     if (error) {
       setRedirect("/login");
       setCountDown(5);
       return;
     }
-    if (!data?.signup?.security?.accoutn_verified) {
+    if (data?.user && !data?.user?.security?.account_verified) {
       setRedirect("/dashboard");
       setCountDown(5);
       return;
@@ -85,7 +84,7 @@ const CreateTournamentMain = () => {
     );
   }
 
-  if (!data?.signup?.security?.accoutn_verified) {
+  if (!data?.user?.security?.account_verified) {
     return (
       <div className={cn(styles.container)}>
         <div className={cn(styles.miniContainer)}>

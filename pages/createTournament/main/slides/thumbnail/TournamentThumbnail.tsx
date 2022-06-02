@@ -28,6 +28,19 @@ const TournamentThumbnail = ({
   const crop = useRef<Croppie | null>(null);
   const cropRef = useRef(null);
 
+  const cropThumbnail = async () => {
+    console.log(crop.current);
+    if (crop.current) {
+      console.log("Bitch picture blurred");
+      const imageBlob = await crop.current.result({
+        type: "blob",
+      });
+      setThumbnail(blobToFile(imageBlob));
+    } else {
+      setThumbnail(null);
+    }
+  };
+
   const handleThumbnail = (
     e: ChangeEvent & { target: Element & { [key: string]: any } }
   ) => {
@@ -85,17 +98,20 @@ const TournamentThumbnail = ({
         height: 150,
       },
     });
-    crop.current.bind({
-      url: typeof avatarUrl === "string" ? avatarUrl : "",
-      orientation: 1,
-    });
-    // Update the file upload
     crop.current
-      .result({
-        type: "blob",
+      .bind({
+        url: typeof avatarUrl === "string" ? avatarUrl : "",
+        orientation: 1,
       })
-      .then((imageBlob) => {
-        setThumbnail(blobToFile(imageBlob));
+      .then(() => {
+        // Update the file upload
+        crop
+          .current!.result({
+            type: "blob",
+          })
+          .then((imageBlob) => {
+            setThumbnail(blobToFile(imageBlob));
+          });
       });
     return () => {
       if (crop.current) {
@@ -126,19 +142,7 @@ const TournamentThumbnail = ({
           data-swiper-parallax="-500"
         >
           <label className={cn(styles.imageButton)} htmlFor="avatar"></label>
-          <div
-            ref={cropRef}
-            onBlur={async () => {
-              if (crop.current) {
-                const imageBlob = await crop.current.result({
-                  type: "blob",
-                });
-                setThumbnail(blobToFile(imageBlob));
-              } else {
-                setThumbnail(null);
-              }
-            }}
-          >
+          <div ref={cropRef} onBlur={cropThumbnail}>
             {!avatarUrl && !uploadError ? (
               <div className={cn(styles.imagePlaceholder)}>
                 <p>Click the picture icon to upload your thumbnail.</p>
