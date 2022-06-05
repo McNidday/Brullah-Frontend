@@ -1,11 +1,13 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import TournamentList, { TournamentListFragment } from "./list/TournamentList";
-import { gql } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
 
 interface Props {
+  setJoinTournamentId: (id: string) => void;
+  handleModalOpen: () => void;
   tournaments: Array<{
     id: string;
     information: {
@@ -20,7 +22,11 @@ interface Props {
   }>;
 }
 
-const TournamentsParentList = ({ tournaments }: Props) => {
+const TournamentsParentList = ({
+  tournaments,
+  setJoinTournamentId,
+  handleModalOpen,
+}: Props) => {
   if (tournaments.length === 0) {
     return (
       <div className={cn(styles.noTournaments, styles.container)}>
@@ -41,7 +47,14 @@ const TournamentsParentList = ({ tournaments }: Props) => {
     <div className={cn(styles.container)}>
       <ul>
         {tournaments.map((t) => {
-          return <TournamentList key={t.id} {...t}></TournamentList>;
+          return (
+            <TournamentList
+              key={t.id}
+              {...t}
+              handleModalOpen={handleModalOpen}
+              setJoinTournamentId={setJoinTournamentId}
+            ></TournamentList>
+          );
         })}
       </ul>
     </div>

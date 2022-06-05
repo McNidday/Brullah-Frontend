@@ -6,6 +6,8 @@ import { gql } from "@apollo/client";
 import { decodeBlurHash } from "../../../../functions/helpers";
 
 interface Props {
+  setJoinTournamentId: (id: string) => void;
+  handleModalOpen: () => void;
   id: string;
   information: {
     name: string;
@@ -70,7 +72,14 @@ const TournamentList = (props: Props) => {
         <p>{props.information.description}</p>
       </div>
       <div>
-        <Button text="join" disabled={false}></Button>
+        <Button
+          text="join"
+          disabled={false}
+          onClick={() => {
+            props.setJoinTournamentId(props.id);
+            props.handleModalOpen();
+          }}
+        ></Button>
       </div>
     </li>
   );

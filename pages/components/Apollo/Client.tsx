@@ -17,6 +17,8 @@ const ENDPOINTS: { [key: string]: string } = {
   PaypalPayoutTransactions: "payments",
   TournamentTransactions: "payments",
   GetMyTournaments: "tournaments",
+  GetTournament: "public/tournaments",
+  AddToMatch: "matches",
 };
 
 const customFetch = (uri: string, options: any) => {

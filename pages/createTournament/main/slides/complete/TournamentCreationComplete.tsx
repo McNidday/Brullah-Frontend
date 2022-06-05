@@ -38,7 +38,7 @@ const TournamentCreationComplete = ({ data }: { data: undefined | any }) => {
         <h2>
           Greate, tournament "{data.createTournament.information.name}" has been
           created, you will be directed to the tournament dashboard in $
-          {countDown}.
+          {countDown || 0}.
         </h2>
       ) : (
         <h2>You are a few steps away from making a brullah tournament.</h2>

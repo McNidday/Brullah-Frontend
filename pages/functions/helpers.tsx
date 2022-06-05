@@ -129,3 +129,22 @@ export const cleanAmount = (amount: string) => {
   }
   return parseInt(comaClensed.join(""));
 };
+
+export const getNumOfArenas = (numOfUsers: number) => {
+  const numberOfarenas = Math.ceil(numOfUsers / 16);
+  return numberOfarenas;
+};
+
+export const getAreanaFromConfig = (
+  arenaNumber: number,
+  config: [{ arenaNumber: number }]
+) => {
+  let arena: any;
+
+  config.forEach((a) => {
+    if (a.arenaNumber === arenaNumber) {
+      arena = a;
+    }
+  });
+  return arena;
+};

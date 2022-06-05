@@ -11,7 +11,7 @@ import { gql, useMutation } from "@apollo/client";
 import Logo from "../../../components/Logo/Logo";
 import { encodeImageToBlurHash } from "../../../functions/helpers";
 import TournamentName from "./name/TournamentName";
-import TournamentDescription from "./deccription/TournamentDescription";
+import TournamentDescription from "./description/TournamentDescription";
 import TournamentContribution from "./contributed/TournamentContribution";
 import TournamentSponsored from "./sponsored/TournamentSponsored";
 import TournamentAccess from "./access/TournamentAccess";

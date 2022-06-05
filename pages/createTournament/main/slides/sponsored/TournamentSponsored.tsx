@@ -31,7 +31,7 @@ const TournamentSponsored = ({
   const handleBrcChange = (
     e: FormEvent & { target: EventTarget & { [key: string]: any } }
   ) => {
-    setSponsorAmount(parseInt(e.target.value));
+    setSponsorAmount(parseInt(e.target.value) * 100);
   };
 
   const handleTickChange = (

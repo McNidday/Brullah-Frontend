@@ -80,7 +80,7 @@ const TournamentContribution = ({
                 id="1"
                 value="1"
                 required
-                checked={`${contribution}` === "1"}
+                checked={`${contribution}` === "100"}
                 onChange={handleBrcChange}
               ></input>
               <label htmlFor="1" data-brc="1 BRC"></label>
@@ -89,9 +89,9 @@ const TournamentContribution = ({
                 type="radio"
                 name="brc"
                 id="2"
-                value="2"
+                value="200"
                 required
-                checked={`${contribution}` === "2"}
+                checked={`${contribution}` === "200"}
                 onChange={handleBrcChange}
               ></input>
               <label htmlFor="2" data-brc="2 BRC"></label>
@@ -100,9 +100,9 @@ const TournamentContribution = ({
                 type="radio"
                 name="brc"
                 id="3"
-                value="3"
+                value="300"
                 required
-                checked={`${contribution}` === "3"}
+                checked={`${contribution}` === "300"}
                 onChange={handleBrcChange}
               ></input>
               <label htmlFor="3" data-brc="3 BRC"></label>
@@ -111,9 +111,9 @@ const TournamentContribution = ({
                 type="radio"
                 name="brc"
                 id="4"
-                value="4"
+                value="400"
                 required
-                checked={`${contribution}` === "4"}
+                checked={`${contribution}` === "400"}
                 onChange={handleBrcChange}
               ></input>
               <label htmlFor="4" data-brc="4 BRC"></label>
@@ -122,9 +122,9 @@ const TournamentContribution = ({
                 type="radio"
                 name="brc"
                 id="5"
-                value="5"
+                value="500"
                 required
-                checked={`${contribution}` === "5"}
+                checked={`${contribution}` === "500"}
                 onChange={handleBrcChange}
               ></input>
               <label htmlFor="5" data-brc="5 BRC"></label>

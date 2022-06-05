@@ -33,7 +33,7 @@ const MyTournamentsMain = () => {
       <div className={cn(styles.miniContainer)}>
         {!editId ? <MyTournamentSearch></MyTournamentSearch> : ""}
         {editId ? (
-          <EditMyTournament></EditMyTournament>
+          <EditMyTournament editId={editId}></EditMyTournament>
         ) : (
           <MyTournamentsParentList
             setEditId={(val: string) => setEditId(val)}

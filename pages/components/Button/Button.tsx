@@ -5,6 +5,7 @@ interface Props {
   text: string;
   disabled: boolean;
   onClick?: Function | null;
+  forceActive?: boolean;
 }
 
 const Button = (props: Props) => {
@@ -15,6 +16,7 @@ const Button = (props: Props) => {
       }}
       className={classNames(
         styles.button,
+        props.forceActive ? styles.forceActive : "",
         props.disabled ? styles.disabled : ""
       )}
     >

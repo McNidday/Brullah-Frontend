@@ -1,6 +1,5 @@
 import cn from "classnames";
 import styles from "./styles.module.scss";
-import { useState } from "react";
 import DepositTransactionsModal from "./deposits/DepositTransactionsModal";
 import PayoutTransactionsModal from "./payouts/PayoutTransactionsModal";
 import TournamentTransactionsModal from "./tournaments/TournamentTransactionsModal";
