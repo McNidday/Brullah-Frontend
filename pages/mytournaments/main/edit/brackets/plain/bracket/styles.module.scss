@@ -186,12 +186,6 @@ $breakpoint-lg: 72em;
   }
 }
 
-.tournamentBracketMatchTwoOveride {
-  &::before {
-    bottom: 51.3%;
-  }
-}
-
 .tournamentBracketInformation {
   display: flex;
   flex-direction: column;
@@ -236,7 +230,8 @@ $breakpoint-lg: 72em;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .tournamentBracketDataProfilePicture {
@@ -246,6 +241,7 @@ $breakpoint-lg: 72em;
   border: 1px solid white;
   border-radius: 50%;
   overflow: hidden;
+  margin: 5px;
 }
 
 .tournamentBracketDataName {
@@ -262,4 +258,22 @@ $breakpoint-lg: 72em;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.editIcon {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+
+  [class*="_tournamentBracketRound_"]:nth-child(1) & {
+    position: relative;
+    width: 15px;
+    height: 15px;
+    opacity: 1;
+    visibility: visible;
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }

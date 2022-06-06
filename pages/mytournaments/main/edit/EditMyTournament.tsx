@@ -4,6 +4,7 @@ import EditTournamentArenaBrackets from "./brackets/arena/EditTournamentArenaBra
 import { gql, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import {
+  createMatchConfig,
   getAreanaFromConfig,
   getNumOfArenas,
 } from "../../../functions/helpers";
@@ -77,8 +78,7 @@ const EditMyTournament = ({ editId }: Props) => {
 
   useEffect(() => {
     if (data?.tournament) {
-      // setNumOfArenas(getNumOfArenas(data.tournament.analytics.joined_users));
-      setNumOfArenas(2);
+      setNumOfArenas(getNumOfArenas(data.tournament.analytics.joined_users));
     }
   }, data);
 
@@ -90,13 +90,12 @@ const EditMyTournament = ({ editId }: Props) => {
           i + 1,
           data.tournament.match.configuration.configure
         );
-        const users = data?.tournament?.match?.joined
-          ? data.tournament.match.joined.slice(i * 16, (i + 1) * 16)
-          : [];
         theArenas.push(
           <EditTournamentArenaBrackets
-            users={users}
-            config={arenaConfig}
+            config={
+              arenaConfig ||
+              createMatchConfig(data.tournament.analytics.joined_users)[0]
+            }
           ></EditTournamentArenaBrackets>
         );
       }

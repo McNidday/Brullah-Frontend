@@ -130,6 +130,48 @@ export const cleanAmount = (amount: string) => {
   return parseInt(comaClensed.join(""));
 };
 
+export const getNumOfRounds = (numOfUsers: number) => {
+  switch (numOfUsers) {
+    // The ones
+    case 2:
+      return 1;
+    // The twos
+    case 3:
+      return 2;
+    case 4:
+      return 2;
+    // The threes
+    case 5:
+      return 3;
+    case 6:
+      return 3;
+    case 7:
+      return 3;
+    case 8:
+      return 3;
+    // The fours
+    case 9:
+      return 4;
+    case 10:
+      return 4;
+    case 11:
+      return 4;
+    case 12:
+      return 4;
+    // The fives
+    case 13:
+      return 4;
+    case 14:
+      return 4;
+    case 15:
+      return 4;
+    case 16:
+      return 4;
+    default:
+      return 1;
+  }
+};
+
 export const getNumOfArenas = (numOfUsers: number) => {
   const numberOfarenas = Math.ceil(numOfUsers / 16);
   return numberOfarenas;
@@ -147,4 +189,112 @@ export const getAreanaFromConfig = (
     }
   });
   return arena;
+};
+
+export const numOfArenas = (numOfUsers: number) => {
+  const numberOfarenas = Math.ceil(numOfUsers / 16);
+  return numberOfarenas;
+};
+
+export const numOfRounds = (numOfUsers: number, arenaNumber: number) => {
+  // Get the number of users in that arena
+  let numberOfRounds = 0;
+  do {
+    for (let i = 1; i <= numOfUsers; i++) {
+      const usersShouldBe = i * 16;
+      // Now minus and see if only one user remains
+      const remainingUsers = numOfUsers - usersShouldBe;
+      if (i === arenaNumber) {
+        // Then get the number of rounds
+        // Check if remaining users is equal to 16
+        if (remainingUsers <= 0) {
+          numberOfRounds = getNumOfRounds(16 - (usersShouldBe - numOfUsers));
+          break;
+        }
+        numberOfRounds = getNumOfRounds(16);
+        break;
+      }
+    }
+  } while (numberOfRounds === 0);
+  return numberOfRounds;
+};
+
+const numOfMatches = (
+  numOfUsers: number,
+  arenaNumber: number,
+  roundNumber: number
+) => {
+  let numberOfRounds = 0;
+  let numberOfMatches = 0;
+  let numberOfUsersInRound = 0;
+
+  do {
+    for (let i = 1; i <= numOfUsers; i++) {
+      const usersShouldBe = i * 16;
+      // Now minus and see if only one user remains
+      const remainingUsers = numOfUsers - usersShouldBe;
+      if (i === arenaNumber) {
+        // Then get the number of rounds
+        // Check if remaining users is equal to 16
+        if (remainingUsers <= 0) {
+          numberOfUsersInRound = 16 - (usersShouldBe - numOfUsers);
+          numberOfRounds = getNumOfRounds(16 - (usersShouldBe - numOfUsers));
+        } else {
+          numberOfUsersInRound = 16;
+          numberOfRounds = getNumOfRounds(16);
+        }
+        numberOfMatches = Math.round(numberOfUsersInRound / 2);
+        for (let j = 1; j <= numberOfRounds; j++) {
+          if (j !== 1) numberOfMatches = Math.round(numberOfMatches / 2);
+          if (j === roundNumber) break;
+        }
+      }
+    }
+  } while (numberOfMatches === 0);
+  return Math.floor(numberOfMatches);
+};
+
+export const createMatchConfig = (numOfUsers: number) => {
+  const config: Array<any> = [];
+  console.log(numOfArenas(numOfUsers), "Abaandond");
+  for (let a = 0; a < numOfArenas(numOfUsers); a++) {
+    config[a] = {
+      arenaNumber: a + 1,
+      rounds: [
+        {
+          roundNumber: 1,
+          matches: [],
+        },
+      ],
+    };
+    const validNumbers = [5, 9, 13];
+    let bye;
+    if (numOfUsers % 2 !== 0) {
+      const validIndex = validNumbers.findIndex((n) => {
+        return n === numOfUsers;
+      });
+      if (validIndex === -1) bye = true;
+    }
+    let activeUsers = numOfUsers;
+    for (let m = 0; m < numOfMatches(numOfUsers, a + 1, 1); m++) {
+      let matchConfig;
+      if (bye && activeUsers === 3) {
+        matchConfig = {
+          matchNumber: m + 1,
+          slot_one: {},
+          slot_two: {},
+          bye: {},
+        };
+      } else {
+        matchConfig = {
+          matchNumber: m + 1,
+          slot_one: {},
+          slot_two: {},
+        };
+      }
+      activeUsers = activeUsers - 2;
+      config[a].rounds[0].matches[m] = matchConfig;
+    }
+  }
+  return config;
 };

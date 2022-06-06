@@ -3,22 +3,36 @@ import cn from "classnames";
 import EditTournamentBracket from "../bracket/EditTournamentBracket";
 
 interface Props {
-  matches: [
-    {
-      matchNumber: number;
-      progress: string;
-      slot_one: {
-        joined: boolean;
-        user: string;
-        reason: string;
+  matches: Array<{
+    matchNumber: number;
+    progress: string;
+    slot_one: {
+      joined: boolean;
+      user: {
+        identity: {
+          arena_name: string;
+          avatar: {
+            image: string;
+            blurhash: string;
+          };
+        };
       };
-      slot_two: {
-        joined: boolean;
-        user: string;
-        reason: string;
+      reason: string;
+    };
+    slot_two: {
+      joined: boolean;
+      user: {
+        identity: {
+          arena_name: string;
+          avatar: {
+            image: string;
+            blurhash: string;
+          };
+        };
       };
-    }
-  ];
+      reason: string;
+    };
+  }>;
 }
 
 const EditTournamentBrackets2 = ({ matches }: Props) => {
@@ -33,19 +47,14 @@ const EditTournamentBrackets2 = ({ matches }: Props) => {
               <h2 className={cn(styles.tournamentBracketRoundTitle)}>Finals</h2>
               <ul className={cn(styles.tournamentBracketList)}>
                 {matches.map((m) => (
-                  <EditTournamentBracket
-                    twoOveride={true}
-                    match={m}
-                  ></EditTournamentBracket>
+                  <EditTournamentBracket match={m}></EditTournamentBracket>
                 ))}
               </ul>
             </div>
             <div className={cn(styles.tournamentBracketRound)}>
               <h3 className={cn(styles.tournamentBracketRoundTitle)}>Winner</h3>
               <ul className={cn(styles.tournamentBracketList)}>
-                <EditTournamentBracket
-                  twoOveride={true}
-                ></EditTournamentBracket>
+                <EditTournamentBracket></EditTournamentBracket>
               </ul>
             </div>
           </div>

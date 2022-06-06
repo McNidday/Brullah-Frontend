@@ -3,34 +3,45 @@ import EditTournamentBrackets2 from "./2users/EditTournamentBrackets2";
 import EditTournamentBrackets4 from "./3-4users/EditTournamentBrackets4";
 
 interface Props {
-  numberOfUsers: number;
-  matches: [
-    {
-      matchNumber: number;
-      progress: string;
-      slot_one: {
-        joined: boolean;
-        user: string;
-        reason: string;
+  matches: Array<{
+    matchNumber: number;
+    progress: string;
+    slot_one: {
+      joined: boolean;
+      user: {
+        identity: {
+          arena_name: string;
+          avatar: {
+            image: string;
+            blurhash: string;
+          };
+        };
       };
-      slot_two: {
-        joined: boolean;
-        user: string;
-        reason: string;
+      reason: string;
+    };
+    slot_two: {
+      joined: boolean;
+      user: {
+        identity: {
+          arena_name: string;
+          avatar: {
+            image: string;
+            blurhash: string;
+          };
+        };
       };
-    }
-  ];
+      reason: string;
+    };
+  }>;
 }
 
-const EditTournamentBrackets = ({ numberOfUsers, matches }: Props) => {
-  switch (numberOfUsers) {
-    case 2:
+const EditTournamentBrackets = ({ matches }: Props) => {
+  switch (matches.length) {
     case 1:
       return (
         <EditTournamentBrackets2 matches={matches}></EditTournamentBrackets2>
       );
-    case 4:
-    case 3:
+    case 2:
       return <EditTournamentBrackets4></EditTournamentBrackets4>;
     default:
       return <EditTournamentBrackets8></EditTournamentBrackets8>;
