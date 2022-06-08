@@ -2,8 +2,9 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
 import Button from "../../../../components/Button/Button";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { decodeBlurHash } from "../../../../functions/helpers";
+import anime from "animejs";
 
 interface Props {
   config: Array<{
@@ -72,6 +73,7 @@ const EditTournamentModal = ({
       };
     };
   } | null>(null);
+  const modalRef = useRef(null);
 
   useEffect(() => {
     if (activeEdit) {
@@ -91,13 +93,21 @@ const EditTournamentModal = ({
           });
         }
       });
+      // Show modal
+      anime({
+        targets: modalRef.current,
+        bottom: "0px",
+      });
     } else {
+      anime({
+        targets: modalRef.current,
+        bottom: "-450px",
+      });
       setEditting(null);
     }
-  }, [activeEdit]);
-
+  }, [activeEdit, config]);
   return (
-    <div className={cn(styles.container)}>
+    <div ref={modalRef} className={cn(styles.container)}>
       <div className={cn(styles.navigation)}>
         <ul className={cn(styles.navList)}>
           <li>People</li>

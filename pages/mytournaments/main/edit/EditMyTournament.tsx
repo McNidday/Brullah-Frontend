@@ -231,22 +231,93 @@ const EditMyTournament = ({ editId }: Props) => {
   const [onlineConfig, setOnlineConfig] = useState<Array<any>>([]);
 
   const [numOfArenas, setNumOfArenas] = useState(0);
-  const [arenas, setArenas] = useState<Array<JSX.Element> | null>(null);
+  const [arenas, setArenas] = useState<Array<number>>([]);
 
   const [usersToConfigure, setUsersToConfigure] = useState<Array<User>>([]);
   const [usersJoined, setUsersJoined] = useState<Array<User>>([]);
 
-  const handleActiveEdit = (arb: string) => {
+  const handleActiveEdit = (arb: string | null) => {
     setActiveEdit(arb);
   };
 
-  const handleConfigUserRemove = (arbs: string) => {};
+  const matchConfigShallowCopy = (config: any) => {
+    return config.map((a: any) => {
+      return {
+        ...a,
+        rounds: a.rounds.map((r: any) => {
+          return {
+            ...r,
+            matches: r.matches.map((m: any) => {
+              return {
+                ...m,
+                slot_one: {
+                  ...m.slot_one,
+                },
+                slot_two: {
+                  ...m.slot_two,
+                },
+              };
+            }),
+          };
+        }),
+      };
+    });
+  };
+
+  const handleConfigUserRemove = (arbs: string) => {
+    const arbsArray = arbs.split(":").map((v) => parseInt(v));
+    const newOnlineConfig = matchConfigShallowCopy(onlineConfig);
+    newOnlineConfig.forEach((a: any) => {
+      if (a.arenaNumber === arbsArray[0]) {
+        a.rounds.forEach((r: any, ri: number) => {
+          if (r.roundNumber === arbsArray[1]) {
+            a.rounds[ri].matches.forEach((m: any) => {
+              if (m.matchNumber === arbsArray[2]) {
+                if (arbsArray[3] === 1) {
+                  m.slot_one = {};
+                }
+                if (arbsArray[3] === 2) {
+                  m.slot_two = {};
+                }
+              }
+            });
+          }
+        });
+      }
+    });
+
+    const newUsersToConfigure = [...usersToConfigure];
+    // Find user in joined users
+    const newLocalConfig = matchConfigShallowCopy(localConfig);
+    newLocalConfig.forEach((a: any) => {
+      if (a.arenaNumber === arbsArray[0]) {
+        a.rounds.forEach((r: any, ri: number) => {
+          if (r.roundNumber === arbsArray[1]) {
+            a.rounds[ri].matches.forEach((m: any) => {
+              if (m.matchNumber === arbsArray[2]) {
+                if (arbsArray[3] === 1) {
+                  newUsersToConfigure.push({ ...m.slot_one.user });
+                  m.slot_one = {};
+                }
+                if (arbsArray[3] === 2) {
+                  newUsersToConfigure.push({ ...m.slot_two.user });
+                  m.slot_two = {};
+                }
+              }
+            });
+          }
+        });
+      }
+    });
+    setUsersToConfigure(newUsersToConfigure);
+    setLocalConfig(newLocalConfig);
+  };
 
   const handleConfigUserUpdate = (userId: string, slot: number) => {
     // arbs stands for arena, round, bracket and last;y the slot
     // In the format of 1:1:1:1
     const arbsArray = activeEdit!.split(":").map((v) => parseInt(v));
-    const newOnlineConfig = [...onlineConfig];
+    const newOnlineConfig = matchConfigShallowCopy(onlineConfig);
     newOnlineConfig.forEach((a: any) => {
       if (a.arenaNumber === arbsArray[0]) {
         a.rounds.forEach((r: any, ri: number) => {
@@ -273,12 +344,10 @@ const EditMyTournament = ({ editId }: Props) => {
       return u.id !== userId;
     });
     setUsersToConfigure(newUsersToConfigure);
-    // setConfig(newConfig);
-    console.log(newOnlineConfig);
     // Update local config
     // Find user in joined users
     const userIndex = usersJoined.findIndex((u: any) => u.id === userId);
-    const newLocalConfig = [...localConfig];
+    const newLocalConfig = matchConfigShallowCopy(localConfig);
     newLocalConfig.forEach((a: any) => {
       if (a.arenaNumber === arbsArray[0]) {
         a.rounds.forEach((r: any, ri: number) => {
@@ -287,12 +356,12 @@ const EditMyTournament = ({ editId }: Props) => {
               if (m.matchNumber === arbsArray[2]) {
                 if (slot === 1) {
                   m.slot_one = {
-                    user: usersJoined[userIndex],
+                    user: { ...usersJoined[userIndex] },
                   };
                 }
                 if (slot === 2) {
                   m.slot_two = {
-                    user: usersJoined[userIndex],
+                    user: { ...usersJoined[userIndex] },
                   };
                 }
               }
@@ -302,7 +371,6 @@ const EditMyTournament = ({ editId }: Props) => {
       }
     });
     setLocalConfig(newLocalConfig);
-    console.log(newLocalConfig, "GAARRRRRIIIIT");
   };
 
   useEffect(() => {
@@ -313,15 +381,16 @@ const EditMyTournament = ({ editId }: Props) => {
 
   useEffect(() => {
     if (data?.tournament) {
-      let config: Array<any> = [];
       if (
         data.tournament.match.configuration.configure.length !== numOfArenas
       ) {
-        config = createMatchConfig(data.tournament.analytics.joined_users);
-        setOnlineConfig(config);
-        setLocalConfig(config);
+        setOnlineConfig(
+          createMatchConfig(data.tournament.analytics.joined_users)
+        );
+        setLocalConfig(
+          createMatchConfig(data.tournament.analytics.joined_users)
+        );
       } else {
-        config = data.tournament.match.configuration.configure;
         setLocalConfig(data.tournament.match.configuration.configure);
       }
 
@@ -346,13 +415,7 @@ const EditMyTournament = ({ editId }: Props) => {
     if (localConfig.length > 0) {
       const theArenas = [];
       for (let i = 0; i < numOfArenas; i++) {
-        theArenas.push(
-          <EditTournamentArenaBrackets
-            key={`${data.tournament.match.id}:${i + 1}`}
-            setActiveEdit={handleActiveEdit}
-            config={localConfig[i]}
-          ></EditTournamentArenaBrackets>
-        );
+        theArenas.push(i + 1);
       }
       setArenas(theArenas);
     }
@@ -365,14 +428,25 @@ const EditMyTournament = ({ editId }: Props) => {
     <>
       <div className={cn(styles.editNavigation)}>Navigation</div>
       <div className={cn(styles.editContainer)}>
-        {arenas?.map((a) => a)}
-        <EditTournamentModal
-          handleConfigUserRemove={handleConfigUserRemove}
-          config={localConfig}
-          usersToConfigure={usersToConfigure}
-          handleConfigUserUpdate={handleConfigUserUpdate}
-          activeEdit={activeEdit}
-        ></EditTournamentModal>
+        {arenas?.map((a, i) => {
+          return (
+            <EditTournamentArenaBrackets
+              activeEdit={activeEdit}
+              key={`${data.tournament.match.id}:${a}`}
+              setActiveEdit={handleActiveEdit}
+              config={localConfig[i]}
+            ></EditTournamentArenaBrackets>
+          );
+        })}
+        <div className={cn(styles.modalContainer)}>
+          <EditTournamentModal
+            handleConfigUserRemove={handleConfigUserRemove}
+            config={localConfig}
+            usersToConfigure={usersToConfigure}
+            handleConfigUserUpdate={handleConfigUserUpdate}
+            activeEdit={activeEdit}
+          ></EditTournamentModal>
+        </div>
       </div>
     </>
   );

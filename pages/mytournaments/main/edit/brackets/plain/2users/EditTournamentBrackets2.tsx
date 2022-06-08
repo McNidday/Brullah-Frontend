@@ -3,7 +3,8 @@ import cn from "classnames";
 import EditTournamentBracket from "../bracket/EditTournamentBracket";
 
 interface Props {
-  setActiveEdit: (arbs: string) => void;
+  activeEdit: string | null;
+  setActiveEdit: (arbs: string | null) => void;
   arenaNumber: number;
   roundNumber: number;
   matches: Array<{
@@ -39,6 +40,7 @@ interface Props {
 }
 
 const EditTournamentBrackets2 = ({
+  activeEdit,
   setActiveEdit,
   arenaNumber,
   roundNumber,
@@ -56,6 +58,7 @@ const EditTournamentBrackets2 = ({
               <ul className={cn(styles.tournamentBracketList)}>
                 {matches.map((m) => (
                   <EditTournamentBracket
+                    activeEdit={activeEdit}
                     key={`${arenaNumber}:${roundNumber}:${m.matchNumber}`}
                     setActiveEdit={setActiveEdit}
                     arenaNumber={arenaNumber}

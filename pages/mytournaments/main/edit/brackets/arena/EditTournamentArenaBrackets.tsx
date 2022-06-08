@@ -5,7 +5,8 @@ import Button from "../../../../../components/Button/Button";
 import { useEffect, useState } from "react";
 
 interface Props {
-  setActiveEdit: (arbs: string) => void;
+  activeEdit: string | null;
+  setActiveEdit: (arbs: string | null) => void;
   config: {
     arenaNumber: number;
     rounds: [
@@ -48,7 +49,11 @@ interface Props {
   };
 }
 
-const EditTournamentArenaBrackets = ({ config, setActiveEdit }: Props) => {
+const EditTournamentArenaBrackets = ({
+  config,
+  setActiveEdit,
+  activeEdit,
+}: Props) => {
   const [section, setSection] = useState(1);
   const [sectionOne, setSectionOne] = useState<
     Array<{
@@ -158,6 +163,7 @@ const EditTournamentArenaBrackets = ({ config, setActiveEdit }: Props) => {
           {sectionOne.length >= 1 ? (
             <section>
               <EditTournamentBrackets
+                activeEdit={activeEdit}
                 setActiveEdit={setActiveEdit}
                 roundNumber={1}
                 arenaNumber={config.arenaNumber}
@@ -170,6 +176,7 @@ const EditTournamentArenaBrackets = ({ config, setActiveEdit }: Props) => {
           {sectionTwo.length >= 1 ? (
             <section>
               <EditTournamentBrackets
+                activeEdit={activeEdit}
                 setActiveEdit={setActiveEdit}
                 roundNumber={1}
                 arenaNumber={config.arenaNumber}

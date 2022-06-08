@@ -256,7 +256,6 @@ const numOfMatches = (
 
 export const createMatchConfig = (numOfUsers: number) => {
   const config: Array<any> = [];
-  console.log(numOfArenas(numOfUsers), "Abaandond");
   for (let a = 0; a < numOfArenas(numOfUsers); a++) {
     config[a] = {
       arenaNumber: a + 1,

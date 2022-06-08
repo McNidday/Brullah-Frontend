@@ -3,7 +3,8 @@ import EditTournamentBrackets2 from "./2users/EditTournamentBrackets2";
 import EditTournamentBrackets4 from "./3-4users/EditTournamentBrackets4";
 
 interface Props {
-  setActiveEdit: (arbs: string) => void;
+  activeEdit: string | null;
+  setActiveEdit: (arbs: string | null) => void;
   arenaNumber: number;
   roundNumber: number;
   matches: Array<{
@@ -39,6 +40,7 @@ interface Props {
 }
 
 const EditTournamentBrackets = ({
+  activeEdit,
   setActiveEdit,
   arenaNumber,
   roundNumber,
@@ -48,6 +50,7 @@ const EditTournamentBrackets = ({
     case 1:
       return (
         <EditTournamentBrackets2
+          activeEdit={activeEdit}
           setActiveEdit={setActiveEdit}
           arenaNumber={arenaNumber}
           roundNumber={roundNumber}

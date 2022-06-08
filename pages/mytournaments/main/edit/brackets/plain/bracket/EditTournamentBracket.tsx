@@ -5,9 +5,10 @@ import { decodeBlurHash } from "../../../../../../functions/helpers";
 import { useEffect } from "react";
 
 interface Props {
+  activeEdit?: string | null;
   arenaNumber?: number;
   roundNumber?: number;
-  setActiveEdit?: (arb: string) => void;
+  setActiveEdit?: (arb: string | null) => void;
   match?: {
     matchNumber: number;
     progress: string;
@@ -41,21 +42,26 @@ interface Props {
 }
 
 const EditTournamentBracket = ({
+  activeEdit,
   match,
   arenaNumber,
   roundNumber,
   setActiveEdit,
 }: Props) => {
-  useEffect(() => {
-    console.log(match, "the match updated bitch ass nigga");
-  }, [match]);
-  console.log(match, "the match bitch ass yaguchi");
   return (
     <li
       className={cn(styles.tournamentBracketItem)}
       onClick={() => {
         if (setActiveEdit) {
-          setActiveEdit(`${arenaNumber}:${roundNumber}:${match?.matchNumber}`);
+          if (
+            activeEdit === `${arenaNumber}:${roundNumber}:${match?.matchNumber}`
+          ) {
+            setActiveEdit(null);
+          } else {
+            setActiveEdit(
+              `${arenaNumber}:${roundNumber}:${match?.matchNumber}`
+            );
+          }
         }
       }}
     >
@@ -66,9 +72,16 @@ const EditTournamentBracket = ({
             <div className={cn(styles.tournamentBracketCaption)}>
               <time>18 February 1998</time>
             </div>
-            <div className={cn(styles.editIcon)}>
-              <Image src={"/icons/edit/white.svg"} layout="fill"></Image>
-            </div>
+            {activeEdit ===
+            `${arenaNumber}:${roundNumber}:${match?.matchNumber}` ? (
+              <div className={cn(styles.editIcon)}>
+                <Image src={"/icons/edit/green.svg"} layout="fill"></Image>
+              </div>
+            ) : (
+              <div className={cn(styles.editIcon)}>
+                <Image src={"/icons/edit/white.svg"} layout="fill"></Image>
+              </div>
+            )}
           </div>
 
           <div className={cn(styles.tournamentBracketData)}>
@@ -118,7 +131,7 @@ const EditTournamentBracket = ({
                       layout="fill"
                       placeholder="blur"
                       blurDataURL={decodeBlurHash(
-                        match.slot_one.user.identity.avatar.blurhash,
+                        match.slot_two.user.identity.avatar.blurhash,
                         50,
                         50
                       )}
