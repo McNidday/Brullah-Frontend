@@ -2,8 +2,12 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
 import { decodeBlurHash } from "../../../../../../functions/helpers";
+import { useEffect } from "react";
 
 interface Props {
+  arenaNumber?: number;
+  roundNumber?: number;
+  setActiveEdit?: (arb: string) => void;
   match?: {
     matchNumber: number;
     progress: string;
@@ -36,16 +40,32 @@ interface Props {
   };
 }
 
-const EditTournamentBracket = ({ match }: Props) => {
+const EditTournamentBracket = ({
+  match,
+  arenaNumber,
+  roundNumber,
+  setActiveEdit,
+}: Props) => {
+  useEffect(() => {
+    console.log(match, "the match updated bitch ass nigga");
+  }, [match]);
+  console.log(match, "the match bitch ass yaguchi");
   return (
-    <li className={cn(styles.tournamentBracketItem)}>
+    <li
+      className={cn(styles.tournamentBracketItem)}
+      onClick={() => {
+        if (setActiveEdit) {
+          setActiveEdit(`${arenaNumber}:${roundNumber}:${match?.matchNumber}`);
+        }
+      }}
+    >
       <div className={cn(styles.tournamentBracketMatch)}>
         <div className={cn(styles.tournamentBracketInformation)}>
           <div className={cn(styles.tournmentBracketCaptionContainer)}>
             <span className={cn(styles.tournamentBracketCounter)}></span>
-            <caption className={cn(styles.tournamentBracketCaption)}>
+            <div className={cn(styles.tournamentBracketCaption)}>
               <time>18 February 1998</time>
-            </caption>
+            </div>
             <div className={cn(styles.editIcon)}>
               <Image src={"/icons/edit/white.svg"} layout="fill"></Image>
             </div>

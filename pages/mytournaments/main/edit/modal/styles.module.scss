@@ -1,0 +1,105 @@
+@use "../../../../../styles/theme" as *;
+
+.container {
+  width: 300px;
+  height: 400px;
+  position: absolute;
+  background-color: $background;
+  bottom: 0px;
+  right: 0px;
+  z-index: 1;
+  border-top-left-radius: 5px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.12fr minmax(0, 1fr);
+  grid-template-areas: "nav" "content";
+}
+
+.editUserList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding: 10px;
+}
+
+.editUserListItem {
+  width: 100%;
+  border: 1px solid $backgroundLight;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $textColor;
+  height: 50px;
+  padding: 5px;
+}
+
+.editUserListItemImage {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  li {
+    color: $textColor;
+    &:hover {
+      color: $activeColor;
+      cursor: pointer;
+    }
+  }
+}
+
+.editUsers {
+  width: 100%;
+  height: 50%;
+  border-bottom: 2px solid $backgroundLight;
+}
+
+.containedUsers {
+  width: 100%;
+  height: 50%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  h3 {
+    margin: 5px 0px 5px 0px;
+    color: $activeColor;
+  }
+}
+
+.containedUsersContainer {
+  width: 100%;
+  border: 1px solid $backgroundLight;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $textColor;
+  height: 50px;
+  padding: 5px;
+}
+
+.containedUsersImage {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.navigation {
+  grid-area: nav;
+  border-bottom: 2px solid $backgroundLight;
+}
+
+.content {
+  grid-area: content;
+}
