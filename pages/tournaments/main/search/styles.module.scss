@@ -3,6 +3,8 @@
 .container {
   grid-area: search;
   background-color: $background;
+  border-top-left-radius: $borderRadius;
+  border-top-right-radius: $borderRadius;
   & > div:nth-child(1) {
     display: flex;
     align-items: center;

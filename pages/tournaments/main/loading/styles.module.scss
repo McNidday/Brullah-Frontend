@@ -1,4 +1,4 @@
-@use "../../../../../styles/theme" as *;
+@use "../../../../styles/theme" as *;
 
 .container {
   grid-area: maincontent;
@@ -15,7 +15,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $backgroundLight;
+  background-color: rgba($color: $background, $alpha: 0.5);
   border-radius: $borderRadius;
 
   & > div {

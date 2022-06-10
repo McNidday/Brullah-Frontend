@@ -2,7 +2,6 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
 import { decodeBlurHash } from "../../../../../../functions/helpers";
-import { useEffect } from "react";
 
 interface Props {
   bye?: {

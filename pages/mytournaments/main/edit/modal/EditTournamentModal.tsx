@@ -104,6 +104,8 @@ const EditTournamentModal = ({
   const [bye, setBye] = useState(false);
   const modalRef = useRef(null);
 
+  const [tab, setTab] = useState<"people" | "time">("people");
+
   useEffect(() => {
     if (activeEdit) {
       // arbs stands for arena, round, bracket and last;y the slot
@@ -166,81 +168,102 @@ const EditTournamentModal = ({
     >
       <div className={cn(styles.navigation)}>
         <ul className={cn(styles.navList)}>
-          <li>People</li>
+          <li
+            className={cn(tab === "people" ? styles.activeTab : "")}
+            onClick={() => setTab("people")}
+          >
+            People
+          </li>
+          <li
+            className={cn(tab === "time" ? styles.activeTab : "")}
+            onClick={() => setTab("time")}
+          >
+            Time
+          </li>
         </ul>
       </div>
       <div className={cn(styles.content)}>
         <div className={cn(styles.editUsers, bye ? styles.editUsersBye : "")}>
-          <ul className={cn(styles.editUserList)}>
-            {usersToConfigure.map((u) => {
-              return (
-                <li key={u.id} className={cn(styles.editUserListItem)}>
-                  <div className={cn(styles.editUserListItemImage)}>
-                    <Image
-                      src={u.identity.avatar.image}
-                      layout="fill"
-                      placeholder="blur"
-                      blurDataURL={decodeBlurHash(
-                        u.identity.avatar.blurhash,
-                        50,
-                        50
-                      )}
-                    ></Image>
-                  </div>
-                  <div>{u.identity.arena_name}</div>
-                  <Button
-                    text="left"
-                    disabled={
-                      editting ? (editting.slot_one.user ? true : false) : false
-                    }
-                    onClick={() => handleConfigUserUpdate(u.id, 1)}
-                  ></Button>
-
-                  {bye ? (
-                    (!editting?.slot_one.user && !editting?.slot_two.user) ||
-                    (editting?.slot_one.user && !editting.slot_two.user) ||
-                    (!editting?.slot_one.user && editting.slot_two.user) ? (
-                      <Button
-                        text="right"
-                        disabled={
-                          editting
-                            ? editting.slot_two.user
-                              ? true
-                              : false
+          {usersToConfigure.length > 0 ? (
+            <ul className={cn(styles.editUserList)}>
+              {usersToConfigure.map((u) => {
+                return (
+                  <li key={u.id} className={cn(styles.editUserListItem)}>
+                    <div className={cn(styles.editUserListItemImage)}>
+                      <Image
+                        src={u.identity.avatar.image}
+                        layout="fill"
+                        placeholder="blur"
+                        blurDataURL={decodeBlurHash(
+                          u.identity.avatar.blurhash,
+                          50,
+                          50
+                        )}
+                      ></Image>
+                    </div>
+                    <div>{u.identity.arena_name}</div>
+                    <Button
+                      text="left"
+                      disabled={
+                        editting
+                          ? editting.slot_one.user
+                            ? true
                             : false
-                        }
-                        onClick={() => handleConfigUserUpdate(u.id, 2)}
-                      ></Button>
+                          : false
+                      }
+                      onClick={() => handleConfigUserUpdate(u.id, 1)}
+                    ></Button>
+
+                    {bye ? (
+                      (!editting?.slot_one.user && !editting?.slot_two.user) ||
+                      (editting?.slot_one.user && !editting.slot_two.user) ||
+                      (!editting?.slot_one.user && editting.slot_two.user) ? (
+                        <Button
+                          text="right"
+                          disabled={
+                            editting
+                              ? editting.slot_two.user
+                                ? true
+                                : false
+                              : false
+                          }
+                          onClick={() => handleConfigUserUpdate(u.id, 2)}
+                        ></Button>
+                      ) : (
+                        ""
+                      )
                     ) : (
                       ""
-                    )
-                  ) : (
-                    ""
-                  )}
+                    )}
 
-                  {bye ? (
-                    editting?.slot_one.user && editting.slot_two.user ? (
-                      <Button
-                        text="bye"
-                        disabled={
-                          editting
-                            ? editting.bye && editting.bye.user
-                              ? true
+                    {bye ? (
+                      editting?.slot_one.user && editting.slot_two.user ? (
+                        <Button
+                          text="bye"
+                          disabled={
+                            editting
+                              ? editting.bye && editting.bye.user
+                                ? true
+                                : false
                               : false
-                            : false
-                        }
-                        onClick={() => handleConfigUserUpdate(u.id, 3)}
-                      ></Button>
+                          }
+                          onClick={() => handleConfigUserUpdate(u.id, 3)}
+                        ></Button>
+                      ) : (
+                        ""
+                      )
                     ) : (
                       ""
-                    )
-                  ) : (
-                    ""
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className={cn(styles.editUserListPlaceHolder)}>
+              <p>No one to match up. Clean slate ( ͡° ͜ʖ ͡°)</p>
+            </div>
+          )}
         </div>
         <div
           className={cn(

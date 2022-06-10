@@ -77,6 +77,8 @@ const EditTournamentBrackets2 = ({
     matches.forEach((m) => {
       if (m.bye && m.bye.user) {
         setBye(m.bye);
+      } else {
+        setBye(null);
       }
     });
   }, [matches]);

@@ -5,9 +5,10 @@ import TournamentsParentList, {
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import { gql, useQuery } from "@apollo/client";
-import TournamentListLoading from "./tournaments/Loading/TournamentListLoading";
 import { useState } from "react";
 import TournamentParentListModal from "./tournaments/modal/TournamentParentListModal";
+import TournamentsLoading from "./loading/TournamentsLoading";
+import TournamentsError from "./error/TournamentsError";
 
 const TOURNAMENTS = gql`
   query GetPublicTournaments {
@@ -25,10 +26,18 @@ const TournamentsMain = () => {
   const handleModalClose = () => setModalOpen(false);
   const handleModalOpen = () => setModalOpen(true);
 
-  if (loading) return <TournamentListLoading></TournamentListLoading>;
+  if (loading) return <TournamentsLoading></TournamentsLoading>;
+
   if (error) {
-    return <p>Error :( {error.message}</p>;
+    return (
+      <div className={cn(styles.container)}>
+        <div className={cn(styles.miniContainer)}>
+          <TournamentsError error={error}></TournamentsError>
+        </div>
+      </div>
+    );
   }
+
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>

@@ -6,7 +6,7 @@ import cn from "classnames";
 import Footer from "../components/Footer/Footer";
 import TournamentsMain from "./main/TournamentsMain";
 import ApolloClientOnly from "../components/Apollo/ApolloClientOnly";
-import TournamentListLoading from "./main/tournaments/Loading/TournamentListLoading";
+import TournamentsLoading from "./main/loading/TournamentsLoading";
 
 const Tournaments: NextPage = () => {
   return (
@@ -21,9 +21,7 @@ const Tournaments: NextPage = () => {
       </Head>
       <TopNavigation></TopNavigation>
       <SideNavigation></SideNavigation>
-      <ApolloClientOnly
-        fallback={<TournamentListLoading></TournamentListLoading>}
-      >
+      <ApolloClientOnly fallback={<TournamentsLoading></TournamentsLoading>}>
         <TournamentsMain></TournamentsMain>
       </ApolloClientOnly>
       <Footer></Footer>
