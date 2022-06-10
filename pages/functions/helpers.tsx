@@ -297,3 +297,34 @@ export const createMatchConfig = (numOfUsers: number) => {
   }
   return config;
 };
+
+export const createOnlineConfigFromLocalConfig = (localConfig: Array<any>) => {
+  localConfig.forEach((a: any) => {
+    delete a.winner;
+    delete a.__typename;
+    a.rounds.forEach((r: any, ri: number) => {
+      delete r.__typename;
+      a.rounds[ri].matches.forEach((m: any) => {
+        delete m.__typename;
+        delete m.progress;
+        if (m.slot_one.user) {
+          m.slot_one = { user: m.slot_one.user.id };
+        } else {
+          m.slot_one = {};
+        }
+        if (m.slot_two.user) {
+          m.slot_two = { user: m.slot_two.user.id };
+        } else {
+          m.slot_two = {};
+        }
+
+        if (m.bye && m.bye.user) {
+          m.bye = { user: m.bye.user.id };
+        } else {
+          delete m.bye;
+        }
+      });
+    });
+  });
+  return localConfig;
+};

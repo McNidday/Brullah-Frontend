@@ -10,7 +10,7 @@ interface Props {
   error: ApolloError;
 }
 
-const DashboardMainError = ({ errorNum, error }: Props) => {
+const MyTournamentsError = ({ errorNum, error }: Props) => {
   const [countDown, setCountDown] = useState<number | undefined>();
   const [redirect, setRedirect] = useState<string>();
 
@@ -40,9 +40,9 @@ const DashboardMainError = ({ errorNum, error }: Props) => {
     return (
       <div className={cn(styles.container)}>
         <div className={cn(styles.miniContainer)}>
-          <div className={cn(styles.loading, styles.loaderActive)}>
+          <div className={cn(styles.error)}>
             <h3>
-              You cannot view dashboard while not logged in, you will be
+              You cannot view your tournaments while not logged in, you will be
               directed to login in ${countDown || 0}
             </h3>
           </div>
@@ -53,7 +53,7 @@ const DashboardMainError = ({ errorNum, error }: Props) => {
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
-        <div className={cn(styles.loading, styles.loaderActive)}>
+        <div className={cn(styles.error)}>
           <h3>
             An error occured. Please check your internet connection and try
             again. "{error.message}"
@@ -64,4 +64,4 @@ const DashboardMainError = ({ errorNum, error }: Props) => {
   );
 };
 
-export default DashboardMainError;
+export default MyTournamentsError;

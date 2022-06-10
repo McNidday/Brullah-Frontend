@@ -1,22 +1,21 @@
-@use "../../../../styles/theme" as *;
+@use "../../../../../styles/theme" as *;
 
 .container {
-  grid-area: maincontent;
+  grid-area: search / search / tournaments / tournaments;
   background-color: $background;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: $borderRadius;
 }
 
 .miniContainer {
-  border: 1px solid $backgroundLight;
-  height: 95%;
-  width: 98%;
+  height: 90%;
+  width: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgba($color: $background, $alpha: 0.5);
-  border-radius: $borderRadius;
 
   & > div {
     position: relative;

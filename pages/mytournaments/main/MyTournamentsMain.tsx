@@ -8,6 +8,7 @@ import MyTournamentsLoading from "./loading/MyTournamentsLoading";
 import MyTournamentSearch from "./search/MyTournamentSearch";
 import { useState } from "react";
 import EditMyTournament from "./edit/EditMyTournament";
+import MyTournamentsError from "./error/MyTournamentsError";
 
 const TOURNAMENTS = gql`
   query GetMyTournaments($page: Int!, $limit: Int!) {
@@ -23,11 +24,24 @@ const MyTournamentsMain = () => {
     variables: { page: 1, limit: 10 },
   });
   const [editId, setEditId] = useState<string | null>(null);
-
   if (loading) return <MyTournamentsLoading></MyTournamentsLoading>;
-  if (error) {
-    return <p>Error :( {error.message}</p>;
+  if (error && (error?.networkError as any).statusCode !== 401) {
+    return (
+      <div className={cn(styles.container)}>
+        <div className={cn(styles.miniContainer)}>
+          <MyTournamentsError errorNum={1} error={error}></MyTournamentsError>;
+        </div>
+      </div>
+    );
   }
+  if (!data?.myTournaments)
+    return (
+      <div className={cn(styles.container)}>
+        <div className={cn(styles.miniContainer)}>
+          <MyTournamentsError errorNum={0} error={error!}></MyTournamentsError>
+        </div>
+      </div>
+    );
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>

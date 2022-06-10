@@ -1,6 +1,7 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import EditTournamentBracket from "../bracket/EditTournamentBracket";
+import { useEffect, useState } from "react";
 
 interface Props {
   activeEdit: string | null;
@@ -36,6 +37,19 @@ interface Props {
       };
       reason: string;
     };
+    bye?: {
+      joined: boolean;
+      user: {
+        identity: {
+          arena_name: string;
+          avatar: {
+            image: string;
+            blurhash: string;
+          };
+        };
+      };
+      reason: string;
+    };
   }>;
 }
 
@@ -46,6 +60,27 @@ const EditTournamentBrackets2 = ({
   roundNumber,
   matches,
 }: Props) => {
+  const [bye, setBye] = useState<{
+    joined: boolean;
+    user: {
+      identity: {
+        arena_name: string;
+        avatar: {
+          image: string;
+          blurhash: string;
+        };
+      };
+    };
+    reason: string;
+  } | null>(null);
+  useEffect(() => {
+    matches.forEach((m) => {
+      if (m.bye && m.bye.user) {
+        setBye(m.bye);
+      }
+    });
+  }, [matches]);
+
   return (
     <>
       <div className={cn(styles.brackets)}>
@@ -71,7 +106,11 @@ const EditTournamentBrackets2 = ({
             <div className={cn(styles.tournamentBracketRound)}>
               <h3 className={cn(styles.tournamentBracketRoundTitle)}>Winner</h3>
               <ul className={cn(styles.tournamentBracketList)}>
-                <EditTournamentBracket></EditTournamentBracket>
+                {bye ? (
+                  <EditTournamentBracket bye={bye}></EditTournamentBracket>
+                ) : (
+                  <EditTournamentBracket></EditTournamentBracket>
+                )}
               </ul>
             </div>
           </div>

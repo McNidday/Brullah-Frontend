@@ -5,6 +5,19 @@ import { decodeBlurHash } from "../../../../../../functions/helpers";
 import { useEffect } from "react";
 
 interface Props {
+  bye?: {
+    joined: boolean;
+    user: {
+      identity: {
+        arena_name: string;
+        avatar: {
+          image: string;
+          blurhash: string;
+        };
+      };
+    };
+    reason: string;
+  };
   activeEdit?: string | null;
   arenaNumber?: number;
   roundNumber?: number;
@@ -42,6 +55,7 @@ interface Props {
 }
 
 const EditTournamentBracket = ({
+  bye,
   activeEdit,
   match,
   arenaNumber,
@@ -104,6 +118,26 @@ const EditTournamentBracket = ({
                   </div>
                   <div className={cn(styles.tournamentBracketDataName)}>
                     <span>{match.slot_one.user.identity.arena_name}</span>
+                  </div>
+                </>
+              ) : bye ? (
+                <>
+                  <div
+                    className={cn(styles.tournamentBracketDataProfilePicture)}
+                  >
+                    <Image
+                      src={bye.user.identity.avatar.image}
+                      layout="fill"
+                      placeholder="blur"
+                      blurDataURL={decodeBlurHash(
+                        bye.user.identity.avatar.blurhash,
+                        50,
+                        50
+                      )}
+                    ></Image>
+                  </div>
+                  <div className={cn(styles.tournamentBracketDataName)}>
+                    <span>{bye.user.identity.arena_name}</span>
                   </div>
                 </>
               ) : (

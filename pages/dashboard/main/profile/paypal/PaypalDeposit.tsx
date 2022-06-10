@@ -1,7 +1,7 @@
 import cn from "classnames";
 import styles from "./styles.module.scss";
 import "swiper/css/bundle";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PaypalCountries from "./countries/PaypalCountries";
 import PaypalTitle from "./title/PaypalTitle";
 import PaypalInput from "./input/PaypalInput";
@@ -28,7 +28,7 @@ const PaypalDeposit = ({
   const [activeCurrency, setCurrency] = useState<string>("USD");
   const [depositAmount, setDepositAmount] = useState<number>(0);
   const [paypalScriptState, setPaypalScriptState] = useState<string>("pending");
-  const setActiveCurrency = useCallback(debounce(setCurrency, 1000), []);
+  const setActiveCurrency = useRef(debounce(setCurrency, 1000)).current;
   const [navBackHover, setNavBackHover] = useState(false);
   const containerRef = useRef(null);
   const navBackRef = useRef(null);

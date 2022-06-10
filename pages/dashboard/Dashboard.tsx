@@ -4,9 +4,9 @@ import cn from "classnames";
 import TopNavigation from "../components/TopNavigation/TopNavigation";
 import Footer from "../components/Footer/Footer";
 import ApolloClientOnly from "../components/Apollo/ApolloClientOnly";
-import Fallback from "../components/Fallback/Fallback";
 import SideNavigation from "../components/SideNavigation/SideNavigation";
 import DashboardMain from "./main/DashboardMain";
+import DashboardMainLoading from "./main/loading/DashboardMainLoading";
 
 const Dashboard: NextPage = () => {
   return (
@@ -18,7 +18,9 @@ const Dashboard: NextPage = () => {
       </Head>
       <TopNavigation></TopNavigation>
       <SideNavigation></SideNavigation>
-      <ApolloClientOnly fallback={<Fallback></Fallback>}>
+      <ApolloClientOnly
+        fallback={<DashboardMainLoading></DashboardMainLoading>}
+      >
         <DashboardMain></DashboardMain>
       </ApolloClientOnly>
       <Footer></Footer>

@@ -19,6 +19,7 @@ const ENDPOINTS: { [key: string]: string } = {
   GetMyTournaments: "tournaments",
   GetTournament: "public/tournaments",
   AddToMatch: "matches",
+  SaveMatchConfig: "matches",
 };
 
 const customFetch = (uri: string, options: any) => {

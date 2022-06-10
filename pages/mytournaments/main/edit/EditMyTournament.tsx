@@ -2,13 +2,18 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import EditTournamentArenaBrackets from "./brackets/arena/EditTournamentArenaBrackets";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   createMatchConfig,
+  createOnlineConfigFromLocalConfig,
   getAreanaFromConfig,
   getNumOfArenas,
 } from "../../../functions/helpers";
 import EditTournamentModal from "./modal/EditTournamentModal";
+import debounce from "lodash.debounce";
+import { CircularProgress } from "@mui/material";
+import EditMyTournamentLoading from "./loading/EditMyTournamentLoading";
+import EditMyTournamentError from "./error/EditMyTournamentError";
 
 const matchConfig = {
   timmersInput: {
@@ -126,19 +131,46 @@ const TOURNAMENT = gql`
                 progress
                 bye {
                   advanced
-                  user
+                  user {
+                    id
+                    identity {
+                      arena_name
+                      avatar {
+                        image
+                        blurhash
+                      }
+                    }
+                  }
                   reason
                 }
                 slot_one {
                   joined
                   winner
-                  user
+                  user {
+                    id
+                    identity {
+                      arena_name
+                      avatar {
+                        image
+                        blurhash
+                      }
+                    }
+                  }
                   reason
                 }
                 slot_two {
                   joined
                   winner
-                  user
+                  user {
+                    id
+                    identity {
+                      arena_name
+                      avatar {
+                        image
+                        blurhash
+                      }
+                    }
+                  }
                   reason
                 }
               }
@@ -154,57 +186,6 @@ const SAVE_CONFIG = gql`
   mutation SaveMatchConfig($id: ID!, $config: MatchConfigInput) {
     saveConfiguration(id: $id, config: $config) {
       id
-      users {
-        configured {
-          id
-          identity {
-            arena_name
-            avatar {
-              image
-              blurhash
-            }
-          }
-        }
-        joined {
-          id
-          identity {
-            arena_name
-            avatar {
-              image
-              blurhash
-            }
-          }
-        }
-      }
-      configuration {
-        configure {
-          arenaNumber
-          rounds {
-            roundNumber
-            matches {
-              matchNumber
-              progress
-              bye {
-                advanced
-                user
-                reason
-              }
-              slot_one {
-                joined
-                winner
-                user
-                reason
-              }
-              slot_two {
-                joined
-                winner
-                user
-                reason
-              }
-            }
-          }
-        }
-      }
     }
   }
 `;
@@ -235,6 +216,17 @@ const EditMyTournament = ({ editId }: Props) => {
 
   const [usersToConfigure, setUsersToConfigure] = useState<Array<User>>([]);
   const [usersJoined, setUsersJoined] = useState<Array<User>>([]);
+
+  const saveConfigDebounce = useRef(
+    debounce((id, config) => {
+      saveTournamentConfig({
+        variables: {
+          id: id,
+          config: { configure: config },
+        },
+      });
+    }, 5000)
+  ).current;
 
   const handleActiveEdit = (arb: string | null) => {
     setActiveEdit(arb);
@@ -279,13 +271,16 @@ const EditMyTournament = ({ editId }: Props) => {
                 if (arbsArray[3] === 2) {
                   m.slot_two = {};
                 }
+                if (arbsArray[3] === 3) {
+                  delete m.bye;
+                }
               }
             });
           }
         });
       }
     });
-
+    setOnlineConfig(newOnlineConfig);
     const newUsersToConfigure = [...usersToConfigure];
     // Find user in joined users
     const newLocalConfig = matchConfigShallowCopy(localConfig);
@@ -302,6 +297,10 @@ const EditMyTournament = ({ editId }: Props) => {
                 if (arbsArray[3] === 2) {
                   newUsersToConfigure.push({ ...m.slot_two.user });
                   m.slot_two = {};
+                }
+                if (arbsArray[3] === 3) {
+                  newUsersToConfigure.push({ ...m.bye.user });
+                  delete m.bye;
                 }
               }
             });
@@ -334,12 +333,18 @@ const EditMyTournament = ({ editId }: Props) => {
                     user: userId,
                   };
                 }
+                if (slot === 3) {
+                  m.bye = {
+                    user: userId,
+                  };
+                }
               }
             });
           }
         });
       }
     });
+    setOnlineConfig(newOnlineConfig);
     const newUsersToConfigure = usersToConfigure.filter((u) => {
       return u.id !== userId;
     });
@@ -361,6 +366,11 @@ const EditMyTournament = ({ editId }: Props) => {
                 }
                 if (slot === 2) {
                   m.slot_two = {
+                    user: { ...usersJoined[userIndex] },
+                  };
+                }
+                if (slot === 3) {
+                  m.bye = {
                     user: { ...usersJoined[userIndex] },
                   };
                 }
@@ -391,6 +401,13 @@ const EditMyTournament = ({ editId }: Props) => {
           createMatchConfig(data.tournament.analytics.joined_users)
         );
       } else {
+        setOnlineConfig(
+          createOnlineConfigFromLocalConfig(
+            matchConfigShallowCopy(
+              data.tournament.match.configuration.configure
+            )
+          )
+        );
         setLocalConfig(data.tournament.match.configuration.configure);
       }
 
@@ -419,14 +436,45 @@ const EditMyTournament = ({ editId }: Props) => {
       }
       setArenas(theArenas);
     }
-  }, [localConfig]);
+  }, [localConfig, data]);
 
-  if (loading) return <div>"Loading..."</div>;
-  if (error) return <div>{error.message}</div>;
+  useEffect(() => {
+    if (data?.tournament && onlineConfig.length > 0) {
+      saveConfigDebounce(data.tournament.match.id, onlineConfig);
+    }
+  }, [onlineConfig, data]);
+
+  useEffect(() => {
+    if (saveConfigData || saveConfigError) {
+      setTimeout(reset, 10000);
+    }
+  }, [saveConfigData]);
+
+  if (loading) return <EditMyTournamentLoading></EditMyTournamentLoading>;
+  if (error)
+    return <EditMyTournamentError error={error}></EditMyTournamentError>;
 
   return (
     <>
-      <div className={cn(styles.editNavigation)}>Navigation</div>
+      <div className={cn(styles.editNavigation)}>
+        <div></div>
+        {saveConfigLoading ? (
+          <div className={cn(styles.editStatesLoading)}>
+            <span>Saving</span>
+            <CircularProgress
+              className={styles.editStatesLoadingProgress}
+            ></CircularProgress>
+          </div>
+        ) : saveConfigError ? (
+          <div className={cn(styles.editStatesError)}>
+            <h3>{saveConfigError.message}</h3>
+          </div>
+        ) : (
+          <div className={cn(styles.cool)}>
+            <h3>(✿◡‿◡)</h3>
+          </div>
+        )}
+      </div>
       <div className={cn(styles.editContainer)}>
         {arenas?.map((a, i) => {
           return (
@@ -440,6 +488,7 @@ const EditMyTournament = ({ editId }: Props) => {
         })}
         <div className={cn(styles.modalContainer)}>
           <EditTournamentModal
+            joinedUsers={usersJoined}
             handleConfigUserRemove={handleConfigUserRemove}
             config={localConfig}
             usersToConfigure={usersToConfigure}

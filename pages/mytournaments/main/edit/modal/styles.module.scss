@@ -13,6 +13,11 @@
   grid-template-columns: 1fr;
   grid-template-rows: 0.12fr minmax(0, 1fr);
   grid-template-areas: "nav" "content";
+  border-bottom-right-radius: $borderRadius;
+}
+
+.byeContainer {
+  height: 490px;
 }
 
 .editUserList {
@@ -20,6 +25,7 @@
   margin: 0;
   padding: 0;
   padding: 10px;
+  overflow-y: auto;
 }
 
 .editUserListItem {
@@ -31,6 +37,7 @@
   color: $textColor;
   height: 50px;
   padding: 5px;
+  margin-bottom: 5px;
 }
 
 .editUserListItemImage {
@@ -38,6 +45,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  overflow: hidden;
 }
 
 .navList {
@@ -62,6 +70,14 @@
   width: 100%;
   height: 55%;
   border-bottom: 2px solid $backgroundLight;
+}
+
+.editUsersBye {
+  height: 43% !important;
+}
+
+.containedUsersBye {
+  height: 57% !important;
 }
 
 .containedUsers {

@@ -6,8 +6,8 @@ import DashboardModal from "./modal/DashboardModal";
 import DashboardProfile, {
   DashboardProfileFragment,
 } from "./profile/DashboardProfile";
-import DashboardMainError from "./states/DashboardMainError";
-import DashboardMainLoading from "./states/DashboardMainLoading";
+import DashboardMainError from "./error/DashboardMainError";
+import DashboardMainLoading from "./loading/DashboardMainLoading";
 import styles from "./styles.module.scss";
 import DashboardTransactions from "./transactions/DashboardTransactions";
 
@@ -28,14 +28,25 @@ const DashboardMain = () => {
   const handleModalClose = () => setModalOpen(false);
   const handleModalOpen = () => setModalOpen(true);
 
+  if (loading) return <DashboardMainLoading></DashboardMainLoading>;
+
   if (error && (error?.networkError as any).statusCode !== 401) {
-    <DashboardMainError errorNum={1} error={error}></DashboardMainError>;
+    return (
+      <div className={cn(styles.container)}>
+        <div className={cn(styles.miniContainer)}>
+          <DashboardMainError errorNum={1} error={error}></DashboardMainError>;
+        </div>
+      </div>
+    );
   }
 
-  if (loading) return <DashboardMainLoading></DashboardMainLoading>;
   if (!data?.user)
     return (
-      <DashboardMainError errorNum={0} error={error!}></DashboardMainError>
+      <div className={cn(styles.container)}>
+        <div className={cn(styles.miniContainer)}>
+          <DashboardMainError errorNum={0} error={error!}></DashboardMainError>
+        </div>
+      </div>
     );
   return (
     <div className={cn(styles.container)}>
