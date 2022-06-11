@@ -5,8 +5,9 @@ import styles from "./styles.module.scss";
 import Button from "../../../../components/Button/Button";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { blobToFile, validateImageUpload } from "../../../../functions/helpers";
-import { useSwiper } from "swiper/react";
+import { useSwiper, useSwiperSlide } from "swiper/react";
 import { ApolloError } from "@apollo/client";
+import { ClickAwayListener } from "@mui/material";
 
 interface Props {
   updateProfile: Function;
@@ -15,12 +16,24 @@ interface Props {
 
 const SignUpAvatar = ({ updateProfile, error }: Props) => {
   const swiper = useSwiper();
+  const swiperSlide = useSwiperSlide();
 
   // const [pervAvatarUrl, setPrevAvaratUrl] = useState<string | ArrayBuffer | null>(null);
   const [avatarUrl, setAvaratUrl] = useState<string | ArrayBuffer | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const crop = useRef<Croppie | null>(null);
   const cropRef = useRef(null);
+
+  const cropAvatar = async () => {
+    if (swiperSlide.isActive && crop.current) {
+      const imageBlob = await crop.current.result({
+        type: "blob",
+      });
+      updateProfile("avatar", blobToFile(imageBlob));
+    } else {
+      updateProfile("avatar", null);
+    }
+  };
 
   const handleAvatar = (
     e: ChangeEvent & { target: Element & { [key: string]: any } }
@@ -82,6 +95,7 @@ const SignUpAvatar = ({ updateProfile, error }: Props) => {
         height: 150,
       },
     });
+
     crop.current
       .bind({
         url: typeof avatarUrl === "string" ? avatarUrl : "",
@@ -123,19 +137,7 @@ const SignUpAvatar = ({ updateProfile, error }: Props) => {
           data-swiper-parallax="-500"
         >
           <label className={cn(styles.imageButton)} htmlFor="avatar"></label>
-          <div
-            ref={cropRef}
-            onBlur={async () => {
-              if (crop.current) {
-                const imageBlob = await crop.current.result({
-                  type: "blob",
-                });
-                updateProfile("avatar", blobToFile(imageBlob));
-              } else {
-                updateProfile("avatar", null);
-              }
-            }}
-          >
+          <div ref={cropRef}>
             {!avatarUrl && !uploadError ? (
               <div className={cn(styles.imagePlaceholder)}>
                 <p>Click the picture icon to upload your avatar</p>
@@ -153,12 +155,18 @@ const SignUpAvatar = ({ updateProfile, error }: Props) => {
           <Button
             text="back"
             disabled={false}
-            onClick={() => swiper.slidePrev()}
+            onClick={() => {
+              cropAvatar();
+              swiper.slidePrev();
+            }}
           ></Button>
           <Button
             text="next"
             disabled={false}
-            onClick={() => swiper.slideNext()}
+            onClick={() => {
+              cropAvatar();
+              swiper.slideNext();
+            }}
           ></Button>
         </div>
       </div>

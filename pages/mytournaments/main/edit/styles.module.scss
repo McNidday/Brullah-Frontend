@@ -14,10 +14,14 @@
 }
 
 .modalContainer {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  bottom: 6%;
+  right: 4%;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .editNavigation {
@@ -25,6 +29,14 @@
   flex-direction: row;
   justify-content: space-between;
   padding: 0px 20px 0px 20px;
+}
+
+.editNavigationButtons {
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .editStatesLoading {

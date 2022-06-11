@@ -1,6 +1,6 @@
 import EditTournamentBrackets8 from "./5-8users/EditTournamentBrackets8";
 import EditTournamentBrackets2 from "./2users/EditTournamentBrackets2";
-import EditTournamentBrackets4 from "./3-4users/EditTournamentBrackets4";
+import EditTournamentBrackets4 from "./4users/EditTournamentBrackets4";
 
 interface Props {
   activeEdit: string | null;
@@ -58,9 +58,25 @@ const EditTournamentBrackets = ({
         ></EditTournamentBrackets2>
       );
     case 2:
-      return <EditTournamentBrackets4></EditTournamentBrackets4>;
+      return (
+        <EditTournamentBrackets4
+          activeEdit={activeEdit}
+          setActiveEdit={setActiveEdit}
+          arenaNumber={arenaNumber}
+          roundNumber={roundNumber}
+          matches={matches}
+        ></EditTournamentBrackets4>
+      );
     default:
-      return <EditTournamentBrackets8></EditTournamentBrackets8>;
+      return (
+        <EditTournamentBrackets8
+          activeEdit={activeEdit}
+          setActiveEdit={setActiveEdit}
+          arenaNumber={arenaNumber}
+          roundNumber={roundNumber}
+          matches={matches}
+        ></EditTournamentBrackets8>
+      );
   }
 };
 

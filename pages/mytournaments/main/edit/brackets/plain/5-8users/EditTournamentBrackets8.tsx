@@ -1,10 +1,96 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import Image from "next/image";
 import EditTournamentBracket from "../bracket/EditTournamentBracket";
-// import { decodeBlurHash } from "../../../../../functions/helpers";
+import { useEffect, useState } from "react";
 
-const EditTournamentBrackets8 = () => {
+interface Match {
+  matchNumber: number;
+  slot_one: {
+    user?: {
+      identity: {
+        arena_name: string;
+        avatar: {
+          image: string;
+          blurhash: string;
+        };
+      };
+    };
+  };
+  slot_two: {
+    user?: {
+      identity: {
+        arena_name: string;
+        avatar: {
+          image: string;
+          blurhash: string;
+        };
+      };
+    };
+  };
+  bye?: {
+    joined: boolean;
+    user: {
+      identity: {
+        arena_name: string;
+        avatar: {
+          image: string;
+          blurhash: string;
+        };
+      };
+    };
+  };
+}
+
+interface Props {
+  activeEdit: string | null;
+  setActiveEdit: (arbs: string | null) => void;
+  arenaNumber: number;
+  roundNumber: number;
+  matches: Array<Match>;
+}
+
+const EditTournamentBrackets8 = ({
+  activeEdit,
+  setActiveEdit,
+  arenaNumber,
+  roundNumber,
+  matches,
+}: Props) => {
+  const [byeMatchNumber, setByeMatchNumber] = useState(1);
+  const [bye, setBye] = useState<{
+    user: {
+      identity: {
+        arena_name: string;
+        avatar: {
+          image: string;
+          blurhash: string;
+        };
+      };
+    };
+  } | null>(null);
+
+  useEffect(() => {
+    let byeTracker: any;
+    matches.forEach((m) => {
+      if (m.bye && m.bye.user) {
+        byeTracker = m.bye;
+        if (m.matchNumber % 2 === 0) {
+          setByeMatchNumber(m.matchNumber - 1);
+        }
+
+        if (m.matchNumber % 2 !== 0) {
+          setByeMatchNumber((m.matchNumber + 1) / 2);
+        }
+      }
+    });
+
+    if (byeTracker) {
+      setBye(byeTracker);
+    } else {
+      setBye(null);
+    }
+  }, [matches]);
+
   return (
     <>
       <div className={cn(styles.brackets)}>
@@ -17,10 +103,16 @@ const EditTournamentBrackets8 = () => {
                 Quarterfinals
               </h2>
               <ul className={cn(styles.tournamentBracketList)}>
-                <EditTournamentBracket></EditTournamentBracket>
-                <EditTournamentBracket></EditTournamentBracket>
-                <EditTournamentBracket></EditTournamentBracket>
-                <EditTournamentBracket></EditTournamentBracket>
+                {matches.map((m) => (
+                  <EditTournamentBracket
+                    activeEdit={activeEdit}
+                    key={`${arenaNumber}:${roundNumber}:${m.matchNumber}`}
+                    setActiveEdit={setActiveEdit}
+                    arenaNumber={arenaNumber}
+                    roundNumber={roundNumber}
+                    match={m}
+                  ></EditTournamentBracket>
+                ))}
               </ul>
             </div>
             <div className={cn(styles.tournamentBracketRound)}>
@@ -28,8 +120,24 @@ const EditTournamentBrackets8 = () => {
                 SemiFinals
               </h3>
               <ul className={cn(styles.tournamentBracketList)}>
-                <EditTournamentBracket></EditTournamentBracket>
-                <EditTournamentBracket></EditTournamentBracket>
+                {bye ? (
+                  byeMatchNumber === 1 ? (
+                    <>
+                      <EditTournamentBracket bye={bye}></EditTournamentBracket>
+                      <EditTournamentBracket></EditTournamentBracket>
+                    </>
+                  ) : (
+                    <>
+                      <EditTournamentBracket></EditTournamentBracket>
+                      <EditTournamentBracket bye={bye}></EditTournamentBracket>
+                    </>
+                  )
+                ) : (
+                  <>
+                    <EditTournamentBracket></EditTournamentBracket>
+                    <EditTournamentBracket></EditTournamentBracket>
+                  </>
+                )}
               </ul>
             </div>
             <div className={cn(styles.tournamentBracketRound)}>

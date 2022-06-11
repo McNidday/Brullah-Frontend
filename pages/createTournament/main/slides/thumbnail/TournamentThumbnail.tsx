@@ -29,9 +29,7 @@ const TournamentThumbnail = ({
   const cropRef = useRef(null);
 
   const cropThumbnail = async () => {
-    console.log(crop.current);
     if (crop.current) {
-      console.log("Bitch picture blurred");
       const imageBlob = await crop.current.result({
         type: "blob",
       });
@@ -142,7 +140,7 @@ const TournamentThumbnail = ({
           data-swiper-parallax="-500"
         >
           <label className={cn(styles.imageButton)} htmlFor="avatar"></label>
-          <div ref={cropRef} onBlur={cropThumbnail}>
+          <div ref={cropRef}>
             {!avatarUrl && !uploadError ? (
               <div className={cn(styles.imagePlaceholder)}>
                 <p>Click the picture icon to upload your thumbnail.</p>
@@ -160,12 +158,20 @@ const TournamentThumbnail = ({
           <Button
             text="back"
             disabled={false}
-            onClick={() => swiper.slidePrev()}
+            onClick={() => {
+              cropThumbnail();
+              swiper.slidePrev();
+            }}
           ></Button>
           <Button
             text="Let's go!"
             disabled={false}
-            onClick={() => createTournament()}
+            onClick={() => {
+              cropThumbnail();
+              setTimeout(() => {
+                createTournament();
+              }, 2000);
+            }}
           ></Button>
         </div>
       </div>

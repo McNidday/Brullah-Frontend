@@ -1,7 +1,6 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import EditTournamentBracket from "../bracket/EditTournamentBracket";
-import { useEffect, useState } from "react";
 
 interface Props {
   activeEdit: string | null;
@@ -53,34 +52,13 @@ interface Props {
   }>;
 }
 
-const EditTournamentBrackets2 = ({
+const EditTournamentBrackets4 = ({
   activeEdit,
   setActiveEdit,
   arenaNumber,
   roundNumber,
   matches,
 }: Props) => {
-  const [bye, setBye] = useState<{
-    user: {
-      identity: {
-        arena_name: string;
-        avatar: {
-          image: string;
-          blurhash: string;
-        };
-      };
-    };
-  } | null>(null);
-  useEffect(() => {
-    matches.forEach((m) => {
-      if (m.bye && m.bye.user) {
-        setBye(m.bye);
-      } else {
-        setBye(null);
-      }
-    });
-  }, [matches]);
-
   return (
     <>
       <div className={cn(styles.brackets)}>
@@ -89,7 +67,9 @@ const EditTournamentBrackets2 = ({
             className={cn(styles.tournamentBracket, "tournamentBracketRounded")}
           >
             <div className={cn(styles.tournamentBracketRound)}>
-              <h2 className={cn(styles.tournamentBracketRoundTitle)}>Finals</h2>
+              <h2 className={cn(styles.tournamentBracketRoundTitle)}>
+                Quarterfinals
+              </h2>
               <ul className={cn(styles.tournamentBracketList)}>
                 {matches.map((m) => (
                   <EditTournamentBracket
@@ -104,13 +84,15 @@ const EditTournamentBrackets2 = ({
               </ul>
             </div>
             <div className={cn(styles.tournamentBracketRound)}>
+              <h3 className={cn(styles.tournamentBracketRoundTitle)}>Finals</h3>
+              <ul className={cn(styles.tournamentBracketList)}>
+                <EditTournamentBracket></EditTournamentBracket>
+              </ul>
+            </div>
+            <div className={cn(styles.tournamentBracketRound)}>
               <h3 className={cn(styles.tournamentBracketRoundTitle)}>Winner</h3>
               <ul className={cn(styles.tournamentBracketList)}>
-                {bye ? (
-                  <EditTournamentBracket bye={bye}></EditTournamentBracket>
-                ) : (
-                  <EditTournamentBracket></EditTournamentBracket>
-                )}
+                <EditTournamentBracket></EditTournamentBracket>
               </ul>
             </div>
           </div>
@@ -120,4 +102,4 @@ const EditTournamentBrackets2 = ({
   );
 };
 
-export default EditTournamentBrackets2;
+export default EditTournamentBrackets4;

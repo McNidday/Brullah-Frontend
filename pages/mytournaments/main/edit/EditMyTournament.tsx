@@ -14,6 +14,7 @@ import debounce from "lodash.debounce";
 import { CircularProgress } from "@mui/material";
 import EditMyTournamentLoading from "./loading/EditMyTournamentLoading";
 import EditMyTournamentError from "./error/EditMyTournamentError";
+import Button from "../../../components/Button/Button";
 
 const matchConfig = {
   timmersInput: {
@@ -271,9 +272,7 @@ const EditMyTournament = ({ editId }: Props) => {
                 if (arbsArray[3] === 2) {
                   m.slot_two = {};
                 }
-                if (arbsArray[3] === 3) {
-                  delete m.bye;
-                }
+                delete m.bye;
               }
             });
           }
@@ -298,7 +297,7 @@ const EditMyTournament = ({ editId }: Props) => {
                   newUsersToConfigure.push({ ...m.slot_two.user });
                   m.slot_two = {};
                 }
-                if (arbsArray[3] === 3) {
+                if (m.bye) {
                   newUsersToConfigure.push({ ...m.bye.user });
                   delete m.bye;
                 }
@@ -344,6 +343,7 @@ const EditMyTournament = ({ editId }: Props) => {
         });
       }
     });
+    console.log(newOnlineConfig);
     setOnlineConfig(newOnlineConfig);
     const newUsersToConfigure = usersToConfigure.filter((u) => {
       return u.id !== userId;
@@ -401,28 +401,14 @@ const EditMyTournament = ({ editId }: Props) => {
           createMatchConfig(data.tournament.analytics.joined_users)
         );
       } else {
-        setOnlineConfig(
-          createOnlineConfigFromLocalConfig(
-            matchConfigShallowCopy(
-              data.tournament.match.configuration.configure
-            )
-          )
+        const config = createOnlineConfigFromLocalConfig(
+          data.tournament.match.users.joined,
+          matchConfigShallowCopy(data.tournament.match.configuration.configure)
         );
-        setLocalConfig(data.tournament.match.configuration.configure);
+        setOnlineConfig(config.onlineConfig);
+        setUsersToConfigure(config.usersToConfigure);
+        setLocalConfig(config.localConfig);
       }
-
-      // Get all the users who have not been configured
-      const notConfigured: Array<User> = [];
-      data.tournament.match.users.joined.forEach((u: any) => {
-        const configuredIndex =
-          data.tournament.match.users.configured.findIndex((c: any) => {
-            return c.id === u.id;
-          });
-        if (configuredIndex === -1) {
-          notConfigured.push(u);
-        }
-      });
-      setUsersToConfigure(notConfigured);
       // Set the joined users
       setUsersJoined(data.tournament.match.users.joined);
     }
@@ -457,7 +443,11 @@ const EditMyTournament = ({ editId }: Props) => {
   return (
     <>
       <div className={cn(styles.editNavigation)}>
-        <div></div>
+        <div className={cn(styles.editNavigationButtons)}>
+          <Button text="publish" disabled={false}></Button>
+          <Button text="auto~pple" disabled={false}></Button>
+          <Button text="auto~time" disabled={false}></Button>
+        </div>
         {saveConfigLoading ? (
           <div className={cn(styles.editStatesLoading)}>
             <span>Saving</span>

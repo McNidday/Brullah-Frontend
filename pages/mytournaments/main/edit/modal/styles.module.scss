@@ -14,6 +14,7 @@
   grid-template-rows: 0.12fr minmax(0, 1fr);
   grid-template-areas: "nav" "content";
   border-bottom-right-radius: $borderRadius;
+  pointer-events: all;
 }
 
 .activeTab {
@@ -43,6 +44,7 @@
   padding: 0;
   padding: 10px;
   overflow-y: auto;
+  height: 100%;
 }
 
 .editUserListItem {

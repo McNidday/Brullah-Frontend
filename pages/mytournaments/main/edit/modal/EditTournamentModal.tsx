@@ -3,7 +3,7 @@ import cn from "classnames";
 import Image from "next/image";
 import Button from "../../../../components/Button/Button";
 import { useEffect, useRef, useState } from "react";
-import { decodeBlurHash } from "../../../../functions/helpers";
+import { decodeBlurHash, isByeNumber } from "../../../../functions/helpers";
 import anime from "animejs";
 
 interface Props {
@@ -73,7 +73,6 @@ const EditTournamentModal = ({
   handleConfigUserUpdate,
   handleConfigUserRemove,
 }: Props) => {
-  const [byeNumbers] = useState([3]);
   const [editting, setEditting] = useState<{
     matchNumber: number;
     slot_one: {
@@ -102,6 +101,7 @@ const EditTournamentModal = ({
     };
   } | null>(null);
   const [bye, setBye] = useState(false);
+  const [emptyByes, setEmptyByes] = useState(false);
   const modalRef = useRef(null);
 
   const [tab, setTab] = useState<"people" | "time">("people");
@@ -125,12 +125,14 @@ const EditTournamentModal = ({
         }
       });
       // Check if  bye exists
-      const usersJoined = joinedUsers.length;
-      const byeIndex = byeNumbers.findIndex((b) => usersJoined === b);
+      const isABye = isByeNumber(
+        joinedUsers.slice((arbsArray[0] - 1) * 16, arbsArray[0] * 16).length
+      );
       // If bye has been configured, but has not been configured in current edit
       // Then disable bye
-      if (byeIndex > -1) {
+      if (isABye) {
         let byeEdit: string | null = null;
+        let oneMatchEmpty = false;
         // Check if bye has been configured
         config.forEach((a) => {
           a.rounds.forEach((r, ri) => {
@@ -141,10 +143,79 @@ const EditTournamentModal = ({
             });
           });
         });
+        config.forEach((a) => {
+          if (arbsArray[0] !== a.arenaNumber) return;
+          a.rounds.forEach((r, ri) => {
+            if (arbsArray[1] !== r.roundNumber) return;
+            a.rounds[ri].matches.forEach((m) => {
+              if (arbsArray[2] !== m.matchNumber) return;
+              let bye: boolean = false;
+              if (m.bye) bye = true;
+              if (!m.slot_one.user && !m.slot_two.user) {
+                // Check if the neighbouring parent is full
+                if (m.matchNumber % 2 === 0) {
+                  a.rounds[ri].matches.forEach((mc) => {
+                    if (mc.matchNumber === m.matchNumber - 1) {
+                      if (mc.slot_one.user && mc.slot_two.user) {
+                        oneMatchEmpty = true;
+                        if (mc.bye) bye = true;
+                      }
+                    }
+                  });
+                }
+
+                if (m.matchNumber % 2 !== 0) {
+                  a.rounds[ri].matches.forEach((mc) => {
+                    if (mc.matchNumber === m.matchNumber + 1) {
+                      if (mc.slot_one.user && mc.slot_two.user) {
+                        oneMatchEmpty = true;
+                        if (mc.bye) bye = true;
+                      }
+                    }
+                  });
+                }
+              }
+              if (m.slot_one.user && m.slot_two.user) {
+                // Check if the neighbouring parent is full
+                if (m.matchNumber % 2 === 0) {
+                  a.rounds[ri].matches.forEach((mc) => {
+                    if (mc.matchNumber === m.matchNumber - 1) {
+                      if (!mc.slot_one.user && !mc.slot_two.user) {
+                        oneMatchEmpty = true;
+                        if (mc.bye) bye = true;
+                      }
+                    }
+                  });
+                }
+
+                if (m.matchNumber % 2 !== 0) {
+                  a.rounds[ri].matches.forEach((mc) => {
+                    if (mc.matchNumber === m.matchNumber + 1) {
+                      if (!mc.slot_one.user && !mc.slot_two.user) {
+                        oneMatchEmpty = true;
+                        if (mc.bye) bye = true;
+                      }
+                    }
+                  });
+                }
+              }
+              if (!bye && byeEdit) oneMatchEmpty = false;
+            });
+          });
+        });
+
+        if (oneMatchEmpty && byeEdit) {
+          setEmptyByes(true);
+        } else {
+          setEmptyByes(false);
+        }
+
         if (byeEdit === activeEdit) {
           setBye(true);
-        } else if (byeEdit === null) {
+        } else if (byeEdit === null && oneMatchEmpty) {
           setBye(true);
+        } else {
+          setBye(false);
         }
       }
       // Show modal
@@ -208,6 +279,8 @@ const EditTournamentModal = ({
                         editting
                           ? editting.slot_one.user
                             ? true
+                            : emptyByes
+                            ? true
                             : false
                           : false
                       }
@@ -224,6 +297,8 @@ const EditTournamentModal = ({
                             editting
                               ? editting.slot_two.user
                                 ? true
+                                : emptyByes
+                                ? true
                                 : false
                               : false
                           }
@@ -233,7 +308,19 @@ const EditTournamentModal = ({
                         ""
                       )
                     ) : (
-                      ""
+                      <Button
+                        text="right"
+                        disabled={
+                          editting
+                            ? editting.slot_two.user
+                              ? true
+                              : emptyByes
+                              ? true
+                              : false
+                            : false
+                        }
+                        onClick={() => handleConfigUserUpdate(u.id, 2)}
+                      ></Button>
                     )}
 
                     {bye ? (

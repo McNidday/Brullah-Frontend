@@ -5,7 +5,6 @@ import { decodeBlurHash } from "../../../../../../functions/helpers";
 
 interface Props {
   bye?: {
-    joined: boolean;
     user: {
       identity: {
         arena_name: string;
@@ -15,7 +14,6 @@ interface Props {
         };
       };
     };
-    reason: string;
   };
   activeEdit?: string | null;
   arenaNumber?: number;
@@ -23,10 +21,8 @@ interface Props {
   setActiveEdit?: (arb: string | null) => void;
   match?: {
     matchNumber: number;
-    progress: string;
     slot_one: {
-      joined: boolean;
-      user: {
+      user?: {
         identity: {
           arena_name: string;
           avatar: {
@@ -35,11 +31,9 @@ interface Props {
           };
         };
       };
-      reason: string;
     };
     slot_two: {
-      joined: boolean;
-      user: {
+      user?: {
         identity: {
           arena_name: string;
           avatar: {
@@ -48,7 +42,6 @@ interface Props {
           };
         };
       };
-      reason: string;
     };
   };
 }
@@ -144,7 +137,10 @@ const EditTournamentBracket = ({
                   <div
                     className={cn(styles.tournamentBracketDataProfilePicture)}
                   >
-                    <Image src={"/icons/duck.png"} layout="fill"></Image>
+                    <Image
+                      src={"/icons/cyclone/active.svg"}
+                      layout="fill"
+                    ></Image>
                   </div>
                   <div className={cn(styles.tournamentBracketDataName)}>
                     <span>¯\(°_o)/¯</span>
@@ -179,7 +175,10 @@ const EditTournamentBracket = ({
                   <div
                     className={cn(styles.tournamentBracketDataProfilePicture)}
                   >
-                    <Image src={"/icons/duck.png"} layout="fill"></Image>
+                    <Image
+                      src={"/icons/cyclone/active.svg"}
+                      layout="fill"
+                    ></Image>
                   </div>
                   <div className={cn(styles.tournamentBracketDataName)}>
                     <span>¯\(°_o)/¯</span>
