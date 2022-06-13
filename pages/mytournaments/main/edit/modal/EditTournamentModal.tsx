@@ -1,10 +1,12 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
+import moment from "moment";
 import Button from "../../../../components/Button/Button";
 import { useEffect, useRef, useState } from "react";
 import { decodeBlurHash, isByeNumber } from "../../../../functions/helpers";
 import anime from "animejs";
+import Icon from "../../../../components/Icon/Icon";
 
 interface Props {
   joinedUsers: Array<{
@@ -60,9 +62,11 @@ interface Props {
       };
     };
   }>;
+  setActiveEdit: (edit: string | null) => void;
   activeEdit: string | null;
   handleConfigUserUpdate: (userId: string, slot: number) => void;
   handleConfigUserRemove: (arbs: string) => void;
+  handleTimeUpdate: (hours: number) => void;
 }
 
 const EditTournamentModal = ({
@@ -70,8 +74,10 @@ const EditTournamentModal = ({
   config,
   usersToConfigure,
   activeEdit,
+  setActiveEdit,
   handleConfigUserUpdate,
   handleConfigUserRemove,
+  handleTimeUpdate,
 }: Props) => {
   const [editting, setEditting] = useState<{
     matchNumber: number;
@@ -102,9 +108,11 @@ const EditTournamentModal = ({
   } | null>(null);
   const [bye, setBye] = useState(false);
   const [emptyByes, setEmptyByes] = useState(false);
+  const [offset, setOffset] = useState(moment.duration(2, "hours").asHours());
   const modalRef = useRef(null);
 
   const [tab, setTab] = useState<"people" | "time">("people");
+  const [closeIconHover, setCloseIconHover] = useState(false);
 
   useEffect(() => {
     if (activeEdit) {
@@ -252,45 +260,76 @@ const EditTournamentModal = ({
             Time
           </li>
         </ul>
+        <div
+          className={cn(styles.closeIcon)}
+          onMouseEnter={() => setCloseIconHover(true)}
+          onMouseLeave={() => setCloseIconHover(false)}
+          onClick={() => setActiveEdit(null)}
+        >
+          <Icon
+            activeLink="/icons/x/active.svg"
+            inactiveLink="/icons/x/inactive.svg"
+            hover={closeIconHover}
+          ></Icon>
+        </div>
       </div>
       <div className={cn(styles.content)}>
         <div className={cn(styles.editUsers, bye ? styles.editUsersBye : "")}>
-          {usersToConfigure.length > 0 ? (
-            <ul className={cn(styles.editUserList)}>
-              {usersToConfigure.map((u) => {
-                return (
-                  <li key={u.id} className={cn(styles.editUserListItem)}>
-                    <div className={cn(styles.editUserListItemImage)}>
-                      <Image
-                        src={u.identity.avatar.image}
-                        layout="fill"
-                        placeholder="blur"
-                        blurDataURL={decodeBlurHash(
-                          u.identity.avatar.blurhash,
-                          50,
-                          50
-                        )}
-                      ></Image>
-                    </div>
-                    <div>{u.identity.arena_name}</div>
-                    <Button
-                      text="left"
-                      disabled={
-                        editting
-                          ? editting.slot_one.user
-                            ? true
-                            : emptyByes
-                            ? true
+          {tab === "people" ? (
+            usersToConfigure.length > 0 ? (
+              <ul className={cn(styles.editUserList)}>
+                {usersToConfigure.map((u) => {
+                  return (
+                    <li key={u.id} className={cn(styles.editUserListItem)}>
+                      <div className={cn(styles.editUserListItemImage)}>
+                        <Image
+                          src={u.identity.avatar.image}
+                          layout="fill"
+                          placeholder="blur"
+                          blurDataURL={decodeBlurHash(
+                            u.identity.avatar.blurhash,
+                            50,
+                            50
+                          )}
+                        ></Image>
+                      </div>
+                      <div>{u.identity.arena_name}</div>
+                      <Button
+                        text="left"
+                        disabled={
+                          editting
+                            ? editting.slot_one.user
+                              ? true
+                              : emptyByes
+                              ? true
+                              : false
                             : false
-                          : false
-                      }
-                      onClick={() => handleConfigUserUpdate(u.id, 1)}
-                    ></Button>
+                        }
+                        onClick={() => handleConfigUserUpdate(u.id, 1)}
+                      ></Button>
 
-                    {bye ? (
-                      (!editting?.slot_one.user && !editting?.slot_two.user) ||
-                      (editting?.slot_one.user && !editting.slot_two.user) ||
-                      (!editting?.slot_one.user && editting.slot_two.user) ? (
+                      {bye ? (
+                        (!editting?.slot_one.user &&
+                          !editting?.slot_two.user) ||
+                        (editting?.slot_one.user && !editting.slot_two.user) ||
+                        (!editting?.slot_one.user && editting.slot_two.user) ? (
+                          <Button
+                            text="right"
+                            disabled={
+                              editting
+                                ? editting.slot_two.user
+                                  ? true
+                                  : emptyByes
+                                  ? true
+                                  : false
+                                : false
+                            }
+                            onClick={() => handleConfigUserUpdate(u.id, 2)}
+                          ></Button>
+                        ) : (
+                          ""
+                        )
+                      ) : (
                         <Button
                           text="right"
                           disabled={
@@ -304,51 +343,51 @@ const EditTournamentModal = ({
                           }
                           onClick={() => handleConfigUserUpdate(u.id, 2)}
                         ></Button>
-                      ) : (
-                        ""
-                      )
-                    ) : (
-                      <Button
-                        text="right"
-                        disabled={
-                          editting
-                            ? editting.slot_two.user
-                              ? true
-                              : emptyByes
-                              ? true
-                              : false
-                            : false
-                        }
-                        onClick={() => handleConfigUserUpdate(u.id, 2)}
-                      ></Button>
-                    )}
+                      )}
 
-                    {bye ? (
-                      editting?.slot_one.user && editting.slot_two.user ? (
-                        <Button
-                          text="bye"
-                          disabled={
-                            editting
-                              ? editting.bye && editting.bye.user
-                                ? true
+                      {bye ? (
+                        editting?.slot_one.user && editting.slot_two.user ? (
+                          <Button
+                            text="bye"
+                            disabled={
+                              editting
+                                ? editting.bye && editting.bye.user
+                                  ? true
+                                  : false
                                 : false
-                              : false
-                          }
-                          onClick={() => handleConfigUserUpdate(u.id, 3)}
-                        ></Button>
+                            }
+                            onClick={() => handleConfigUserUpdate(u.id, 3)}
+                          ></Button>
+                        ) : (
+                          ""
+                        )
                       ) : (
                         ""
-                      )
-                    ) : (
-                      ""
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <div className={cn(styles.editUserListPlaceHolder)}>
+                <p>No one to match up. Clean slate ( ͡° ͜ʖ ͡°)</p>
+              </div>
+            )
           ) : (
-            <div className={cn(styles.editUserListPlaceHolder)}>
-              <p>No one to match up. Clean slate ( ͡° ͜ʖ ͡°)</p>
+            <div className={cn(styles.setTime)}>
+              <input
+                type="number"
+                placeholder="offset ~ hours"
+                value={offset}
+                onChange={(e) => setOffset(parseInt(e.target.value))}
+              ></input>
+              <Button
+                text="Set time"
+                disabled={false}
+                onClick={() => {
+                  handleTimeUpdate(offset);
+                }}
+              ></Button>
             </div>
           )}
         </div>

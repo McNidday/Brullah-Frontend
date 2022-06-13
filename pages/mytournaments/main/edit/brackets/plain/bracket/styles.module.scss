@@ -111,6 +111,36 @@ $breakpoint-lg: 72em;
   }
 }
 
+.makeFinalBefore {
+  @media (min-width: $breakpoint-sm) {
+    &::before,
+    &::after {
+      border-left: none !important;
+    }
+    &::before {
+      [class~="tournamentBracketRounded"] & {
+        border-bottom-left-radius: 0em !important;
+      }
+    }
+    &::after {
+      [class~="tournamentBracketRounded"] & {
+        border-top-left-radius: 0em !important;
+      }
+    }
+  }
+}
+
+.makeFinalAfter {
+  &::after {
+    border-right: none !important;
+  }
+  &:nth-child(odd)::after {
+    [class~="tournamentBracketRounded"] & {
+      border-top-right-radius: 0em !important;
+    }
+  }
+}
+
 .tournamentBracketMatch {
   display: flex;
   width: 100%;

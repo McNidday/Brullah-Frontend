@@ -24,66 +24,10 @@
   pointer-events: none;
 }
 
-.editNavigation {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 0px 20px 0px 20px;
-}
-
-.editNavigationButtons {
-  width: 300px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.editStatesLoading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-  width: 80px;
-}
-
-.editStatesLoadingProgress {
-  width: 20px !important;
-  height: 20px !important;
-  color: $activeColor !important;
-}
-
-.editStatesError {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  &::before {
-    content: "*";
-    position: absolute;
-    top: 20%;
-    left: -10px;
-    color: red;
-  }
-  h3 {
-    margin: 0px;
-    color: red;
-  }
-}
-
 .error {
   border-radius: $borderRadius;
   display: flex;
   justify-content: center;
   align-items: center;
   color: red;
-}
-
-.cool {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  h3 {
-    margin: 0px;
-  }
 }

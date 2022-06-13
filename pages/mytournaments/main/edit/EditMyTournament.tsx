@@ -1,76 +1,21 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
+import moment from "moment";
 import EditTournamentArenaBrackets from "./brackets/arena/EditTournamentArenaBrackets";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useEffect, useRef, useState } from "react";
 import {
   createMatchConfig,
   createOnlineConfigFromLocalConfig,
-  getAreanaFromConfig,
+  createTimeConfig,
   getNumOfArenas,
 } from "../../../functions/helpers";
 import EditTournamentModal from "./modal/EditTournamentModal";
 import debounce from "lodash.debounce";
-import { CircularProgress } from "@mui/material";
 import EditMyTournamentLoading from "./loading/EditMyTournamentLoading";
 import EditMyTournamentError from "./error/EditMyTournamentError";
-import Button from "../../../components/Button/Button";
-
-const matchConfig = {
-  timmersInput: {
-    afterDq: 100,
-    beforeDq: 200,
-    auto_reconfigure: 100,
-    match_time: [
-      {
-        arenaNumber: 1,
-        rounds: [
-          {
-            roundNumber: 1,
-            matches: [
-              {
-                matchNumber: 1,
-                time: 10000,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  input: {
-    configure: [
-      {
-        arenaNumber: 1,
-        rounds: [
-          {
-            roundNumber: 1,
-            matches: [
-              {
-                matchNumber: 1,
-                slot_one: {
-                  user: "610c4b25bf2e5a2ca8738dc9",
-                },
-                slot_two: {
-                  user: "610c5afc0f18351f4caca420",
-                },
-              },
-              {
-                matchNumber: 2,
-                slot_one: {
-                  user: "610c5b1d0f18351f4caca424",
-                },
-                slot_two: {
-                  user: "610c5b3c0f18351f4caca428",
-                },
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-};
+import EditMyTournamentNav from "./nav/EditMyTournamentNav";
+import PublishTournamentModal from "./publishModal/PublishTournamentModal";
 
 interface User {
   id: string;
@@ -91,8 +36,12 @@ const TOURNAMENT = gql`
   query GetTournament($id: ID!) {
     tournament(id: $id) {
       id
+      start_date
       analytics {
         joined_users
+      }
+      information {
+        name
       }
       match {
         id
@@ -119,6 +68,21 @@ const TOURNAMENT = gql`
           }
         }
         configuration {
+          timmers {
+            afterDq
+            beforeDq
+            auto_reconfigure
+            match_time {
+              arenaNumber
+              rounds {
+                roundNumber
+                matches {
+                  matchNumber
+                  time
+                }
+              }
+            }
+          }
           configure {
             winner {
               user
@@ -184,15 +148,19 @@ const TOURNAMENT = gql`
 `;
 
 const SAVE_CONFIG = gql`
-  mutation SaveMatchConfig($id: ID!, $config: MatchConfigInput) {
-    saveConfiguration(id: $id, config: $config) {
+  mutation SaveMatchConfig(
+    $id: ID!
+    $config: MatchConfigInput
+    $timmers: MatchTimmersInput
+  ) {
+    saveConfiguration(id: $id, config: $config, timmers: $timmers) {
       id
     }
   }
 `;
 
 const EditMyTournament = ({ editId }: Props) => {
-  const { loading, error, data } = useQuery(TOURNAMENT, {
+  const { loading, error, data, refetch } = useQuery(TOURNAMENT, {
     variables: {
       id: editId,
     },
@@ -206,11 +174,15 @@ const EditMyTournament = ({ editId }: Props) => {
       error: saveConfigError,
       reset,
     },
-  ] = useMutation(SAVE_CONFIG);
+  ] = useMutation(SAVE_CONFIG, {
+    errorPolicy: "all",
+  });
 
   const [activeEdit, setActiveEdit] = useState<string | null>(null);
   const [localConfig, setLocalConfig] = useState<Array<any>>([]);
   const [onlineConfig, setOnlineConfig] = useState<Array<any>>([]);
+  const [timeConfig, setTimeConfig] = useState<Array<any>>([]);
+  const [showPublishModal, setShowPublisModal] = useState(false);
 
   const [numOfArenas, setNumOfArenas] = useState(0);
   const [arenas, setArenas] = useState<Array<number>>([]);
@@ -218,12 +190,22 @@ const EditMyTournament = ({ editId }: Props) => {
   const [usersToConfigure, setUsersToConfigure] = useState<Array<User>>([]);
   const [usersJoined, setUsersJoined] = useState<Array<User>>([]);
 
+  const [activeArena, setActiveArena] = useState(1);
+
   const saveConfigDebounce = useRef(
-    debounce((id, config) => {
+    debounce((id, config, onlineTimeConfig) => {
       saveTournamentConfig({
         variables: {
           id: id,
-          config: { configure: config },
+          timmers: {
+            afterDq: 30,
+            beforeDq: 30,
+            auto_reconfigure: 30,
+            match_time: onlineTimeConfig,
+          },
+          config: {
+            configure: config,
+          },
         },
       });
     }, 5000)
@@ -318,9 +300,9 @@ const EditMyTournament = ({ editId }: Props) => {
     const newOnlineConfig = matchConfigShallowCopy(onlineConfig);
     newOnlineConfig.forEach((a: any) => {
       if (a.arenaNumber === arbsArray[0]) {
-        a.rounds.forEach((r: any, ri: number) => {
+        a.rounds.forEach((r: any) => {
           if (r.roundNumber === arbsArray[1]) {
-            a.rounds[ri].matches.forEach((m: any) => {
+            r.matches.forEach((m: any) => {
               if (m.matchNumber === arbsArray[2]) {
                 if (slot === 1) {
                   m.slot_one = {
@@ -343,7 +325,6 @@ const EditMyTournament = ({ editId }: Props) => {
         });
       }
     });
-    console.log(newOnlineConfig);
     setOnlineConfig(newOnlineConfig);
     const newUsersToConfigure = usersToConfigure.filter((u) => {
       return u.id !== userId;
@@ -383,6 +364,86 @@ const EditMyTournament = ({ editId }: Props) => {
     setLocalConfig(newLocalConfig);
   };
 
+  const handleAutoPple = () => {
+    const newOnlineConfig = createMatchConfig(usersJoined.length);
+    usersJoined.forEach((u) => {
+      let inserted = false;
+      newOnlineConfig.forEach((a) => {
+        a.rounds.forEach((r: any) => {
+          r.matches.forEach((m: any) => {
+            if (inserted) return;
+            if (!m.slot_one.user) {
+              m.slot_one = { user: u.id };
+              inserted = true;
+            } else if (!m.slot_two.user) {
+              m.slot_two = { user: u.id };
+              inserted = true;
+            }
+          });
+        });
+      });
+    });
+    setOnlineConfig(newOnlineConfig);
+    const newLocalConfig = createMatchConfig(usersJoined.length);
+    usersJoined.forEach((u) => {
+      let inserted = false;
+      newLocalConfig.forEach((a) => {
+        a.rounds.forEach((r: any) => {
+          r.matches.forEach((m: any) => {
+            if (inserted) return;
+            if (!m.slot_one.user) {
+              m.slot_one = { user: { ...u } };
+              delete m.slot_one.user.__typename;
+              inserted = true;
+            } else if (!m.slot_two.user) {
+              m.slot_two = { user: { ...u } };
+              delete m.slot_two.user.__typename;
+              inserted = true;
+            }
+          });
+        });
+      });
+    });
+    setLocalConfig(newLocalConfig);
+    setUsersToConfigure([]);
+    handleTimeUpdate(4);
+  };
+
+  const handleTimeUpdate = (hours: number) => {
+    const roundOneTime = moment().add(hours, "hours");
+    const roundTwoTime = roundOneTime.clone().add(hours, "hours");
+    const roundThreeTime = roundTwoTime.clone().add(hours, "hours");
+    const roundFourTime = roundThreeTime.clone().add(hours, "hours");
+    const newTimeConfig = createTimeConfig(usersJoined.length);
+    newTimeConfig.forEach((a) => {
+      a.rounds.forEach((r: any) => {
+        r.matches.forEach((m: any) => {
+          if (r.roundNumber === 1) {
+            m.time = roundOneTime.unix();
+          }
+          if (r.roundNumber === 2) {
+            m.time = roundTwoTime.unix();
+          }
+          if (r.roundNumber === 3) {
+            m.time = roundThreeTime.unix();
+          }
+          if (r.roundNumber === 4) {
+            m.time = roundFourTime.unix();
+          }
+        });
+      });
+    });
+    setTimeConfig(newTimeConfig);
+  };
+
+  const handlePublishModalOpen = () => {
+    setShowPublisModal(true);
+  };
+
+  const handlePublishModalClose = () => {
+    setShowPublisModal(false);
+  };
+
   useEffect(() => {
     if (data?.tournament) {
       setNumOfArenas(getNumOfArenas(data.tournament.analytics.joined_users));
@@ -391,6 +452,21 @@ const EditMyTournament = ({ editId }: Props) => {
 
   useEffect(() => {
     if (data?.tournament) {
+      if (
+        !data.tournament.match.configuration.timmers ||
+        data.tournament.match.configuration.timmers.match_time.length !==
+          numOfArenas
+      ) {
+        setTimeConfig(createTimeConfig(data.tournament.analytics.joined_users));
+      } else {
+        setTimeConfig(
+          createTimeConfig(
+            data.tournament.analytics.joined_users,
+            data.tournament.match.configuration.timmers.match_time
+          )
+        );
+      }
+
       if (
         data.tournament.match.configuration.configure.length !== numOfArenas
       ) {
@@ -426,9 +502,9 @@ const EditMyTournament = ({ editId }: Props) => {
 
   useEffect(() => {
     if (data?.tournament && onlineConfig.length > 0) {
-      saveConfigDebounce(data.tournament.match.id, onlineConfig);
+      saveConfigDebounce(data.tournament.match.id, onlineConfig, timeConfig);
     }
-  }, [onlineConfig, data]);
+  }, [onlineConfig, timeConfig, data]);
 
   useEffect(() => {
     if (saveConfigData || saveConfigError) {
@@ -442,42 +518,32 @@ const EditMyTournament = ({ editId }: Props) => {
 
   return (
     <>
-      <div className={cn(styles.editNavigation)}>
-        <div className={cn(styles.editNavigationButtons)}>
-          <Button text="publish" disabled={false}></Button>
-          <Button text="auto~pple" disabled={false}></Button>
-          <Button text="auto~time" disabled={false}></Button>
-        </div>
-        {saveConfigLoading ? (
-          <div className={cn(styles.editStatesLoading)}>
-            <span>Saving</span>
-            <CircularProgress
-              className={styles.editStatesLoadingProgress}
-            ></CircularProgress>
-          </div>
-        ) : saveConfigError ? (
-          <div className={cn(styles.editStatesError)}>
-            <h3>{saveConfigError.message}</h3>
-          </div>
-        ) : (
-          <div className={cn(styles.cool)}>
-            <h3>(✿◡‿◡)</h3>
-          </div>
-        )}
-      </div>
+      <EditMyTournamentNav
+        handlePublishModalOpen={handlePublishModalOpen}
+        handleAutoPple={handleAutoPple}
+        saveConfigError={saveConfigError}
+        saveConfigLoading={saveConfigLoading}
+      ></EditMyTournamentNav>
       <div className={cn(styles.editContainer)}>
         {arenas?.map((a, i) => {
           return (
             <EditTournamentArenaBrackets
+              handleActiveArena={(val: number) => {
+                setActiveArena(val);
+              }}
+              activeArena={activeArena === i + 1 ? true : false}
               activeEdit={activeEdit}
               key={`${data.tournament.match.id}:${a}`}
               setActiveEdit={handleActiveEdit}
               config={localConfig[i]}
+              time={timeConfig[i]}
             ></EditTournamentArenaBrackets>
           );
         })}
         <div className={cn(styles.modalContainer)}>
           <EditTournamentModal
+            setActiveEdit={(val: string | null) => setActiveEdit(val)}
+            handleTimeUpdate={handleTimeUpdate}
             joinedUsers={usersJoined}
             handleConfigUserRemove={handleConfigUserRemove}
             config={localConfig}
@@ -487,6 +553,16 @@ const EditMyTournament = ({ editId }: Props) => {
           ></EditTournamentModal>
         </div>
       </div>
+      {data?.tournament ? (
+        <PublishTournamentModal
+          refetchTournament={() => refetch({ id: editId })}
+          tournament={data.tournament}
+          showPublishModal={showPublishModal}
+          handlePublishModalClose={handlePublishModalClose}
+        ></PublishTournamentModal>
+      ) : (
+        ""
+      )}
     </>
   );
 };

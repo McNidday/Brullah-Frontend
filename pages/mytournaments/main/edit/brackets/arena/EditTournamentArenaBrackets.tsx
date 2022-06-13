@@ -3,10 +3,13 @@ import cn from "classnames";
 import EditTournamentBrackets from "../plain/EditTournamentBrackets";
 import Button from "../../../../../components/Button/Button";
 import { useEffect, useState } from "react";
+import Icon from "../../../../../components/Icon/Icon";
 
 interface Props {
+  activeArena: boolean;
   activeEdit: string | null;
   setActiveEdit: (arbs: string | null) => void;
+  handleActiveArena: (arena: number) => void;
   config: {
     arenaNumber: number;
     rounds: [
@@ -47,13 +50,31 @@ interface Props {
       }
     ];
   };
+  time: {
+    arenaNumber: number;
+    rounds: [
+      {
+        roundNumber: number;
+        matches: [
+          {
+            matchNumber: number;
+            time: number;
+          }
+        ];
+      }
+    ];
+  };
 }
 
 const EditTournamentArenaBrackets = ({
+  activeArena,
+  handleActiveArena,
   config,
   setActiveEdit,
   activeEdit,
+  time,
 }: Props) => {
+  const [arenaHover, setArenaHover] = useState(false);
   const [section, setSection] = useState(1);
   const [sectionOne, setSectionOne] = useState<
     Array<{
@@ -135,15 +156,52 @@ const EditTournamentArenaBrackets = ({
 
   return (
     <div className={cn(styles.container)}>
-      <h2>Arena {config.arenaNumber}</h2>
-      <div className={cn(styles.brackets)}>
+      <div
+        onMouseEnter={() => setArenaHover(true)}
+        onMouseLeave={() => setArenaHover(false)}
+        className={cn(styles.arenaNav)}
+        onClick={() => {
+          if (
+            activeEdit &&
+            parseInt(activeEdit?.split(":")[0]) !== config.arenaNumber
+          ) {
+            setActiveEdit(null);
+          }
+          handleActiveArena(config.arenaNumber);
+        }}
+      >
+        <h2>Arena {config.arenaNumber}</h2>
+        <div
+          className={cn(
+            styles.openArenaIcon,
+            !activeArena ? styles.inactiveOpenArenaIcon : ""
+          )}
+        >
+          <Icon
+            activeLink="/icons/dropdown/active.svg"
+            inactiveLink="/icons/dropdown/inactive.svg"
+            hover={arenaHover}
+          ></Icon>
+        </div>
+      </div>
+      <div
+        className={cn(
+          styles.brackets,
+          !activeArena ? styles.inactiveBrackets : ""
+        )}
+      >
         <div className={cn(styles.sectionNav)}>
           {sectionOne.length >= 1 ? (
             <Button
               text="Section 1"
               disabled={false}
               forceActive={section === 1 ? true : false}
-              onClick={() => setSection(1)}
+              onClick={() => {
+                if (section !== 1) {
+                  setActiveEdit(null);
+                }
+                setSection(1);
+              }}
             ></Button>
           ) : (
             ""
@@ -153,14 +211,19 @@ const EditTournamentArenaBrackets = ({
               text="Section 2"
               disabled={false}
               forceActive={section === 2 ? true : false}
-              onClick={() => setSection(2)}
+              onClick={() => {
+                if (section !== 2) {
+                  setActiveEdit(null);
+                }
+                setSection(2);
+              }}
             ></Button>
           ) : (
             ""
           )}
         </div>
         <div className={cn(styles.sections)}>
-          {sectionOne.length >= 1 ? (
+          {sectionOne.length >= 1 && section === 1 ? (
             <section>
               <EditTournamentBrackets
                 activeEdit={activeEdit}
@@ -168,12 +231,13 @@ const EditTournamentArenaBrackets = ({
                 roundNumber={1}
                 arenaNumber={config.arenaNumber}
                 matches={sectionOne}
+                time={time}
               ></EditTournamentBrackets>
             </section>
           ) : (
             ""
           )}
-          {sectionTwo.length >= 1 ? (
+          {sectionTwo.length >= 1 && section === 2 ? (
             <section>
               <EditTournamentBrackets
                 activeEdit={activeEdit}
@@ -181,6 +245,7 @@ const EditTournamentArenaBrackets = ({
                 roundNumber={1}
                 arenaNumber={config.arenaNumber}
                 matches={sectionTwo}
+                time={time}
               ></EditTournamentBrackets>
             </section>
           ) : (

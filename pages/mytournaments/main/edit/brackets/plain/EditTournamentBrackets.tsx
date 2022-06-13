@@ -37,6 +37,18 @@ interface Props {
       reason: string;
     };
   }>;
+  time: {
+    arenaNumber: number;
+    rounds: Array<{
+      roundNumber: number;
+      matches: [
+        {
+          matchNumber: number;
+          time: number;
+        }
+      ];
+    }>;
+  };
 }
 
 const EditTournamentBrackets = ({
@@ -45,6 +57,7 @@ const EditTournamentBrackets = ({
   arenaNumber,
   roundNumber,
   matches,
+  time,
 }: Props) => {
   switch (matches.length) {
     case 1:
@@ -55,6 +68,7 @@ const EditTournamentBrackets = ({
           arenaNumber={arenaNumber}
           roundNumber={roundNumber}
           matches={matches}
+          time={time}
         ></EditTournamentBrackets2>
       );
     case 2:
@@ -65,6 +79,7 @@ const EditTournamentBrackets = ({
           arenaNumber={arenaNumber}
           roundNumber={roundNumber}
           matches={matches}
+          time={time}
         ></EditTournamentBrackets4>
       );
     default:
@@ -75,6 +90,7 @@ const EditTournamentBrackets = ({
           arenaNumber={arenaNumber}
           roundNumber={roundNumber}
           matches={matches}
+          time={time}
         ></EditTournamentBrackets8>
       );
   }

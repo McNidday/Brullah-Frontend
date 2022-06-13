@@ -2,8 +2,10 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
 import { decodeBlurHash } from "../../../../../../functions/helpers";
+import moment from "moment";
 
 interface Props {
+  time: number | null;
   bye?: {
     user: {
       identity: {
@@ -15,6 +17,8 @@ interface Props {
       };
     };
   };
+  makeFinalBefore?: boolean;
+  makeFinalAfter?: boolean;
   activeEdit?: string | null;
   arenaNumber?: number;
   roundNumber?: number;
@@ -47,6 +51,9 @@ interface Props {
 }
 
 const EditTournamentBracket = ({
+  makeFinalBefore,
+  makeFinalAfter,
+  time,
   bye,
   activeEdit,
   match,
@@ -56,7 +63,10 @@ const EditTournamentBracket = ({
 }: Props) => {
   return (
     <li
-      className={cn(styles.tournamentBracketItem)}
+      className={cn(
+        styles.tournamentBracketItem,
+        makeFinalAfter ? styles.makeFinalAfter : ""
+      )}
       onClick={() => {
         if (setActiveEdit) {
           if (
@@ -71,12 +81,19 @@ const EditTournamentBracket = ({
         }
       }}
     >
-      <div className={cn(styles.tournamentBracketMatch)}>
+      <div
+        className={cn(
+          styles.tournamentBracketMatch,
+          makeFinalBefore ? styles.makeFinalBefore : ""
+        )}
+      >
         <div className={cn(styles.tournamentBracketInformation)}>
           <div className={cn(styles.tournmentBracketCaptionContainer)}>
             <span className={cn(styles.tournamentBracketCounter)}></span>
             <div className={cn(styles.tournamentBracketCaption)}>
-              <time>18 February 1998</time>
+              <time>
+                {time ? moment.unix(time).format("LLL") : "Time not set"}
+              </time>
             </div>
             {activeEdit ===
             `${arenaNumber}:${roundNumber}:${match?.matchNumber}` ? (

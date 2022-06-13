@@ -134,8 +134,42 @@
 .navigation {
   grid-area: nav;
   border-bottom: 2px solid $backgroundLight;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .content {
   grid-area: content;
+}
+
+.setTime {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  input {
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    outline: none;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    -moz-appearance: textfield;
+  }
+}
+
+.closeIcon {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  padding: 5px;
 }

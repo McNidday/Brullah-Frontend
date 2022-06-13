@@ -10,11 +10,6 @@
   flex-direction: column;
   border-radius: $borderRadius;
   margin-bottom: 5px;
-
-  & > h2 {
-    margin: 0px;
-    color: white;
-  }
 }
 
 .brackets {
@@ -22,6 +17,11 @@
   height: fit-content;
   width: 100%;
   position: relative;
+  overflow: hidden;
+}
+
+.inactiveBrackets {
+  height: 0px;
 }
 
 .sectionNav {
@@ -35,4 +35,26 @@
 
 .sections {
   overflow-x: hidden;
+}
+
+.arenaNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > h2 {
+    margin: 0px;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.openArenaIcon {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.inactiveOpenArenaIcon {
+  transform: rotate(180deg);
 }

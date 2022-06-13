@@ -134,7 +134,7 @@ export const getNumOfRounds = (numOfUsers: number) => {
   switch (numOfUsers) {
     // The ones
     case 2:
-      return 1;
+      return 2;
     // The twos
     case 3:
       return 2;
@@ -168,27 +168,13 @@ export const getNumOfRounds = (numOfUsers: number) => {
     case 16:
       return 4;
     default:
-      return 1;
+      return 2;
   }
 };
 
 export const getNumOfArenas = (numOfUsers: number) => {
   const numberOfarenas = Math.ceil(numOfUsers / 16);
   return numberOfarenas;
-};
-
-export const getAreanaFromConfig = (
-  arenaNumber: number,
-  config: [{ arenaNumber: number }]
-) => {
-  let arena: any;
-
-  config.forEach((a) => {
-    if (a.arenaNumber === arenaNumber) {
-      arena = a;
-    }
-  });
-  return arena;
 };
 
 export const numOfArenas = (numOfUsers: number) => {
@@ -260,13 +246,51 @@ export const isByeNumber = (num: number) => {
   return byeIndex === -1 && num % 2 !== 0 ? true : false;
 };
 
-export const createMatchConfig = (numOfUsers: number) => {
+export function createTimeConfig(
+  numOfUsers: number,
+  serverConfig?: Array<any>
+) {
+  const config: Array<any> = new Array();
+  for (let a = 0; a < numOfArenas(numOfUsers); a++) {
+    config[a] = {
+      arenaNumber: a + 1,
+      rounds: [],
+    };
+
+    const roundsNumber = numOfRounds(numOfUsers, a + 1);
+    for (let r = 0; r < roundsNumber; r++) {
+      const round: { roundNumber: number; matches: Array<any> } = {
+        roundNumber: r + 1,
+        matches: [],
+      };
+      for (let m = 0; m < numOfMatches(numOfUsers, a + 1, r + 1); m++) {
+        const match = {
+          matchNumber: m + 1,
+          time: 0,
+        };
+        if (serverConfig) {
+          if (serverConfig[a].rounds[r].matches[m].time) {
+            match.time = serverConfig[a].rounds[r].matches[m].time;
+          }
+        }
+        round.matches.push(match);
+      }
+      config[a].rounds.push(round);
+    }
+  }
+  return config;
+}
+
+export function createMatchConfig(numOfUsers: number) {
   if (numOfUsers >= 5 && numOfUsers <= 8) {
     numOfUsers = 8;
   }
-  const config: Array<any> = [];
+  if (numOfUsers >= 13 && numOfUsers <= 16) {
+    numOfUsers = 16;
+  }
+  const config: Array<any> = new Array();
   for (let a = 0; a < numOfArenas(numOfUsers); a++) {
-    config[a] = {
+    config[a] = new Object({
       arenaNumber: a + 1,
       rounds: [
         {
@@ -274,7 +298,7 @@ export const createMatchConfig = (numOfUsers: number) => {
           matches: [],
         },
       ],
-    };
+    });
     const validNumbers = [5, 9, 13];
     let bye;
     if (numOfUsers % 2 !== 0) {
@@ -306,7 +330,7 @@ export const createMatchConfig = (numOfUsers: number) => {
     }
   }
   return config;
-};
+}
 
 export const createOnlineConfigFromLocalConfig = (
   joinedUsers: Array<any>,

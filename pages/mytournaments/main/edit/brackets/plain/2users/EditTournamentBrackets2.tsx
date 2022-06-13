@@ -2,6 +2,7 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import EditTournamentBracket from "../bracket/EditTournamentBracket";
 import { useEffect, useState } from "react";
+import EditTournamentWinnerBracket from "../winner/EditTournamentWinnerBracket";
 
 interface Props {
   activeEdit: string | null;
@@ -51,6 +52,18 @@ interface Props {
       reason: string;
     };
   }>;
+  time: {
+    arenaNumber: number;
+    rounds: Array<{
+      roundNumber: number;
+      matches: [
+        {
+          matchNumber: number;
+          time: number;
+        }
+      ];
+    }>;
+  };
 }
 
 const EditTournamentBrackets2 = ({
@@ -59,6 +72,7 @@ const EditTournamentBrackets2 = ({
   arenaNumber,
   roundNumber,
   matches,
+  time,
 }: Props) => {
   const [bye, setBye] = useState<{
     user: {
@@ -91,8 +105,10 @@ const EditTournamentBrackets2 = ({
             <div className={cn(styles.tournamentBracketRound)}>
               <h2 className={cn(styles.tournamentBracketRoundTitle)}>Finals</h2>
               <ul className={cn(styles.tournamentBracketList)}>
-                {matches.map((m) => (
+                {matches.map((m, mi) => (
                   <EditTournamentBracket
+                    makeFinalAfter={true}
+                    time={time.rounds[0].matches[mi].time}
                     activeEdit={activeEdit}
                     key={`${arenaNumber}:${roundNumber}:${m.matchNumber}`}
                     setActiveEdit={setActiveEdit}
@@ -107,10 +123,23 @@ const EditTournamentBrackets2 = ({
               <h3 className={cn(styles.tournamentBracketRoundTitle)}>Winner</h3>
               <ul className={cn(styles.tournamentBracketList)}>
                 {bye ? (
-                  <EditTournamentBracket bye={bye}></EditTournamentBracket>
+                  <EditTournamentBracket
+                    makeFinalBefore={true}
+                    time={time.rounds[1].matches[0].time}
+                    bye={bye}
+                  ></EditTournamentBracket>
                 ) : (
-                  <EditTournamentBracket></EditTournamentBracket>
+                  <EditTournamentBracket
+                    makeFinalBefore={true}
+                    time={time.rounds[1].matches[0].time}
+                  ></EditTournamentBracket>
                 )}
+              </ul>
+            </div>
+            <div className={cn(styles.tournamentBracketRound)}>
+              <h3 className={cn(styles.tournamentBracketRoundTitle)}>Winner</h3>
+              <ul className={cn(styles.tournamentBracketList)}>
+                <EditTournamentWinnerBracket></EditTournamentWinnerBracket>
               </ul>
             </div>
           </div>

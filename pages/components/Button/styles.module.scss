@@ -1,6 +1,7 @@
 @use "../../../styles/theme" as *;
 
 .button {
+  user-select: none;
   width: fit-content;
   height: 25px;
   color: white;

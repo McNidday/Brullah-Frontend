@@ -114,6 +114,7 @@ const TournamentParentListModal = ({
 
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [joined, setJoined] = useState(false);
+  const [displayUsers, setDisplayUsers] = useState<Array<any>>([]);
 
   const handleConfirmModalClose = () => {
     setConfirmModalOpen(false);
@@ -167,6 +168,7 @@ const TournamentParentListModal = ({
           return u.id === userData.user.id;
         }
       );
+      setDisplayUsers(data.tournament.match.users.joined.slice(0, 5));
       if (userIndex >= 0) {
         setJoined(true);
       }
@@ -305,7 +307,7 @@ const TournamentParentListModal = ({
                       ) : (
                         ""
                       )}
-                      {data.tournament.match.users.joined.map((u: any) => {
+                      {displayUsers.map((u: any) => {
                         return (
                           <>
                             <div className={cn(styles.joinedUser)}>

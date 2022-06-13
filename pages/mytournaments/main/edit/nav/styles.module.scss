@@ -1,0 +1,58 @@
+@use "../../../../../styles/theme" as *;
+
+.editNavigationButtons {
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editNavigation {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0px 20px 0px 20px;
+  padding: 10px 50px 10px 30px;
+}
+
+.editStatesLoading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 80px;
+}
+
+.editStatesLoadingProgress {
+  width: 20px !important;
+  height: 20px !important;
+  color: $activeColor !important;
+}
+
+.editStatesError {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  &::before {
+    content: "*";
+    position: absolute;
+    top: 20%;
+    left: -10px;
+    color: red;
+  }
+  h3 {
+    margin: 0px;
+    color: red;
+  }
+}
+
+.cool {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  h3 {
+    margin: 0px;
+  }
+}
