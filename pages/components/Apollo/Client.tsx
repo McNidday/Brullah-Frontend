@@ -21,6 +21,7 @@ const ENDPOINTS: { [key: string]: string } = {
   AddToMatch: "matches",
   SaveMatchConfig: "matches",
   PublishMatchConfig: "matches",
+  JoinedNotStartedTournaments: "tournaments",
 };
 
 const customFetch = (uri: string, options: any) => {
@@ -45,9 +46,43 @@ const uploadLink = createUploadLink({
   uri: "http://localhost:8080",
 });
 
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        tournaments: {
+          keyArgs: false,
+          read(existing, { args: { page = 1, limit = 10 } }: any) {
+            // A read function should always return undefined if existing is
+            // undefined. Returning undefined signals that the field is
+            // missing from the cache, which instructs Apollo Client to
+            // fetch its value from your GraphQL server.
+            if (!existing || existing.page < page) return undefined;
+            const offset = (page - 1) * limit;
+            const docs = existing ? existing.docs.slice(0, offset + limit) : [];
+            return { ...existing, docs: docs };
+          },
+          merge: (
+            existing,
+            incoming,
+            { args: { page = 1, limit = 10 } }: any
+          ) => {
+            const offset = (page - 1) * limit;
+            const merged = existing ? existing.docs.slice(0) : [];
+            for (let i = 0; i < incoming.docs.length; i++) {
+              merged[offset + i] = incoming.docs[i];
+            }
+            return { ...incoming, docs: merged };
+          },
+        },
+      },
+    },
+  },
+});
+
 const client = new ApolloClient({
   link: uploadLink as unknown as ApolloLink,
-  cache: new InMemoryCache(),
+  cache: cache,
 });
 
 export default client;

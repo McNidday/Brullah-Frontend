@@ -1,7 +1,9 @@
 import classNames from "classnames";
+import ApolloClientOnly from "../Apollo/ApolloClientOnly";
 import CompletedTournaments from "./completedTournaments/CompletedTournaments";
 import OngoingTournaments from "./ongoingTournaments/OngoingTournaments";
 import styles from "./styles.module.scss";
+import TournamentNotStartedLoading from "./tournamentsNoStarted/loading/TournamentNotStartedLoading";
 import TournamentsNotStarted from "./tournamentsNoStarted/TournamentsNotStarted";
 const cn = classNames.bind(styles);
 
@@ -20,7 +22,13 @@ const SideNavigation = (props: Props) => {
         </div>
         <div>
           <OngoingTournaments {...ongoingTournamentProps}></OngoingTournaments>
-          <TournamentsNotStarted></TournamentsNotStarted>
+          <ApolloClientOnly
+            fallback={
+              <TournamentNotStartedLoading></TournamentNotStartedLoading>
+            }
+          >
+            <TournamentsNotStarted></TournamentsNotStarted>
+          </ApolloClientOnly>
           <CompletedTournaments></CompletedTournaments>
         </div>
       </div>

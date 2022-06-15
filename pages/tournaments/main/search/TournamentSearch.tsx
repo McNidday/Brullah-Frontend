@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import { useState } from "react";

@@ -1,11 +1,15 @@
+import { CircularProgress } from "@mui/material";
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import TournamentList, { TournamentListFragment } from "./list/TournamentList";
-import { gql, useMutation } from "@apollo/client";
+import { gql, NetworkStatus } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
 
 interface Props {
+  hasNextPage: boolean;
+  networkStatus: number;
+  onLoadMore: () => void;
   setJoinTournamentId: (id: string) => void;
   handleModalOpen: () => void;
   tournaments: Array<{
@@ -23,10 +27,22 @@ interface Props {
 }
 
 const TournamentsParentList = ({
+  hasNextPage,
+  networkStatus,
+  onLoadMore,
   tournaments,
   setJoinTournamentId,
   handleModalOpen,
 }: Props) => {
+  const handleScroll = (e: any) => {
+    if (
+      e.currentTarget!.scrollTop + e.currentTarget!.clientHeight >=
+      e.currentTarget!.scrollHeight
+    ) {
+      onLoadMore();
+    }
+  };
+
   if (tournaments.length === 0) {
     return (
       <div className={cn(styles.noTournaments, styles.container)}>
@@ -43,9 +59,17 @@ const TournamentsParentList = ({
       </div>
     );
   }
+
   return (
-    <div className={cn(styles.container)}>
-      <ul>
+    <div
+      className={cn(
+        styles.container,
+        networkStatus === NetworkStatus.fetchMore || !hasNextPage
+          ? styles.containerLoading
+          : ""
+      )}
+    >
+      <ul onScroll={(e) => handleScroll(e)}>
         {tournaments.map((t) => {
           return (
             <TournamentList
@@ -57,6 +81,19 @@ const TournamentsParentList = ({
           );
         })}
       </ul>
+      {networkStatus === NetworkStatus.fetchMore ? (
+        <div className={cn(styles.fetchMoreLoading)}>
+          <CircularProgress
+            className={styles.fetchMoreLoadingProgress}
+          ></CircularProgress>
+        </div>
+      ) : !hasNextPage ? (
+        <div className={cn(styles.noMore)}>
+          <p>No more tournaments</p>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

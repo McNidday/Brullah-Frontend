@@ -20,6 +20,12 @@
   }
 }
 
+.containerLoading {
+  ul {
+    height: 92%;
+  }
+}
+
 .noTournaments {
   width: 100%;
   height: 100%;
@@ -38,4 +44,36 @@
     position: relative;
     width: 70%;
   }
+}
+
+.fetchMoreLoading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 8%;
+  background-color: $background;
+  border-bottom-left-radius: $borderRadius;
+  border-bottom-right-radius: $borderRadius;
+}
+
+.noMore {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 8%;
+  background-color: $background;
+  border-bottom-left-radius: $borderRadius;
+  border-bottom-right-radius: $borderRadius;
+  p {
+    margin: 0px;
+    color: $activeColor;
+  }
+}
+
+.fetchMoreLoadingProgress {
+  width: 20px !important;
+  height: 20px !important;
+  color: $activeColor !important;
 }
