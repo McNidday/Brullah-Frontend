@@ -2,21 +2,40 @@ import classNames from "classnames";
 import styles from "./styles.module.scss";
 import Image from "next/image";
 import Button from "../../../Button/Button";
+import { decodeBlurHash } from "../../../../functions/helpers";
 const cn = classNames.bind(styles);
 
 interface Props {
-  information: { name: string; thumbnail: string };
-  startUnix: number;
+  tournament: {
+    id: string;
+    information: {
+      name: string;
+      thumbnail: { image: string; blurhash: string };
+    };
+  };
 }
 
-const DqTournaments = (props: Props) => {
+const DqTournaments = ({ tournament }: Props) => {
   return (
     <li className={cn(styles.container)}>
       <div>
-        <Image src="/icons/trophy.jpg" layout="fill"></Image>
+        <Image
+          src={tournament.information.thumbnail.image}
+          layout="fill"
+          placeholder="blur"
+          blurDataURL={decodeBlurHash(
+            tournament.information.thumbnail.blurhash,
+            65,
+            40
+          )}
+        ></Image>
       </div>
-      <div>Donald du...</div>
-      <Button text="dq :(" disabled={true}></Button>
+      <div>{tournament.information.name}</div>
+      <Button
+        text="dq :("
+        disabled={false}
+        link={`/track?id=${tournament.id}`}
+      ></Button>
     </li>
   );
 };

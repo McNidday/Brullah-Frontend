@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useInterval } from "../../../functions/hooks";
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 interface Props {
   arena_name?: string;
@@ -12,6 +12,7 @@ interface Props {
 }
 
 const LoginError = ({ arena_name, errorNum, error }: Props) => {
+  const router = useRouter();
   const [countDown, setCountDown] = useState<number | undefined>();
   const [redirect, setRedirect] = useState<string>();
 
@@ -26,7 +27,7 @@ const LoginError = ({ arena_name, errorNum, error }: Props) => {
   useEffect(() => {
     if (countDown === 0) {
       setCountDown(undefined);
-      Router.replace(redirect!);
+      router.push(redirect!);
     }
   }, [countDown]);
 

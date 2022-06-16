@@ -1,6 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
 import cn from "classnames";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Logo from "../../components/Logo/Logo";
 import { useInterval } from "../../functions/hooks";
@@ -18,6 +18,7 @@ const USER = gql`
 `;
 
 const CreateTournamentMain = () => {
+  const router = useRouter();
   const { loading, error, data } = useQuery(USER);
   const [countDown, setCountDown] = useState<number | undefined>();
   const [redirect, setRedirect] = useState<string>();
@@ -33,7 +34,7 @@ const CreateTournamentMain = () => {
   useEffect(() => {
     if (countDown === 0) {
       setCountDown(undefined);
-      Router.replace(redirect!);
+      router.push(redirect!);
     }
   }, [countDown]);
 

@@ -1,11 +1,12 @@
 import cn from "classnames";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSwiper } from "swiper/react";
 import { useInterval } from "../../../../functions/hooks";
 import styles from "./styles.module.scss";
 
 const TournamentCreationComplete = ({ data }: { data: undefined | any }) => {
+  const router = useRouter();
   const swiper = useSwiper();
   const [countDown, setCountDown] = useState<number | undefined>();
 
@@ -28,7 +29,7 @@ const TournamentCreationComplete = ({ data }: { data: undefined | any }) => {
   useEffect(() => {
     if (countDown === 0) {
       setCountDown(undefined);
-      Router.replace("/mytournaments");
+      router.replace("/mytournaments");
     }
   }, [countDown]);
 

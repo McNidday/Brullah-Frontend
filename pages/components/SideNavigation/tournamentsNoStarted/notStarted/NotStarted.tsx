@@ -16,11 +16,17 @@ const NotStarted = ({ information, start_date }: Props) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCountDown(moment().to(moment.unix(start_date)));
+      if (moment().isSameOrAfter(moment.unix(start_date))) {
+        setCountDown(">>>");
+        clearInterval(interval);
+        // Refetch
+      } else {
+        setCountDown(moment().to(moment.unix(start_date)));
+      }
     }, 2000);
     return () => clearInterval(interval);
   }, [start_date]);
-  
+
   return (
     <li className={cn(styles.container)}>
       <div>

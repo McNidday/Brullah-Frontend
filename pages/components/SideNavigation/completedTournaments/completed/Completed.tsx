@@ -1,21 +1,41 @@
 import classNames from "classnames";
 import Image from "next/image";
+import { decodeBlurHash } from "../../../../functions/helpers";
+import Button from "../../../Button/Button";
 import styles from "./styles.module.scss";
 const cn = classNames.bind(styles);
 
 interface Props {
-  information: { name: string; thumbnail: string };
-  startUnix: number;
+  tournament: {
+    id: string;
+    information: {
+      name: string;
+      thumbnail: { image: string; blurhash: string };
+    };
+  };
 }
 
-const Completed = (props: Props) => {
+const Completed = ({ tournament }: Props) => {
   return (
     <li className={cn(styles.container)}>
       <div>
-        <Image src="/icons/trophy.jpg" layout="fill"></Image>
+        <Image
+          src={tournament.information.thumbnail.image}
+          layout="fill"
+          placeholder="blur"
+          blurDataURL={decodeBlurHash(
+            tournament.information.thumbnail.blurhash,
+            65,
+            40
+          )}
+        ></Image>
       </div>
-      <div>Donald du...</div>
-      <div>10:00:09</div>
+      <div>{tournament.information.name}</div>
+      <Button
+        text="recap"
+        disabled={false}
+        link={`/recap?id=${tournament.id}`}
+      ></Button>
     </li>
   );
 };

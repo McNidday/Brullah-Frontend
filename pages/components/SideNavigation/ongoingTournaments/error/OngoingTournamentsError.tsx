@@ -7,12 +7,12 @@ interface Props {
   code: number;
 }
 
-const TournamentNotStartedError = ({ error, code }: Props) => {
+const OngoingTournamentsError = ({ error, code }: Props) => {
   return (
     <div className={cn(styles.container)}>
       <div>
         <div>
-          <h3>Not Started</h3>
+          <h3>OnGoing</h3>
         </div>
       </div>
       <div className={cn(styles.errorContainer)}>
@@ -26,4 +26,4 @@ const TournamentNotStartedError = ({ error, code }: Props) => {
   );
 };
 
-export default TournamentNotStartedError;
+export default OngoingTournamentsError;

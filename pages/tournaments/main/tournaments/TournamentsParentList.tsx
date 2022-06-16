@@ -69,7 +69,7 @@ const TournamentsParentList = ({
           : ""
       )}
     >
-      <ul onScroll={(e) => handleScroll(e)}>
+      <ul onScroll={handleScroll}>
         {tournaments.map((t) => {
           return (
             <TournamentList
