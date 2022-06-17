@@ -49,7 +49,7 @@ const uploadLink = createUploadLink({
 
 const pageLimitPaginationHelper = () => {
   return {
-    read(existing: any, { args: { page = 1, limit = 10 } }: any) {
+    read(existing: any, { args: { page = 1, limit = 10, progress } }: any) {
       // A read function should always return undefined if existing is
       // undefined. Returning undefined signals that the field is
       // missing from the cache, which instructs Apollo Client to
@@ -79,7 +79,10 @@ const cache = new InMemoryCache({
     Query: {
       fields: {
         tournaments: { ...pageLimitPaginationHelper(), keyArgs: false },
-        joinedMatches: { ...pageLimitPaginationHelper(), keyArgs: false },
+        joinedMatches: {
+          ...pageLimitPaginationHelper(),
+          keyArgs: ["progress"],
+        },
       },
     },
   },

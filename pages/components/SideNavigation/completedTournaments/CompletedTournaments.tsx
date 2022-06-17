@@ -39,7 +39,7 @@ const CompletedTournaments = () => {
       variables: {
         page: page,
         limit: 10,
-        progress: "COMPLETED",
+        progress: "DONE",
       },
       notifyOnNetworkStatusChange: true,
     }
@@ -108,7 +108,7 @@ const CompletedTournaments = () => {
           <h3>Completed</h3>
         </div>
       </div>
-      {data.joinedMatches.length > 0 ? (
+      {data.joinedMatches.docs.length > 0 ? (
         <ul className={cn(styles.tournamentList)} onScroll={handleScroll}>
           {data.joinedMatches.docs.map((m: any) => {
             return <Completed key={m.id} {...m}></Completed>;

@@ -13,10 +13,7 @@ const MyTournaments: NextPage = () => {
     <div className={cn("page-grid")}>
       <Head>
         <title>My Tournaments | Brullah</title>
-        <meta
-          name="Brullah Tournaments"
-          content="Brullah tournaments would fripple your earnings. Make your mullah brain more happy."
-        />
+        <meta name="My Tournaments" content="Tournaments you have created" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <TopNavigation></TopNavigation>
