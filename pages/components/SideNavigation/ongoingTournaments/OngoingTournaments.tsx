@@ -154,13 +154,13 @@ const OngoingTournaments = () => {
           a.rounds.forEach((r: any) => {
             r.matches.forEach((s: any) => {
               let user: any = null;
-              if (s.slot_one) {
+              if (s.slot_one && s.slot_one.user) {
                 if (userData.user.id === s.slot_one.user.id) {
                   // Get the time
                   user = s.slot_one;
                 }
               }
-              if (s.slot_two) {
+              if (s.slot_two && s.slot_two.user) {
                 if (userData.user.id === s.slot_two.user.id) {
                   // Get the time
                   user = s.slot_two;

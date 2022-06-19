@@ -307,7 +307,6 @@ export function createMatchConfig(numOfUsers: number) {
       });
       if (validIndex === -1) bye = true;
     }
-
     let activeUsers = numOfUsers;
     for (let m = 0; m < numOfMatches(numOfUsers, a + 1, 1); m++) {
       let matchConfig;
@@ -334,7 +333,8 @@ export function createMatchConfig(numOfUsers: number) {
 
 export const createOnlineConfigFromLocalConfig = (
   joinedUsers: Array<any>,
-  localConfig: Array<any>
+  localConfig: Array<any>,
+  leaveLocalVars?: boolean
 ) => {
   const usersToConfigure = joinedUsers.map((u) => {
     const newUser = { ...u };
@@ -347,11 +347,31 @@ export const createOnlineConfigFromLocalConfig = (
   const newLocalConfig = createMatchConfig(usersToConfigure.length);
 
   for (let ai = 0; ai < localConfig.length; ai++) {
-    const a = localConfig[ai];
+    let a = localConfig[ai];
+    if (leaveLocalVars) {
+      const arenaVars = { ...a };
+      delete arenaVars.__typename;
+      delete arenaVars.rounds;
+      newLocalConfig[ai] = {
+        ...newLocalConfig[ai],
+        ...arenaVars,
+      };
+    }
     for (let ri = 0; ri < a.rounds.length; ri++) {
       const r = a.rounds[ri];
       for (let mi = 0; mi < r.matches.length; mi++) {
         const m = r.matches[mi];
+        if ((m.slot_one.user || m.slot_two.user) && leaveLocalVars) {
+          const matchVars = { ...m };
+          delete matchVars.__typename;
+          delete matchVars.slot_one;
+          delete matchVars.slot_two;
+          delete matchVars.bye;
+          newLocalConfig[ai].rounds[ri].matches[mi] = {
+            ...newLocalConfig[ai].rounds[ri].matches[mi],
+            ...matchVars,
+          };
+        }
         if (m.slot_one.user) {
           // Check if user is in the config array
           const userIndex = usersToConfigure.findIndex(
@@ -363,9 +383,19 @@ export const createOnlineConfigFromLocalConfig = (
               newOnlineConfig[ai].rounds[ri].matches[mi].slot_one = {
                 user: m.slot_one.user.id,
               };
-              newLocalConfig[ai].rounds[ri].matches[mi].slot_one = {
-                user: usersToConfigure[userIndex],
-              };
+              if (leaveLocalVars) {
+                const slotVars = { ...m.slot_one };
+                delete slotVars.user;
+                delete slotVars.__typename;
+                newLocalConfig[ai].rounds[ri].matches[mi].slot_one = {
+                  user: usersToConfigure[userIndex],
+                  ...slotVars,
+                };
+              } else {
+                newLocalConfig[ai].rounds[ri].matches[mi].slot_one = {
+                  user: usersToConfigure[userIndex],
+                };
+              }
               // Remove user from users to configure
               usersToConfigure.splice(userIndex, 1);
             }
@@ -383,9 +413,20 @@ export const createOnlineConfigFromLocalConfig = (
               newOnlineConfig[ai].rounds[ri].matches[mi].slot_two = {
                 user: m.slot_two.user.id,
               };
-              newLocalConfig[ai].rounds[ri].matches[mi].slot_two = {
-                user: usersToConfigure[userIndex],
-              };
+
+              if (leaveLocalVars) {
+                const slotVars = { ...m.slot_two };
+                delete slotVars.user;
+                delete slotVars.__typename;
+                newLocalConfig[ai].rounds[ri].matches[mi].slot_two = {
+                  user: usersToConfigure[userIndex],
+                  ...slotVars,
+                };
+              } else {
+                newLocalConfig[ai].rounds[ri].matches[mi].slot_two = {
+                  user: usersToConfigure[userIndex],
+                };
+              }
               // Remove user from users to configure
               usersToConfigure.splice(userIndex, 1);
             }
@@ -410,6 +451,19 @@ export const createOnlineConfigFromLocalConfig = (
                 newLocalConfig[ai].rounds[ri].matches[mi].bye = {
                   user: usersToConfigure[userIndex],
                 };
+                if (leaveLocalVars) {
+                  const slotVars = { ...m.slot_two };
+                  delete slotVars.user;
+                  delete slotVars.__typename;
+                  newLocalConfig[ai].rounds[ri].matches[mi].bye = {
+                    user: usersToConfigure[userIndex],
+                    ...slotVars,
+                  };
+                } else {
+                  newLocalConfig[ai].rounds[ri].matches[mi].bye = {
+                    user: usersToConfigure[userIndex],
+                  };
+                }
                 // Remove user from users to configure
                 usersToConfigure.splice(userIndex, 1);
               }
@@ -425,4 +479,28 @@ export const createOnlineConfigFromLocalConfig = (
     localConfig: newLocalConfig,
     usersToConfigure: usersToConfigure,
   };
+};
+
+export const matchConfigShallowCopy = (config: any) => {
+  return config.map((a: any) => {
+    return {
+      ...a,
+      rounds: a.rounds.map((r: any) => {
+        return {
+          ...r,
+          matches: r.matches.map((m: any) => {
+            return {
+              ...m,
+              slot_one: {
+                ...m.slot_one,
+              },
+              slot_two: {
+                ...m.slot_two,
+              },
+            };
+          }),
+        };
+      }),
+    };
+  });
 };

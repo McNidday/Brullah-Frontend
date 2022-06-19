@@ -1,8 +1,27 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
+import { decodeBlurHash } from "../../../../../functions/helpers";
 
-const TrackTournamentWinnerBracket = () => {
+interface User {
+  id: string;
+  identity: {
+    arena_name: string;
+    avatar: {
+      image: string;
+      blurhash: string;
+    };
+  };
+}
+
+interface Props {
+  arenaWinner: {
+    status: "IN-PROGRESS" | "NONE" | "DONE";
+    user: User;
+  };
+}
+
+const TrackTournamentWinnerBracket = ({ arenaWinner }: Props) => {
   return (
     <li className={cn(styles.tournamentBracketItem)}>
       <div className={cn(styles.tournamentBracketMatch)}>
@@ -10,7 +29,13 @@ const TrackTournamentWinnerBracket = () => {
           <div className={cn(styles.tournmentBracketCaptionContainer)}>
             <span className={cn(styles.tournamentBracketCounter)}></span>
             <div className={cn(styles.tournamentBracketCaption)}>
-              <time>Some time in future</time>
+              {arenaWinner.status === "NONE" ? (
+                <time>No winner for this arena</time>
+              ) : arenaWinner.status === "DONE" ? (
+                <time>Graduate: {arenaWinner.user.identity.arena_name}</time>
+              ) : (
+                <time>Some time in future</time>
+              )}
             </div>
           </div>
 
@@ -18,6 +43,22 @@ const TrackTournamentWinnerBracket = () => {
             <div className={cn(styles.tournamentBracketDataWinnerContainer)}>
               <div className={cn(styles.tournamentBracketDataWinner)}>
                 <Image src={"/illustrations/05.png"} layout="fill"></Image>
+                {arenaWinner.status === "DONE" ? (
+                  <div className={cn(styles.tournamentBracketDataWinnerImage)}>
+                    <Image
+                      src={arenaWinner.user.identity.avatar.image}
+                      placeholder="blur"
+                      blurDataURL={decodeBlurHash(
+                        arenaWinner.user.identity.avatar.blurhash,
+                        50,
+                        50
+                      )}
+                      layout="fill"
+                    ></Image>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </div>

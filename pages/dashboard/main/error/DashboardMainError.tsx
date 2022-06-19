@@ -50,7 +50,6 @@ const DashboardMainError = ({ errorNum, error }: Props) => {
         </div>
       </div>
     );
-
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>

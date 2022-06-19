@@ -51,6 +51,7 @@ const TournamentDescription = ({
         )}
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
           <textarea
+            maxLength={60}
             tabIndex={isActive ? 0 : -1}
             placeholder="Tournament Description"
             value={description || ""}

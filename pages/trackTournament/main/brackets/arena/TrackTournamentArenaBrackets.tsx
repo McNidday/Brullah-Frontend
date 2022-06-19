@@ -1,6 +1,6 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import EditTournamentBrackets from "../plain/TrackTournamentBrackets";
+import TrackTournamentBrackets from "../plain/TrackTournamentBrackets";
 import { useEffect, useState } from "react";
 import Icon from "../../../../components/Icon/Icon";
 import Button from "../../../../components/Button/Button";
@@ -8,6 +8,7 @@ import Image from "next/image";
 import { decodeBlurHash } from "../../../../functions/helpers";
 
 interface User {
+  id: string;
   identity: {
     arena_name: string;
     avatar: {
@@ -17,31 +18,32 @@ interface User {
   };
 }
 
+interface Slot {
+  joined: boolean;
+  user: User;
+  reason: string;
+  winner: boolean;
+}
+
+interface Match {
+  done: boolean;
+  matchNumber: number;
+  progress: string;
+  slot_one: Slot;
+  slot_two: Slot;
+}
+
 interface Props {
+  userId: string;
   activeArena: boolean;
   handleActiveArena: (arena: number) => void;
   config: {
-    winner: { status: "IN-PROGRESS" | "NONE" | "DONE"; user: User } | null;
+    winner: { status: "IN-PROGRESS" | "NONE" | "DONE"; user: User };
     arenaNumber: number;
     rounds: [
       {
         roundNumber: number;
-        matches: [
-          {
-            matchNumber: number;
-            progress: string;
-            slot_one: {
-              joined: boolean;
-              user: User;
-              reason: string;
-            };
-            slot_two: {
-              joined: boolean;
-              user: User;
-              reason: string;
-            };
-          }
-        ];
+        matches: [Match];
       }
     ];
   };
@@ -62,6 +64,7 @@ interface Props {
 }
 
 const TrackTournamentArenaBrackets = ({
+  userId,
   activeArena,
   handleActiveArena,
   config,
@@ -69,70 +72,8 @@ const TrackTournamentArenaBrackets = ({
 }: Props) => {
   const [arenaHover, setArenaHover] = useState(false);
   const [section, setSection] = useState(1);
-  const [sectionOne, setSectionOne] = useState<
-    Array<{
-      matchNumber: number;
-      progress: string;
-      slot_one: {
-        joined: boolean;
-        user: {
-          identity: {
-            arena_name: string;
-            avatar: {
-              image: string;
-              blurhash: string;
-            };
-          };
-        };
-        reason: string;
-      };
-      slot_two: {
-        joined: boolean;
-        user: {
-          identity: {
-            arena_name: string;
-            avatar: {
-              image: string;
-              blurhash: string;
-            };
-          };
-        };
-        reason: string;
-      };
-    }>
-  >([]);
-  const [sectionTwo, setSectionTwo] = useState<
-    Array<{
-      matchNumber: number;
-      progress: string;
-      slot_one: {
-        joined: boolean;
-        user: {
-          identity: {
-            arena_name: string;
-            avatar: {
-              image: string;
-              blurhash: string;
-            };
-          };
-        };
-        reason: string;
-      };
-      slot_two: {
-        joined: boolean;
-        user: {
-          identity: {
-            arena_name: string;
-            avatar: {
-              image: string;
-              blurhash: string;
-            };
-          };
-        };
-        reason: string;
-      };
-    }>
-  >([]);
+  const [sectionOne, setSectionOne] = useState<Array<Match>>([]);
+  const [sectionTwo, setSectionTwo] = useState<Array<Match>>([]);
 
   useEffect(() => {
     if (
@@ -243,24 +184,28 @@ const TrackTournamentArenaBrackets = ({
         <div className={cn(styles.sections)}>
           {sectionOne.length >= 1 && section === 1 ? (
             <section>
-              <EditTournamentBrackets
+              <TrackTournamentBrackets
+                userId={userId}
+                arenaWinner={config.winner}
                 roundNumber={1}
                 arenaNumber={config.arenaNumber}
                 matches={sectionOne}
                 time={time}
-              ></EditTournamentBrackets>
+              ></TrackTournamentBrackets>
             </section>
           ) : (
             ""
           )}
           {sectionTwo.length >= 1 && section === 2 ? (
             <section>
-              <EditTournamentBrackets
+              <TrackTournamentBrackets
+                arenaWinner={config.winner}
+                userId={userId}
                 roundNumber={1}
                 arenaNumber={config.arenaNumber}
                 matches={sectionTwo}
                 time={time}
-              ></EditTournamentBrackets>
+              ></TrackTournamentBrackets>
             </section>
           ) : (
             ""

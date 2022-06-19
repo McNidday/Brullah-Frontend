@@ -4,51 +4,39 @@ import TrackTournamentBracket from "../bracket/TrackTournamentBracket";
 import { useEffect, useState } from "react";
 import TrackTournamentWinnerBracket from "../winner/TrackTournamentWinnerBracket";
 
+interface User {
+  id: string;
+  identity: {
+    arena_name: string;
+    avatar: {
+      image: string;
+      blurhash: string;
+    };
+  };
+}
+
+interface Slot {
+  joined: boolean;
+  user: User;
+  reason: string;
+  winner: boolean;
+}
+
 interface Props {
+  userId: string;
   arenaNumber: number;
   roundNumber: number;
+  arenaWinner: {
+    status: "IN-PROGRESS" | "NONE" | "DONE";
+    user: User;
+  };
   matches: Array<{
+    done: boolean;
     matchNumber: number;
     progress: string;
-    slot_one: {
-      joined: boolean;
-      user: {
-        identity: {
-          arena_name: string;
-          avatar: {
-            image: string;
-            blurhash: string;
-          };
-        };
-      };
-      reason: string;
-    };
-    slot_two: {
-      joined: boolean;
-      user: {
-        identity: {
-          arena_name: string;
-          avatar: {
-            image: string;
-            blurhash: string;
-          };
-        };
-      };
-      reason: string;
-    };
-    bye?: {
-      joined: boolean;
-      user: {
-        identity: {
-          arena_name: string;
-          avatar: {
-            image: string;
-            blurhash: string;
-          };
-        };
-      };
-      reason: string;
-    };
+    slot_one: Slot;
+    slot_two: Slot;
+    bye?: Slot;
   }>;
   time: {
     arenaNumber: number;
@@ -65,21 +53,15 @@ interface Props {
 }
 
 const TrackTournamentBrackets4 = ({
+  arenaWinner,
+  userId,
   time,
   arenaNumber,
   roundNumber,
   matches,
 }: Props) => {
   const [bye, setBye] = useState<{
-    user: {
-      identity: {
-        arena_name: string;
-        avatar: {
-          image: string;
-          blurhash: string;
-        };
-      };
-    };
+    user: User;
   } | null>(null);
   useEffect(() => {
     let byeTracker: any;
@@ -110,7 +92,8 @@ const TrackTournamentBrackets4 = ({
               <ul className={cn(styles.tournamentBracketList)}>
                 {matches.map((m, mi) => (
                   <TrackTournamentBracket
-                    time={time.rounds[0].matches[mi].time}
+                    userId={userId}
+                    time={time?.rounds[0]?.matches[mi]?.time}
                     key={`${arenaNumber}:${roundNumber}:${m.matchNumber}`}
                     match={m}
                   ></TrackTournamentBracket>
@@ -122,12 +105,14 @@ const TrackTournamentBrackets4 = ({
               <ul className={cn(styles.tournamentBracketList)}>
                 {bye ? (
                   <TrackTournamentBracket
-                    time={time.rounds[1].matches[0].time}
+                    userId={userId}
+                    time={time?.rounds[1]?.matches[0]?.time}
                     bye={bye}
                   ></TrackTournamentBracket>
                 ) : (
                   <TrackTournamentBracket
-                    time={time.rounds[1].matches[0].time}
+                    userId={userId}
+                    time={time?.rounds[1]?.matches[0]?.time}
                   ></TrackTournamentBracket>
                 )}
               </ul>
@@ -135,7 +120,9 @@ const TrackTournamentBrackets4 = ({
             <div className={cn(styles.tournamentBracketRound)}>
               <h3 className={cn(styles.tournamentBracketRoundTitle)}>Winner</h3>
               <ul className={cn(styles.tournamentBracketList)}>
-                <TrackTournamentWinnerBracket></TrackTournamentWinnerBracket>
+                <TrackTournamentWinnerBracket
+                  arenaWinner={arenaWinner}
+                ></TrackTournamentWinnerBracket>
               </ul>
             </div>
           </div>

@@ -20,7 +20,12 @@ interface Props {
       thumbnail: { image: string; blurhash: string };
     };
     analytics: { joined_users: number };
-    creator: { identity: { arena_name: string } };
+    creator: {
+      identity: {
+        arena_name: string;
+        avatar: { image: string; blurhash: string };
+      };
+    };
     sponsor: { sponsored: boolean };
     contribution: { contributed: boolean };
   }>;

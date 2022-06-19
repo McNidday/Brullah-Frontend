@@ -1,15 +1,19 @@
 @use "../../../../styles/theme" as *;
 
 .navigationButtons {
-  grid-area: navbar;
-  width: 500px;
+  width: fit-content;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
+.actionButton {
+  margin-right: 10px;
+}
+
 .countDown {
+  margin-right: 10px;
   border-right: 2px solid $background;
   padding-right: 5px;
   h4 {
@@ -19,6 +23,7 @@
 }
 
 .navigation {
+  grid-area: navbar;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

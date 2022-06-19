@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 
 interface Props {
+  setRecapNumber?: (num: number) => void;
+  userId: string;
+  id: string;
   reward: string;
   rewardAmount: string;
   perUser: string;
@@ -15,9 +18,24 @@ interface Props {
   notIn: boolean;
   dq: boolean;
   networkStatus: number;
+  recap?: boolean;
+  recapNumber?: number | null;
+  winner: {
+    id: string;
+    identity: {
+      arena_name: string;
+      avatar: { image: string; blurhash: string };
+    };
+  } | null;
 }
 
 const TrackTournamentNav = ({
+  setRecapNumber,
+  userId,
+  winner,
+  recapNumber,
+  recap,
+  id,
   perUser,
   rewardAmount,
   reward,
@@ -52,8 +70,37 @@ const TrackTournamentNav = ({
   return (
     <div className={cn(styles.navigation)}>
       <div className={cn(styles.navigationButtons)}>
+        {recap ? (
+          <>
+            <div className={cn(styles.actionButton)}>
+              <Button
+                text={"back"}
+                disabled={false}
+                onClick={() => setRecapNumber!(0)}
+              ></Button>
+            </div>
+            <div className={cn(styles.actionButton)}>
+              <Button
+                text={"track"}
+                link={`/track?id=${id}`}
+                disabled={false}
+              ></Button>
+            </div>
+          </>
+        ) : (
+          <div className={cn(styles.actionButton)}>
+            <Button
+              text={"recap"}
+              link={`/track/recap?id=${id}`}
+              disabled={false}
+            ></Button>
+          </div>
+        )}
+
         {ready ? (
-          <Button text={buttonText} link="/" disabled={false}></Button>
+          <div className={cn(styles.actionButton)}>
+            <Button text={buttonText} link="/" disabled={false}></Button>
+          </div>
         ) : countDown ? (
           <div className={cn(styles.countDown)}>
             <h4>{countDown}</h4>
@@ -66,9 +113,14 @@ const TrackTournamentNav = ({
           <div className={cn(styles.countDown)}>
             <h4>You have been obliterated</h4>
           </div>
+        ) : winner && winner.id === userId ? (
+          <div className={cn(styles.countDown)}>
+            <h4>Congrats 🎉 your brain does wonders</h4>
+          </div>
         ) : (
           ""
         )}
+
         {reward === "SPONSOR" ? (
           <div className={cn(styles.countDown)}>
             <h4>*Sponsored* Winner gets {rewardAmount}</h4>
@@ -84,7 +136,16 @@ const TrackTournamentNav = ({
             <h4>No 💰 for this tournament (。_。)</h4>
           </div>
         )}
+
+        {recapNumber ? (
+          <div className={cn(styles.countDown)}>
+            <h4>Battle number {recapNumber}</h4>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
+
       {networkStatus === NetworkStatus.refetch ? (
         <div className={cn(styles.statesLoading)}>
           <span>Progress</span>

@@ -1,17 +1,76 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import { ApolloError } from "@apollo/client";
+import { useRouter } from "next/router";
+import { useInterval } from "../../../functions/hooks";
+import { useEffect, useState } from "react";
 
 interface Props {
-  error: ApolloError;
+  errorNum?: number;
+  error?: ApolloError;
+  message?: string;
 }
 
-const TrackTournamentError = ({ error }: Props) => {
+const TrackTournamentError = ({ errorNum, error, message }: Props) => {
+  const router = useRouter();
+  const [countDown, setCountDown] = useState<number | undefined>();
+  const [redirect, setRedirect] = useState<string>();
+
+  useInterval(
+    () => {
+      if (!countDown) return;
+      setCountDown(countDown! - 1);
+    },
+    countDown ? 1000 : undefined
+  );
+
+  useEffect(() => {
+    if (countDown === 0) {
+      setCountDown(undefined);
+      router.push(redirect!);
+    }
+  }, [countDown]);
+
+  useEffect(() => {
+    if (!redirect && errorNum === 401) {
+      setRedirect("/login");
+      setCountDown(5);
+    }
+  }, [redirect]);
+
+  if (message) {
+    return (
+      <div className={cn(styles.container)}>
+        <div className={cn(styles.miniContainer)}>
+          <div className={cn(styles.error)}>
+            <h3>{message}</h3>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (errorNum === 401)
+    return (
+      <div className={cn(styles.container)}>
+        <div className={cn(styles.miniContainer)}>
+          <div className={cn(styles.error)}>
+            <h3>
+              You cannot track tournaments while not logged in, you will be
+              directed to login in ${countDown || 0}
+            </h3>
+          </div>
+        </div>
+      </div>
+    );
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
         <div className={cn(styles.error)}>
-          <h3>{error.message}</h3>
+          <h3>
+            An error occured. Please check your internet connection and try
+            again. "{error?.message}"
+          </h3>
         </div>
       </div>
     </div>

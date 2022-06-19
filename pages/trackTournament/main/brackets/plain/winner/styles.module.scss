@@ -446,3 +446,11 @@ $breakpoint-lg: 72em;
   background-color: $activeColor;
   overflow: hidden;
 }
+
+.tournamentBracketDataWinnerImage {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: 25%;
+  left: 20%;
+}

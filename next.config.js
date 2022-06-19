@@ -11,6 +11,10 @@ const nextConfig = {
       "/tournaments": { page: "/tournaments/Tournaments" },
       "/createtournament": { page: "/createTournament/CreateTournament" },
       "/track": { page: "/trackTournament/TrackTournament", query: { id: "" } },
+      "/track/recap": {
+        page: "/trackTournament/RecapTournament",
+        query: { id: "" },
+      },
     };
   },
   images: {
