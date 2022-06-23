@@ -7,7 +7,6 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { blobToFile, validateImageUpload } from "../../../../functions/helpers";
 import { useSwiper, useSwiperSlide } from "swiper/react";
 import { ApolloError } from "@apollo/client";
-import { ClickAwayListener } from "@mui/material";
 
 interface Props {
   updateProfile: Function;
