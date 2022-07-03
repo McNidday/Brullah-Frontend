@@ -115,8 +115,8 @@ const DepositTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
         className={cn(styles.modal)}
         open={modalOpen}
         onClose={handleModalClose}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
+        aria-labelledby="Deposit transactions"
+        aria-describedby="Deposit transactions modal"
       >
         <Box className={cn(styles.parentModal)}>
           <div className={cn(styles.headingContainer)}>

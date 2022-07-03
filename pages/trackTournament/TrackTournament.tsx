@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 import Head from "next/head";
 import cn from "classnames";
 import TopNavigation from "../components/TopNavigation/TopNavigation";
