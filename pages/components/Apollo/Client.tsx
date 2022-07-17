@@ -49,7 +49,7 @@ const uploadLink = createUploadLink({
 
 const pageLimitPaginationHelper = () => {
   return {
-    read(existing: any, { args: { page = 1, limit = 10, progress } }: any) {
+    read(existing: any, { args: { page = 1, limit = 10 } }: any) {
       // A read function should always return undefined if existing is
       // undefined. Returning undefined signals that the field is
       // missing from the cache, which instructs Apollo Client to
