@@ -22,6 +22,9 @@ const TOURNAMENT = gql`
       id
       reward
       start_date
+      status {
+        progress
+      }
       winner {
         id
         identity {
@@ -39,6 +42,7 @@ const TOURNAMENT = gql`
         name
       }
       match {
+        id
         users {
           configured {
             id
@@ -224,6 +228,7 @@ const RecapTournamentMain = () => {
         matchConfigShallowCopy(
           data.tournament.match.recap[recapNumber - 1].configure
         ),
+        true,
         true
       );
       setArenas(theArenas);
@@ -305,12 +310,6 @@ const RecapTournamentMain = () => {
     return () => clearInterval(interval);
   }, []);
 
-  console.log(
-    data,
-    timeConfig,
-    "The data meant for reconstruction bitch ass pussy"
-  );
-
   if (loading || userDataLoading)
     return <TrackTournamentLoading></TrackTournamentLoading>;
   if (userError && (userError?.networkError as any).statusCode === 401) {
@@ -363,6 +362,9 @@ const RecapTournamentMain = () => {
       <div className={cn(styles.container)}>
         <div className={cn(styles.miniContainer)}>
           <TrackTournamentNav
+            matchId={data.tournament.match.id}
+            recapNumber={recapNumber}
+            status={data.tournament.status}
             setRecapNumber={(num: number) => setRecapNumber(num)}
             userId={userData.user.id}
             winner={data.tournament.winner}
@@ -390,6 +392,9 @@ const RecapTournamentMain = () => {
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
         <TrackTournamentNav
+          matchId={data.tournament.match.id}
+          recapNumber={recapNumber}
+          status={data.tournament.status}
           setRecapNumber={(num: number) => setRecapNumber(num)}
           userId={userData.user.id}
           winner={data.tournament.winner}

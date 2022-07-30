@@ -33,6 +33,11 @@ interface Match {
   slot_two: Slot;
 }
 
+interface Round {
+  roundNumber: number;
+  matches: Array<Match>;
+}
+
 interface Props {
   userId: string;
   activeArena: boolean;
@@ -40,12 +45,7 @@ interface Props {
   config: {
     winner: { status: "IN-PROGRESS" | "NONE" | "DONE"; user: User };
     arenaNumber: number;
-    rounds: [
-      {
-        roundNumber: number;
-        matches: [Match];
-      }
-    ];
+    rounds: Array<Round>;
   };
   time: {
     arenaNumber: number;
@@ -72,20 +72,73 @@ const TrackTournamentArenaBrackets = ({
 }: Props) => {
   const [arenaHover, setArenaHover] = useState(false);
   const [section, setSection] = useState(1);
-  const [sectionOne, setSectionOne] = useState<Array<Match>>([]);
-  const [sectionTwo, setSectionTwo] = useState<Array<Match>>([]);
+  const [sectionOne, setSectionOne] = useState<Array<Round>>([]);
+  const [sectionTwo, setSectionTwo] = useState<Array<Round>>([]);
 
   useEffect(() => {
-    if (
-      config.rounds[0].matches.length <= 4 ||
-      config.rounds[0].matches.length > 4
-    ) {
-      setSectionOne(config.rounds[0].matches.slice(0, 4));
-    }
+    const sectionOneRound: Array<Round> = [];
+    let initialNumOfRoundOneMatches =
+      config.rounds[0].matches.length >= 4
+        ? 4
+        : config.rounds[0].matches.length;
+    if (initialNumOfRoundOneMatches > 0) {
+      for (let i = 0; i < config.rounds.length; i++) {
+        const newRound: Round = {
+          roundNumber: config.rounds[i].roundNumber,
+          matches: [],
+        };
+        if (initialNumOfRoundOneMatches === 1) {
+          newRound.matches = config.rounds[i].matches.slice(0, 1);
+        }
 
-    if (config.rounds[0].matches.length > 4) {
-      setSectionTwo(config.rounds[0].matches.slice(4, 9));
+        if (initialNumOfRoundOneMatches === 2) {
+          newRound.matches = config.rounds[i].matches.slice(0, 2);
+          initialNumOfRoundOneMatches = 1;
+        }
+
+        if (
+          initialNumOfRoundOneMatches === 3 ||
+          initialNumOfRoundOneMatches === 4
+        ) {
+          newRound.matches = config.rounds[i].matches.slice(0, 4);
+          initialNumOfRoundOneMatches = 2;
+        }
+        sectionOneRound.push(newRound);
+      }
     }
+    setSectionOne(sectionOneRound);
+
+    const sectionTwoRound: Array<Round> = [];
+    let initialNumOfRoundTwoMatches =
+      config.rounds[0].matches.length > 4
+        ? config.rounds[0].matches.length - 4
+        : null;
+    if (initialNumOfRoundTwoMatches) {
+      for (let i = 0; i < config.rounds.length; i++) {
+        const newRound: Round = {
+          roundNumber: config.rounds[i].roundNumber,
+          matches: [],
+        };
+        if (initialNumOfRoundTwoMatches === 1) {
+          newRound.matches = config.rounds[i].matches.slice(0, 1);
+        }
+
+        if (initialNumOfRoundTwoMatches === 2) {
+          newRound.matches = config.rounds[i].matches.slice(0, 2);
+          initialNumOfRoundTwoMatches = 1;
+        }
+
+        if (
+          initialNumOfRoundTwoMatches === 3 ||
+          initialNumOfRoundTwoMatches === 4
+        ) {
+          newRound.matches = config.rounds[i].matches.slice(0, 4);
+          initialNumOfRoundTwoMatches = 2;
+        }
+        sectionTwoRound.push(newRound);
+      }
+    }
+    setSectionTwo(sectionTwoRound);
   }, [config]);
 
   return (
@@ -189,7 +242,7 @@ const TrackTournamentArenaBrackets = ({
                 arenaWinner={config.winner}
                 roundNumber={1}
                 arenaNumber={config.arenaNumber}
-                matches={sectionOne}
+                rounds={sectionOne}
                 time={time}
               ></TrackTournamentBrackets>
             </section>
@@ -203,7 +256,7 @@ const TrackTournamentArenaBrackets = ({
                 userId={userId}
                 roundNumber={1}
                 arenaNumber={config.arenaNumber}
-                matches={sectionTwo}
+                rounds={sectionTwo}
                 time={time}
               ></TrackTournamentBrackets>
             </section>

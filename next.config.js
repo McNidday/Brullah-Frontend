@@ -22,6 +22,7 @@ const nextConfig = {
   },
   env: {
     RELAY_API_ENDPOINT: "http://localhost:8080",
+    CHECKERS_URL: "http://localhost:3002",
     PAYPAL_CLIENT_ID:
       "AR7mepWYpche1Gnhv-516V7jixWwrvr8NnQ7wdEgo7mIbVa8x0Mb8TCdXRXopyrMZLy8vnrPhQRH64rW",
   },

@@ -33,25 +33,6 @@
         margin: 0;
         text-align: center;
       }
-
-      span:nth-child(1) {
-        white-space: nowrap;
-        visibility: hidden;
-        width: fit-content;
-        background-color: $activeColor;
-        color: white;
-        text-align: center;
-        padding: 5px;
-        border-radius: 6px;
-        position: absolute;
-        z-index: 2;
-        bottom: 120%;
-      }
-      &:hover {
-        span:nth-child(1) {
-          visibility: visible;
-        }
-      }
     }
   }
 
@@ -101,4 +82,9 @@
     justify-content: center;
     padding: 10px;
   }
+}
+
+.tooltip {
+  font-family: inherit;
+  background-color: $activeColor;
 }

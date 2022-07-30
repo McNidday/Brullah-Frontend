@@ -87,8 +87,17 @@ const TrackTournamentBracket = ({
                 ""
               )}
 
-              {!match?.slot_two?.reason && !match?.slot_one?.reason ? (
+              {!match?.slot_two?.user &&
+              match?.slot_one?.user &&
+              !match?.slot_two?.reason &&
+              !match?.slot_one?.reason ? (
                 <h3>Still cooking 👩‍🍳</h3>
+              ) : (
+                ""
+              )}
+
+              {!match?.slot_two?.user && !match?.slot_one?.user ? (
+                <h3>Empty void 🖤</h3>
               ) : (
                 ""
               )}

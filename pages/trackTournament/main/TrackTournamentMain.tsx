@@ -363,6 +363,8 @@ const TrackTournamentMain = () => {
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
         <TrackTournamentNav
+          matchId={data.tournament.match.id}
+          status={data.tournament.status}
           userId={userData.user.id}
           winner={data.tournament.winner}
           id={data.tournament.id}

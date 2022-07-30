@@ -47,6 +47,11 @@ const ONGOING_TOURNAMENTS = gql`
               matches {
                 matchNumber
                 done
+                bye {
+                  user {
+                    id
+                  }
+                }
                 slot_two {
                   winner
                   user {
@@ -164,6 +169,12 @@ const OngoingTournaments = () => {
                 if (userData.user.id === s.slot_two.user.id) {
                   // Get the time
                   user = s.slot_two;
+                }
+              }
+              if (s.bye && s.bye.user) {
+                if (userData.user.id === s.bye.user.id) {
+                  // Get the time
+                  user = s.bye;
                 }
               }
               if (user && !s.done) {

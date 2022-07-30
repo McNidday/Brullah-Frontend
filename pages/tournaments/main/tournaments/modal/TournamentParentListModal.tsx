@@ -2,7 +2,7 @@ import cn from "classnames";
 import styles from "./styles.module.scss";
 import { Modal, Box } from "@mui/material";
 import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
 import Logo from "../../../../components/Logo/Logo";
 import moment from "moment";
@@ -309,7 +309,9 @@ const TournamentParentListModal = ({
                       )}
                       {displayUsers.map((u: any) => {
                         return (
-                          <>
+                          <Fragment
+                            key={`${u.identity.arena_name}-joined-tournament-${tournamentId}`}
+                          >
                             <div className={cn(styles.joinedUser)}>
                               <div className={cn(styles.joinedUserImage)}>
                                 <Image
@@ -324,7 +326,7 @@ const TournamentParentListModal = ({
                               </div>
                               <p>{u.identity.arena_name}</p>
                             </div>
-                          </>
+                          </Fragment>
                         );
                       })}
                     </div>

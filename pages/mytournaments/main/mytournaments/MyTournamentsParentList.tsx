@@ -16,6 +16,7 @@ interface Props {
       description: string;
       thumbnail: { image: string; blurhash: string };
     };
+    status: { progress: string };
     analytics: { joined_users: number };
     creator: { identity: { arena_name: string } };
     sponsor: { sponsored: boolean };

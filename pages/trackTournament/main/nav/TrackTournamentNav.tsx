@@ -5,6 +5,7 @@ import { NetworkStatus } from "@apollo/client";
 import Button from "../../../components/Button/Button";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import Cookies from "../../../functions/Cookies";
 
 interface Props {
   setRecapNumber?: (num: number) => void;
@@ -20,6 +21,8 @@ interface Props {
   networkStatus: number;
   recap?: boolean;
   recapNumber?: number | null;
+  status: { progress: string };
+  matchId: string;
   winner: {
     id: string;
     identity: {
@@ -44,6 +47,8 @@ const TrackTournamentNav = ({
   waiting,
   notIn,
   dq,
+  status,
+  matchId,
 }: Props) => {
   const [countDown, setCountDown] = useState<string | null>(null);
   const [buttonText, setButtonText] = useState("Get the bag 💰");
@@ -66,11 +71,10 @@ const TrackTournamentNav = ({
     }, 2000);
     return () => clearInterval(interval);
   }, [waiting]);
-
   return (
     <div className={cn(styles.navigation)}>
       <div className={cn(styles.navigationButtons)}>
-        {recap ? (
+        {recap && recapNumber === 0 && status.progress !== "DONE" ? (
           <>
             <div className={cn(styles.actionButton)}>
               <Button
@@ -87,19 +91,34 @@ const TrackTournamentNav = ({
               ></Button>
             </div>
           </>
-        ) : (
+        ) : recap && recapNumber !== 0 && status.progress === "DONE" ? (
           <div className={cn(styles.actionButton)}>
             <Button
-              text={"recap"}
-              link={`/track/recap?id=${id}`}
+              text={"back"}
+              disabled={false}
+              onClick={() => setRecapNumber!(0)}
+            ></Button>
+          </div>
+        ) : recap && status.progress !== "DONE" ? (
+          <div className={cn(styles.actionButton)}>
+            <Button
+              text={"track"}
+              link={`/track?id=${id}`}
               disabled={false}
             ></Button>
           </div>
+        ) : (
+          ""
         )}
-
         {ready ? (
           <div className={cn(styles.actionButton)}>
-            <Button text={buttonText} link="/" disabled={false}></Button>
+            <Button
+              text={buttonText}
+              link={`${
+                process.env.CHECKERS_URL
+              }?matchId=${matchId}&id=${userId}&token=${Cookies("token")}`}
+              disabled={false}
+            ></Button>
           </div>
         ) : countDown ? (
           <div className={cn(styles.countDown)}>

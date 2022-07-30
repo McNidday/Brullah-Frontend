@@ -108,7 +108,9 @@ const EditTournamentModal = ({
   } | null>(null);
   const [bye, setBye] = useState(false);
   const [emptyByes, setEmptyByes] = useState(false);
-  const [offset, setOffset] = useState(moment.duration(2, "hours").asHours());
+  const [offset, setOffset] = useState<number | string>(
+    moment.duration(2, "hours").asHours()
+  );
   const modalRef = useRef(null);
 
   const [tab, setTab] = useState<"people" | "time">("people");
@@ -379,13 +381,17 @@ const EditTournamentModal = ({
                 type="number"
                 placeholder="offset ~ hours"
                 value={offset}
-                onChange={(e) => setOffset(parseInt(e.target.value))}
+                onChange={(e) =>
+                  setOffset(e.target.value ? parseInt(e.target.value) : "")
+                }
               ></input>
               <Button
                 text="Set time"
                 disabled={false}
                 onClick={() => {
-                  handleTimeUpdate(offset);
+                  if (typeof offset === "number") {
+                    handleTimeUpdate(offset);
+                  }
                 }}
               ></Button>
             </div>

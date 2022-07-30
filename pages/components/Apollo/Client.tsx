@@ -1,5 +1,7 @@
-import { ApolloClient, ApolloLink, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloLink, gql, InMemoryCache } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
+import moment from "moment";
+import Cookies, { setCookie } from "../../functions/Cookies";
 
 const ENDPOINTS: { [key: string]: string } = {
   GetUser: "users",
@@ -37,7 +39,7 @@ const customFetch = (uri: string, options: any) => {
     operationName = JSON.parse(options.body).operationName;
   }
   // Get the auth token if present
-  const token = localStorage.getItem("token");
+  const token = Cookies("token");
   options.headers.Authorization = `Bearer ${token}`;
   return fetch(`${uri}/${ENDPOINTS[operationName]}`, options);
 };

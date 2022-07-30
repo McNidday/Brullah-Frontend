@@ -20,6 +20,7 @@ interface Props {
   showPublishModal: boolean;
   handlePublishModalClose: () => void;
   tournament: {
+    id: string;
     start_date: number;
     information: { name: string };
     match: {
@@ -46,9 +47,9 @@ const PublishTournamentModal = ({
         reset();
       }, 10000);
     }
-    if (data) {
+    if (data && !error) {
       // Redirect to tournament tracker
-      router.replace("/tracktournament");
+      router.replace(`/track?id=${tournament.id}`);
     }
   }, [data, error]);
 

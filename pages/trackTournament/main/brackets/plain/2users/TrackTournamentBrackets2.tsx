@@ -22,6 +22,19 @@ interface Slot {
   winner: boolean;
 }
 
+interface Match {
+  done: boolean;
+  matchNumber: number;
+  progress: string;
+  slot_one: Slot;
+  slot_two: Slot;
+}
+
+interface Round {
+  roundNumber: number;
+  matches: Array<Match>;
+}
+
 interface Props {
   userId: string;
   arenaNumber: number;
@@ -30,18 +43,7 @@ interface Props {
     status: "IN-PROGRESS" | "NONE" | "DONE";
     user: User;
   };
-  matches: Array<{
-    done: boolean;
-    matchNumber: number;
-    progress: string;
-    slot_one: Slot;
-    slot_two: Slot;
-    bye?: {
-      joined: boolean;
-      user: User;
-      reason: string;
-    };
-  }>;
+  rounds: Array<Round>;
   time: {
     arenaNumber: number;
     rounds: Array<{
@@ -61,22 +63,9 @@ const TrackTournamentBrackets2 = ({
   arenaWinner,
   arenaNumber,
   roundNumber,
-  matches,
+  rounds,
   time,
 }: Props) => {
-  const [bye, setBye] = useState<{
-    user: User;
-  } | null>(null);
-  useEffect(() => {
-    matches.forEach((m) => {
-      if (m.bye && m.bye.user) {
-        setBye(m.bye);
-      } else {
-        setBye(null);
-      }
-    });
-  }, [matches]);
-
   return (
     <>
       <div className={cn(styles.brackets)}>
@@ -87,7 +76,7 @@ const TrackTournamentBrackets2 = ({
             <div className={cn(styles.tournamentBracketRound)}>
               <h2 className={cn(styles.tournamentBracketRoundTitle)}>Finals</h2>
               <ul className={cn(styles.tournamentBracketList)}>
-                {matches.map((m, mi) => (
+                {rounds[0].matches.map((m, mi) => (
                   <TrackTournamentBracket
                     userId={userId}
                     makeFinalAfter={true}
@@ -103,13 +92,16 @@ const TrackTournamentBrackets2 = ({
                 Probable Final
               </h3>
               <ul className={cn(styles.tournamentBracketList)}>
-                {bye ? (
-                  <TrackTournamentBracket
-                    userId={userId}
-                    makeFinalBefore={true}
-                    time={time?.rounds[1]?.matches[0]?.time}
-                    bye={bye}
-                  ></TrackTournamentBracket>
+                {rounds[1] && rounds[1].matches.length > 0 ? (
+                  rounds[1].matches.map((m, mi) => (
+                    <TrackTournamentBracket
+                      userId={userId}
+                      makeFinalAfter={true}
+                      time={time.rounds[0].matches[mi].time}
+                      key={`${arenaNumber}:${roundNumber}:${m.matchNumber}`}
+                      match={m}
+                    ></TrackTournamentBracket>
+                  ))
                 ) : (
                   <TrackTournamentBracket
                     userId={userId}

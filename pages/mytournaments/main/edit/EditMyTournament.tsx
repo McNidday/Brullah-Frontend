@@ -85,7 +85,16 @@ const TOURNAMENT = gql`
           }
           configure {
             winner {
-              user
+              user {
+                id
+                identity {
+                  arena_name
+                  avatar {
+                    image
+                    blurhash
+                  }
+                }
+              }
               status
             }
             arenaNumber
@@ -476,6 +485,7 @@ const EditMyTournament = ({ editId }: Props) => {
         setLocalConfig(
           createMatchConfig(data.tournament.analytics.joined_users)
         );
+        setUsersToConfigure(data.tournament.match.users.joined);
       } else {
         const config = createOnlineConfigFromLocalConfig(
           data.tournament.match.users.joined,

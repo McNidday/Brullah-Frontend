@@ -20,6 +20,19 @@ interface Slot {
   winner: boolean;
 }
 
+interface Match {
+  done: boolean;
+  matchNumber: number;
+  progress: string;
+  slot_one: Slot;
+  slot_two: Slot;
+}
+
+interface Round {
+  roundNumber: number;
+  matches: Array<Match>;
+}
+
 interface Props {
   userId: string;
   arenaNumber: number;
@@ -28,13 +41,7 @@ interface Props {
     status: "IN-PROGRESS" | "NONE" | "DONE";
     user: User;
   };
-  matches: Array<{
-    done: boolean;
-    matchNumber: number;
-    progress: string;
-    slot_one: Slot;
-    slot_two: Slot;
-  }>;
+  rounds: Array<Round>;
   time: {
     arenaNumber: number;
     rounds: Array<{
@@ -54,10 +61,10 @@ const TrackTournamentBrackets = ({
   arenaWinner,
   arenaNumber,
   roundNumber,
-  matches,
+  rounds,
   time,
 }: Props) => {
-  switch (matches.length) {
+  switch (rounds[0].matches.length) {
     case 1:
       return (
         <TrackTournamentBrackets2
@@ -65,7 +72,7 @@ const TrackTournamentBrackets = ({
           arenaWinner={arenaWinner}
           arenaNumber={arenaNumber}
           roundNumber={roundNumber}
-          matches={matches}
+          rounds={rounds}
           time={time}
         ></TrackTournamentBrackets2>
       );
@@ -76,7 +83,7 @@ const TrackTournamentBrackets = ({
           arenaWinner={arenaWinner}
           arenaNumber={arenaNumber}
           roundNumber={roundNumber}
-          matches={matches}
+          rounds={rounds}
           time={time}
         ></TrackTournamentBrackets4>
       );
@@ -87,7 +94,7 @@ const TrackTournamentBrackets = ({
           arenaWinner={arenaWinner}
           arenaNumber={arenaNumber}
           roundNumber={roundNumber}
-          matches={matches}
+          rounds={rounds}
           time={time}
         ></TrackTournamentBrackets8>
       );

@@ -4,9 +4,11 @@ import Image from "next/image";
 import { gql } from "@apollo/client";
 import Button from "../../../../components/Button/Button";
 import { decodeBlurHash } from "../../../../functions/helpers";
+import { Tooltip } from "@mui/material";
 
 interface Props {
   id: string;
+  status: { progress: string };
   information: {
     name: string;
     description: string;
@@ -23,33 +25,48 @@ const MyTournamentList = (props: Props) => {
   return (
     <li className={cn(styles.container)}>
       <div>
-        <div>
-          <span>{props.creator.identity.arena_name}</span>
-          <Image src="/icons/duck.png" layout="fill"></Image>
-        </div>
-        <div>
-          <span>{props.sponsor.sponsored ? "Sponsored" : "Not Sponsored"}</span>
-          <Image src="/icons/sponsor.svg" layout="fill"></Image>
-        </div>
-        <div>
-          <span>
-            {props.contribution.contributed ? "Contributed" : "Not Contributed"}
-          </span>
-          <Image src="/icons/bit.svg" layout="fill"></Image>
-        </div>
-        <div>
-          <span>
-            {props?.analytics?.joined_users
-              ? props?.analytics?.joined_users
-              : 0}{" "}
-            joined
-          </span>
-          <p>
-            {props?.analytics?.joined_users
-              ? props?.analytics?.joined_users
-              : 0}
-          </p>
-        </div>
+        <Tooltip
+          title={props.creator.identity.arena_name}
+          componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
+        >
+          <div>
+            <Image src="/icons/duck.png" layout="fill"></Image>
+          </div>
+        </Tooltip>
+        <Tooltip
+          title={props.sponsor.sponsored ? "Sponsored" : "Not Sponsored"}
+          componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
+        >
+          <div>
+            <Image src="/icons/sponsor.svg" layout="fill"></Image>
+          </div>
+        </Tooltip>
+        <Tooltip
+          title={
+            props.contribution.contributed ? "Contributed" : "Not Contributed"
+          }
+          componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
+        >
+          <div>
+            <Image src="/icons/bit.svg" layout="fill"></Image>
+          </div>
+        </Tooltip>
+        <Tooltip
+          title={
+            props?.analytics?.joined_users
+              ? `${props?.analytics?.joined_users} Joined`
+              : `0 Joined`
+          }
+          componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
+        >
+          <div>
+            <p>
+              {props?.analytics?.joined_users
+                ? props?.analytics?.joined_users
+                : 0}
+            </p>
+          </div>
+        </Tooltip>
       </div>
       <div>
         <Image
@@ -70,11 +87,25 @@ const MyTournamentList = (props: Props) => {
         <p>{props.information.description}</p>
       </div>
       <div>
-        <Button
-          text="edit"
-          disabled={false}
-          onClick={() => props.setEditId(props.id)}
-        ></Button>
+        {props.status.progress === "DONE" ? (
+          <Button
+            text="recap"
+            link={`/track/recap?id=${props.id}`}
+            disabled={false}
+          ></Button>
+        ) : props.status.progress === "IN-PROGRESS" ? (
+          <Button
+            text="recap"
+            link={`/track?id=${props.id}`}
+            disabled={false}
+          ></Button>
+        ) : (
+          <Button
+            text="edit"
+            disabled={false}
+            onClick={() => props.setEditId(props.id)}
+          ></Button>
+        )}
       </div>
     </li>
   );
@@ -82,6 +113,9 @@ const MyTournamentList = (props: Props) => {
 
 export const MyTournamentListFragment = gql`
   fragment MyTournamentList_Tournament on Tournament {
+    status {
+      progress
+    }
     creator {
       identity {
         arena_name

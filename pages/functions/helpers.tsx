@@ -269,11 +269,47 @@ export function createTimeConfig(
           time: 0,
         };
         if (serverConfig) {
-          if (serverConfig[a].rounds[r].matches[m].time) {
+          if (
+            serverConfig[a].rounds[r].matches[m] &&
+            serverConfig[a].rounds[r].matches[m].time
+          ) {
             match.time = serverConfig[a].rounds[r].matches[m].time;
           }
         }
         round.matches.push(match);
+      }
+      config[a].rounds.push(round);
+    }
+  }
+  return config;
+}
+
+export function createMatchConfigForRender(numOfUsers: number) {
+  if (numOfUsers >= 5 && numOfUsers <= 8) {
+    numOfUsers = 8;
+  }
+  if (numOfUsers >= 13 && numOfUsers <= 16) {
+    numOfUsers = 16;
+  }
+  const config: Array<any> = new Array();
+  for (let a = 0; a < numOfArenas(numOfUsers); a++) {
+    config[a] = new Object({
+      arenaNumber: a + 1,
+      rounds: [],
+    });
+    const numOfArenaRounds = numOfRounds(numOfUsers, a + 1);
+    for (let r = 0; r < numOfArenaRounds; r++) {
+      const round: { roundNumber: number; matches: Array<any> } = {
+        roundNumber: r + 1,
+        matches: [],
+      };
+      for (let m = 0; m < numOfMatches(numOfUsers, a + 1, r + 1); m++) {
+        const matchConfig = {
+          matchNumber: m + 1,
+          slot_one: {},
+          slot_two: {},
+        };
+        round.matches.push(matchConfig);
       }
       config[a].rounds.push(round);
     }
@@ -334,7 +370,8 @@ export function createMatchConfig(numOfUsers: number) {
 export const createOnlineConfigFromLocalConfig = (
   joinedUsers: Array<any>,
   localConfig: Array<any>,
-  leaveLocalVars?: boolean
+  leaveLocalVars?: boolean,
+  render?: boolean
 ) => {
   const usersToConfigure = joinedUsers.map((u) => {
     const newUser = { ...u };
@@ -342,9 +379,18 @@ export const createOnlineConfigFromLocalConfig = (
     // delete u.__typename;
     return newUser;
   });
+
   // Create a new config
-  const newOnlineConfig = createMatchConfig(usersToConfigure.length);
-  const newLocalConfig = createMatchConfig(usersToConfigure.length);
+  let newOnlineConfig;
+  let newLocalConfig;
+
+  if (render) {
+    newOnlineConfig = createMatchConfigForRender(usersToConfigure.length);
+    newLocalConfig = createMatchConfigForRender(usersToConfigure.length);
+  } else {
+    newOnlineConfig = createMatchConfig(usersToConfigure.length);
+    newLocalConfig = createMatchConfig(usersToConfigure.length);
+  }
 
   for (let ai = 0; ai < localConfig.length; ai++) {
     let a = localConfig[ai];
@@ -367,10 +413,12 @@ export const createOnlineConfigFromLocalConfig = (
           delete matchVars.slot_one;
           delete matchVars.slot_two;
           delete matchVars.bye;
-          newLocalConfig[ai].rounds[ri].matches[mi] = {
-            ...newLocalConfig[ai].rounds[ri].matches[mi],
-            ...matchVars,
-          };
+          if (newLocalConfig[ai].rounds[ri]) {
+            newLocalConfig[ai].rounds[ri].matches[mi] = {
+              ...newLocalConfig[ai].rounds[ri].matches[mi],
+              ...matchVars,
+            };
+          }
         }
         if (m.slot_one.user) {
           // Check if user is in the config array
@@ -433,7 +481,7 @@ export const createOnlineConfigFromLocalConfig = (
           }
         }
 
-        if (m.bye && m.bye.user) {
+        if (m.bye && m.bye.user && !render) {
           // Check if user is in the config array
           const userIndex = usersToConfigure.findIndex(
             (u) => u.id === m.bye.user.id

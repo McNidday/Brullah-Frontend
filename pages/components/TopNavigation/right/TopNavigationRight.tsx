@@ -10,6 +10,7 @@ import styles from "./styles.module.scss";
 import { decodeBlurHash } from "../../../functions/helpers";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { deleteCookie } from "../../../functions/Cookies";
 const cn = classNames.bind(styles);
 
 const USER = gql`
@@ -52,7 +53,7 @@ const TopNavigationRight = () => {
     });
   };
   const logout = () => {
-    localStorage.removeItem("token");
+    deleteCookie("token");
     router.reload();
   };
 
