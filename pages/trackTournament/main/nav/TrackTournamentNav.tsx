@@ -71,6 +71,7 @@ const TrackTournamentNav = ({
     }, 2000);
     return () => clearInterval(interval);
   }, [waiting]);
+
   return (
     <div className={cn(styles.navigation)}>
       <div className={cn(styles.navigationButtons)}>

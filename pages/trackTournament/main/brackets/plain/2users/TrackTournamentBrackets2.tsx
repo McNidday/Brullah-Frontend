@@ -1,7 +1,6 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import TrackTournamentBracket from "../bracket/TrackTournamentBracket";
-import { useEffect, useState } from "react";
 import TrackTournamentWinnerBracket from "../winner/TrackTournamentWinnerBracket";
 
 interface User {

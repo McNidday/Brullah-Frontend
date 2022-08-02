@@ -99,6 +99,12 @@ const MyTournamentList = (props: Props) => {
             link={`/track?id=${props.id}`}
             disabled={false}
           ></Button>
+        ) : props.status.progress === "RECONFIGURE" ? (
+          <Button
+            text="reconfig"
+            disabled={false}
+            onClick={() => props.setEditId(props.id)}
+          ></Button>
         ) : (
           <Button
             text="edit"

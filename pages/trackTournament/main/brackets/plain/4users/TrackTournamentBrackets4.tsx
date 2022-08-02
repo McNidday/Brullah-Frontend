@@ -1,8 +1,8 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import TrackTournamentBracket from "../bracket/TrackTournamentBracket";
-import { useEffect, useState } from "react";
 import TrackTournamentWinnerBracket from "../winner/TrackTournamentWinnerBracket";
+import { useEffect, useState } from "react";
 
 interface User {
   id: string;
@@ -28,6 +28,11 @@ interface Match {
   progress: string;
   slot_one: Slot;
   slot_two: Slot;
+  bye?: {
+    joined: boolean;
+    user: User;
+    reason: string;
+  };
 }
 
 interface Round {
@@ -66,6 +71,16 @@ const TrackTournamentBrackets4 = ({
   roundNumber,
   rounds,
 }: Props) => {
+  const [bye, setBye] = useState<{
+    user: User;
+  } | null>(null);
+  useEffect(() => {
+    rounds[0].matches.forEach((m) => {
+      if (m.bye && m.bye.user) {
+        setBye({ ...m.bye });
+      }
+    });
+  }, [rounds]);
   return (
     <>
       <div className={cn(styles.brackets)}>
@@ -100,6 +115,12 @@ const TrackTournamentBrackets4 = ({
                       match={m}
                     ></TrackTournamentBracket>
                   ))
+                ) : bye ? (
+                  <TrackTournamentBracket
+                    userId={userId}
+                    time={time.rounds[1].matches[0].time}
+                    bye={bye}
+                  ></TrackTournamentBracket>
                 ) : (
                   <TrackTournamentBracket
                     userId={userId}

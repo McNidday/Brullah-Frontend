@@ -2,6 +2,10 @@ import cn from "classnames";
 import styles from "./styles.module.scss";
 
 const DashboardGraphTooltip = (props: any) => {
+  if (!props.payload[0]) {
+    console.log(props, "User props for the graph tooltip");
+  }
+
   if (props.active) {
     return (
       <div className={cn(styles.container)}>

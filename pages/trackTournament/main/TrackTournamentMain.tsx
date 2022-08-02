@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useLazyQuery, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import cn from "classnames";
 import styles from "./styles.module.scss";
@@ -32,9 +32,11 @@ const TOURNAMENT = gql`
         }
       }
       analytics {
+        id
         joined_users
       }
       information {
+        id
         name
       }
       match {
@@ -163,20 +165,22 @@ const USER = gql`
 
 const TrackTournamentMain = () => {
   const router = useRouter();
-  const { loading, error, data, networkStatus, refetch } = useQuery(
-    TOURNAMENT,
-    {
-      variables: {
-        id: router.query.id,
-      },
-    }
-  );
+  const [
+    getTournament,
+    { called, loading, error, data, networkStatus, refetch },
+  ] = useLazyQuery(TOURNAMENT, {
+    errorPolicy: "all",
+    notifyOnNetworkStatusChange: true,
+    variables: {
+      id: router.query.id,
+    },
+  });
 
   const {
     data: userData,
     loading: userDataLoading,
     error: userError,
-  } = useQuery(USER);
+  } = useQuery(USER, { errorPolicy: "all" });
 
   const [timeConfig, setTimeConfig] = useState<Array<any>>([]);
   const [userConfig, setUserConfig] = useState<Array<any>>([]);
@@ -195,7 +199,7 @@ const TrackTournamentMain = () => {
   const matchTime = (arm: string) => {
     // arm stands for arena rounds and match number
     let time: number = 0;
-    const armArray = arm.split(":");
+    const armArray = arm.split(":").map((n) => parseInt(n));
     data.tournament.match.configuration.timmers.match_time.forEach(
       (ma: any) => {
         if (armArray[0] !== ma.arenaNumber) return;
@@ -232,6 +236,7 @@ const TrackTournamentMain = () => {
       setTimeConfig(data.tournament.match.configuration.timmers.match_time);
       setUserConfig(config.localConfig);
       let user: any = null;
+      let userExists = false;
       data.tournament.match.configuration.configure.forEach((a: any) => {
         a.rounds.forEach((r: any) => {
           r.matches.forEach((s: any) => {
@@ -257,6 +262,8 @@ const TrackTournamentMain = () => {
               if (moment().isSameOrBefore(moment.unix(time))) {
                 setWaiting(time);
               }
+              userExists = true;
+              user = null;
             } else if (user && s.done) {
               if (!user.winner) {
                 setDq(true);
@@ -265,7 +272,7 @@ const TrackTournamentMain = () => {
           });
         });
       });
-      if (!user) {
+      if (!userExists) {
         setNotIn(true);
       }
       // Set the rewards
@@ -292,9 +299,16 @@ const TrackTournamentMain = () => {
           }).toFormat()
         );
       }
+
       setReward(data.tournament.reward);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      getTournament();
+    }
+  }, [router.isReady]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -303,7 +317,7 @@ const TrackTournamentMain = () => {
     return () => clearInterval(interval);
   }, []);
 
-  if (loading || userDataLoading)
+  if (loading || userDataLoading || !called)
     return <TrackTournamentLoading></TrackTournamentLoading>;
   if (userError && (userError?.networkError as any).statusCode === 401) {
     return (
@@ -340,7 +354,7 @@ const TrackTournamentMain = () => {
         </div>
       </div>
     );
-  if (data.tournament.match.status.progress !== "IN-PROGRESS") {
+  if (data?.tournament?.match?.status?.progress !== "IN-PROGRESS") {
     return (
       <div className={cn(styles.container)}>
         <div className={cn(styles.miniContainer)}>

@@ -65,41 +65,35 @@ const TrackTournamentBracket = ({
               <Typography color="inherit" fontFamily={"inherit"}>
                 Reason For Results
               </Typography>
-              {match?.slot_one?.reason ? (
+              {bye ? (
+                <div>
+                  <h3>
+                    {bye.user.identity.arena_name}: <em>Currently a bye 👋</em>
+                  </h3>
+                </div>
+              ) : match?.slot_one?.reason ? (
                 <div>
                   <h3>
                     {match?.slot_one?.user?.identity.arena_name}:{" "}
                     <em>{match?.slot_one?.reason}</em>
                   </h3>
                 </div>
-              ) : (
-                ""
-              )}
-
-              {match?.slot_two?.reason ? (
+              ) : match?.slot_two?.reason ? (
                 <div>
                   <h3>
                     {match?.slot_two?.user?.identity.arena_name}:{" "}
                     <em>{match?.slot_two?.reason}</em>
                   </h3>
                 </div>
-              ) : (
-                ""
-              )}
-
-              {!match?.slot_two?.user &&
-              match?.slot_one?.user &&
-              !match?.slot_two?.reason &&
-              !match?.slot_one?.reason ? (
+              ) : !match?.slot_two?.user &&
+                match?.slot_one?.user &&
+                !match?.slot_two?.reason &&
+                !match?.slot_one?.reason ? (
                 <h3>Still cooking 👩‍🍳</h3>
-              ) : (
-                ""
-              )}
-
-              {!match?.slot_two?.user && !match?.slot_one?.user ? (
+              ) : !match?.slot_two?.user && !match?.slot_one?.user ? (
                 <h3>Empty void 🖤</h3>
               ) : (
-                ""
+                <h3>Processing 🧠</h3>
               )}
             </div>
           </>

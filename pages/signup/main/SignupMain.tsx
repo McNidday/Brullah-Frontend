@@ -17,7 +17,7 @@ const USER = gql`
 `;
 
 const SignupMain = () => {
-  const { loading, error, data } = useQuery(USER);
+  const { loading, error, data } = useQuery(USER, { errorPolicy: "all" });
 
   if (error && (error?.networkError as any).statusCode !== 401) {
     <SignupError errorNum={1} error={error}></SignupError>;

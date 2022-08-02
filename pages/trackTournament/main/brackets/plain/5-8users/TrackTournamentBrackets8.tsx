@@ -1,8 +1,8 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import TrackTournamentBracket from "../bracket/TrackTournamentBracket";
-import { useEffect, useState } from "react";
 import TrackTournamentWinnerBracket from "../winner/TrackTournamentWinnerBracket";
+import { useEffect, useState } from "react";
 
 interface User {
   id: string;
@@ -28,6 +28,11 @@ interface Match {
   progress: string;
   slot_one: Slot;
   slot_two: Slot;
+  bye?: {
+    joined: boolean;
+    user: User;
+    reason: string;
+  };
 }
 
 interface Round {
@@ -64,6 +69,27 @@ const TrackTournamentBrackets8 = ({
   roundNumber,
   rounds,
 }: Props) => {
+  const [byeMatchNumber, setByeMatchNumber] = useState(1);
+  const [bye, setBye] = useState<{
+    user: User;
+  } | null>(null);
+
+  useEffect(() => {
+    let byeTracker: any;
+    rounds[0].matches.forEach((m) => {
+      if (m.bye && m.bye.user) {
+        byeTracker = m.bye;
+        setBye({ ...m.bye });
+        if (m.matchNumber % 2 === 0) {
+          setByeMatchNumber(m.matchNumber - 1);
+        }
+
+        if (m.matchNumber % 2 !== 0) {
+          setByeMatchNumber((m.matchNumber + 1) / 2);
+        }
+      }
+    });
+  }, [rounds]);
   return (
     <>
       <div className={cn(styles.brackets)}>
@@ -101,18 +127,75 @@ const TrackTournamentBrackets8 = ({
                     ></TrackTournamentBracket>
                   ))
                 ) : rounds[1] && rounds[1].matches.length === 1 ? (
-                  <>
-                    <TrackTournamentBracket
-                      userId={userId}
-                      time={time?.rounds[1]?.matches[0]?.time}
-                      key={`${arenaNumber}:${roundNumber}:${rounds[1].matches[0].matchNumber}`}
-                      match={rounds[1].matches[0]}
-                    ></TrackTournamentBracket>
-                    <TrackTournamentBracket
-                      userId={userId}
-                      time={time?.rounds[1]?.matches[1]?.time}
-                    ></TrackTournamentBracket>
-                  </>
+                  rounds[1].matches[0].matchNumber === 1 ? (
+                    <>
+                      <TrackTournamentBracket
+                        userId={userId}
+                        time={time?.rounds[1]?.matches[0]?.time}
+                        key={`${arenaNumber}:${roundNumber}:${rounds[1].matches[0].matchNumber}`}
+                        match={rounds[1].matches[0]}
+                      ></TrackTournamentBracket>
+                      {bye ? (
+                        <TrackTournamentBracket
+                          userId={userId}
+                          time={time.rounds[1].matches[1].time}
+                          bye={bye}
+                        ></TrackTournamentBracket>
+                      ) : (
+                        <TrackTournamentBracket
+                          userId={userId}
+                          time={time?.rounds[1]?.matches[1]?.time}
+                        ></TrackTournamentBracket>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {bye ? (
+                        <TrackTournamentBracket
+                          userId={userId}
+                          time={time.rounds[1].matches[0].time}
+                          bye={bye}
+                        ></TrackTournamentBracket>
+                      ) : (
+                        <TrackTournamentBracket
+                          userId={userId}
+                          time={time?.rounds[1]?.matches[0]?.time}
+                        ></TrackTournamentBracket>
+                      )}
+                      <TrackTournamentBracket
+                        userId={userId}
+                        time={time?.rounds[1]?.matches[1]?.time}
+                        key={`${arenaNumber}:${roundNumber}:${rounds[1].matches[0].matchNumber}`}
+                        match={rounds[1].matches[0]}
+                      ></TrackTournamentBracket>
+                    </>
+                  )
+                ) : bye ? (
+                  byeMatchNumber === 1 ? (
+                    <>
+                      <TrackTournamentBracket
+                        userId={userId}
+                        time={time.rounds[1].matches[0].time}
+                        bye={bye}
+                      ></TrackTournamentBracket>
+                      <TrackTournamentBracket
+                        userId={userId}
+                        time={time?.rounds[1]?.matches[1]?.time}
+                      ></TrackTournamentBracket>
+                    </>
+                  ) : (
+                    <>
+                      <TrackTournamentBracket
+                        userId={userId}
+                        time={time?.rounds[1]?.matches[0]?.time}
+                      ></TrackTournamentBracket>
+                      <TrackTournamentBracket
+                        userId={userId}
+                        time={time.rounds[1].matches[1].time}
+                        bye={bye}
+                      ></TrackTournamentBracket>
+                    </>
+                  )
                 ) : (
                   <>
                     <TrackTournamentBracket

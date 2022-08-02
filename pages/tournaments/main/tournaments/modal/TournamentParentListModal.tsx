@@ -23,6 +23,7 @@ const TOURNAMENT = gql`
       id
       start_date
       information {
+        id
         name
         description
         thumbnail {
@@ -31,6 +32,7 @@ const TOURNAMENT = gql`
         }
       }
       sponsor {
+        id
         sponsored
         balance {
           value
@@ -38,6 +40,7 @@ const TOURNAMENT = gql`
         }
       }
       contribution {
+        id
         contributed
         balance {
           currency
@@ -49,6 +52,7 @@ const TOURNAMENT = gql`
         }
       }
       analytics {
+        id
         joined_users
       }
       match {

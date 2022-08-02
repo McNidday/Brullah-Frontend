@@ -23,6 +23,7 @@ const TOURNAMENT = gql`
       reward
       start_date
       status {
+        id
         progress
       }
       winner {
@@ -36,9 +37,11 @@ const TOURNAMENT = gql`
         }
       }
       analytics {
+        id
         joined_users
       }
       information {
+        id
         name
       }
       match {
@@ -164,6 +167,7 @@ const RecapTournamentMain = () => {
   const { loading, error, data, networkStatus, refetch } = useQuery(
     TOURNAMENT,
     {
+      errorPolicy: "all",
       variables: {
         id: router.query.id,
       },
@@ -174,7 +178,7 @@ const RecapTournamentMain = () => {
     data: userData,
     loading: userDataLoading,
     error: userError,
-  } = useQuery(USER);
+  } = useQuery(USER, { errorPolicy: "all" });
 
   const [timeConfig, setTimeConfig] = useState<Array<any>>([]);
   const [userConfig, setUserConfig] = useState<Array<any>>([]);

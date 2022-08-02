@@ -12,6 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     const USER = gql`
       query GetUser {
         user {
+          id
           token
         }
       }
@@ -32,13 +33,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
     // Authenticate every 10 minutes
     const interval = setInterval(async () => {
-      const USER = gql`
-        query GetUser {
-          user {
-            token
-          }
-        }
-      `;
       if (Cookies("token")) {
         const result = await client.query({
           query: USER,
