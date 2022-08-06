@@ -1,27 +1,4 @@
-@font-face {
-  font-family: "Monoglyceride", sans-serif;
-  src: url("./fonts/monoglyceride/Monoglyceride.ttf") format("truetype");
-  font-weight: normal;
-}
-
-@font-face {
-  font-family: "Monoglyceride", sans-serif;
-  src: url("./fonts/monoglyceride/MonoglycerideBold.ttf") format("truetype");
-  font-weight: bold;
-}
-
-@font-face {
-  font-family: "Monoglyceride", sans-serif;
-  src: url("./fonts/monoglyceride/MonoglycerideExtraBold.ttf")
-    format("truetype");
-  font-weight: bolder;
-}
-
-@font-face {
-  font-family: "Monoglyceride", sans-serif;
-  src: url("./fonts/monoglyceride/MonoglycerideDemiBold.ttf") format("truetype");
-  font-weight: 600;
-}
+@import url("https://fonts.googleapis.com/css2?family=Original+Surfer&display=swap");
 
 // Normalize the html body and next root to fit in to window
 html,
@@ -32,9 +9,6 @@ body,
   height: 100%;
   padding: 0;
   margin: 0;
-  font-family: -apple-system, Monoglyceride, BlinkMacSystemFont, Segoe UI,
-    Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-    sans-serif;
 }
 
 // Link should have no decoration
@@ -46,6 +20,7 @@ a {
 // Borer box everthing
 * {
   box-sizing: border-box;
+  font-family: "Original Surfer", cursive;
 }
 
 // Display grid for grid pages
