@@ -79,7 +79,7 @@ const DashboardGraph = ({ user }: Props) => {
 
         if (update[i - 1]) {
           if (d.winner.id === user.id) {
-            const amount = d.gross_amount.value + update[i - 1].amount;
+            const amount = (d.gross_amount.value + update[i - 1].amount) / 100;
             update.push({
               amount: amount,
               winner: d.winner,
@@ -89,7 +89,7 @@ const DashboardGraph = ({ user }: Props) => {
           }
 
           if (d.looser.id === user.id) {
-            const amount = update[i - 1].amount - d.gross_amount.value;
+            const amount = (update[i - 1].amount - d.gross_amount.value) / 100;
             update.push({
               amount: amount,
               winner: d.winner,
@@ -99,7 +99,7 @@ const DashboardGraph = ({ user }: Props) => {
           }
         } else {
           if (d.winner.id === user.id) {
-            const amount = d.gross_amount.value;
+            const amount = d.gross_amount.value / 100;
             update.push({
               amount: amount,
               winner: d.winner,
@@ -109,7 +109,7 @@ const DashboardGraph = ({ user }: Props) => {
           }
 
           if (d.looser.id === user.id) {
-            const amount = -Math.abs(d.gross_amount.value);
+            const amount = -Math.abs(d.gross_amount.value / 100);
             update.push({
               amount: amount,
               winner: d.winner,

@@ -2,11 +2,7 @@ import cn from "classnames";
 import styles from "./styles.module.scss";
 
 const DashboardGraphTooltip = (props: any) => {
-  if (!props.payload[0]) {
-    console.log(props, "User props for the graph tooltip");
-  }
-
-  if (props.active) {
+  if (props.active && props.payload[0]) {
     return (
       <div className={cn(styles.container)}>
         <h3>{`BRC : ${props.payload[0].payload.amount}`}</h3>

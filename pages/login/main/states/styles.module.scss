@@ -24,7 +24,7 @@
 
 .title {
   label {
-    h2 {
+    h3 {
       margin: 20px 0 20px 0;
       color: white;
     }
@@ -32,12 +32,41 @@
 }
 
 .inputs {
+  & > input {
+    margin-right: 10px;
+  }
   input {
+    border: 1px solid black;
+    outline: none;
     padding: 10px;
     border-radius: 5px;
-    margin-right: 10px;
     width: 250px;
   }
+}
+
+.inputContainer {
+  display: inline-block;
+  position: relative;
+  height: fit-content;
+  width: fit-content;
+}
+
+.eyeIcons {
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  right: 5px;
+  top: 12.5%;
+  background-color: transparent;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.eyeIcon {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .buttons {

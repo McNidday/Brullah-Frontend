@@ -7,6 +7,7 @@ import Logo from "../../../components/Logo/Logo";
 import { useRouter } from "next/router";
 import { setCookie } from "../../../functions/Cookies";
 import moment from "moment";
+import Icon from "../../../components/Icon/Icon";
 
 const USER_LOGIN = gql`
   mutation UserLogin($input: LoginInput) {
@@ -20,6 +21,8 @@ const LoginInputs = () => {
   const router = useRouter();
   const [arenaName, setArenaName] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
+  const [showPassword, setShowPassword] = useState(false);
+  const [eyeIconHover, setEyeIconHover] = useState(false);
   let [userLogin, { data, loading, error, reset }] = useMutation(USER_LOGIN, {
     errorPolicy: "all",
   });
@@ -67,7 +70,7 @@ const LoginInputs = () => {
         <div className={cn(styles.cover)}>
           <div className={cn(styles.title)}>
             <label>
-              <h2>Welcome back. Login to your brullah account.</h2>
+              <h3>Welcome back. Login to your brullah account.</h3>
             </label>
           </div>
           {error ? (
@@ -96,16 +99,46 @@ const LoginInputs = () => {
                 setArenaName(e.target.value);
               }}
             ></input>
-            <input
-              type="text"
-              placeholder="Password"
-              value={password || ""}
-              onInput={(
-                e: FormEvent & { target: EventTarget & { [key: string]: any } }
-              ) => {
-                setPassword(e.target.value);
-              }}
-            ></input>
+            <div
+              className={cn(styles.inputContainer)}
+              onMouseEnter={() => setEyeIconHover(true)}
+              onMouseLeave={() => setEyeIconHover(false)}
+            >
+              <input
+                type={`${showPassword ? `text` : `password`}`}
+                placeholder="Password"
+                value={password || ""}
+                onInput={(
+                  e: FormEvent & {
+                    target: EventTarget & { [key: string]: any };
+                  }
+                ) => {
+                  setPassword(e.target.value);
+                }}
+              ></input>
+              <div
+                className={cn(styles.eyeIcons)}
+                onClick={() => setShowPassword(showPassword ? false : true)}
+              >
+                {showPassword ? (
+                  <div className={cn(styles.eyeIcon)}>
+                    <Icon
+                      activeLink="/icons/eye_visible/active.svg"
+                      inactiveLink="/icons/eye_visible/inactive.svg"
+                      hover={eyeIconHover}
+                    ></Icon>
+                  </div>
+                ) : (
+                  <div className={cn(styles.eyeIcon)}>
+                    <Icon
+                      activeLink="/icons/eye_slash/active.svg"
+                      inactiveLink="/icons/eye_slash/inactive.svg"
+                      hover={eyeIconHover}
+                    ></Icon>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
           <div className={cn(styles.buttons)} data-swiper-parallax="-100">
             <Button
