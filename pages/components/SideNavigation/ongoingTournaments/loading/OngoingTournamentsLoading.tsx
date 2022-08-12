@@ -7,7 +7,7 @@ const OngoingTournamentsLoading = () => {
     <div className={cn(styles.container)}>
       <div>
         <div>
-          <h3>OnGoing</h3>
+          <h4>OnGoing</h4>
         </div>
       </div>
       <div className={cn(styles.loadingContainer)}>

@@ -12,9 +12,9 @@ const DashboardTransactionLinks = ({
   setModalName,
 }: Props) => {
   return (
-    <>
+    <div className={cn(styles.container)}>
       <div className={cn(styles.title)}>
-        <h2>Transactions</h2>
+        <h3>Transactions</h3>
       </div>
       <div className={cn(styles.links)}>
         <Link href={""} passHref>
@@ -51,7 +51,7 @@ const DashboardTransactionLinks = ({
           </a>
         </Link>
       </div>
-    </>
+    </div>
   );
 };
 

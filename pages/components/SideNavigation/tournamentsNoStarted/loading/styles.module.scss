@@ -19,7 +19,7 @@
       border: 1px solid $backgroundLight;
       border-radius: 20px;
       padding: 5px;
-      & > h3 {
+      & > h4 {
         @include flex-center();
         margin: 0;
         color: $textColor;

@@ -4,9 +4,9 @@ import styles from "./styles.module.scss";
 
 const DashboardNavLinks = () => {
   return (
-    <>
+    <div className={cn(styles.container)}>
       <div className={cn(styles.title)}>
-        <h2>Navigation</h2>
+        <h3>Navigation</h3>
       </div>
       <div className={cn(styles.links)}>
         <Link href={"/mytournaments"} passHref>
@@ -25,7 +25,7 @@ const DashboardNavLinks = () => {
           </a>
         </Link>
       </div>
-    </>
+    </div>
   );
 };
 

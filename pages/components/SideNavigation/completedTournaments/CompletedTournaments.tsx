@@ -105,7 +105,7 @@ const CompletedTournaments = () => {
     <div className={cn(styles.container)}>
       <div>
         <div>
-          <h3>Completed</h3>
+          <h4>Completed</h4>
         </div>
       </div>
       {data.joinedMatches.docs.length > 0 ? (

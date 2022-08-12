@@ -73,6 +73,7 @@
 .error {
   position: relative;
   color: red;
+  margin: 0px;
   &:before {
     content: "*";
     position: absolute;

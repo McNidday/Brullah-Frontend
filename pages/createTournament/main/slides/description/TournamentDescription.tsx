@@ -37,9 +37,9 @@ const TournamentDescription = ({
       <div>
         <div className={cn(styles.title)} data-swiper-parallax="-1000">
           <label>
-            <h2>
+            <h3>
               Simple description of your tournament. As simple as "sponsored".
-            </h2>
+            </h3>
           </label>
         </div>
         {descriptionError ? (

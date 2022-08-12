@@ -156,7 +156,7 @@ const PaypalInput = ({ activeCurrency, setDepositAmount }: Props) => {
 
   return (
     <div className={cn(styles.container)}>
-      <h3>{getSymbolFromCurrency(activeCurrency)}</h3>
+      <h4>{getSymbolFromCurrency(activeCurrency)}</h4>
       <input
         ref={inputRef}
         data-symbol={getSymbolFromCurrency(activeCurrency)}

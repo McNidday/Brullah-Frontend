@@ -21,7 +21,7 @@
     @include flex-center();
     width: 100%;
     border-bottom: 1px solid $background;
-    & > h2 {
+    & > h3 {
       margin: 5px 0 5px 0;
     }
   }

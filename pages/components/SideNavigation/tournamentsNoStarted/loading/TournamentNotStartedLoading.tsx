@@ -7,7 +7,7 @@ const TournamentNotStartedLoading = () => {
     <div className={cn(styles.container)}>
       <div>
         <div>
-          <h3>Not Started</h3>
+          <h4>Not Started</h4>
         </div>
       </div>
       <div className={cn(styles.loadingContainer)}>

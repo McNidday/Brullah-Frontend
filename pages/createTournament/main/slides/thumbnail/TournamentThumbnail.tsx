@@ -132,7 +132,7 @@ const TournamentThumbnail = ({
         ></input>
         <div className={cn(styles.title)} data-swiper-parallax="-1000">
           <label>
-            <h1>And finally, the eye candy</h1>
+            <h3>And finally, some eye candy</h3>
           </label>
         </div>
         <div

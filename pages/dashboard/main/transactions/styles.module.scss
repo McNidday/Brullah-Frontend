@@ -2,23 +2,21 @@
 
 .container {
   position: relative;
-  grid-area: transactions;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top-left-radius: 20px;
+  border-top-left-radius: $borderRadius;
+  width: 100%;
+  height: fit-content;
 }
 
 .miniContainer {
   position: relative;
   background-color: $background;
-  width: 95%;
-  height: 90%;
-  border-radius: $borderRadius;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 1fr;
-  grid-template-rows: minmax(0, 0.3fr) 1fr;
-  grid-template-areas:
-    "transactiontitle navigationtitle"
-    "transactionlinks navigationlinks";
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
 }

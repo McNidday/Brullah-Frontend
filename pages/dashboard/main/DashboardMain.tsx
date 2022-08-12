@@ -22,7 +22,9 @@ const USER = gql`
 `;
 
 const DashboardMain = () => {
-  const { loading, error, data, refetch } = useQuery(USER);
+  const { loading, error, data, refetch } = useQuery(USER, {
+    errorPolicy: "all",
+  });
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalName, setModalName] = useState("depositTransactions");
   const handleModalClose = () => setModalOpen(false);
@@ -51,11 +53,13 @@ const DashboardMain = () => {
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
-        <DashboardProfile
-          user={data.user}
-          refreshUser={() => refetch()}
-        ></DashboardProfile>
-        <DashboardGraph user={data.user}></DashboardGraph>
+        <div className={cn(styles.topContainer)}>
+          <DashboardProfile
+            user={data.user}
+            refreshUser={() => refetch()}
+          ></DashboardProfile>
+          <DashboardGraph user={data.user}></DashboardGraph>
+        </div>
         <DashboardTransactions
           handleModalOpen={handleModalOpen}
           setModalName={(val: string) => setModalName(val)}

@@ -1,14 +1,6 @@
 @use "../../../../../styles/theme" as *;
 $number-of-options: 5;
 
-.title {
-  label {
-    h1 {
-      margin: 20px 0 20px 0;
-    }
-  }
-}
-
 .inputs {
   display: flex;
   justify-content: space-between;
@@ -46,6 +38,7 @@ $number-of-options: 5;
     content: "<= Tick for yes";
     position: absolute;
     width: 200px;
+    font-size: smaller;
   }
 
   input {

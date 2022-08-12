@@ -11,7 +11,8 @@
   align-items: center;
   transform: translateX(-105%);
 
-  h3 {
+  h4 {
+    width: 95%;
     color: white;
     text-align: center;
   }
@@ -83,7 +84,7 @@
       padding: 5px;
       margin-bottom: 5px;
       border-radius: 5px;
-      border: 1px solid grey;
+      border: 1px solid black;
       outline: none;
     }
   }

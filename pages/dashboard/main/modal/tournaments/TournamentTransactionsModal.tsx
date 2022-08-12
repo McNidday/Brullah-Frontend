@@ -125,7 +125,7 @@ const TournamentTransactionsModal = ({
               ""
             )}
             {error ? (
-              <div className={cn(styles.error)}>{error?.message}</div>
+              <h4 className={cn(styles.error)}>{error?.message}</h4>
             ) : (
               ""
             )}

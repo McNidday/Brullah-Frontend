@@ -1,0 +1,28 @@
+@use "../../../../styles/theme" as *;
+
+.container {
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+
+.miniContainer {
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.icon {
+  background-color: $background;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.tooltip {
+  font-family: inherit;
+}

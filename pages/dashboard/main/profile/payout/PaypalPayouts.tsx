@@ -172,13 +172,13 @@ const PaypalPayouts = ({ overflowTab, setOverflowTab, refreshUser }: Props) => {
 
   return (
     <div ref={containerRef} className={cn(styles.container)}>
-      <h3>
+      <h4>
         Enter the amount of money you would like to withdraw from your brulah
         account
-      </h3>
+      </h4>
 
       <div className={cn(styles.inputWrapper)}>
-        <h3>$</h3>
+        <h4>$</h4>
         <input
           ref={inputRef}
           data-symbol={"$"}

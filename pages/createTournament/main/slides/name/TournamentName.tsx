@@ -34,7 +34,7 @@ const TournamentName = ({ setName, name, error, isActive }: Props) => {
       <div>
         <div className={cn(styles.title)} data-swiper-parallax="-1000">
           <label>
-            <h2>What name would you give your tournament?</h2>
+            <h3>What name would you give your tournament?</h3>
           </label>
         </div>
         {nameError ? (

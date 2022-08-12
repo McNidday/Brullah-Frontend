@@ -214,10 +214,10 @@ const CurrencyExchange = ({
 
   return (
     <div ref={containerRef} className={cn(styles.container)}>
-      <h3>
+      <h4>
         Enter the amount of money you would like to convert to BRC or vice
         versa. 1 BRC = $1
-      </h3>
+      </h4>
       <div className={cn(styles.converterInputs)}>
         <div className="input-wrapper">
           <label

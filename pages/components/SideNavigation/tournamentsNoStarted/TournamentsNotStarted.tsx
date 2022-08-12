@@ -103,7 +103,7 @@ const TournamentsNotStarted = () => {
     <div className={cn(styles.container)}>
       <div>
         <div>
-          <h3>Not Started</h3>
+          <h4>Not Started</h4>
         </div>
       </div>
       {data.joinedMatches.docs.length > 0 ? (

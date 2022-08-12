@@ -1,12 +1,16 @@
 @use "../../../../../styles/theme" as *;
 
+.container {
+  height: fit-content;
+  width: 50%;
+}
+
 .title {
   padding: 10px;
-  grid-area: transactiontitle;
   display: flex;
   align-items: center;
   border-bottom: 1px solid $backgroundLight;
-  h2 {
+  h3 {
     color: $textColor;
     margin: 5px 0px 5px 0px;
   }

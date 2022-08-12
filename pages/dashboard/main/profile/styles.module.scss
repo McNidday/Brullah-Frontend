@@ -1,20 +1,22 @@
 @use "../../../../styles/theme" as *;
 
 .container {
-  grid-area: profile;
   background-color: $backgroundLight;
   display: flex;
   justify-content: center;
   align-items: center;
   border-top-left-radius: 20px;
+  width: 45%;
+  min-width: 480px;
+  height: 100%;
 }
 
 .miniContainer {
   position: relative;
   background-color: $background;
-  width: 90%;
-  height: 90%;
-  border-radius: $borderRadius;
+  width: 100%;
+  height: 100%;
+  border-bottom-right-radius: $borderRadius;
   display: flex;
   flex-direction: row;
   overflow: hidden;

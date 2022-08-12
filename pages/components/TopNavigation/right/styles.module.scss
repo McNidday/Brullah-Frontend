@@ -73,7 +73,7 @@
       width: 212px;
       height: 135px;
       background-color: $backgroundLight;
-      border-bottom-left-radius: 20px;
+      border-bottom-left-radius: $borderRadius;
       border-bottom: 1px solid $background;
       border-left: 1px solid $background;
       li {

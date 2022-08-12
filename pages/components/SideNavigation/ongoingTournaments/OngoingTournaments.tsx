@@ -241,7 +241,7 @@ const OngoingTournaments = () => {
     <div className={cn(styles.container)}>
       <div>
         <div>
-          <h3>OnGoing</h3>
+          <h4>OnGoing</h4>
         </div>
       </div>
       {ready.length === 0 && Waiting.length === 0 && dq.length === 0 ? (

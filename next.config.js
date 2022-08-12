@@ -4,6 +4,7 @@ const nextConfig = {
   exportPathMap: () => {
     return {
       "/": { page: "/home/Home" },
+      "/play": { page: "/play/Play" },
       "/signup": { page: "/signup/Signup" },
       "/login": { page: "/login/Login" },
       "/dashboard": { page: "/dashboard/Dashboard" },

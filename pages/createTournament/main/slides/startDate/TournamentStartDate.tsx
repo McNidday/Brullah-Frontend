@@ -41,11 +41,11 @@ const TournamentStartDate = ({ setDate, date, error, isActive }: Props) => {
       <div>
         <div className={cn(styles.title)} data-swiper-parallax="-1000">
           <label>
-            <h2>When should the tournament start?</h2>
-            <h3>
+            <h3>When should the tournament start?</h3>
+            <h4>
               If tournament is not started by the start date, It will be
               deleted.
-            </h3>
+            </h4>
           </label>
         </div>
         {nameError ? (

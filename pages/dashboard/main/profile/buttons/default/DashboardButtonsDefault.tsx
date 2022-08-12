@@ -30,15 +30,15 @@ const DashboardButtonsDefault = ({ setOverflowTab, user }: Props) => {
     <>
       <div>
         <div>
-          <h2 className={cn(styles.brullahCoinsTitle)}>Brullah Coins (BRC)</h2>
+          <h3 className={cn(styles.brullahCoinsTitle)}>Brullah Coins (BRC)</h3>
           <div>
             <div>
-              <h3>
+              <h4>
                 {dinero({
                   amount: user.finance.brc_balance.value,
                   currency: user.finance.brc_balance.currency,
                 }).toFormat("0,0.00")}
-              </h3>
+              </h4>
               <div
                 onMouseEnter={() => setExchanheHover(true)}
                 onMouseLeave={() => setExchanheHover(false)}
@@ -56,15 +56,15 @@ const DashboardButtonsDefault = ({ setOverflowTab, user }: Props) => {
       </div>
       <div>
         <div>
-          <h2 className={cn(styles.actualMullahTitle)}>Actual Mullah</h2>
+          <h3 className={cn(styles.actualMullahTitle)}>Actual Mullah</h3>
           <div>
             <div>
-              <h3>
+              <h4>
                 {dinero({
                   amount: user.finance.cash_balance.value,
                   currency: user.finance.cash_balance.currency,
                 }).toFormat("0,0.00")}
-              </h3>
+              </h4>
               <div
                 onMouseEnter={() => setWithdrawHover(true)}
                 onMouseLeave={() => setWithdrawHover(false)}

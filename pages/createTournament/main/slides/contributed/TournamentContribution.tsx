@@ -46,11 +46,11 @@ const TournamentContribution = ({
       <div>
         <div className={cn(styles.title)} data-swiper-parallax="-1000">
           <label>
-            <h2>
+            <h3>
               Will the players contribute to the tournament prize? tick for yes.
-            </h2>
+            </h3>
             {isContributed ? (
-              <h3>If yes, how much BRC would you like them to contribute.</h3>
+              <h4>If yes, how much BRC would you like them to contribute.</h4>
             ) : (
               ""
             )}
@@ -78,7 +78,7 @@ const TournamentContribution = ({
                 type="radio"
                 name="brc"
                 id="1"
-                value="1"
+                value="100"
                 required
                 checked={`${contribution}` === "100"}
                 onChange={handleBrcChange}

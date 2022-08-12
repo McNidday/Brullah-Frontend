@@ -1,14 +1,6 @@
 @use "../../../../../styles/theme" as *;
 $number-of-options: 5;
 
-.title {
-  label {
-    h1 {
-      margin: 20px 0 20px 0;
-    }
-  }
-}
-
 .inputs {
   display: flex;
   justify-content: space-between;
@@ -24,12 +16,14 @@ $number-of-options: 5;
     &:nth-child(1) {
       &::after {
         content: "<= Tick for public";
+        font-size: smaller;
       }
     }
 
     &:nth-child(2) {
       &::after {
         content: "<= Tick for secret";
+        font-size: smaller;
       }
     }
   }

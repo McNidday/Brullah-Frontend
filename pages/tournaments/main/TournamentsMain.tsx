@@ -26,6 +26,7 @@ const TournamentsMain = () => {
   const { loading, error, data, networkStatus, fetchMore } = useQuery(
     TOURNAMENTS,
     {
+      errorPolicy: "all",
       notifyOnNetworkStatusChange: true,
       variables: {
         page: page,

@@ -1,14 +1,6 @@
 @use "../../../../../styles/theme" as *;
 $number-of-options: 5;
 
-.title {
-  label {
-    h1 {
-      margin: 20px 0 20px 0;
-    }
-  }
-}
-
 .inputs {
   display: flex;
   justify-content: space-between;
@@ -46,6 +38,7 @@ $number-of-options: 5;
     content: "<= Tick for yes";
     position: absolute;
     width: 200px;
+    font-size: smaller;
   }
 
   input {
@@ -54,6 +47,8 @@ $number-of-options: 5;
     cursor: pointer;
     height: 0;
     width: 50%;
+    border: 1px solid black;
+    outline: none;
   }
 
   span {
@@ -98,6 +93,8 @@ $number-of-options: 5;
 .brcInput {
   transition: opacity 0.5s;
   input {
+    border: 1px solid black;
+    outline: none;
     padding: 10px;
     border-radius: 5px;
     margin-right: 10px;

@@ -68,8 +68,8 @@ const PayoutOrderStatus = ({
   if (loading || error) {
     return (
       <div>
-        <h3>...</h3>
-        {error ? <h3>{error.message}</h3> : <h3>...</h3>}
+        <h4>...</h4>
+        {error ? <h4>{error.message}</h4> : <h4>...</h4>}
       </div>
     );
   }
@@ -77,12 +77,12 @@ const PayoutOrderStatus = ({
   return (
     <div>
       {data?.payoutOrderStatus.nextPayoutIn ? (
-        <h3>Next payout {formattedCountDown}</h3>
+        <h4>Next payout {formattedCountDown}</h4>
       ) : (
-        <h3>Payout queue empty (✿◡‿◡)</h3>
+        <h4>Payout queue empty (✿◡‿◡)</h4>
       )}
 
-      <h3
+      <h4
         className={cn(
           data.payoutOrderStatus.inNextQueue ? styles.good : styles.warn
         )}
@@ -90,9 +90,9 @@ const PayoutOrderStatus = ({
         {data.payoutOrderStatus.inNextQueue
           ? "You are in next payout buddy, enjoy ^_~"
           : "You are not in next payout ಥ_ಥ"}
-      </h3>
+      </h4>
       {mutatePayoutOrderError ? (
-        <h3 className={cn(styles.error)}>{mutatePayoutOrderError.message}</h3>
+        <h4 className={cn(styles.error)}>{mutatePayoutOrderError.message}</h4>
       ) : (
         ""
       )}

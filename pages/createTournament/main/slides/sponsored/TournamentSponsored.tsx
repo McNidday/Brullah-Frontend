@@ -58,9 +58,9 @@ const TournamentSponsored = ({
       <div>
         <div className={cn(styles.title)} data-swiper-parallax="-1000">
           <label>
-            <h2>Will you sponsor this tournament? tick for yes.</h2>
+            <h3>Will you sponsor this tournament? tick for yes.</h3>
             {isSponsored ? (
-              <h3>If yes, for how much? The max is 160 BRC and min is 3 BRC</h3>
+              <h4>If yes, for how much? The max is 160 BRC and min is 3 BRC</h4>
             ) : (
               ""
             )}
@@ -78,6 +78,7 @@ const TournamentSponsored = ({
             <input
               tabIndex={isActive ? 0 : -1}
               type="checkbox"
+              checked={isSponsored}
               onChange={handleTickChange}
             ></input>
             <span></span>

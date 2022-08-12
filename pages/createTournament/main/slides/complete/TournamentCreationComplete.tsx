@@ -36,13 +36,13 @@ const TournamentCreationComplete = ({ data }: { data: undefined | any }) => {
   return (
     <div className={cn(styles.container)}>
       {data && data.createTournament ? (
-        <h2>
+        <h3>
           Greate, tournament "{data.createTournament.information.name}" has been
           created, you will be directed to the tournament dashboard in $
           {countDown || 0}.
-        </h2>
+        </h3>
       ) : (
-        <h2>You are a few steps away from making a brullah tournament.</h2>
+        <h3>You are a few steps away from making a brullah tournament.</h3>
       )}
     </div>
   );

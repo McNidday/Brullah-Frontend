@@ -44,10 +44,10 @@ const DashboardUserProfile = ({ user }: Props) => {
         ></Image>
       </div>
       <div>
-        <h3>{user.identity.arena_name}</h3>
+        <h4>{user.identity.arena_name}</h4>
       </div>
       <div>
-        <h3>{user.identity.arena_id}</h3>
+        <h4>{user.identity.arena_id}</h4>
         <div
           className={copy ? "copy" : ""}
           onMouseEnter={() => setCopyHover(true)}

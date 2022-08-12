@@ -24,18 +24,18 @@ const TournamentAccess = ({ accessType, setAccessType, isActive }: Props) => {
       <div>
         <div className={cn(styles.title)} data-swiper-parallax="-1000">
           <label>
-            <h2>Is the tournament public or secret?</h2>
+            <h3>Is the tournament public or secret?</h3>
             {accessType === "PUBLIC" ? (
-              <h3>
+              <h4>
                 Public tournaments will be viewed by others others on the
                 tournament dashboard.
-              </h3>
+              </h4>
             ) : (
-              <h3>
+              <h4>
                 Secret tournaments will not be viewed by others others on the
                 tournament dashboard and only people with secret will be able to
                 join.
-              </h3>
+              </h4>
             )}
           </label>
         </div>

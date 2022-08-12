@@ -9,14 +9,12 @@ import TournamentNotStartedLoading from "./tournamentsNoStarted/loading/Tourname
 import TournamentsNotStarted from "./tournamentsNoStarted/TournamentsNotStarted";
 const cn = classNames.bind(styles);
 
-interface Props {}
-
-const SideNavigation = (props: Props) => {
+const SideNavigation = () => {
   return (
     <nav className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
         <div>
-          <h2>Tournaments</h2>
+          <h3>Tournaments</h3>
         </div>
         <div>
           <ApolloClientOnly

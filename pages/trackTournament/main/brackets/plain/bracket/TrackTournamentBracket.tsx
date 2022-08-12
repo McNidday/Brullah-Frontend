@@ -46,6 +46,7 @@ const TrackTournamentBracket = ({
   bye,
   match,
 }: Props) => {
+  console.log(match, "The match pussy ass nigga");
   return (
     <li
       className={cn(
@@ -71,6 +72,21 @@ const TrackTournamentBracket = ({
                     {bye.user.identity.arena_name}: <em>Currently a bye 👋</em>
                   </h3>
                 </div>
+              ) : match?.slot_one?.reason && match?.slot_two?.reason ? (
+                <>
+                  <div>
+                    <h3>
+                      {match?.slot_one?.user?.identity.arena_name}:{" "}
+                      <em>{match?.slot_one?.reason}</em>
+                    </h3>
+                  </div>
+                  <div>
+                    <h3>
+                      {match?.slot_two?.user?.identity.arena_name}:{" "}
+                      <em>{match?.slot_two?.reason}</em>
+                    </h3>
+                  </div>
+                </>
               ) : match?.slot_one?.reason ? (
                 <div>
                   <h3>
