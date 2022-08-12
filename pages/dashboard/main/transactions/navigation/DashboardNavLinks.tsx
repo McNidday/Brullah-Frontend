@@ -9,12 +9,12 @@ const DashboardNavLinks = () => {
         <h3>Navigation</h3>
       </div>
       <div className={cn(styles.links)}>
-        <Link href={"/mytournaments"} passHref>
+        <Link href={"/tournament/mytournaments"} passHref>
           <a>
             <h4>My tournaments</h4>
           </a>
         </Link>
-        <Link href={"/tournaments"} passHref>
+        <Link href={"/tournament/tournaments"} passHref>
           <a>
             <h4>Tournaments</h4>
           </a>

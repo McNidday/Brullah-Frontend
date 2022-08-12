@@ -12,7 +12,7 @@ const TopNavigationLeft = () => {
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
-        <Link href={"/tournaments"}>
+        <Link href={"/tournament/tournaments"}>
           <Tooltip
             title={`Join tournaments`}
             componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
@@ -31,7 +31,7 @@ const TopNavigationLeft = () => {
           </Tooltip>
         </Link>
 
-        <Link href={`/mytournaments`}>
+        <Link href={`/tournament/mytournaments`}>
           <Tooltip
             title={`Your tournaments`}
             componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}

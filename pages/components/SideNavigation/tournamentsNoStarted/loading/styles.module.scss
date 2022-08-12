@@ -17,7 +17,7 @@
     & > div {
       width: 60%;
       border: 1px solid $backgroundLight;
-      border-radius: 20px;
+      border-radius: $borderRadius;
       padding: 5px;
       & > h4 {
         @include flex-center();

@@ -32,7 +32,7 @@ const DashboardMainError = ({ errorNum, error }: Props) => {
 
   useEffect(() => {
     if (!redirect && errorNum === 0) {
-      setRedirect("/login");
+      setRedirect("/user/login");
       setCountDown(5);
     }
   }, [redirect]);

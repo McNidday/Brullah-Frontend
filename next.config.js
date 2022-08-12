@@ -5,15 +5,25 @@ const nextConfig = {
     return {
       "/": { page: "/home/Home" },
       "/play": { page: "/play/Play" },
-      "/signup": { page: "/signup/Signup" },
-      "/login": { page: "/login/Login" },
+      "/user/signup": { page: "/user/signup/Signup" },
+      "/user/login": { page: "/user/login/Login" },
+      "/user/update": { page: "/user/update/UpdateUser" },
       "/dashboard": { page: "/dashboard/Dashboard" },
-      "/mytournaments": { page: "/mytournaments/MyTournaments" },
-      "/tournaments": { page: "/tournaments/Tournaments" },
-      "/createtournament": { page: "/createTournament/CreateTournament" },
-      "/track": { page: "/trackTournament/TrackTournament", query: { id: "" } },
-      "/track/recap": {
-        page: "/trackTournament/RecapTournament",
+      "/tournament/mytournaments": {
+        page: "/tournament/mytournaments/MyTournaments",
+      },
+      "/tournament/tournaments": {
+        page: "/tournament/tournaments/Tournaments",
+      },
+      "/tournament/createtournament": {
+        page: "/tournament/createTournament/CreateTournament",
+      },
+      "/tournament/track": {
+        page: "/tournament/trackTournament/TrackTournament",
+        query: { id: "" },
+      },
+      "/tournament/track/recap": {
+        page: "/tournament/trackTournament/RecapTournament",
         query: { id: "" },
       },
     };

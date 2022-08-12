@@ -48,7 +48,7 @@ const WaitingQueue = ({ tournament, timeToMatch }: Props) => {
         ></Image>
       </div>
       <div>{tournament.information.name}</div>
-      <Link href={`/track?id=${tournament.id}`}>
+      <Link href={`/tournament/track?id=${tournament.id}`}>
         <a>{countDown}</a>
       </Link>
     </li>

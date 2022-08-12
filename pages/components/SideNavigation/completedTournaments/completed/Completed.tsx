@@ -34,7 +34,7 @@ const Completed = ({ tournament }: Props) => {
       <Button
         text="recap"
         disabled={false}
-        link={`/track/recap?id=${tournament.id}`}
+        link={`/tournament/track/recap?id=${tournament.id}`}
       ></Button>
     </li>
   );

@@ -34,7 +34,7 @@ const DqTournaments = ({ tournament }: Props) => {
       <Button
         text="dq :("
         disabled={false}
-        link={`/track?id=${tournament.id}`}
+        link={`/tournament/track?id=${tournament.id}`}
       ></Button>
     </li>
   );

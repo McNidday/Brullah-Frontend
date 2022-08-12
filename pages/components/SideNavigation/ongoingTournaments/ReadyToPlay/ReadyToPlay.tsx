@@ -34,7 +34,7 @@ const ReadyToPlay = ({ tournament }: Props) => {
       <Button
         text="play"
         disabled={false}
-        link={`/track?id=${tournament.id}`}
+        link={`/tournament/track?id=${tournament.id}`}
       ></Button>
     </li>
   );

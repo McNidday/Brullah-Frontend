@@ -36,7 +36,7 @@ const TopRightNavigationLogin = () => {
             <div className={cn(styles.profileImage)}>
               <Image src="/icons/person/person.svg" layout="fill"></Image>
             </div>
-            <Link href="/login">
+            <Link href="/user/login">
               <a>Login</a>
             </Link>
           </li>

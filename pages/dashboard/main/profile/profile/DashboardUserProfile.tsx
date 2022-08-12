@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import cn from "classnames";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Icon from "../../../../components/Icon/Icon";
 import { decodeBlurHash } from "../../../../functions/helpers";
@@ -22,6 +23,7 @@ interface Props {
 const DashboardUserProfile = ({ user }: Props) => {
   const [copyHover, setCopyHover] = useState(false);
   const [copy, setCopy] = useState(false);
+  const [editIconHover, setEditIconHover] = useState(false);
   const copyArenaId = () => {
     setCopy(true);
     navigator.clipboard.writeText(user.identity.arena_id);
@@ -60,6 +62,20 @@ const DashboardUserProfile = ({ user }: Props) => {
             inactiveLink="/icons/copy/inactive.svg"
           ></Icon>
         </div>
+      </div>
+      <div
+        onMouseEnter={() => setEditIconHover(true)}
+        onMouseLeave={() => setEditIconHover(false)}
+      >
+        <Link href={`/user/update`}>
+          <a>
+            <Icon
+              activeLink="/icons/edit/active.svg"
+              inactiveLink="/icons/edit/inactive.svg"
+              hover={editIconHover}
+            ></Icon>
+          </a>
+        </Link>
       </div>
     </div>
   );

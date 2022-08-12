@@ -8,6 +8,7 @@ const ENDPOINTS: { [key: string]: string } = {
   GetPublicTournaments: "public/tournaments",
   CreateUser: "auth",
   UserLogin: "auth",
+  UpdateUser: "users",
   CreateTournament: "tournaments",
   PaypalDepositOrder: "payments",
   CapturePaypalDepositOrder: "payments",

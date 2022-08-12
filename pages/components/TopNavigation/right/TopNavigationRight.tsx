@@ -54,7 +54,7 @@ const TopNavigationRight = () => {
   };
   const logout = () => {
     deleteCookie("token");
-    router.reload();
+    router.push("/");
   };
 
   if (loading) return <TopNavigationRightLoading></TopNavigationRightLoading>;
