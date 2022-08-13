@@ -1,11 +1,5 @@
 @use "../../../../../../../../styles/theme" as *;
-//
-// VARIABLES
-// ---------------------------
-$breakpoint-xs: 24em;
-$breakpoint-sm: 38em;
-$breakpoint-md: 52em;
-$breakpoint-lg: 72em;
+@use "include-media" as *;
 
 .tournamentBracketItem {
   z-index: 1;
@@ -17,36 +11,39 @@ $breakpoint-lg: 72em;
   align-items: flex-start;
   position: relative;
   padding: 2% 0;
-  width: 48%;
+  width: 80%;
+  max-width: 265px;
   transition: padding 0.2s linear;
   counter-increment: bracket-counter;
 
   &:nth-child(odd) {
-    margin-right: 2%;
+    @include media(">=desktop") {
+      margin-right: 2%;
+    }
   }
 
   &:nth-child(even) {
-    margin-left: 2%;
+    @include media(">=desktop") {
+      margin-left: 2%;
+    }
   }
 
   &::after {
     transition: width 0.2s linear;
   }
-
-  @media (max-width: $breakpoint-xs) {
+  @include media("<=phone") {
     width: 100%;
-
     &:nth-child(odd),
     &:nth-child(even) {
       margin-left: 0;
       margin-right: 0;
     }
   }
-
-  @media (min-width: $breakpoint-sm) {
+  @include media(">=desktop") {
     padding: 0.5em 1em;
     // flex-grow: 2;
     width: 100%;
+    max-width: 100%;
 
     &:nth-child(odd),
     &:nth-child(even) {
@@ -102,7 +99,7 @@ $breakpoint-lg: 72em;
     }
   }
 
-  @media (min-width: $breakpoint-lg) {
+  @include media(">=desktop") {
     padding: 0.5em 1.5em;
 
     &::after {
@@ -112,7 +109,7 @@ $breakpoint-lg: 72em;
 }
 
 .makeFinalBefore {
-  @media (min-width: $breakpoint-sm) {
+  @include media(">=desktop") {
     &::before,
     &::after {
       border-left: none !important;
@@ -161,12 +158,11 @@ $breakpoint-lg: 72em;
   &::after {
     transition: all 0.2s linear;
   }
-
-  @media (max-width: $breakpoint-xs) {
+  @include media("<=phone") {
     padding: 0.75em 0.5em;
   }
 
-  @media (min-width: $breakpoint-sm) {
+  @include media(">=desktop") {
     &::before,
     &::after {
       z-index: -1;
@@ -200,7 +196,7 @@ $breakpoint-lg: 72em;
     }
   }
 
-  @media (min-width: $breakpoint-lg) {
+  @include media(">=desktop") {
     &::before,
     &::after {
       width: 1.5em;

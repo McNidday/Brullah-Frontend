@@ -31,6 +31,7 @@
     "dinero.js": "^1.9.1",
     "exif-js": "^2.3.0",
     "graphql": "^16.4.0",
+    "include-media": "^1.4.10",
     "lodash.debounce": "^4.0.8",
     "moment": "^2.29.3",
     "moment-timezone": "^0.5.34",

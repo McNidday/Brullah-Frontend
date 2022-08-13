@@ -1,4 +1,5 @@
 @use "../../../styles/theme" as *;
+@use "include-media" as *;
 
 .container {
   grid-area: maincontent;
@@ -24,6 +25,9 @@
 }
 
 .topContainer {
+  @include media(">phone", "<=tablet") {
+    height: calc(500px * 2);
+  }
   width: 100%;
   height: 260px;
   display: flex;

@@ -33,7 +33,7 @@ const TrackTournamentError = ({ errorNum, error, message }: Props) => {
 
   useEffect(() => {
     if (!redirect && errorNum === 401) {
-      setRedirect("/login");
+      setRedirect("/user/login");
       setCountDown(5);
     }
   }, [redirect]);

@@ -1,4 +1,5 @@
 @use "../../../../../../styles/theme" as *;
+@use "include-media" as *;
 $number-of-options: 5;
 
 .inputs {
@@ -6,6 +7,9 @@ $number-of-options: 5;
   justify-content: space-between;
   align-items: center;
   width: 600px;
+  @include media(">phone", "<=tablet") {
+    width: 550px;
+  }
 }
 
 .buttons {
@@ -154,6 +158,10 @@ $number-of-options: 5;
         z-index: 1;
         cursor: pointer;
         transition: all 0.15s ease-in-out;
+        @include media(">phone", "<=tablet") {
+          width: 20px;
+          height: 20px;
+        }
       }
       &:hover::after {
         transform: translate(-50%, -50%) scale(1.25);
@@ -211,5 +219,9 @@ $number-of-options: 5;
   &[class~="disabled"] {
     opacity: 0;
     pointer-events: none;
+  }
+
+  @include media(">phone", "<=tablet") {
+    width: 60%;
   }
 }

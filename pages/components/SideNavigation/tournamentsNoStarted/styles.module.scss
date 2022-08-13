@@ -2,10 +2,9 @@
 
 .container {
   background-color: $background;
-  width: 90%;
+  width: 100%;
   margin-top: 10px;
   height: 150px;
-  border-radius: $borderRadius;
   position: relative;
 
   & > div:nth-child(1) {

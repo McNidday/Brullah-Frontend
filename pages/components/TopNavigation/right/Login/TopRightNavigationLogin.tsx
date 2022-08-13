@@ -58,7 +58,7 @@ const TopRightNavigationLogin = () => {
                   hover={signupHover}
                 ></Icon>
               </div>
-              <Link href="/signup">
+              <Link href="/user/signup">
                 <a>Signup</a>
               </Link>
             </li>

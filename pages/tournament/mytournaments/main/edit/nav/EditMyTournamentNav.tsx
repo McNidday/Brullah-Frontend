@@ -9,6 +9,7 @@ interface Props {
   handlePublishModalOpen: () => void;
   saveConfigLoading: boolean;
   saveConfigError: ApolloError | undefined;
+  setEditId: (id: string | null) => void;
 }
 
 const EditMyTournamentNav = ({
@@ -16,10 +17,16 @@ const EditMyTournamentNav = ({
   handleAutoPple,
   saveConfigLoading,
   saveConfigError,
+  setEditId,
 }: Props) => {
   return (
     <div className={cn(styles.editNavigation)}>
       <div className={cn(styles.editNavigationButtons)}>
+        <Button
+          text="back"
+          disabled={false}
+          onClick={() => setEditId(null)}
+        ></Button>
         <Button
           text="publish"
           disabled={false}

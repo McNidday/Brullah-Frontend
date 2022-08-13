@@ -1,12 +1,5 @@
 @use "../../../../../../../styles/theme" as *;
-
-//
-// VARIABLES
-// ---------------------------
-$breakpoint-xs: 24em;
-$breakpoint-sm: 38em;
-$breakpoint-md: 52em;
-$breakpoint-lg: 72em;
+@use "include-media" as *;
 
 .brackets {
   padding: 0px 10px 10px 10px;
@@ -40,7 +33,7 @@ $breakpoint-lg: 72em;
   display: flex;
   flex-direction: column;
 
-  @media (min-width: $breakpoint-sm) {
+  @include media(">=desktop") {
     flex-direction: row;
   }
 }
@@ -76,8 +69,6 @@ $breakpoint-lg: 72em;
       }
     }
   }
-  @media (min-width: $breakpoint-sm) {
-  }
 }
 
 .tournamentBracketRoundTitle {
@@ -104,12 +95,12 @@ $breakpoint-lg: 72em;
   transition: padding 0.2s ease-in-out, margin 0.2s ease-in-out;
   counter-reset: bracket-counter;
 
-  @media (max-width: $breakpoint-xs) {
+  @include media("<=phone") {
     padding-bottom: 1em;
     margin-bottom: 1em;
   }
 
-  @media (min-width: $breakpoint-sm) {
+  @include media(">=desktop") {
     margin-bottom: 0;
     padding-bottom: 0;
     border-bottom: 0;
@@ -126,7 +117,8 @@ $breakpoint-lg: 72em;
   align-items: flex-start;
   position: relative;
   padding: 2% 0;
-  width: 48%;
+  width: 80%;
+  max-width: 265px;
   transition: padding 0.2s linear;
   counter-increment: bracket-counter;
 
@@ -142,7 +134,7 @@ $breakpoint-lg: 72em;
     transition: width 0.2s linear;
   }
 
-  @media (max-width: $breakpoint-xs) {
+  @include media("<=phone") {
     width: 100%;
 
     &:nth-child(odd),
@@ -152,10 +144,11 @@ $breakpoint-lg: 72em;
     }
   }
 
-  @media (min-width: $breakpoint-sm) {
+  @include media(">=desktop") {
     padding: 0.5em 1em;
     // flex-grow: 2;
     width: 100%;
+    max-width: 100%;
 
     &:nth-child(odd),
     &:nth-child(even) {
@@ -211,7 +204,7 @@ $breakpoint-lg: 72em;
     }
   }
 
-  @media (min-width: $breakpoint-lg) {
+  @include media(">=desktop") {
     padding: 0.5em 1.5em;
 
     &::after {
@@ -241,11 +234,11 @@ $breakpoint-lg: 72em;
     transition: all 0.2s linear;
   }
 
-  @media (max-width: $breakpoint-xs) {
+  @include media("<=phone") {
     padding: 0.75em 0.5em;
   }
 
-  @media (min-width: $breakpoint-sm) {
+  @include media(">=desktop") {
     &::before,
     &::after {
       z-index: -1;
@@ -279,7 +272,7 @@ $breakpoint-lg: 72em;
     }
   }
 
-  @media (min-width: $breakpoint-lg) {
+  @include media(">=desktop") {
     &::before,
     &::after {
       width: 1.5em;
@@ -304,7 +297,7 @@ $breakpoint-lg: 72em;
     text-align: center;
     padding: 0.2em 0.1em;
 
-    @media (min-width: $breakpoint-sm) {
+    @include media(">=desktop") {
       order: 1;
     }
   }
@@ -314,7 +307,7 @@ $breakpoint-lg: 72em;
     order: 0;
     text-align: right;
 
-    @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md) {
+    @include media(">=desktop") {
       align-items: flex-end;
     }
 
@@ -322,11 +315,11 @@ $breakpoint-lg: 72em;
       order: 2;
       justify-content: flex-end;
 
-      @media (min-width: $breakpoint-xs) {
+      @include media(">=phone") {
         order: 0;
       }
 
-      @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md) {
+      @include media(">=desktop") {
         flex-direction: column-reverse;
         align-items: flex-end;
       }
@@ -335,7 +328,7 @@ $breakpoint-lg: 72em;
     & [class*="_tournamentBracketScore_"] {
       order: 0;
 
-      @media (min-width: $breakpoint-xs) {
+      @include media(">=phone") {
         order: 2;
       }
     }
@@ -346,16 +339,16 @@ $breakpoint-lg: 72em;
     order: 2;
     text-align: left;
 
-    @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md) {
+    @include media(">=desktop") {
       align-items: flex-start;
     }
 
     & [class*="_tournamentBracketCountry_"] {
-      @media (min-width: $breakpoint-sm) {
+      @include media(">=desktop") {
         justify-content: flex-start;
       }
 
-      @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md) {
+      @include media(">=desktop") {
         align-items: flex-start;
       }
     }
@@ -389,11 +382,11 @@ $breakpoint-lg: 72em;
   flex-direction: row-reverse;
   justify-content: space-between;
 
-  @media (min-width: $breakpoint-xs) {
+  @include media(">=phone") {
     flex-direction: column-reverse;
   }
 
-  @media (min-width: $breakpoint-sm) {
+  @include media(">=desktop") {
     flex-direction: column-reverse;
   }
 }

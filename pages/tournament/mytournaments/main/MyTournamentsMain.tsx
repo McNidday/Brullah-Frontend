@@ -47,7 +47,10 @@ const MyTournamentsMain = () => {
       <div className={cn(styles.miniContainer)}>
         {!editId ? <MyTournamentSearch></MyTournamentSearch> : ""}
         {editId ? (
-          <EditMyTournament editId={editId}></EditMyTournament>
+          <EditMyTournament
+            setEditId={(val: string | null) => setEditId(val)}
+            editId={editId}
+          ></EditMyTournament>
         ) : (
           <MyTournamentsParentList
             setEditId={(val: string) => setEditId(val)}

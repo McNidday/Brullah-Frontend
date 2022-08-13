@@ -1,7 +1,8 @@
 @use "../../../../../../styles/theme" as *;
+@use "include-media" as *;
 
 .editNavigationButtons {
-  width: 200px;
+  width: 250px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -14,6 +15,9 @@
   justify-content: space-between;
   padding: 0px 20px 0px 20px;
   padding: 10px 50px 10px 30px;
+  @include media(">phone", "<=tablet") {
+    padding: 10px 10px 10px 10px;
+  }
 }
 
 .editStatesLoading {

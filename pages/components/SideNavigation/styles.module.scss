@@ -10,13 +10,13 @@
 
 .miniContainer {
   display: flex;
-  align-items: center;
   flex-direction: column;
   width: 90%;
   height: 95%;
   border-radius: $borderRadius;
   background-color: $backgroundLight;
-  padding-bottom: 5px;
+  border: 1px solid $backgroundLight;
+  overflow: hidden;
   & > div:nth-child(1) {
     @include flex-center();
     width: 100%;

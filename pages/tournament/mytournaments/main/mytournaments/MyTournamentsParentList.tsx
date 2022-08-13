@@ -35,7 +35,7 @@ const MyTournamentsParentList = ({ tournaments, setEditId }: Props) => {
           <h3>
             You have no tornaments currenctly.{" "}
             <Link href="/createtournament">Create</Link> one to play with
-            friends or jump right into the <Link href={""}>game</Link> .
+            friends or jump right into the <Link href={""}>game</Link>.
           </h3>
         </div>
       </div>

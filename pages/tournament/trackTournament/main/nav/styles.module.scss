@@ -1,4 +1,5 @@
 @use "../../../../../styles/theme" as *;
+@use "include-media" as *;
 
 .navigationButtons {
   width: fit-content;
@@ -29,6 +30,9 @@
   justify-content: space-between;
   padding: 0px 20px 0px 20px;
   padding: 10px 50px 10px 30px;
+  @include media(">phone", "<=tablet") {
+    padding: 10px 10px 10px 10px;
+  }
 }
 
 .statesLoading {

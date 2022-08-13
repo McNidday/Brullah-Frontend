@@ -1,4 +1,5 @@
 @use "../../../../../../styles/theme" as *;
+@use "include-media" as *;
 
 .container {
   position: relative;
@@ -47,6 +48,9 @@
     color: white;
     cursor: pointer;
   }
+  @include media {
+    align-self: flex-start;
+  }
 }
 
 .openArenaIcon {
@@ -71,6 +75,9 @@
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
+  @include media {
+    right: 2px;
+  }
 }
 
 .arenaWinnerImage {

@@ -7,11 +7,9 @@
 }
 
 .parentModal {
-  background-color: white;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: 0.1fr minmax(0, 1fr);
-  grid-template-areas: "heading" "table";
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
   height: 80%;
   width: 80%;
@@ -20,13 +18,24 @@
 }
 
 .table {
-  grid-area: table;
   position: relative;
+  height: 85%;
+  overflow: hidden;
+  border-radius: 0px;
 
   [class~="MuiTable-root"] {
     * {
       @include themeFont;
     }
+  }
+
+  [class~="MuiTableCell-root"] {
+    line-height: normal;
+    z-index: 0;
+  }
+
+  [class~="MuiTableContainer-root"] {
+    border-radius: 0px;
   }
 
   [class~="MuiTableBody-root"] > [class~="MuiTableRow-root"]:nth-child(odd) * {
@@ -41,27 +50,28 @@
     background-color: black;
   }
 
-  [class~="MuiTableRow-head"] {
-    border-radius: 0px;
-  }
-
   [class~="MuiTableCell-head"] {
     color: white;
     font-weight: bold;
+    border-radius: 0px;
   }
 }
 
 .headingContainer {
-  grid-area: heading;
   padding: 0px 10px 0px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: $background;
+  height: fit-content;
+  border-radius: 0px;
+  height: 15%;
 }
 
 .modalHeading {
   display: inline-block;
-  margin: 5px 0px 0px 0px;
+  color: $textColor;
+  margin: 0px;
 }
 
 .loading {

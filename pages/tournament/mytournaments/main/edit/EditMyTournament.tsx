@@ -16,6 +16,8 @@ import EditMyTournamentLoading from "./loading/EditMyTournamentLoading";
 import EditMyTournamentError from "./error/EditMyTournamentError";
 import EditMyTournamentNav from "./nav/EditMyTournamentNav";
 import PublishTournamentModal from "./publishModal/PublishTournamentModal";
+import Image from "next/image";
+import Link from "next/link";
 
 interface User {
   id: string;
@@ -30,6 +32,7 @@ interface User {
 
 interface Props {
   editId: string;
+  setEditId: (id: string | null) => void;
 }
 
 const TOURNAMENT = gql`
@@ -168,7 +171,7 @@ const SAVE_CONFIG = gql`
   }
 `;
 
-const EditMyTournament = ({ editId }: Props) => {
+const EditMyTournament = ({ editId, setEditId }: Props) => {
   const { loading, error, data, refetch } = useQuery(TOURNAMENT, {
     variables: {
       id: editId,
@@ -529,40 +532,58 @@ const EditMyTournament = ({ editId }: Props) => {
   return (
     <>
       <EditMyTournamentNav
+        setEditId={setEditId}
         handlePublishModalOpen={handlePublishModalOpen}
         handleAutoPple={handleAutoPple}
         saveConfigError={saveConfigError}
         saveConfigLoading={saveConfigLoading}
       ></EditMyTournamentNav>
-      <div className={cn(styles.editContainer)}>
-        {arenas?.map((a, i) => {
-          return (
-            <EditTournamentArenaBrackets
-              handleActiveArena={(val: number) => {
-                setActiveArena(val);
-              }}
-              activeArena={activeArena === i + 1 ? true : false}
+      {arenas.length > 0 ? (
+        <div className={cn(styles.editContainer)}>
+          {arenas?.map((a, i) => {
+            return (
+              <EditTournamentArenaBrackets
+                handleActiveArena={(val: number) => {
+                  setActiveArena(val);
+                }}
+                activeArena={activeArena === i + 1 ? true : false}
+                activeEdit={activeEdit}
+                key={`${data.tournament.match.id}:${a}`}
+                setActiveEdit={handleActiveEdit}
+                config={localConfig[i]}
+                time={timeConfig[i]}
+              ></EditTournamentArenaBrackets>
+            );
+          })}
+          <div className={cn(styles.modalContainer)}>
+            <EditTournamentModal
+              setActiveEdit={(val: string | null) => setActiveEdit(val)}
+              handleTimeUpdate={handleTimeUpdate}
+              joinedUsers={usersJoined}
+              handleConfigUserRemove={handleConfigUserRemove}
+              config={localConfig}
+              usersToConfigure={usersToConfigure}
+              handleConfigUserUpdate={handleConfigUserUpdate}
               activeEdit={activeEdit}
-              key={`${data.tournament.match.id}:${a}`}
-              setActiveEdit={handleActiveEdit}
-              config={localConfig[i]}
-              time={timeConfig[i]}
-            ></EditTournamentArenaBrackets>
-          );
-        })}
-        <div className={cn(styles.modalContainer)}>
-          <EditTournamentModal
-            setActiveEdit={(val: string | null) => setActiveEdit(val)}
-            handleTimeUpdate={handleTimeUpdate}
-            joinedUsers={usersJoined}
-            handleConfigUserRemove={handleConfigUserRemove}
-            config={localConfig}
-            usersToConfigure={usersToConfigure}
-            handleConfigUserUpdate={handleConfigUserUpdate}
-            activeEdit={activeEdit}
-          ></EditTournamentModal>
+            ></EditTournamentModal>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className={cn(styles.editContainer)}>
+          <div className={cn(styles.noUsers)}>
+            <div>
+              <Image src="/illustrations/02.png" layout="fill"></Image>
+            </div>
+            <div>
+              <h3>
+                You cannot configure the tournament yet, no one has joined the
+                tournament yet.
+              </h3>
+            </div>
+          </div>
+        </div>
+      )}
+
       {data?.tournament ? (
         <PublishTournamentModal
           refetchTournament={() => refetch({ id: editId })}

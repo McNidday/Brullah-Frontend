@@ -116,11 +116,8 @@ const PayoutTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
               ""
             )}
           </div>
-          <div className={cn(styles.table)}>
-            <TableContainer
-              sx={{ width: "100%", height: "100%" }}
-              component={Paper}
-            >
+          <Paper className={cn(styles.table)}>
+            <TableContainer sx={{ width: "100%", height: "100%" }}>
               <Table
                 sx={{ minWidth: 650, maxHeight: 440 }}
                 stickyHeader
@@ -194,7 +191,7 @@ const PayoutTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
                 onPageChange={handleChangePage}
               />
             </TableContainer>
-          </div>
+          </Paper>
         </Box>
       </Modal>
     </>
