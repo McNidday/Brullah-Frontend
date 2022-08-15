@@ -5,14 +5,15 @@ import TournamentsParentList, {
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import { gql, NetworkStatus, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TournamentParentListModal from "./tournaments/modal/TournamentParentListModal";
 import TournamentsLoading from "./loading/TournamentsLoading";
 import TournamentsError from "./error/TournamentsError";
+import debounce from "lodash.debounce";
 
 const TOURNAMENTS = gql`
-  query GetPublicTournaments($page: Int!, $limit: Int!) {
-    tournaments(page: $page, limit: $limit) {
+  query GetPublicTournaments($page: Int!, $limit: Int!, $search: String) {
+    tournaments(page: $page, limit: $limit, search: $search) {
       page
       hasNextPage
       ...TournamentsParentList_PaginatedTournament
@@ -23,22 +24,50 @@ const TOURNAMENTS = gql`
 
 const TournamentsMain = () => {
   const [page, setPage] = useState(1);
-  const { loading, error, data, networkStatus, fetchMore } = useQuery(
+  const { loading, error, data, networkStatus, fetchMore, refetch } = useQuery(
     TOURNAMENTS,
     {
       errorPolicy: "all",
       notifyOnNetworkStatusChange: true,
       variables: {
         page: page,
-        limit: 20,
+        limit: 10,
+        search: "",
       },
     }
   );
 
+  const [search, setSearch] = useState<string | null>(null);
   const [joinTournamentId, setJoinTournamentId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalClose = () => setModalOpen(false);
   const handleModalOpen = () => setModalOpen(true);
+  const getSearchResults = useRef(
+    debounce((val: string) => {
+      if (val) {
+        refetch({
+          page: 1,
+          search: val,
+          limit: 10,
+        });
+      } else {
+        refetch({
+          page: 1,
+          search: "",
+          limit: 10,
+        });
+      }
+    }, 500)
+  ).current;
+
+  const handleSearch = (val: string) => {
+    if (val && val !== "") {
+      setSearch(val);
+    } else {
+      setSearch(null);
+    }
+    getSearchResults(val);
+  };
 
   const onLoadMore = () => {
     if (
@@ -76,8 +105,12 @@ const TournamentsMain = () => {
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
-        <TournamentSearch></TournamentSearch>
+        <TournamentSearch
+          search={search}
+          setSearch={handleSearch}
+        ></TournamentSearch>
         <TournamentsParentList
+          search={search}
           hasNextPage={data.tournaments.hasNextPage}
           networkStatus={networkStatus}
           onLoadMore={onLoadMore}

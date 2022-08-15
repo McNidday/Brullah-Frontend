@@ -15,7 +15,12 @@ interface Props {
     thumbnail: { image: string; blurhash: string };
   };
   analytics: { joined_users: number };
-  creator: { identity: { arena_name: string } };
+  creator: {
+    identity: {
+      arena_name: string;
+      avatar: { image: string; blurhash: string };
+    };
+  };
   sponsor: { sponsored: boolean };
   contribution: { contributed: boolean };
   setEditId: (id: string) => void;
@@ -30,14 +35,23 @@ const MyTournamentList = (props: Props) => {
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
           <div>
-            <Image src="/icons/duck.png" layout="fill"></Image>
+            <Image
+              src={props.creator.identity.avatar.image}
+              placeholder="blur"
+              layout="fill"
+              blurDataURL={decodeBlurHash(
+                props.creator.identity.avatar.blurhash,
+                50,
+                50
+              )}
+            ></Image>
           </div>
         </Tooltip>
         <Tooltip
           title={props.sponsor.sponsored ? "Sponsored" : "Not Sponsored"}
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
-          <div>
+          <div className={cn(!props.sponsor.sponsored ? styles.disabled : "")}>
             <Image src="/icons/sponsor.svg" layout="fill"></Image>
           </div>
         </Tooltip>
@@ -47,7 +61,11 @@ const MyTournamentList = (props: Props) => {
           }
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
-          <div>
+          <div
+            className={cn(
+              !props.contribution.contributed ? styles.disabled : ""
+            )}
+          >
             <Image src="/icons/bit.svg" layout="fill"></Image>
           </div>
         </Tooltip>
@@ -125,6 +143,10 @@ export const MyTournamentListFragment = gql`
     creator {
       identity {
         arena_name
+        avatar {
+          image
+          blurhash
+        }
       }
     }
     analytics {

@@ -102,7 +102,7 @@ const TournamentList = (props: Props) => {
         <h3>{props.information.name}</h3>
       </div>
       <div>
-        <p>{props.information.description} nidday maketh a man</p>
+        <p>{props.information.description}</p>
       </div>
       <div>
         <Button

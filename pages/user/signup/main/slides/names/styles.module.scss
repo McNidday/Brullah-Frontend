@@ -1,4 +1,5 @@
 @use "../../../../../../styles/theme" as *;
+@use "include-media" as *;
 
 .inputs {
   input {
@@ -7,6 +8,14 @@
     margin-right: 10px;
     border: 1px solid black;
     outline: none;
+  }
+  @include media("<=tablet") {
+    width: 240px;
+  }
+  & > input:nth-child(1) {
+    @include media("<=tablet") {
+      margin-bottom: 15px;
+    }
   }
 }
 

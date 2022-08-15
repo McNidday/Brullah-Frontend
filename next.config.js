@@ -36,6 +36,7 @@ const nextConfig = {
     CHECKERS_URL: "http://localhost:3002",
     PAYPAL_CLIENT_ID:
       "AR7mepWYpche1Gnhv-516V7jixWwrvr8NnQ7wdEgo7mIbVa8x0Mb8TCdXRXopyrMZLy8vnrPhQRH64rW",
+    YOUTUBE: "https://www.youtube.com/channel/UCfMxzWvxGN45lWiFQODymLA",
   },
 };
 

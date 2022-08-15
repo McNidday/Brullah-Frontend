@@ -96,7 +96,7 @@ const UpdateUserPassword = ({
           <input
             tabIndex={isActive ? 0 : -1}
             type={`${showPassword ? `text` : `password`}`}
-            placeholder="Confirm New Password"
+            placeholder="Confirm New Pass"
             value={confirm_password || ""}
             onBlur={() => {
               if (password !== confirm_password) {

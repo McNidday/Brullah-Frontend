@@ -5,6 +5,7 @@ import TournamentList, { TournamentListFragment } from "./list/TournamentList";
 import { gql, NetworkStatus } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface Props {
   hasNextPage: boolean;
@@ -12,6 +13,7 @@ interface Props {
   onLoadMore: () => void;
   setJoinTournamentId: (id: string) => void;
   handleModalOpen: () => void;
+  search: string | null;
   tournaments: Array<{
     id: string;
     information: {
@@ -32,6 +34,7 @@ interface Props {
 }
 
 const TournamentsParentList = ({
+  search,
   hasNextPage,
   networkStatus,
   onLoadMore,
@@ -39,6 +42,8 @@ const TournamentsParentList = ({
   setJoinTournamentId,
   handleModalOpen,
 }: Props) => {
+  const [tournamentsExist, setTournamentsExist] = useState(false);
+
   const handleScroll = (e: any) => {
     if (
       e.currentTarget!.scrollTop + e.currentTarget!.clientHeight >=
@@ -48,7 +53,32 @@ const TournamentsParentList = ({
     }
   };
 
-  if (tournaments.length === 0) {
+  useEffect(() => {
+    if (tournaments.length > 0 && !tournamentsExist) {
+      setTournamentsExist(true);
+    }
+  }, [tournaments]);
+
+  if (
+    (search && !tournaments) ||
+    (search && tournaments && tournaments.length === 0)
+  ) {
+    return (
+      <div className={cn(styles.noTournaments, styles.container)}>
+        <div>
+          <Image src="/illustrations/04.png" layout="fill"></Image>
+        </div>
+        <div>
+          <h3>
+            Couldn't find the searched tournament / tournaments, if you are just
+            from typing, give me a moment to think about it.
+          </h3>
+        </div>
+      </div>
+    );
+  }
+
+  if (!tournamentsExist && tournaments && tournaments.length === 0) {
     return (
       <div className={cn(styles.noTournaments, styles.container)}>
         <div>
@@ -58,8 +88,21 @@ const TournamentsParentList = ({
           <h3>
             No tournaments currently.{" "}
             <Link href="/createtournament">Create</Link> one to play with
-            friends or jump right into the <Link href={""}>game</Link> .
+            friends or jump right into the <Link href={""}>game</Link>.
           </h3>
+        </div>
+      </div>
+    );
+  }
+
+  if (tournamentsExist && tournaments && tournaments.length === 0) {
+    return (
+      <div className={cn(styles.noTournaments, styles.container)}>
+        <div>
+          <Image src="/illustrations/04.png" layout="fill"></Image>
+        </div>
+        <div>
+          <h3>Looking into the future...</h3>
         </div>
       </div>
     );

@@ -1,18 +1,19 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import { gql, useQuery } from "@apollo/client";
+import { gql, NetworkStatus, useQuery } from "@apollo/client";
 import MyTournamentsParentList, {
   MyTournamentsParentListFragment,
 } from "./mytournaments/MyTournamentsParentList";
 import MyTournamentsLoading from "./loading/MyTournamentsLoading";
 import MyTournamentSearch from "./search/MyTournamentSearch";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EditMyTournament from "./edit/EditMyTournament";
 import MyTournamentsError from "./error/MyTournamentsError";
+import debounce from "lodash.debounce";
 
 const TOURNAMENTS = gql`
-  query GetMyTournaments($page: Int!, $limit: Int!) {
-    myTournaments(page: $page, limit: $limit) {
+  query GetMyTournaments($page: Int!, $limit: Int!, $search: String) {
+    myTournaments(page: $page, limit: $limit, search: $search) {
       ...MyTournamentsParentList_PaginatedTournament
     }
   }
@@ -20,10 +21,64 @@ const TOURNAMENTS = gql`
 `;
 
 const MyTournamentsMain = () => {
-  const { loading, error, data } = useQuery(TOURNAMENTS, {
-    variables: { page: 1, limit: 10 },
-  });
+  const [page, setPage] = useState(1);
+  const { loading, error, data, networkStatus, fetchMore, refetch } = useQuery(
+    TOURNAMENTS,
+    {
+      errorPolicy: "all",
+      notifyOnNetworkStatusChange: true,
+      variables: { page: page, limit: 10, search: "" },
+    }
+  );
   const [editId, setEditId] = useState<string | null>(null);
+  const [search, setSearch] = useState<string | null>(null);
+  const getSearchResults = useRef(
+    debounce((val: string) => {
+      if (val) {
+        refetch({
+          page: 1,
+          search: val,
+          limit: 10,
+        });
+      } else {
+        refetch({
+          page: 1,
+          search: "",
+          limit: 10,
+        });
+      }
+    }, 500)
+  ).current;
+
+  const handleSearch = (val: string) => {
+    if (val && val !== "") {
+      setSearch(val);
+    } else {
+      setSearch(null);
+    }
+    getSearchResults(val);
+  };
+
+  const onLoadMore = () => {
+    if (
+      networkStatus === NetworkStatus.fetchMore ||
+      networkStatus === NetworkStatus.loading ||
+      !data.myTournaments.hasNextPage
+    )
+      return;
+    fetchMore({
+      variables: {
+        page: page + 1,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (data?.tournaments) {
+      setPage(data.tournaments.page);
+    }
+  }, [data]);
+
   if (loading) return <MyTournamentsLoading></MyTournamentsLoading>;
   if (error && (error?.networkError as any).statusCode !== 401) {
     return (
@@ -45,7 +100,14 @@ const MyTournamentsMain = () => {
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
-        {!editId ? <MyTournamentSearch></MyTournamentSearch> : ""}
+        {!editId ? (
+          <MyTournamentSearch
+            search={search}
+            setSearch={handleSearch}
+          ></MyTournamentSearch>
+        ) : (
+          ""
+        )}
         {editId ? (
           <EditMyTournament
             setEditId={(val: string | null) => setEditId(val)}
@@ -53,6 +115,10 @@ const MyTournamentsMain = () => {
           ></EditMyTournament>
         ) : (
           <MyTournamentsParentList
+            search={search}
+            hasNextPage={data.myTournaments.hasNextPage}
+            networkStatus={networkStatus}
+            onLoadMore={onLoadMore}
             setEditId={(val: string) => setEditId(val)}
             tournaments={data.myTournaments.docs}
           ></MyTournamentsParentList>

@@ -1,23 +1,43 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import { useState } from "react";
-import Icon from "../../../../components/Icon/Icon";
+import { useState, FormEvent, useRef, useEffect } from "react";
+import debounce from "lodash.debounce";
+import Image from "next/image";
 
-const TournamentSearch = () => {
-  const [searcIconHover, setSearcIconHover] = useState(false);
+interface Props {
+  search: string | null;
+  setSearch: (text: string) => void;
+}
+
+const TournamentSearch = ({ search, setSearch }: Props) => {
+  const [searchVal, setSearchVal] = useState("");
+  const setSearchDebounce = useRef(
+    debounce((val: string) => {
+      setSearch(val);
+    }, 1000)
+  ).current;
+
+  const handleSearchVal = (
+    e: FormEvent & { target: EventTarget & { [key: string]: any } }
+  ) => {
+    setSearchVal(e.target.value);
+    setSearchDebounce(e.target.value);
+  };
+
+  useEffect(() => {
+    if (search) setSearchVal(search);
+  }, [search]);
+
   return (
     <div className={cn(styles.container)}>
       <div>
-        <input placeholder="Search"></input>
-        <div
-          onMouseEnter={() => setSearcIconHover(true)}
-          onMouseLeave={() => setSearcIconHover(false)}
-        >
-          <Icon
-            activeLink="/icons/search/active.svg"
-            inactiveLink="/icons/search/inactive.svg"
-            hover={searcIconHover}
-          ></Icon>
+        <input
+          placeholder="Search"
+          value={searchVal || ""}
+          onInput={handleSearchVal}
+        ></input>
+        <div>
+          <Image src={`/icons/search/inactive.svg`} layout="fill"></Image>
         </div>
       </div>
     </div>

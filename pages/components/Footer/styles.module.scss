@@ -1,6 +1,26 @@
 @use "../../../styles/theme" as *;
 
 .footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   color: $background;
   background-color: $backgroundLight;
+  padding: 0px 5px 0px 5px;
+  & > p {
+    color: $background;
+    margin: 0px;
+  }
+}
+
+.socialIcons {
+  position: relative;
+  height: fit-content;
+  width: fit-content;
+  & > div {
+    position: relative;
+    width: 30px;
+    height: 30px;
+  }
 }
