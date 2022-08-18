@@ -36,14 +36,14 @@ const TournamentJoinConfirmModal = ({
       <Box className={cn(styles.parentModal)}>
         {contribution.contributed ? (
           <>
-            <h3>
+            <h4>
               Click below to confirm. You are about to contribute{" "}
               {dinero({
                 amount: contribution.per_user.value,
                 currency: contribution.per_user.currency,
               }).toFormat()}{" "}
               to join tournament {tournamentName}
-            </h3>
+            </h4>
             <Button
               text="ᕦ(ò_óˇ)ᕤ"
               disabled={false}
@@ -54,7 +54,7 @@ const TournamentJoinConfirmModal = ({
             ></Button>
           </>
         ) : (
-          <h3>...</h3>
+          <h4>...</h4>
         )}
       </Box>
     </Modal>

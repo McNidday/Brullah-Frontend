@@ -106,7 +106,7 @@ const TournamentsNotStarted = () => {
           <h4>Not Started</h4>
         </div>
       </div>
-      {data.joinedMatches.docs.length > 0 ? (
+      {data?.joinedMatches?.docs && data.joinedMatches.docs.length > 0 ? (
         <ul className={cn(styles.tournamentList)} onScroll={handleScroll}>
           {data.joinedMatches.docs.map((m: any) => {
             return (

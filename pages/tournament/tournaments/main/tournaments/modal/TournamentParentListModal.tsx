@@ -1,7 +1,13 @@
 import cn from "classnames";
 import styles from "./styles.module.scss";
 import { Modal, Box } from "@mui/material";
-import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import {
+  gql,
+  NetworkStatus,
+  useLazyQuery,
+  useMutation,
+  useQuery,
+} from "@apollo/client";
 import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
 import Logo from "../../../../../components/Logo/Logo";
@@ -95,8 +101,10 @@ const TournamentParentListModal = ({
   modalOpen,
   handleModalClose,
 }: Props) => {
-  const [getTournament, { data, error, loading, refetch }] =
-    useLazyQuery(TOURNAMENT);
+  const [
+    getTournament,
+    { data, error, loading, called, networkStatus, refetch },
+  ] = useLazyQuery(TOURNAMENT, { notifyOnNetworkStatusChange: true });
 
   const {
     loading: userLoading,
@@ -147,11 +155,17 @@ const TournamentParentListModal = ({
         tournamentId,
         "We some poor high class niggas, made it we rich ooh"
       );
-      getTournament({
-        variables: {
+      if (called) {
+        refetch({
           id: tournamentId,
-        },
-      });
+        });
+      } else {
+        getTournament({
+          variables: {
+            id: tournamentId,
+          },
+        });
+      }
     }
   }, [tournamentId]);
 
@@ -183,8 +197,6 @@ const TournamentParentListModal = ({
     }
   }, [userData, data]);
 
-  console.log(data, "This is the tournament data, taliban in this bitc ooooh");
-
   return (
     <Modal
       className={cn(styles.modal)}
@@ -194,7 +206,9 @@ const TournamentParentListModal = ({
       aria-describedby="parent-modal-description"
     >
       <Box className={cn(styles.parentModal)}>
-        {loading || !data?.tournament ? (
+        {loading ||
+        networkStatus !== NetworkStatus.ready ||
+        !data?.tournament ? (
           <div className={cn(styles.loading)}>
             <Logo
               thinking={true}
@@ -210,7 +224,13 @@ const TournamentParentListModal = ({
         ) : (
           <>
             <div className={cn(styles.heading)}>
-              <h2>Join Tournament {data.tournament.information.name}</h2>
+              <h3
+                className={cn(
+                  addToMatchLoading || addToMatchError ? styles.hideHeading : ""
+                )}
+              >
+                Join Tournament {data.tournament.information.name}
+              </h3>
               {addToMatchLoading ? (
                 <div className={cn(styles.joinLoading)}>
                   <Logo
@@ -231,22 +251,22 @@ const TournamentParentListModal = ({
             <div className={cn(styles.data)}>
               <div className={cn(styles.information)}>
                 <div>
-                  <h3>Tournament name</h3>
+                  <h4>Tournament name</h4>
                   <p>{data.tournament.information.name}</p>
                 </div>
                 <div>
-                  <h3>Tournament descriptrion</h3>
+                  <h4>Tournament descriptrion</h4>
                   <p>{data.tournament.information.description}</p>
                 </div>
                 <div>
-                  <h3>Tournament start date</h3>
+                  <h4>Tournament start date</h4>
                   <p>
                     {moment.unix(data.tournament.start_date).format("LLL")} ~
                     CAN START EARLIER ¯\(°_o)/¯
                   </p>
                 </div>
                 <div>
-                  <h3>Sponsored</h3>
+                  <h4>Sponsored</h4>
                   {data.tournament.sponsor.sponsored ? (
                     <p>
                       Winner gets{" "}
@@ -263,7 +283,7 @@ const TournamentParentListModal = ({
                 <div>
                   {data.tournament.contribution.contributed ? (
                     <>
-                      <h3>
+                      <h4>
                         Contribution ~ Pool "
                         {dinero({
                           amount: data.tournament.contribution.balance.value,
@@ -271,7 +291,7 @@ const TournamentParentListModal = ({
                             data.tournament.contribution.balance.currency,
                         }).toFormat()}
                         "
-                      </h3>
+                      </h4>
                       <p>
                         Every player contributes{" "}
                         {dinero({
@@ -283,7 +303,7 @@ const TournamentParentListModal = ({
                     </>
                   ) : (
                     <>
-                      <h3>Contribution</h3>
+                      <h4>Contribution</h4>
                       <p>No contribution required (✿◡‿◡)</p>
                     </>
                   )}
@@ -303,10 +323,12 @@ const TournamentParentListModal = ({
                   ></Image>
                 </div>
                 <div className={cn(styles.peopleJoined)}>
-                  <h3>
-                    People joined: {data.tournament.analytics.joined_users}
-                  </h3>
-                  {data.tournament.analytics.joined_users === 0 ? (
+                  <h4>
+                    People joined:{" "}
+                    {data.tournament.analytics?.joined_users || 0}
+                  </h4>
+                  {!data.tournament.analytics ||
+                  data.tournament.analytics.joined_users === 0 ? (
                     <div className={cn(styles.joinedUsersPlaceHolder)}>
                       <p>No one has joined yet (╯‵□′)╯︵┻━┻</p>
                     </div>

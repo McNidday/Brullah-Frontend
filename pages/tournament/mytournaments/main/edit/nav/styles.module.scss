@@ -7,6 +7,9 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  @include media("<=phone") {
+    width: 100%;
+  }
 }
 
 .editNavigation {
@@ -17,6 +20,11 @@
   padding: 10px 50px 10px 30px;
   @include media(">phone", "<=tablet") {
     padding: 10px 10px 10px 10px;
+  }
+
+  @include media("<=phone") {
+    padding: 5px 5px 5px 5px;
+    flex-direction: column;
   }
 }
 
@@ -56,6 +64,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  @include media("<=phone") {
+    margin-top: 5px;
+  }
   h3 {
     margin: 0px;
   }

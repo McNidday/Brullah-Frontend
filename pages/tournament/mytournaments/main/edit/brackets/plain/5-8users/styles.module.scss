@@ -10,6 +10,9 @@
   padding: 0px 10px 10px 10px;
   position: relative;
   height: fit-content;
+  @include media("<=phone") {
+    padding: 0px;
+  }
 }
 
 .container {
@@ -17,6 +20,10 @@
   width: 90%;
   min-width: 18em;
   margin: 20px auto;
+  @include media("<=phone") {
+    min-width: 250px;
+    width: 100%;
+  }
 }
 
 .srOnly {

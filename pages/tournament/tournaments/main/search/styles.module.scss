@@ -6,6 +6,10 @@
   background-color: $background;
   border-top-left-radius: $borderRadius;
   border-top-right-radius: $borderRadius;
+  @include media("<tablet") {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+  }
   & > div:nth-child(1) {
     display: flex;
     align-items: center;
@@ -13,7 +17,7 @@
     height: 100%;
     padding: 5px;
     @include media("<tablet") {
-      width: 60%;
+      width: 70%;
     }
     & > input {
       border-radius: 10px;
@@ -23,6 +27,7 @@
       outline: none;
       @include media("<tablet") {
         width: 100%;
+        margin-left: 0px;
       }
     }
     & > div {

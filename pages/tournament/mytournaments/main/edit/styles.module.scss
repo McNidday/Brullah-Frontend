@@ -45,7 +45,7 @@
     position: relative;
     width: 300px;
     height: 300px;
-    @include media(">phone", "<=tablet") {
+    @include media("<=tablet") {
       width: 200px;
       height: 200px;
     }
@@ -55,7 +55,7 @@
     position: relative;
     width: 70%;
     h3 {
-      @include media(">phone", "<=tablet") {
+      @include media("<=tablet") {
         text-align: center;
       }
     }

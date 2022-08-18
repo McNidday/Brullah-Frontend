@@ -108,7 +108,7 @@ const CompletedTournaments = () => {
           <h4>Completed</h4>
         </div>
       </div>
-      {data.joinedMatches.docs.length > 0 ? (
+      {data?.joinedMatches && data.joinedMatches.docs.length > 0 ? (
         <ul className={cn(styles.tournamentList)} onScroll={handleScroll}>
           {data.joinedMatches.docs.map((m: any) => {
             return <Completed key={m.id} {...m}></Completed>;

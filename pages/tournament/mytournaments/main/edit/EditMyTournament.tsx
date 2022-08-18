@@ -17,7 +17,6 @@ import EditMyTournamentError from "./error/EditMyTournamentError";
 import EditMyTournamentNav from "./nav/EditMyTournamentNav";
 import PublishTournamentModal from "./publishModal/PublishTournamentModal";
 import Image from "next/image";
-import Link from "next/link";
 
 interface User {
   id: string;
