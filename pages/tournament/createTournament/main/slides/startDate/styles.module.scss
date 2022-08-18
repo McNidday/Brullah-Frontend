@@ -1,4 +1,18 @@
 @use "../../../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.title {
+  h3 {
+    @include media("<tablet") {
+      font-size: large;
+    }
+  }
+  h4 {
+    @include media("<tablet") {
+      font-size: large;
+    }
+  }
+}
 
 .inputs {
   input {

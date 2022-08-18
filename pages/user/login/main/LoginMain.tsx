@@ -16,13 +16,10 @@ const USER = gql`
 
 const LoginMain = () => {
   const { loading, error, data } = useQuery(USER, { errorPolicy: "all" });
-
   if (error && (error?.networkError as any).statusCode !== 401) {
     return <LoginError errorNum={1} error={error!}></LoginError>;
   }
-
   if (loading) return <LoginLoading></LoginLoading>;
-
   if (data && data.user && data.user.id)
     return (
       <LoginError

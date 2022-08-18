@@ -1,11 +1,30 @@
 @use "../../../../../../styles/theme" as *;
+@use "include-media" as *;
 $number-of-options: 5;
+
+.title {
+  h3 {
+    @include media("<tablet") {
+      font-size: large;
+    }
+  }
+  h4 {
+    @include media("<tablet") {
+      font-size: large;
+    }
+  }
+}
 
 .inputs {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 300px;
+  @include media("<tablet") {
+    width: 250px;
+    flex-direction: column;
+    align-items: unset;
+  }
 
   label {
     &::after {
@@ -17,13 +36,24 @@ $number-of-options: 5;
       &::after {
         content: "<= Tick for public";
         font-size: smaller;
+        @include media("<tablet") {
+          font-size: small;
+          top: 20%;
+        }
       }
     }
 
     &:nth-child(2) {
+      @include media("<tablet") {
+        margin-top: 20px;
+      }
       &::after {
         content: "<= Tick for secret";
         font-size: smaller;
+        @include media("<tablet") {
+          font-size: small;
+          top: 20%;
+        }
       }
     }
   }

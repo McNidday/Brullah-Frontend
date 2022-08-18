@@ -1,8 +1,20 @@
 @use "../../../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.title {
+  h3 {
+    @include media("<tablet") {
+      font-size: large;
+    }
+  }
+}
 
 .image {
   display: flex;
   align-items: center;
+  @include media("<tablet") {
+    flex-direction: column;
+  }
   & > div:nth-child(2) {
     width: fit-content;
     height: fit-content;
@@ -20,6 +32,11 @@
       top: 50px;
       right: -135px;
       transform: rotate(90deg);
+      @include media("<tablet") {
+        top: 100%;
+        right: 10%;
+        transform: rotate(180deg);
+      }
     }
   }
 }
@@ -27,6 +44,9 @@
 .buttons {
   display: flex;
   margin: 20px 0 20px 0;
+  @include media("<tablet") {
+    margin: 50px 0 0px 0;
+  }
   & > div {
     margin-right: 10px;
     padding: 20px;
@@ -43,6 +63,10 @@
   background-repeat: no-repeat;
   background-size: 30px 30px;
   border-radius: 50%;
+  @include media("<tablet") {
+    flex-direction: column;
+    margin: 0px 0px 10px 0px;
+  }
   &:hover {
     cursor: pointer;
   }

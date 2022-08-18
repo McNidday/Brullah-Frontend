@@ -1,4 +1,5 @@
 @use "../../../../../styles/theme" as *;
+@use "include-media" as *;
 
 .profile {
   position: relative;
@@ -18,12 +19,20 @@
     border: 1px solid $backgroundLight;
     border-radius: 50%;
     overflow: hidden;
+    @include media("<tablet") {
+      width: 60px;
+      height: 60px;
+      min-height: 60px;
+    }
   }
 
   & > div:nth-child(2) {
     color: $textColor;
-    h3 {
+    h4 {
       margin: 0px;
+      @include media("<tablet") {
+        font-size: small;
+      }
     }
   }
 
@@ -34,7 +43,9 @@
     align-items: center;
     justify-content: space-between;
     h4 {
-      margin: 0px;
+      @include media("<tablet") {
+        font-size: small;
+      }
     }
     & > div {
       width: 30px;
@@ -56,7 +67,14 @@
           bottom: 105%;
           left: -100%;
           color: white;
+          @include media("<tablet") {
+            font-size: small;
+          }
         }
+      }
+      @include media("<tablet") {
+        width: 20px;
+        height: 20px;
       }
     }
   }
@@ -70,5 +88,9 @@
     left: 5px;
     top: 5px;
     cursor: pointer;
+    @include media("<tablet") {
+      width: 20px;
+      height: 20px;
+    }
   }
 }

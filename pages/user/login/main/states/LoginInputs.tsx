@@ -58,15 +58,15 @@ const LoginInputs = () => {
 
   return (
     <div className={cn(styles.container)}>
+      <div className={cn(styles.loading, loading ? styles.loaderActive : "")}>
+        <Logo
+          thinking={true}
+          text={true}
+          image={{ width: "100px", height: "100px" }}
+          container={{ width: "210px", height: "80px" }}
+        ></Logo>
+      </div>
       <div className={cn(styles.miniContainer)}>
-        <div className={cn(styles.loading, loading ? styles.loaderActive : "")}>
-          <Logo
-            thinking={true}
-            text={true}
-            image={{ width: "100px", height: "100px" }}
-            container={{ width: "210px", height: "80px" }}
-          ></Logo>
-        </div>
         <div className={cn(styles.cover)}>
           <div className={cn(styles.title)}>
             <label>

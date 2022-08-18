@@ -10,10 +10,17 @@
   width: 45%;
   min-width: 490px;
   height: 100%;
-  @include media(">phone", "<=tablet") {
+  @include media(">=tablet", "<=desktop") {
     height: 260px;
     width: 100%;
     min-width: 100%;
+  }
+
+  @include media("<tablet") {
+    margin-top: 10px;
+    height: 200px;
+    width: 100%;
+    min-width: 250px;
   }
 }
 
@@ -26,7 +33,12 @@
   display: flex;
   flex-direction: row;
   overflow: hidden;
-  @include media(">phone", "<=tablet") {
+  @include media(">=tablet", "<=desktop") {
     border-bottom-right-radius: 0px;
+  }
+  @include media("<tablet") {
+    width: 95%;
+    border-radius: $borderRadius;
+    box-shadow: -2px 2px 0px 0px white;
   }
 }

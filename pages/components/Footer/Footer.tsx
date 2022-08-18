@@ -6,7 +6,7 @@ import styles from "./styles.module.scss";
 const Footer = () => {
   return (
     <footer className={classNames(styles.footer)}>
-      <p>Version: 2.0.0</p>
+      <p>V: 2.0.0</p>
       <p>@copyright 2018: nidday/brullah</p>
       <div className={classNames(styles.socialIcons)}>
         <div>

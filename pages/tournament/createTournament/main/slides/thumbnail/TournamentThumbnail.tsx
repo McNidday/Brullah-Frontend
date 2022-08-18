@@ -4,7 +4,10 @@ import "croppie/croppie.css";
 import styles from "./styles.module.scss";
 import Button from "../../../../../components/Button/Button";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { blobToFile, validateImageUpload } from "../../../../../functions/helpers";
+import {
+  blobToFile,
+  validateImageUpload,
+} from "../../../../../functions/helpers";
 import { useSwiper } from "swiper/react";
 
 interface Props {
@@ -132,7 +135,7 @@ const TournamentThumbnail = ({
         ></input>
         <div className={cn(styles.title)} data-swiper-parallax="-1000">
           <label>
-            <h3>And finally, some eye candy</h3>
+            <h3>And finally, some eye candy 🍬</h3>
           </label>
         </div>
         <div

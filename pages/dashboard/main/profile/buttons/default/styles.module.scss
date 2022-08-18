@@ -1,4 +1,5 @@
 @use "../../../../../../styles/theme" as *;
+@use "include-media" as *;
 
 .actualMullahTitle {
   position: relative;
@@ -13,12 +14,24 @@
     background-position: center;
     top: 0px;
     left: -30px;
+    @include media("<tablet") {
+      width: 15px;
+      height: 15px;
+      left: -25px;
+    }
   }
 
   & + div {
     h4 {
       color: $moneyColor;
+      @include media("<tablet") {
+        font-size: small;
+      }
     }
+  }
+
+  @include media("<tablet") {
+    font-size: small;
   }
 }
 
@@ -35,11 +48,23 @@
     background-position: center;
     top: 0px;
     left: -35px;
+    @include media("<tablet") {
+      width: 25px;
+      height: 25px;
+      left: -30px;
+    }
   }
 
   & + div {
     h4 {
       color: $moneyColor;
+      @include media("<tablet") {
+        font-size: small;
+      }
     }
+  }
+
+  @include media("<tablet") {
+    font-size: small;
   }
 }

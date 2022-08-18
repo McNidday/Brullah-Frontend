@@ -41,7 +41,7 @@ const LoginError = ({ arena_name, errorNum, error }: Props) => {
   if (errorNum === 0)
     return (
       <div className={cn(styles.container)}>
-        <div className={cn(styles.miniContainer)}>
+        <div className={cn(styles.loadingMiniContainer)}>
           <div className={cn(styles.loading, styles.loaderActive)}>
             <h3>
               You are already logged in {arena_name}, you will be directed to
@@ -54,7 +54,7 @@ const LoginError = ({ arena_name, errorNum, error }: Props) => {
 
   return (
     <div className={cn(styles.container)}>
-      <div className={cn(styles.miniContainer)}>
+      <div className={cn(styles.loadingMiniContainer)}>
         <div className={cn(styles.loading, styles.loaderActive)}>
           <h3>
             An error occured. Please check your internet connection and try

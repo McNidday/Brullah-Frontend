@@ -1,3 +1,4 @@
+@use "include-media" as *;
 .title {
   width: 90%;
   color: white;
@@ -5,5 +6,8 @@
     width: 95%;
     text-align: center;
     margin: 10px 0px 10px 0px;
+    @include media("<tablet") {
+      font-size: small;
+    }
   }
 }

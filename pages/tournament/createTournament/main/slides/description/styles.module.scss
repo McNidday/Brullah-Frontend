@@ -1,6 +1,14 @@
 @use "../../../../../../styles/theme" as *;
 @use "include-media" as *;
 
+.title {
+  h3 {
+    @include media("<tablet") {
+      font-size: large;
+    }
+  }
+}
+
 .inputs {
   textarea {
     padding: 10px;
@@ -10,6 +18,10 @@
     width: 350px !important;
     outline: none;
     border: 1px solid black;
+    @include media("<tablet") {
+      width: 250px !important;
+      height: 80px !important;
+    }
   }
 }
 

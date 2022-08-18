@@ -1,4 +1,5 @@
 @use "../../../../../styles/theme" as *;
+@use "include-media" as *;
 
 .container {
   background-color: $background;
@@ -6,6 +7,10 @@
   margin-top: 10px;
   height: 150px;
   position: relative;
+
+  @include media("height>tablet") {
+    height: 260px;
+  }
 
   & > div:nth-child(1) {
     @include flex-center();

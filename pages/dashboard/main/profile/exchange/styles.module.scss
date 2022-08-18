@@ -1,4 +1,5 @@
 @use "../../../../../styles/theme" as *;
+@use "include-media" as *;
 
 .container {
   width: 100%;
@@ -15,6 +16,9 @@
     width: 95%;
     color: white;
     text-align: center;
+    @include media("<tablet") {
+      font-size: small;
+    }
   }
 
   [class~="convertion-success"],
@@ -75,6 +79,14 @@
         font-size: 0.8rem;
         background-color: $background;
         color: white;
+        @include media("<tablet") {
+          font-size: 0.6rem;
+        }
+      }
+
+      @include media("<tablet") {
+        font-size: small;
+        top: 21%;
       }
     }
 

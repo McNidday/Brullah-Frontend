@@ -1,8 +1,12 @@
 @use "../../../../styles/theme" as *;
+@use "include-media" as *;
 
 .container {
   grid-area: navigationside / navigationside / maincontent / maincontent;
   background-color: $background;
+  @include media("<tablet") {
+    grid-area: maincontent / maincontent;
+  }
 }
 
 .miniContainer {

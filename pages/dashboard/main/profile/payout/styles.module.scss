@@ -1,4 +1,5 @@
 @use "../../../../../styles/theme" as *;
+@use "include-media" as *;
 
 .container {
   width: 100%;
@@ -15,6 +16,9 @@
     color: white;
     text-align: center;
     width: 95%;
+    @include media("<tablet") {
+      font-size: small;
+    }
   }
 }
 
@@ -26,6 +30,9 @@
     color: white;
     margin: 0;
     width: fit-content;
+    @include media("<tablet") {
+      font-size: small;
+    }
   }
   input {
     position: relative;
@@ -58,5 +65,9 @@
 
   &:hover {
     cursor: pointer;
+  }
+  @include media("<tablet") {
+    width: 20px;
+    height: 20px;
   }
 }

@@ -143,6 +143,10 @@ const TournamentParentListModal = ({
 
   useEffect(() => {
     if (tournamentId) {
+      console.log(
+        tournamentId,
+        "We some poor high class niggas, made it we rich ooh"
+      );
       getTournament({
         variables: {
           id: tournamentId,
@@ -178,6 +182,8 @@ const TournamentParentListModal = ({
       }
     }
   }, [userData, data]);
+
+  console.log(data, "This is the tournament data, taliban in this bitc ooooh");
 
   return (
     <Modal

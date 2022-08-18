@@ -2,6 +2,19 @@
 @use "include-media" as *;
 $number-of-options: 5;
 
+.title {
+  h3 {
+    @include media("<tablet") {
+      font-size: large;
+    }
+  }
+  h4 {
+    @include media("<tablet") {
+      font-size: large;
+    }
+  }
+}
+
 .inputs {
   display: flex;
   justify-content: space-between;
@@ -10,11 +23,19 @@ $number-of-options: 5;
   @include media(">phone", "<=tablet") {
     width: 550px;
   }
+  @include media("<tablet") {
+    align-items: unset;
+    flex-direction: column;
+    width: 280px;
+  }
 }
 
 .buttons {
   display: flex;
   margin: 20px 0 20px 0;
+  @include media("<tablet") {
+    margin: 40px 0 0px 0;
+  }
   & > div {
     margin-right: 10px;
     padding: 20px;
@@ -43,6 +64,10 @@ $number-of-options: 5;
     position: absolute;
     width: 200px;
     font-size: smaller;
+    @include media("<tablet") {
+      font-size: small;
+      top: 25%;
+    }
   }
 
   input {
@@ -96,6 +121,9 @@ $number-of-options: 5;
   width: 70%;
   max-width: 400px;
   transition: opacity 0.5s;
+  @include media("<tablet") {
+    width: 95%;
+  }
 
   & > [class~="brc-slider"] {
     display: flex;
@@ -141,6 +169,9 @@ $number-of-options: 5;
         white-space: nowrap;
         opacity: 0.85;
         transition: all 0.15s ease-in-out;
+        @include media("<tablet") {
+          font-size: small;
+        }
       }
       &::after {
         content: " ";
