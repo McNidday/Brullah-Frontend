@@ -8,11 +8,8 @@
 }
 
 .parentModal {
+  position: relative;
   background-color: white;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: 0.1fr minmax(0, 1fr);
-  grid-template-areas: "heading" "data";
   margin: 0 auto;
   height: fit-content;
   width: 70%;
@@ -33,12 +30,17 @@
 }
 
 .heading {
-  grid-area: heading;
+  position: sticky;
+  top: 0px;
+  left: 0px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 10px 0px 10px;
   border-bottom: 1px solid $background;
+  height: 50px;
+  width: 100%;
+  background-color: white;
+  padding: 0px 5px 0px 5px;
 
   & > h3 {
     margin: 0px;
