@@ -7,6 +7,11 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  @include media("<tablet") {
+    width: 100%;
+    border-bottom: 1px solid $background;
+    padding: 5px 0px 5px 0px;
+  }
 }
 
 .actionButton {
@@ -17,21 +22,33 @@
   margin-right: 10px;
   border-right: 2px solid $background;
   padding-right: 5px;
+  @include media("<tablet") {
+    margin: 0px;
+    padding: 0px;
+    border: none;
+  }
   h4 {
     margin: 0px;
     text-align: center;
+    @include media("<tablet") {
+      font-size: small;
+    }
   }
 }
 
 .navigation {
-  grid-area: navbar;
+  position: sticky;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 0px 20px 0px 20px;
   padding: 10px 50px 10px 30px;
-  @include media(">phone", "<=tablet") {
-    padding: 10px 10px 10px 10px;
+  @include media(">=tablet") {
+    padding: 10px 25px 10px 25px;
+  }
+  @include media("<tablet") {
+    padding: 0px 5px 0px 5px;
+    flex-direction: column;
   }
 }
 
@@ -55,5 +72,20 @@
   align-items: center;
   h3 {
     margin: 0px;
+    @include media("<tablet") {
+      font-size: small;
+    }
+  }
+}
+
+.statusContainer {
+  width: fit-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @include media("<tablet") {
+    padding: 5px 5px 5px 5px;
+    border-bottom: 1px solid $background;
+    width: 100%;
   }
 }

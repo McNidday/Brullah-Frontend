@@ -114,7 +114,6 @@ const TrackTournamentBracket = ({
             </div>
           </>
         }
-        placement={"right"}
       >
         <div
           className={cn(

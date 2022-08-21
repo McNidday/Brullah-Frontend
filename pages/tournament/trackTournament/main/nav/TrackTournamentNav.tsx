@@ -156,7 +156,9 @@ const TrackTournamentNav = ({
             <h4>No 💰 for this tournament (。_。)</h4>
           </div>
         )}
+      </div>
 
+      <div className={cn(styles.statusContainer)}>
         {recapNumber ? (
           <div className={cn(styles.countDown)}>
             <h4>Battle number {recapNumber}</h4>
@@ -164,20 +166,19 @@ const TrackTournamentNav = ({
         ) : (
           ""
         )}
+        {networkStatus === NetworkStatus.refetch ? (
+          <div className={cn(styles.statesLoading)}>
+            <span>Progress</span>
+            <CircularProgress
+              className={styles.statesLoadingProgress}
+            ></CircularProgress>
+          </div>
+        ) : (
+          <div className={cn(styles.cool)}>
+            <h3>(✿◡‿◡)</h3>
+          </div>
+        )}
       </div>
-
-      {networkStatus === NetworkStatus.refetch ? (
-        <div className={cn(styles.statesLoading)}>
-          <span>Progress</span>
-          <CircularProgress
-            className={styles.statesLoadingProgress}
-          ></CircularProgress>
-        </div>
-      ) : (
-        <div className={cn(styles.cool)}>
-          <h3>(✿◡‿◡)</h3>
-        </div>
-      )}
     </div>
   );
 };

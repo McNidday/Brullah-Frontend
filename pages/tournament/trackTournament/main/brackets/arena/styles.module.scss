@@ -12,6 +12,9 @@
   flex-direction: column;
   border-radius: $borderRadius;
   margin-bottom: 5px;
+  @include media("<tablet") {
+    margin-top: 5px;
+  }
 }
 
 .brackets {
@@ -43,13 +46,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @include media("<desktop") {
+    align-self: flex-start;
+  }
   & > h2 {
     margin: 0px;
     color: white;
     cursor: pointer;
-  }
-  @include media {
-    align-self: flex-start;
+    @include media("<tablet") {
+      font-size: large;
+    }
   }
 }
 
@@ -58,6 +64,10 @@
   width: 50px;
   height: 50px;
   cursor: pointer;
+  @include media("<tablet") {
+    width: 30px;
+    height: 40px;
+  }
 }
 
 .inactiveOpenArenaIcon {
@@ -66,6 +76,9 @@
 
 .arenaWinnerName {
   color: white;
+  @include media("<tablet") {
+    font-size: small;
+  }
 }
 
 .arenaWinner {
@@ -75,7 +88,7 @@
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  @include media {
+  @include media("<tablet") {
     right: 2px;
   }
 }
@@ -88,4 +101,8 @@
   border-radius: 50%;
   overflow: hidden;
   margin: 5px;
+  @include media("<tablet") {
+    width: 30px;
+    height: 30px;
+  }
 }
