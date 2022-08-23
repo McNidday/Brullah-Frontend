@@ -1,8 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import classNames from "classnames";
-import styles from "./styles.module.scss";
-const cn = classNames.bind(styles);
 
 const Home: NextPage = () => {
   return (
