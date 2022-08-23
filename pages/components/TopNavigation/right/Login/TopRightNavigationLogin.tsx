@@ -1,6 +1,6 @@
+import { ClickAwayListener } from "@mui/material";
 import anime from "animejs";
 import classNames from "classnames";
-import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import Icon from "../../../Icon/Icon";
@@ -31,38 +31,45 @@ const TopRightNavigationLogin = () => {
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.profileContainer)}>
-        <ul onMouseEnter={dropDropDown} onMouseLeave={closeDropDropDown}>
-          <li>
-            <div className={cn(styles.profileImage)}>
-              <Image src="/icons/person/person.svg" layout="fill"></Image>
+        <ul>
+          <ClickAwayListener onClickAway={closeDropDropDown}>
+            <div>
+              <li>
+                <div className={cn(styles.profileImage)} onClick={dropDropDown}>
+                  <Icon
+                    inactiveLink="/icons/person/inactive.svg"
+                    activeLink="/icons/person/active.svg"
+                    hover={dropDownHover}
+                  ></Icon>
+                </div>
+
+                <Link href="/user/login">
+                  <a>Login</a>
+                </Link>
+              </li>
+              <ul
+                ref={dropDownRef}
+                className={cn(dropDownHover ? styles.dropDownActive : "")}
+              >
+                <li
+                  onMouseEnter={() => setSignupHover(true)}
+                  onMouseLeave={() => setSignupHover(false)}
+                >
+                  <div>
+                    <Icon
+                      activeLink="/icons/dashboard/active.svg"
+                      inactiveLink="/icons/dashboard/inactive.svg"
+                      hover={signupHover}
+                    ></Icon>
+                  </div>
+
+                  <Link href="/user/signup">
+                    <a>Signup</a>
+                  </Link>
+                </li>
+              </ul>
             </div>
-            <Link href="/user/login">
-              <a>Login</a>
-            </Link>
-          </li>
-          <span
-            className={cn(dropDownHover ? styles.dropDownActive : "")}
-          ></span>
-          <ul
-            ref={dropDownRef}
-            className={cn(dropDownHover ? styles.dropDownActive : "")}
-          >
-            <li
-              onMouseEnter={() => setSignupHover(true)}
-              onMouseLeave={() => setSignupHover(false)}
-            >
-              <div>
-                <Icon
-                  activeLink="/icons/dashboard/active.svg"
-                  inactiveLink="/icons/dashboard/inactive.svg"
-                  hover={signupHover}
-                ></Icon>
-              </div>
-              <Link href="/user/signup">
-                <a>Signup</a>
-              </Link>
-            </li>
-          </ul>
+          </ClickAwayListener>
         </ul>
       </div>
     </div>

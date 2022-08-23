@@ -2,13 +2,11 @@
 @use "include-media" as *;
 
 .container {
-  z-index: 5;
+  z-index: 15;
   position: relative;
   grid-area: navigationtop;
-  background-color: $backgroundLight;
+  background-color: $background;
   display: flex;
   justify-content: space-between;
-  @include media("<tablet") {
-    border-bottom: 1px solid $background;
-  }
+  border-bottom: 1px solid $backgroundLight;
 }

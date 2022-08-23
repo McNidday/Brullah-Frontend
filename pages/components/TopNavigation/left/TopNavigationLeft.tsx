@@ -9,9 +9,28 @@ const TopNavigationLeft = () => {
   const [tournamentIconHover, setTournamentIconHover] = useState(false);
   const [managerIconHover, setManagerIconHover] = useState(false);
   const [playIconHover, setPlayIconHover] = useState(false);
+  const [homeIconHover, setHomeIconHover] = useState(false);
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
+        <Link href={"/"}>
+          <Tooltip
+            title={`Home`}
+            componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
+          >
+            <div
+              className={cn(styles.icon)}
+              onMouseEnter={() => setHomeIconHover(true)}
+              onMouseLeave={() => setHomeIconHover(false)}
+            >
+              <Icon
+                activeLink="/icons/home/active.svg"
+                inactiveLink="/icons/home/inactive.svg"
+                hover={homeIconHover}
+              ></Icon>
+            </div>
+          </Tooltip>
+        </Link>
         <Link href={"/tournament/tournaments"}>
           <Tooltip
             title={`Join tournaments`}

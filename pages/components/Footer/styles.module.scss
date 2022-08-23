@@ -5,11 +5,12 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  color: $background;
-  background-color: $backgroundLight;
+  color: $textColor;
+  background-color: $background;
   padding: 0px 5px 0px 5px;
+  border-top: 1px solid $backgroundLight;
   & > p {
-    color: $background;
+    color: $textColor;
     margin: 0px;
     font-size: x-small;
   }

@@ -13,6 +13,7 @@
   background-size: 50%;
   @include media("<tablet") {
     grid-area: maincontent / maincontent;
+    background-size: 100%;
   }
 }
 

@@ -11,6 +11,7 @@ import { decodeBlurHash } from "../../../functions/helpers";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { deleteCookie } from "../../../functions/Cookies";
+import { ClickAwayListener } from "@mui/material";
 const cn = classNames.bind(styles);
 
 const USER = gql`
@@ -62,61 +63,64 @@ const TopNavigationRight = () => {
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.profileContainer)}>
-        <ul onMouseEnter={dropDropDown} onMouseLeave={closeDropDropDown}>
-          <li>
-            <div className={cn(styles.profileImage)}>
-              <Image
-                src={data.user.identity.avatar.image}
-                layout="fill"
-                placeholder="blur"
-                blurDataURL={decodeBlurHash(
-                  data.user.identity.avatar.blurhash,
-                  100,
-                  100
-                )}
-              ></Image>
+        <ul>
+          <ClickAwayListener onClickAway={closeDropDropDown}>
+            <div>
+              <li>
+                <div className={cn(styles.profileImage)} onClick={dropDropDown}>
+                  <Image
+                    src={data.user.identity.avatar.image}
+                    layout="fill"
+                    placeholder="blur"
+                    blurDataURL={decodeBlurHash(
+                      data.user.identity.avatar.blurhash,
+                      100,
+                      100
+                    )}
+                  ></Image>
+                </div>
+                <div className={cn(styles.profileName)}>
+                  {data.user.identity.arena_name}
+                </div>
+              </li>
+              <ul
+                ref={dropDownRef}
+                className={cn(dropDownHover ? styles.dropDownActive : "")}
+              >
+                <li
+                  onMouseEnter={() => setDashboardHover(true)}
+                  onMouseLeave={() => setDashboardHover(false)}
+                >
+                  <div>
+                    <Icon
+                      activeLink="/icons/dashboard/active.svg"
+                      inactiveLink="/icons/dashboard/inactive.svg"
+                      hover={dashboardHover}
+                    ></Icon>
+                  </div>
+                  <div>
+                    <Link href={"/dashboard"}>
+                      <a>Dashboard</a>
+                    </Link>{" "}
+                  </div>
+                </li>
+                <li
+                  onMouseEnter={() => setLogoutHover(true)}
+                  onMouseLeave={() => setLogoutHover(false)}
+                  onClick={logout}
+                >
+                  <div>
+                    <Icon
+                      activeLink="/icons/logout/active.svg"
+                      inactiveLink="/icons/logout/inactive.svg"
+                      hover={logoutHover}
+                    ></Icon>
+                  </div>
+                  <div>Logout</div>
+                </li>
+              </ul>
             </div>
-            <div className={cn(styles.profileName)}>
-              {data.user.identity.arena_name}
-            </div>
-          </li>
-          <span
-            className={cn(dropDownHover ? styles.dropDownActive : "")}
-          ></span>
-          <ul
-            ref={dropDownRef}
-            className={cn(dropDownHover ? styles.dropDownActive : "")}
-          >
-            <li
-              onMouseEnter={() => setDashboardHover(true)}
-              onMouseLeave={() => setDashboardHover(false)}
-            >
-              <div>
-                <Icon
-                  activeLink="/icons/dashboard/active.svg"
-                  inactiveLink="/icons/dashboard/inactive.svg"
-                  hover={dashboardHover}
-                ></Icon>
-              </div>
-              <div>
-                <Link href={"/dashboard"}>Dashboard</Link>{" "}
-              </div>
-            </li>
-            <li
-              onMouseEnter={() => setLogoutHover(true)}
-              onMouseLeave={() => setLogoutHover(false)}
-              onClick={logout}
-            >
-              <div>
-                <Icon
-                  activeLink="/icons/logout/active.svg"
-                  inactiveLink="/icons/logout/inactive.svg"
-                  hover={logoutHover}
-                ></Icon>
-              </div>
-              <div>Logout</div>
-            </li>
-          </ul>
+          </ClickAwayListener>
         </ul>
       </div>
     </div>

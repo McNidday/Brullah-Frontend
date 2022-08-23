@@ -46,6 +46,9 @@
   background-position: 80% 50%;
   background-repeat: no-repeat;
   background-size: 50%;
+  @include media("<tablet") {
+    background-size: 100%;
+  }
   &::after {
     content: "";
     position: absolute;

@@ -13,6 +13,9 @@
   background-size: 50%;
   overflow: hidden;
   border-radius: $borderRadius;
+  @include media("<tablet") {
+    background-size: 100%;
+  }
 }
 
 .miniContainer {
