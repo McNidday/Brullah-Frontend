@@ -26,6 +26,9 @@ const ENDPOINTS: { [key: string]: string } = {
   PublishMatchConfig: "matches",
   JoinedNotStartedMatches: "matches",
   UserOngoingMatches: "matches",
+  LikeCreator: "likes",
+  UnLikeCreator: "likes",
+  CheckLike: "likes",
 };
 
 const customFetch = (uri: string, options: any) => {

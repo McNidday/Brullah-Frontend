@@ -22,6 +22,14 @@ const TOURNAMENTS = gql`
   ${TournamentsParentListFragment}
 `;
 
+const USER = gql`
+  query GetUser {
+    user {
+      id
+    }
+  }
+`;
+
 const TournamentsMain = () => {
   const [page, setPage] = useState(1);
   const { loading, error, data, networkStatus, fetchMore, refetch } = useQuery(
@@ -37,6 +45,7 @@ const TournamentsMain = () => {
     }
   );
 
+  const { loading: userLoading, data: userData } = useQuery(USER);
   const [search, setSearch] = useState<string | null>(null);
   const [joinTournamentId, setJoinTournamentId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -110,6 +119,7 @@ const TournamentsMain = () => {
           setSearch={handleSearch}
         ></TournamentSearch>
         <TournamentsParentList
+          user={userData?.user}
           search={search}
           hasNextPage={data.tournaments.hasNextPage}
           networkStatus={networkStatus}

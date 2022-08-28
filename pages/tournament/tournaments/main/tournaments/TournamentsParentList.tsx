@@ -14,6 +14,7 @@ interface Props {
   setJoinTournamentId: (id: string) => void;
   handleModalOpen: () => void;
   search: string | null;
+  user: { id: string } | null;
   tournaments: Array<{
     id: string;
     information: {
@@ -23,9 +24,15 @@ interface Props {
     };
     analytics: { joined_users: number };
     creator: {
+      id: string;
       identity: {
         arena_name: string;
         avatar: { image: string; blurhash: string };
+      };
+      stats: {
+        tournament: {
+          likes: number;
+        };
       };
     };
     sponsor: { sponsored: boolean };
@@ -34,6 +41,7 @@ interface Props {
 }
 
 const TournamentsParentList = ({
+  user,
   search,
   hasNextPage,
   networkStatus,
@@ -121,6 +129,7 @@ const TournamentsParentList = ({
         {tournaments.map((t) => {
           return (
             <TournamentList
+              user={user}
               key={t.id}
               {...t}
               handleModalOpen={handleModalOpen}
