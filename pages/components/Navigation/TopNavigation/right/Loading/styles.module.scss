@@ -1,0 +1,32 @@
+@use "../../../../../../styles/theme" as *;
+
+.container {
+  position: relative;
+  width: 50%;
+
+  & > div {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    right: 10px;
+    height: 100%;
+    width: fit-content;
+    & > div:nth-child(1) {
+      border-radius: 50%;
+      border: 1px solid $background;
+      width: 40px;
+      height: 40px;
+      position: relative;
+    }
+    & > div:nth-child(2) {
+      position: relative;
+      padding: 2px;
+      padding-right: 8px;
+      background-color: $background;
+      width: fit-content;
+      height: fit-content;
+      border-radius: 20px;
+    }
+  }
+}

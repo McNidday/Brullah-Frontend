@@ -38,11 +38,22 @@
 
   & > div:nth-child(3) {
     color: $textColor;
+    h4 {
+      margin: 0px;
+      @include media("<tablet") {
+        font-size: small;
+      }
+    }
+  }
+
+  & > div:nth-child(4) {
+    color: $textColor;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     h4 {
+      margin: 0px;
       @include media("<tablet") {
         font-size: small;
       }
@@ -79,7 +90,7 @@
     }
   }
 
-  & > div:nth-child(4) {
+  & > div:nth-child(5) {
     position: absolute;
     background-color: $background;
     border-radius: 50%;

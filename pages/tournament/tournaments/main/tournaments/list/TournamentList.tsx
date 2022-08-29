@@ -11,9 +11,8 @@ import {
 } from "@apollo/client";
 import { decodeBlurHash } from "../../../../../functions/helpers";
 import { CircularProgress, Tooltip } from "@mui/material";
-import CircularLoading from "../../../../../components/CricularLoad/CircularLoading";
 import { ChangeEvent, useEffect, useState } from "react";
-import moment from "moment";
+import numeral from "numeral";
 
 interface Props {
   setJoinTournamentId: (id: string) => void;
@@ -246,8 +245,12 @@ const TournamentList = (props: Props) => {
               data-likes={
                 statsData?.tournament?.creator?.stats?.tournament?.likes
                   ? statsData.tournament.creator.stats.tournament.likes
-                  : props?.creator?.stats?.tournament?.likes
-                  ? props?.creator?.stats?.tournament?.likes
+                  : numeral(props?.creator?.stats?.tournament?.likes).format(
+                      "0a"
+                    )
+                  ? numeral(props?.creator?.stats?.tournament?.likes).format(
+                      "0a"
+                    )
                   : 0
               }
               htmlFor={`${props.id}~liked`}
@@ -271,8 +274,12 @@ const TournamentList = (props: Props) => {
                 data-likes={
                   statsData?.tournament?.creator?.stats?.tournament?.likes
                     ? statsData.tournament.creator.stats.tournament.likes
-                    : props?.creator?.stats?.tournament?.likes
-                    ? props?.creator?.stats?.tournament?.likes
+                    : numeral(props?.creator?.stats?.tournament?.likes).format(
+                        "0a"
+                      )
+                    ? numeral(props?.creator?.stats?.tournament?.likes).format(
+                        "0a"
+                      )
                     : 0
                 }
                 className={cn(!props.user ? styles.disableLike : "")}
@@ -291,8 +298,8 @@ const TournamentList = (props: Props) => {
           <p>
             {statsData?.tournament?.creator?.stats?.tournament?.likes
               ? statsData.tournament.creator.stats.tournament.likes
-              : props?.creator?.stats?.tournament?.likes
-              ? props?.creator?.stats?.tournament?.likes
+              : numeral(props?.creator?.stats?.tournament?.likes).format("0a")
+              ? numeral(props?.creator?.stats?.tournament?.likes).format("0a")
               : 0}
           </p>
         </div>

@@ -1,0 +1,88 @@
+@use "../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.container {
+  @include flex-center();
+  background-color: $background;
+  grid-area: navigationside;
+  height: 100%;
+  overflow: hidden;
+
+  @include media("<tablet") {
+    z-index: 20;
+    transition: all 0.2s linear;
+    width: 100%;
+  }
+
+  @include media(">=phone", "<tablet") {
+    position: absolute;
+    grid-area: unset;
+    transform: translateX(-100%);
+  }
+  @include media("<=phone") {
+    position: absolute;
+    grid-area: unset;
+    transform: translateX(-100%);
+  }
+}
+
+.containerOpen {
+  @include media("<tablet") {
+    transform: translateX(0%);
+  }
+}
+
+.miniContainer {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: 95%;
+  border-radius: $borderRadius;
+  background-color: $backgroundLight;
+  border: 1px solid $backgroundLight;
+  overflow: hidden;
+
+  @include media("<tablet") {
+    width: 100%;
+    height: 100%;
+  }
+
+  & > div:nth-child(1) {
+    @include flex-center();
+    position: relative;
+    width: 100%;
+    border-bottom: 1px solid $background;
+    & > div:nth-child(1) {
+      background-color: $background;
+      display: none;
+      pointer-events: none;
+      @include media("<tablet") {
+        pointer-events: all;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        width: 20px;
+        height: 20px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    }
+    & > h3 {
+      margin: 5px 0 5px 0;
+    }
+  }
+  & > div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    @include media("height>phone") {
+      justify-content: space-between;
+    }
+  }
+}

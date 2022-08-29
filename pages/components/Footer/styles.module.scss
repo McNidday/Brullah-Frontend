@@ -20,6 +20,10 @@
   position: relative;
   height: fit-content;
   width: fit-content;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: nowrap;
   & > div {
     position: relative;
     width: 30px;

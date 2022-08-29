@@ -1,12 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import cn from "classnames";
-import TopNavigation from "../components/TopNavigation/TopNavigation";
 import Footer from "../components/Footer/Footer";
 import ApolloClientOnly from "../components/Apollo/ApolloClientOnly";
-import SideNavigation from "../components/SideNavigation/SideNavigation";
 import DashboardMain from "./main/DashboardMain";
 import DashboardMainLoading from "./main/loading/DashboardMainLoading";
+import Navigation from "../components/Navigation/Navigation";
 
 const Dashboard: NextPage = () => {
   return (
@@ -16,8 +15,7 @@ const Dashboard: NextPage = () => {
         <meta name="Brullah dashboard" content="Manage your brullah account" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <TopNavigation></TopNavigation>
-      <SideNavigation></SideNavigation>
+      <Navigation></Navigation>
       <ApolloClientOnly
         fallback={<DashboardMainLoading></DashboardMainLoading>}
       >

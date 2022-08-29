@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Icon from "../../../../components/Icon/Icon";
 import { decodeBlurHash } from "../../../../functions/helpers";
 import styles from "./styles.module.scss";
+import numeral from "numeral";
 
 interface Props {
   user: {
@@ -15,6 +16,11 @@ interface Props {
       avatar: {
         image: string;
         blurhash: string;
+      };
+    };
+    stats: {
+      tournament: {
+        likes: number;
       };
     };
   };
@@ -47,6 +53,9 @@ const DashboardUserProfile = ({ user }: Props) => {
       </div>
       <div>
         <h4>{user.identity.arena_name}</h4>
+      </div>
+      <div>
+        <h4>💘 {numeral(user?.stats?.tournament?.likes || 0).format("0a")}</h4>
       </div>
       <div>
         <h4>{user.identity.arena_id}</h4>

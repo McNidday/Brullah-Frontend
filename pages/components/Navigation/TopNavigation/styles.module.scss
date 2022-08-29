@@ -1,0 +1,12 @@
+@use "../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.container {
+  z-index: 15;
+  position: relative;
+  grid-area: navigationtop;
+  background-color: $background;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid $backgroundLight;
+}

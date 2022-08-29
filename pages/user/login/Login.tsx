@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import TopNavigation from "../../components/TopNavigation/TopNavigation";
 import Footer from "../../components/Footer/Footer";
 import LoginMain from "./main/LoginMain";
 import ApolloClientOnly from "../../components/Apollo/ApolloClientOnly";
 import cn from "classnames";
 import Fallback from "../../components/Fallback/Fallback";
+import Navigation from "../../components/Navigation/Navigation";
 
 const Login: NextPage = () => {
   return (
@@ -15,7 +15,7 @@ const Login: NextPage = () => {
         <meta name="Brullah login" content="Login to your brullah account." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <TopNavigation></TopNavigation>
+      <Navigation hideSideNav={true}></Navigation>
       <ApolloClientOnly fallback={<Fallback></Fallback>}>
         <LoginMain></LoginMain>
       </ApolloClientOnly>

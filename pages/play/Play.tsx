@@ -1,12 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import SideNavigation from "../components/SideNavigation/SideNavigation";
-import TopNavigation from "../components/TopNavigation/TopNavigation";
 import cn from "classnames";
 import Footer from "../components/Footer/Footer";
 import PlayMain from "./main/PlayMain";
 import ApolloClientOnly from "../components/Apollo/ApolloClientOnly";
 import PlayLoading from "./main/loading/PlayLoading";
+import Navigation from "../components/Navigation/Navigation";
 
 const Play: NextPage = () => {
   return (
@@ -19,8 +18,7 @@ const Play: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <TopNavigation></TopNavigation>
-      <SideNavigation></SideNavigation>
+      <Navigation></Navigation>
       <ApolloClientOnly fallback={<PlayLoading></PlayLoading>}>
         <PlayMain></PlayMain>
       </ApolloClientOnly>

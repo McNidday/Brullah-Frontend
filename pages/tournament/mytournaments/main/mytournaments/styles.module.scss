@@ -107,6 +107,9 @@
   background-color: $background;
   border-bottom-left-radius: $borderRadius;
   border-bottom-right-radius: $borderRadius;
+  @include media("<tablet") {
+    border-radius: unset;
+  }
   p {
     margin: 0px;
     color: $activeColor;
