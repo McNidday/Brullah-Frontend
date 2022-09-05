@@ -15,6 +15,8 @@ import { gql, useMutation } from "@apollo/client";
 import SignupEmail from "./email/SignupEmail";
 import Logo from "../../../../components/Logo/Logo";
 import { encodeImageToBlurHash } from "../../../../functions/helpers";
+import Cookies from "../../../../functions/Cookies";
+import SignupAffiliate from "./affiliate/SignupAffiliate";
 
 const CREATE_USER = gql`
   mutation CreateUser($input: SignupInput) {
@@ -63,7 +65,8 @@ const SignUpInputSlides = () => {
       };
     });
     delete profile.confirm_password;
-    const profileInput = { ...profile, blurhash: imageHash };
+    const profileInput: any = { ...profile, blurhash: imageHash };
+    if (Cookies("affiliate")) profileInput.affiliate = Cookies("affiliate");
     await createUser({ variables: { input: profileInput } });
   };
 
@@ -154,6 +157,22 @@ const SignUpInputSlides = () => {
             error={error}
           ></SignUpAvatar>
         </SwiperSlide>
+        {!Cookies("affiliate") ? (
+          <SwiperSlide className={cn(styles.swiperSlide)}>
+            {({ isActive }) => {
+              return (
+                <SignupAffiliate
+                  updateProfile={updateProfile}
+                  affiliate={profile.affiliate}
+                  isActive={isActive}
+                  error={error}
+                ></SignupAffiliate>
+              );
+            }}
+          </SwiperSlide>
+        ) : (
+          ""
+        )}
         <SwiperSlide className={cn(styles.swiperSlide)}>
           {({ isActive }) => {
             return (

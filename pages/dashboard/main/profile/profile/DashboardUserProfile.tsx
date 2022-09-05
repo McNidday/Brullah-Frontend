@@ -23,6 +23,7 @@ interface Props {
         likes: number;
       };
     };
+    badges: Array<{ status: String }>;
   };
 }
 
@@ -30,15 +31,27 @@ const DashboardUserProfile = ({ user }: Props) => {
   const [copyHover, setCopyHover] = useState(false);
   const [copy, setCopy] = useState(false);
   const [editIconHover, setEditIconHover] = useState(false);
+  const [affiliateIconHover, setAffiliateIconHover] = useState(false);
+  const [affiliateStatus, setAffiliateStatus] = useState(false);
   const copyArenaId = () => {
     setCopy(true);
     navigator.clipboard.writeText(user.identity.arena_id);
   };
 
   useEffect(() => {
-    setTimeout(() => {
+    const affiliateIndex = user.badges.findIndex((a) => {
+      return a.status === "AFFILIATE" || a.status === "ADMIN";
+    });
+    if (affiliateIndex > -1) {
+      setAffiliateStatus(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    let timeout = setTimeout(() => {
       setCopy(false);
     }, 3000);
+    return () => clearTimeout(timeout);
   }, [copy]);
 
   return (
@@ -72,19 +85,39 @@ const DashboardUserProfile = ({ user }: Props) => {
           ></Icon>
         </div>
       </div>
-      <div
-        onMouseEnter={() => setEditIconHover(true)}
-        onMouseLeave={() => setEditIconHover(false)}
-      >
-        <Link href={`/user/update`}>
-          <a>
-            <Icon
-              activeLink="/icons/edit/active.svg"
-              inactiveLink="/icons/edit/inactive.svg"
-              hover={editIconHover}
-            ></Icon>
-          </a>
-        </Link>
+      <div>
+        <div
+          onMouseEnter={() => setEditIconHover(true)}
+          onMouseLeave={() => setEditIconHover(false)}
+        >
+          <Link href={`/user/update`}>
+            <a>
+              <Icon
+                activeLink="/icons/edit/active.svg"
+                inactiveLink="/icons/edit/inactive.svg"
+                hover={editIconHover}
+              ></Icon>
+            </a>
+          </Link>
+        </div>
+        {affiliateStatus ? (
+          <div
+            onMouseEnter={() => setAffiliateIconHover(true)}
+            onMouseLeave={() => setAffiliateIconHover(false)}
+          >
+            <Link href={`/affiliate`}>
+              <a>
+                <Icon
+                  activeLink="/icons/affiliate/active.svg"
+                  inactiveLink="/icons/affiliate/inactive.svg"
+                  hover={affiliateIconHover}
+                ></Icon>
+              </a>
+            </Link>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
@@ -92,6 +125,9 @@ const DashboardUserProfile = ({ user }: Props) => {
 
 export const DashboardUserProfileFragment = gql`
   fragment DashboardUserProfile_User on User {
+    badges {
+      status
+    }
     identity {
       arena_name
       arena_id

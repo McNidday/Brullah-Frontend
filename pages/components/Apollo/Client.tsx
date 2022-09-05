@@ -29,6 +29,11 @@ const ENDPOINTS: { [key: string]: string } = {
   LikeCreator: "likes",
   UnLikeCreator: "likes",
   CheckLike: "likes",
+  GetAffiliates: "affiliates",
+  GetNonAffiliates: "affiliates",
+  AddAffiliate: "affiliates",
+  RemoveAffiliate: "affiliates",
+  GetEnlisted: "affiliates",
 };
 
 const customFetch = (uri: string, options: any) => {

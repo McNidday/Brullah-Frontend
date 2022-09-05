@@ -1,13 +1,14 @@
 import cn from "classnames";
 import { useEffect } from "react";
 import { useSwiper } from "swiper/react";
+import Cookies from "../../../../../functions/Cookies";
 import styles from "./styles.module.scss";
 
 const SignUpComplete = ({ data }: { data: undefined | any }) => {
   const swiper = useSwiper();
   useEffect(() => {
     if (data && data.signup) {
-      swiper.slideTo(5);
+      swiper.slideTo(Cookies("affiliate") ? 5 : 6);
       swiper.disable();
     }
   }, [data]);

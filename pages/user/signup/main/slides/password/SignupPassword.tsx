@@ -6,6 +6,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useSwiper } from "swiper/react";
 import { ApolloError } from "@apollo/client";
 import Icon from "../../../../../components/Icon/Icon";
+import Cookies from "../../../../../functions/Cookies";
 
 interface Props {
   updateProfile: Function;
@@ -37,7 +38,7 @@ const SignupPassword = ({
       const errorArray = errors.message.split(":");
       if (errorArray[0] === "password") {
         setPasswordError(errorArray[1].trim());
-        swiper.slideTo(4);
+        swiper.slideTo(Cookies("affiliate") ? 5 : 4);
       }
     } else {
       setPasswordError(null);

@@ -5,6 +5,7 @@ const nextConfig = {
     return {
       "/": { page: "/home/Home" },
       "/play": { page: "/play/Play" },
+      "/affiliate": { page: "/affiliate/Affiliate" },
       "/user/signup": { page: "/user/signup/Signup" },
       "/user/login": { page: "/user/login/Login" },
       "/user/update": { page: "/user/update/UpdateUser" },
@@ -33,6 +34,7 @@ const nextConfig = {
   },
   env: {
     RELAY_API_ENDPOINT: "http://localhost:8080",
+    BRULLAH_URL: "http://localhost:3000",
     CHECKERS_URL: "http://localhost:3002",
     PAYPAL_CLIENT_ID:
       "AR7mepWYpche1Gnhv-516V7jixWwrvr8NnQ7wdEgo7mIbVa8x0Mb8TCdXRXopyrMZLy8vnrPhQRH64rW",

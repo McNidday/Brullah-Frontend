@@ -1,0 +1,121 @@
+@use "../../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.container {
+  grid-area: search;
+  background-color: $background;
+  border-top-left-radius: $borderRadius;
+  border-top-right-radius: $borderRadius;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @include media("<tablet") {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    flex-direction: column;
+  }
+  & > div:nth-child(1) {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+    padding: 5px;
+    @include media("<tablet") {
+      margin-top: 10px;
+      width: 70%;
+    }
+    & > input {
+      border-radius: 10px;
+      padding: 5px;
+      margin-left: 5px;
+      border: 1px solid black;
+      outline: none;
+      @include media("<tablet") {
+        width: 100%;
+        margin-left: 0px;
+      }
+    }
+    & > div {
+      margin-left: 5px;
+      position: relative;
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+  & > div:nth-child(2) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 50%;
+    height: 100%;
+    padding: 5px;
+    @include media("<desktop") {
+      flex-direction: column;
+    }
+    & > div:nth-child(2) {
+      & > div {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 80px;
+        & > div {
+          cursor: pointer;
+          position: relative;
+          width: 25px;
+          height: 25px;
+        }
+      }
+    }
+    & > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      h4,
+      h3 {
+        margin: 0px;
+        margin-top: 10px;
+        color: $textColor;
+      }
+      p {
+        color: $activeColor;
+      }
+    }
+  }
+}
+
+.copiedLink {
+  &::after {
+    content: "copied link";
+    position: absolute;
+    width: 70px;
+    height: fit-content;
+    padding: 5px;
+    background-color: $backgroundLight;
+    border-radius: 5px;
+    bottom: 105%;
+    left: -100%;
+    color: white;
+    font-size: small;
+  }
+}
+
+.copiedCode {
+  &::after {
+    content: "copied code";
+    position: absolute;
+    width: 80px;
+    height: fit-content;
+    padding: 5px;
+    background-color: $backgroundLight;
+    border-radius: 5px;
+    bottom: 105%;
+    left: -100%;
+    color: white;
+    font-size: small;
+  }
+}

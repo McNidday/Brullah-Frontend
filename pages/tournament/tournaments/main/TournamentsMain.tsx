@@ -45,7 +45,7 @@ const TournamentsMain = () => {
     }
   );
 
-  const { loading: userLoading, data: userData } = useQuery(USER);
+  const { data: userData } = useQuery(USER);
   const [search, setSearch] = useState<string | null>(null);
   const [joinTournamentId, setJoinTournamentId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);

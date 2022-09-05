@@ -16,10 +16,14 @@ const Logo = ({ thinking, text, image, container }: Props) => {
       <div className={cn(styles.container, styles.thinking)} style={container}>
         <div style={image}>
           <div style={image}>
-            <Image src="/icons/logo/inactive.svg" layout="fill"></Image>
+            <Image
+              priority
+              src="/icons/logo/inactive.svg"
+              layout="fill"
+            ></Image>
           </div>
           <div style={image}>
-            <Image src="/icons/logo/active.svg" layout="fill"></Image>
+            <Image priority src="/icons/logo/active.svg" layout="fill"></Image>
           </div>
         </div>
       </div>
@@ -32,10 +36,14 @@ const Logo = ({ thinking, text, image, container }: Props) => {
       >
         <div style={image}>
           <div style={image}>
-            <Image src="/icons/logo/inactive.svg" layout="fill"></Image>
+            <Image
+              priority
+              src="/icons/logo/inactive.svg"
+              layout="fill"
+            ></Image>
           </div>
           <div style={image}>
-            <Image src="/icons/logo/active.svg" layout="fill"></Image>
+            <Image priority src="/icons/logo/active.svg" layout="fill"></Image>
           </div>
         </div>
         <p>thinking</p>
@@ -46,10 +54,14 @@ const Logo = ({ thinking, text, image, container }: Props) => {
       <div className={cn(styles.container)} style={container}>
         <div style={image}>
           <div style={image}>
-            <Image src="/icons/logo/inactive.svg" layout="fill"></Image>
+            <Image
+              priority
+              src="/icons/logo/inactive.svg"
+              layout="fill"
+            ></Image>
           </div>
           <div style={image}>
-            <Image src="/icons/logo/active.svg" layout="fill"></Image>
+            <Image priority src="/icons/logo/active.svg" layout="fill"></Image>
           </div>
         </div>
       </div>

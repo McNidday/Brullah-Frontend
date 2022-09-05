@@ -91,17 +91,26 @@
   }
 
   & > div:nth-child(5) {
-    position: absolute;
-    background-color: $background;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
     left: 5px;
     top: 5px;
-    cursor: pointer;
-    @include media("<tablet") {
-      width: 20px;
-      height: 20px;
+    position: absolute;
+    height: fit-content;
+    width: fit-content;
+    & > div:nth-child(2) {
+      margin-top: 10px;
+    }
+    & > div {
+      position: relative;
+      background-color: $background;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+
+      @include media("<tablet") {
+        width: 20px;
+        height: 20px;
+      }
     }
   }
 }
