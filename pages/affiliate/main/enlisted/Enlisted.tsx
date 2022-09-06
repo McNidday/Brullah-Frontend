@@ -91,7 +91,6 @@ const Enlisted = () => {
       ></EnlistedAffiliateError>
     );
   } else if (error) {
-    console.log(error, "the error pussy");
     return (
       <EnlistedAffiliateError
         errorNum={0}

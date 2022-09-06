@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   exportPathMap: () => {
     return {
-      "/": { page: "/home/Home" },
+      "/": { page: "/home/Home", query: { affiliate: "" } },
       "/play": { page: "/play/Play" },
       "/affiliate": { page: "/affiliate/Affiliate" },
       "/user/signup": { page: "/user/signup/Signup" },
