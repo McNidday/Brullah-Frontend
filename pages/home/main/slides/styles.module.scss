@@ -1,0 +1,33 @@
+@use "../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.swiper {
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.parallaxBg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/icons/logo/active.svg");
+  background-position: 80% 50%;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  @include media("<tablet") {
+    background-size: 100%;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($color: $background, $alpha: 0.5);
+  }
+}

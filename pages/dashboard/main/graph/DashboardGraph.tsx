@@ -44,7 +44,9 @@ interface Props {
 }
 
 const DashboardGraph = ({ user }: Props) => {
-  const { data, error, loading } = useQuery(GAME_TRANSACTIONS);
+  const { data, error, loading } = useQuery(GAME_TRANSACTIONS, {
+    variables: { page: 1, limit: 50 },
+  });
   const [graphData, setGraphData] = useState<
     Array<{
       y: number;
