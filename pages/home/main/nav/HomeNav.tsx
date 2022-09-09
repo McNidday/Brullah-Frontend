@@ -4,45 +4,38 @@ import styles from "./styles.module.scss";
 import { Controller, HashNavigation, Swiper as SwiperInterface } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow } from "swiper";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const HomeNav = () => {
-  const router = useRouter();
+interface Props {
+  hash: string | null;
+}
+
+const HomeNav = ({ hash }: Props) => {
   const [controlledSwiper, setControlledSwiper] = useState<
     SwiperInterface | undefined
   >(undefined);
 
   useEffect(() => {
-    const hashChangeComplete = (url: string) => {
-      if (!controlledSwiper) return;
-      const hash = url.split("#")[1];
-      switch (hash) {
-        case "brullah":
-          controlledSwiper!.slideTo(0);
-          break;
-        case "about":
-          controlledSwiper!.slideTo(1);
-          break;
-        case "features":
-          controlledSwiper!.slideTo(2);
-          break;
-        case "community":
-          controlledSwiper!.slideTo(3);
-          break;
-        case "discover":
-          controlledSwiper!.slideTo(4);
-          break;
-        default:
-          controlledSwiper!.slideTo(0);
-          break;
-      }
-    };
-    router.events.on("hashChangeComplete", hashChangeComplete);
-    return () => {
-      router.events.off("hashChangeComplete", hashChangeComplete);
-    };
-  }, [router.events, controlledSwiper]);
+    if (!controlledSwiper) return;
+    switch (hash) {
+      case "brullah":
+        controlledSwiper!.slideTo(0);
+        break;
+      case "about":
+        controlledSwiper!.slideTo(1);
+        break;
+      case "features":
+        controlledSwiper!.slideTo(2);
+        break;
+      case "community":
+        controlledSwiper!.slideTo(3);
+        break;
+      case "discover":
+        controlledSwiper!.slideTo(4);
+        break;
+    }
+  }, [hash]);
+
   return (
     <nav className={cn(styles.container)}>
       <ul>
@@ -56,7 +49,9 @@ const HomeNav = () => {
             controller={
               controlledSwiper ? { control: controlledSwiper } : undefined
             }
-            hashNavigation={true}
+            hashNavigation={{
+              watchState: true,
+            }}
             effect="coverflow"
             slideToClickedSlide={true}
             modules={[EffectCoverflow, Controller, HashNavigation]}

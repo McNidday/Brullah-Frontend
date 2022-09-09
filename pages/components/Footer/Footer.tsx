@@ -18,6 +18,16 @@ const Footer = () => {
             </a>
           </Link>
         </div>
+        <div>
+          <Link href={`/howto`}>
+            <a target="_blank">
+              <Image
+                src={`/icons/helping_hand/default.svg`}
+                layout="fill"
+              ></Image>
+            </a>
+          </Link>
+        </div>
       </div>
     </footer>
   );

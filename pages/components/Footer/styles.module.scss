@@ -25,9 +25,17 @@
   justify-content: space-between;
   flex-direction: row;
   flex-wrap: nowrap;
+  align-items: center;
   & > div {
     position: relative;
     width: 30px;
     height: 30px;
+    &:nth-child(1) {
+      margin-right: 5px;
+    }
+    &:nth-child(2) {
+      width: 25px;
+      height: 25px;
+    }
   }
 }

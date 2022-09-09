@@ -4,43 +4,41 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import cn from "classnames";
 import styles from "./styles.module.scss";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import HomeBrullahSlide from "./brullah/HomeBrullahSlide";
+import HomeAboutSlide from "./about/HomeAboutSlide";
+import HomeFeaturesSlide from "./features/HomeFeaturesSlide";
+import HomeCommunitySlide from "./community/HomeCommunitySlide";
 
-const HomeSlides = () => {
-  const router = useRouter();
+interface Props {
+  hashChange: () => void;
+  hash: string | null;
+}
+
+const HomeSlides = ({ hash, hashChange }: Props) => {
   const [controlledSwiper, setControlledSwiper] = useState<
     SwiperInterface | undefined
   >(undefined);
   useEffect(() => {
     if (!controlledSwiper) return;
-    const hashChangeComplete = (url: string) => {
-      const hash = url.split("#")[1];
-      switch (hash) {
-        case "brullah":
-          controlledSwiper!.slideTo(0);
-          break;
-        case "about":
-          controlledSwiper!.slideTo(1);
-          break;
-        case "features":
-          controlledSwiper!.slideTo(2);
-          break;
-        case "community":
-          controlledSwiper!.slideTo(3);
-          break;
-        case "discover":
-          controlledSwiper!.slideTo(4);
-          break;
-        default:
-          controlledSwiper!.slideTo(0);
-          break;
-      }
-    };
-    router.events.on("hashChangeComplete", hashChangeComplete);
-    return () => {
-      router.events.off("hashChangeComplete", hashChangeComplete);
-    };
-  }, [router.events, controlledSwiper]);
+    switch (hash) {
+      case "brullah":
+        controlledSwiper!.slideTo(0);
+        break;
+      case "about":
+        controlledSwiper!.slideTo(1);
+        break;
+      case "features":
+        controlledSwiper!.slideTo(2);
+        break;
+      case "community":
+        controlledSwiper!.slideTo(3);
+        break;
+      case "discover":
+        controlledSwiper!.slideTo(4);
+        break;
+    }
+  }, [hash]);
+
   return (
     <main>
       <Swiper
@@ -50,6 +48,7 @@ const HomeSlides = () => {
         controller={
           controlledSwiper ? { control: controlledSwiper } : undefined
         }
+        onHashChange={hashChange}
         modules={[HashNavigation, Parallax, Controller]}
         onSwiper={setControlledSwiper}
         parallax={true}
@@ -64,16 +63,16 @@ const HomeSlides = () => {
           data-swiper-parallax="-2%"
         ></div>
         <SwiperSlide data-hash="brullah">
-          <div>This is a brullah</div>
+          <HomeBrullahSlide></HomeBrullahSlide>
         </SwiperSlide>
         <SwiperSlide data-hash="about">
-          <div>This is a about</div>
+          <HomeAboutSlide></HomeAboutSlide>
         </SwiperSlide>
         <SwiperSlide data-hash="features">
-          <div>This is a features</div>
+          <HomeFeaturesSlide></HomeFeaturesSlide>
         </SwiperSlide>
         <SwiperSlide data-hash="community">
-          <div>This is a community</div>
+          <HomeCommunitySlide></HomeCommunitySlide>
         </SwiperSlide>
         <SwiperSlide data-hash="discover">
           <div>This is a discover</div>
