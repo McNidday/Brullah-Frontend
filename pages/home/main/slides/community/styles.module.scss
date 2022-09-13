@@ -1,7 +1,55 @@
+@use "../../../../../styles//theme" as *;
+@use "include-media" as *;
+
+.section {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  @include media("<tablet") {
+    flex-direction: column;
+  }
+}
+
+.socialContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.whatsapp {
+  position: relative;
+  width: 200px;
+  height: fit-content;
+  & > p {
+    color: $textColor;
+    text-align: center;
+  }
+
+  & > div {
+    position: relative;
+    width: 200px;
+    height: 260px;
+    cursor: pointer;
+  }
+}
+
 .container {
   width: 640px;
   height: 360px;
   position: relative;
+
+  @include media(">=tablet", "<desktop") {
+    width: 400px;
+    height: 225px;
+  }
+
+  @include media("<tablet") {
+    width: 280px;
+    height: 158px;
+  }
 }
 
 .youtube {

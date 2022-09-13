@@ -1,13 +1,26 @@
 @use "../../../../../styles/theme" as *;
+@use "include-media" as *;
 
 .brullah {
   display: flex;
   flex-direction: row;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
+  @include media("<tablet") {
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
   & > div:nth-child(1) {
     padding: 20px;
     width: 50%;
     height: 100%;
+    @include media("<tablet") {
+      flex-direction: column;
+      width: 100%;
+      padding: 0px 20px 0px 20px;
+    }
     div {
       padding: 8px;
       border: 1px solid $backgroundLight;
@@ -23,6 +36,9 @@
     h2,
     h3 {
       margin-bottom: 50px;
+      @include media("<tablet") {
+        margin-bottom: 20px;
+      }
     }
     h1 {
       color: white;
@@ -40,10 +56,22 @@
     padding: 20px;
     width: 50%;
     height: 100%;
+    @include media("<tablet") {
+      width: 100%;
+      padding: 0px 0px 0px 0px;
+      align-items: unset;
+    }
+    @include media("<desktop") {
+      align-items: unset;
+    }
     & > div {
       height: 783px;
       width: 400px;
       position: relative;
+      @include media("<tablet") {
+        height: 548px;
+        width: 280px;
+      }
     }
   }
 }

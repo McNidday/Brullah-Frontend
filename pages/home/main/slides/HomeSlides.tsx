@@ -8,6 +8,7 @@ import HomeBrullahSlide from "./brullah/HomeBrullahSlide";
 import HomeAboutSlide from "./about/HomeAboutSlide";
 import HomeFeaturesSlide from "./features/HomeFeaturesSlide";
 import HomeCommunitySlide from "./community/HomeCommunitySlide";
+import HomeDiscoverSlide from "./discover/HomeDiscoverSlide";
 
 interface Props {
   hashChange: () => void;
@@ -75,7 +76,7 @@ const HomeSlides = ({ hash, hashChange }: Props) => {
           <HomeCommunitySlide></HomeCommunitySlide>
         </SwiperSlide>
         <SwiperSlide data-hash="discover">
-          <div>This is a discover</div>
+          <HomeDiscoverSlide></HomeDiscoverSlide>
         </SwiperSlide>
       </Swiper>
     </main>

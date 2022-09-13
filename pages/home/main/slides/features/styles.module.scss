@@ -1,4 +1,5 @@
 @use "../../../../../styles/theme" as *;
+@use "include-media" as *;
 
 .container {
   display: flex;
@@ -9,8 +10,17 @@
   height: 100%;
   & > div:nth-child(1) {
     height: fit-content;
+    @include media("<tablet") {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     h2 {
       color: $textColor;
+      @include media("<tablet") {
+        width: 90%;
+        text-align: center;
+      }
     }
   }
   & > div:nth-child(2) {

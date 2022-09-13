@@ -8,7 +8,7 @@ const HomeAboutSlide = () => {
     <section className={cn(styles.container)}>
       <div data-swiper-parallax="-2000" data-swiper-parallax-duration="600">
         <h2>
-          What make <strong>Brullah</strong> what it is. I meant awesome 😎
+          What makes <strong>Brullah</strong> what it is. I meant awesome 😎
         </h2>
       </div>
       <div data-swiper-parallax="-2000" data-swiper-parallax-duration="1200">

@@ -12,7 +12,7 @@ interface Props {
   hash: string | null;
 }
 
-const HomeNav = ({ hash }: Props) => {
+const HowToNav = ({ hash }: Props) => {
   const [controlledSwiper, setControlledSwiper] = useState<
     SwiperInterface | undefined
   >(undefined);
@@ -102,4 +102,4 @@ const HomeNav = ({ hash }: Props) => {
   );
 };
 
-export default HomeNav;
+export default HowToNav;
