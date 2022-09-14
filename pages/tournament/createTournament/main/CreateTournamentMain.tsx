@@ -40,7 +40,7 @@ const CreateTournamentMain = () => {
 
   useEffect(() => {
     if (error) {
-      setRedirect("/login");
+      setRedirect("/user/login");
       setCountDown(5);
       return;
     }

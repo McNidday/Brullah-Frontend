@@ -1,6 +1,6 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import { gql, NetworkStatus, useQuery } from "@apollo/client";
+import { gql, NetworkStatus, useLazyQuery, useQuery } from "@apollo/client";
 import MyTournamentsParentList, {
   MyTournamentsParentListFragment,
 } from "./mytournaments/MyTournamentsParentList";
@@ -12,24 +12,41 @@ import MyTournamentsError from "./error/MyTournamentsError";
 import debounce from "lodash.debounce";
 
 const TOURNAMENTS = gql`
-  query GetMyTournaments($page: Int!, $limit: Int!, $search: String) {
-    myTournaments(page: $page, limit: $limit, search: $search) {
+  query GetMyTournaments($id: ID!, $page: Int!, $limit: Int!, $search: String) {
+    myTournaments(id: $id, page: $page, limit: $limit, search: $search) {
+      page
+      hasNextPage
       ...MyTournamentsParentList_PaginatedTournament
     }
   }
   ${MyTournamentsParentListFragment}
 `;
 
+const USER = gql`
+  query GetUser {
+    user {
+      id
+    }
+  }
+`;
+
 const MyTournamentsMain = () => {
   const [page, setPage] = useState(1);
-  const { loading, error, data, networkStatus, fetchMore, refetch } = useQuery(
-    TOURNAMENTS,
-    {
-      errorPolicy: "all",
-      notifyOnNetworkStatusChange: true,
-      variables: { page: page, limit: 10, search: "" },
-    }
-  );
+  const { data: userData, error: userDataError } = useQuery(USER);
+  const [
+    getMyTournaments,
+    { called, loading, error, data, networkStatus, fetchMore, refetch },
+  ] = useLazyQuery(TOURNAMENTS, {
+    errorPolicy: "all",
+    notifyOnNetworkStatusChange: true,
+    variables: {
+      id: "",
+      page: page,
+      limit: 10,
+      search: "",
+    },
+  });
+
   const [editId, setEditId] = useState<string | null>(null);
   const [search, setSearch] = useState<string | null>(null);
   const getSearchResults = useRef(
@@ -74,12 +91,31 @@ const MyTournamentsMain = () => {
   };
 
   useEffect(() => {
-    if (data?.tournaments) {
-      setPage(data.tournaments.page);
+    if (data?.myTournaments) {
+      setPage(data.myTournaments.page);
     }
   }, [data]);
 
-  if (loading) return <MyTournamentsLoading></MyTournamentsLoading>;
+  useEffect(() => {
+    if (userData?.user.id) {
+      getMyTournaments({
+        variables: { id: userData?.user.id, page: 1, limit: 10, search: "" },
+      });
+    }
+  }, [userData]);
+
+  if (userDataError && (userDataError?.networkError as any).statusCode !== 401) {
+    return (
+      <div className={cn(styles.container)}>
+        <div className={cn(styles.miniContainer)}>
+          <MyTournamentsError errorNum={1} error={userDataError}></MyTournamentsError>;
+        </div>
+      </div>
+    );
+  }
+
+  if ((loading && NetworkStatus.loading === networkStatus) || !called)
+    return <MyTournamentsLoading></MyTournamentsLoading>;
   if (error && (error?.networkError as any).statusCode !== 401) {
     return (
       <div className={cn(styles.container)}>

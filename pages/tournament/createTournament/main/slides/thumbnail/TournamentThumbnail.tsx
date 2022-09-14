@@ -9,11 +9,13 @@ import {
   validateImageUpload,
 } from "../../../../../functions/helpers";
 import { useSwiper } from "swiper/react";
+import { ApolloError } from "@apollo/client";
 
 interface Props {
   isActive: boolean;
   setThumbnail: Function;
   error: Error | undefined;
+  serverError: ApolloError | undefined;
   createTournament: Function;
 }
 
@@ -22,9 +24,11 @@ const TournamentThumbnail = ({
   createTournament,
   isActive,
   error,
+  serverError,
 }: Props) => {
   const swiper = useSwiper();
 
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   // const [pervAvatarUrl, setPrevAvaratUrl] = useState<string | ArrayBuffer | null>(null);
   const [avatarUrl, setAvaratUrl] = useState<string | ArrayBuffer | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -79,8 +83,15 @@ const TournamentThumbnail = ({
       setUploadError(error.message);
       setAvaratUrl(null);
       swiper.slideTo(6);
+      setButtonDisabled(false);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (serverError) {
+      setButtonDisabled(false);
+    }
+  }, [serverError]);
 
   useEffect(() => {
     if (!avatarUrl) return;
@@ -121,6 +132,12 @@ const TournamentThumbnail = ({
       }
     };
   }, [avatarUrl]);
+
+  useEffect(() => {
+    if (buttonDisabled) {
+      setTimeout(createTournament, 2000);
+    }
+  }, [buttonDisabled]);
 
   return (
     <>
@@ -168,12 +185,10 @@ const TournamentThumbnail = ({
           ></Button>
           <Button
             text="Let's go!"
-            disabled={false}
+            disabled={buttonDisabled}
             onClick={() => {
+              setButtonDisabled(true);
               cropThumbnail();
-              setTimeout(() => {
-                createTournament();
-              }, 2000);
             }}
           ></Button>
         </div>

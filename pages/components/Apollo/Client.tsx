@@ -1,7 +1,6 @@
 import { ApolloClient, ApolloLink, gql, InMemoryCache } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
-import moment from "moment";
-import Cookies, { setCookie } from "../../functions/Cookies";
+import Cookies from "../../functions/Cookies";
 
 const ENDPOINTS: { [key: string]: string } = {
   GetUser: "users",
@@ -58,7 +57,7 @@ const uploadLink = createUploadLink({
   uri: "http://localhost:8080",
 });
 
-const pageLimitPaginationHelper = () => {
+const pageLimitPaginationHelper: () => any = () => {
   return {
     read(existing: any, { args: { page = 1, limit = 10 } }: any) {
       // A read function should always return undefined if existing is
@@ -89,7 +88,11 @@ const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        tournaments: { ...pageLimitPaginationHelper(), keyArgs: false },
+        tournaments: { ...pageLimitPaginationHelper(), keyArgs: ["search"] },
+        myTournaments: {
+          ...pageLimitPaginationHelper(),
+          keyArgs: ["id", "search"],
+        },
         joinedMatches: {
           ...pageLimitPaginationHelper(),
           keyArgs: ["progress"],

@@ -4,7 +4,6 @@ import uniqid from "uniqid";
 import cn from "classnames";
 
 import "swiper/css/bundle";
-import moment from "moment";
 import styles from "./styles.module.scss";
 import { useEffect, useState } from "react";
 import { gql, useMutation } from "@apollo/client";
@@ -31,6 +30,8 @@ const CREATE_TOURNAMENT = gql`
 `;
 
 const CreateTournamentSlides = () => {
+  // Track if tournament is being created
+  const [creatingTournament, setCreatingTounament] = useState(false);
   // Tournament name
   const [name, setName] = useState<string | undefined>(undefined);
 
@@ -70,6 +71,7 @@ const CreateTournamentSlides = () => {
   );
 
   const createTournament = async () => {
+    if (loading || error || data) return;
     if (!thumbnail) {
       setThumbnailError(new Error("No image has been selected"));
       return;
@@ -252,6 +254,7 @@ const CreateTournamentSlides = () => {
           {({ isActive }) => {
             return (
               <TournamentThumbnail
+                serverError={error}
                 createTournament={() => createTournament()}
                 setThumbnail={(val: File) => setThumbnail(val)}
                 isActive={isActive}
