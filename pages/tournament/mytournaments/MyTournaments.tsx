@@ -6,6 +6,7 @@ import ApolloClientOnly from "../../components/Apollo/ApolloClientOnly";
 import MyTournamentsMain from "./main/MyTournamentsMain";
 import MyTournamentsLoading from "./main/loading/MyTournamentsLoading";
 import Navigation from "../../components/Navigation/Navigation";
+import MyTournamentsMainUser from "./main/MyTournamentsMainUser";
 
 const MyTournaments: NextPage = () => {
   return (
@@ -19,7 +20,7 @@ const MyTournaments: NextPage = () => {
       <ApolloClientOnly
         fallback={<MyTournamentsLoading></MyTournamentsLoading>}
       >
-        <MyTournamentsMain></MyTournamentsMain>
+        <MyTournamentsMainUser></MyTournamentsMainUser>
       </ApolloClientOnly>
       <Footer></Footer>
     </div>

@@ -6,7 +6,7 @@ import styles from "./styles.module.scss";
 const Footer = () => {
   return (
     <footer className={classNames(styles.footer)}>
-      <p>V: 2.0.0</p>
+      <p>B.V: 2.0.0</p>
       <Link href={"/"}>
         <p>@copyright 2018: nidday/brullah 🏠</p>
       </Link>

@@ -1,6 +1,6 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import { gql, NetworkStatus, useLazyQuery, useQuery } from "@apollo/client";
+import { ApolloError, gql, NetworkStatus, useQuery } from "@apollo/client";
 import MyTournamentsParentList, {
   MyTournamentsParentListFragment,
 } from "./mytournaments/MyTournamentsParentList";
@@ -10,6 +10,10 @@ import { useEffect, useRef, useState } from "react";
 import EditMyTournament from "./edit/EditMyTournament";
 import MyTournamentsError from "./error/MyTournamentsError";
 import debounce from "lodash.debounce";
+
+interface Props {
+  id: string;
+}
 
 const TOURNAMENTS = gql`
   query GetMyTournaments($id: ID!, $page: Int!, $limit: Int!, $search: String) {
@@ -22,30 +26,21 @@ const TOURNAMENTS = gql`
   ${MyTournamentsParentListFragment}
 `;
 
-const USER = gql`
-  query GetUser {
-    user {
-      id
-    }
-  }
-`;
-
-const MyTournamentsMain = () => {
+const MyTournamentsMain = ({ id }: Props) => {
   const [page, setPage] = useState(1);
-  const { data: userData, error: userDataError } = useQuery(USER);
-  const [
-    getMyTournaments,
-    { called, loading, error, data, networkStatus, fetchMore, refetch },
-  ] = useLazyQuery(TOURNAMENTS, {
-    errorPolicy: "all",
-    notifyOnNetworkStatusChange: true,
-    variables: {
-      id: "",
-      page: page,
-      limit: 10,
-      search: "",
-    },
-  });
+  const { loading, error, data, networkStatus, fetchMore, refetch } = useQuery(
+    TOURNAMENTS,
+    {
+      errorPolicy: "all",
+      notifyOnNetworkStatusChange: true,
+      variables: {
+        id: id,
+        page: page,
+        limit: 10,
+        search: "",
+      },
+    }
+  );
 
   const [editId, setEditId] = useState<string | null>(null);
   const [search, setSearch] = useState<string | null>(null);
@@ -96,26 +91,6 @@ const MyTournamentsMain = () => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (userData?.user.id) {
-      getMyTournaments({
-        variables: { id: userData?.user.id, page: 1, limit: 10, search: "" },
-      });
-    }
-  }, [userData]);
-
-  if (userDataError && (userDataError?.networkError as any).statusCode !== 401) {
-    return (
-      <div className={cn(styles.container)}>
-        <div className={cn(styles.miniContainer)}>
-          <MyTournamentsError errorNum={1} error={userDataError}></MyTournamentsError>;
-        </div>
-      </div>
-    );
-  }
-
-  if ((loading && NetworkStatus.loading === networkStatus) || !called)
-    return <MyTournamentsLoading></MyTournamentsLoading>;
   if (error && (error?.networkError as any).statusCode !== 401) {
     return (
       <div className={cn(styles.container)}>
@@ -124,8 +99,7 @@ const MyTournamentsMain = () => {
         </div>
       </div>
     );
-  }
-  if (!data?.myTournaments)
+  } else if (error && (error?.networkError as any).statusCode === 401) {
     return (
       <div className={cn(styles.container)}>
         <div className={cn(styles.miniContainer)}>
@@ -133,6 +107,14 @@ const MyTournamentsMain = () => {
         </div>
       </div>
     );
+  }
+  if (
+    (loading && NetworkStatus.loading === networkStatus) ||
+    NetworkStatus.refetch === networkStatus ||
+    !data?.myTournaments
+  )
+    return <MyTournamentsLoading></MyTournamentsLoading>;
+
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
