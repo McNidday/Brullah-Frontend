@@ -38,7 +38,7 @@ const SignupPassword = ({
       const errorArray = errors.message.split(":");
       if (errorArray[0] === "password") {
         setPasswordError(errorArray[1].trim());
-        swiper.slideTo(Cookies("affiliate") ? 5 : 4);
+        swiper.slideTo(Cookies("affiliate") ? 6 : 5);
       }
     } else {
       setPasswordError(null);

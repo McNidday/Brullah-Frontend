@@ -6,6 +6,7 @@ import ApolloClientOnly from "../components/Apollo/ApolloClientOnly";
 import Navigation from "../components/Navigation/Navigation";
 import AffiliateMainLoading from "./main/loading/AffiliateMainLoading";
 import AffiliateMain from "./main/AffiliateMain";
+import "swiper/css/bundle";
 
 const Affiliate: NextPage = () => {
   return (

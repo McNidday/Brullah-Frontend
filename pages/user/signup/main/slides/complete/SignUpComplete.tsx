@@ -8,7 +8,7 @@ const SignUpComplete = ({ data }: { data: undefined | any }) => {
   const swiper = useSwiper();
   useEffect(() => {
     if (data && data.signup) {
-      swiper.slideTo(Cookies("affiliate") ? 5 : 6);
+      swiper.slideTo(Cookies("affiliate") ? 6 : 7);
       swiper.disable();
     }
   }, [data]);

@@ -28,7 +28,7 @@ const HomeBrullahSlide = () => {
         </div>
       </div>
     </section>
-  );
+  ); 
 };
 
 export default HomeBrullahSlide;

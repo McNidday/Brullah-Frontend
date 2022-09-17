@@ -25,6 +25,7 @@ const ENDPOINTS: { [key: string]: string } = {
   PublishMatchConfig: "matches",
   JoinedNotStartedMatches: "matches",
   UserOngoingMatches: "matches",
+  RemoveFromMatch: "matches",
   LikeCreator: "likes",
   UnLikeCreator: "likes",
   CheckLike: "likes",

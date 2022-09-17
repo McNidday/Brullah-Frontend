@@ -56,7 +56,7 @@ const EnlistedAffiliatesStatus = ({ search, setSearch }: Props) => {
   const copyAffiliateLink = () => {
     setCopyLink(true);
     navigator.clipboard.writeText(
-      `${process.env.BRULLAH_URL}/${data?.user.identity.affiliate.code}`
+      `${process.env.BRULLAH_URL}/?affiliate=${data?.user.identity.affiliate.code}`
     );
   };
 
@@ -103,7 +103,7 @@ const EnlistedAffiliatesStatus = ({ search, setSearch }: Props) => {
         </div>
         <div>
           <p>
-            {loading || error ? `...` : process.env.BRULLAH_URL}/
+            {loading || error ? `...` : process.env.BRULLAH_URL}/?affiliate=
             {data?.user.identity.affiliate.code || "nidday"}
           </p>
           <div>

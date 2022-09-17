@@ -37,6 +37,7 @@ interface Props {
       };
     };
   };
+  match: { users: { joined: Array<string> } };
   sponsor: { sponsored: boolean };
   contribution: { contributed: boolean };
 }
@@ -79,6 +80,13 @@ const TOURNAMENT = gql`
             blurhash
           }
         }
+        match {
+          users {
+            joined {
+              id
+            }
+          }
+        }
         stats {
           tournament {
             likes
@@ -91,6 +99,9 @@ const TOURNAMENT = gql`
 
 const TournamentList = (props: Props) => {
   const [likeStatus, setLikeStatus] = useState(false);
+  const [joined, setJoined] = useState<"joined" | "loading" | "not-joined">(
+    "loading"
+  );
 
   const { data, networkStatus, refetch } = useQuery(CHECKLIKE, {
     errorPolicy: "all",
@@ -144,6 +155,21 @@ const TournamentList = (props: Props) => {
       }
     }
   }, [likeData, unLikeData]);
+
+  useEffect(() => {
+    if (props?.match?.users?.joined) {
+      const userIndex = props.match.users.joined.findIndex((u: any) => {
+        return u.id === props.user?.id;
+      });
+      if (userIndex >= 0) {
+        setJoined("joined");
+      } else {
+        setJoined("not-joined");
+      }
+    } else {
+      setJoined("not-joined");
+    }
+  }, [data]);
 
   return (
     <li className={cn(styles.container)}>
@@ -224,7 +250,13 @@ const TournamentList = (props: Props) => {
       </div>
       <div>
         <Button
-          text="join"
+          text={
+            joined === "joined"
+              ? "withdraw"
+              : joined === "loading"
+              ? "..."
+              : "join"
+          }
           disabled={false}
           onClick={() => {
             props.setJoinTournamentId(props.id);
@@ -322,6 +354,13 @@ export const TournamentListFragment = gql`
       stats {
         tournament {
           likes
+        }
+      }
+    }
+    match {
+      users {
+        joined {
+          id
         }
       }
     }

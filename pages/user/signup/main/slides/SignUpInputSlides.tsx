@@ -1,5 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Parallax, Pagination } from "swiper";
+import { gql, useMutation } from "@apollo/client";
+import { useEffect, useState } from "react";
 import cn from "classnames";
 
 import "swiper/css/bundle";
@@ -9,10 +11,9 @@ import SignUpFullName from "./names/SignUpFullName";
 import SignUpArenaName from "./arenaname/SignUpArenaName";
 import SignUpAvatar from "./avatar/SignUpAvatar";
 import SignupPassword from "./password/SignupPassword";
-import { useEffect, useState } from "react";
 import SignUpComplete from "./complete/SignUpComplete";
-import { gql, useMutation } from "@apollo/client";
 import SignupEmail from "./email/SignupEmail";
+import SignUpAgreement from "./agreement/SignUpAgreement";
 import Logo from "../../../../components/Logo/Logo";
 import { encodeImageToBlurHash } from "../../../../functions/helpers";
 import Cookies from "../../../../functions/Cookies";
@@ -173,6 +174,9 @@ const SignUpInputSlides = () => {
         ) : (
           ""
         )}
+        <SwiperSlide className={cn(styles.swiperSlide)}>
+          <SignUpAgreement></SignUpAgreement>
+        </SwiperSlide>
         <SwiperSlide className={cn(styles.swiperSlide)}>
           {({ isActive }) => {
             return (

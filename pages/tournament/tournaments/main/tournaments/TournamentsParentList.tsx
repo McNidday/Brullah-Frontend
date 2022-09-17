@@ -2,7 +2,7 @@ import { CircularProgress } from "@mui/material";
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import TournamentList, { TournamentListFragment } from "./list/TournamentList";
-import { gql, NetworkStatus } from "@apollo/client";
+import { gql, NetworkStatus, useQuery } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -23,6 +23,7 @@ interface Props {
       thumbnail: { image: string; blurhash: string };
     };
     analytics: { joined_users: number };
+    match: { users: { joined: Array<string> } };
     creator: {
       id: string;
       identity: {

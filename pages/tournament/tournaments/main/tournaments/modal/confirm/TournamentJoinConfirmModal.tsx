@@ -5,6 +5,7 @@ import styles from "./styles.module.scss";
 import dinero from "dinero.js";
 
 interface Props {
+  action: "withdraw" | "join";
   tournamentName: string;
   contribution: {
     contributed: boolean;
@@ -24,6 +25,7 @@ const TournamentJoinConfirmModal = ({
   contribution,
   confirmModalOpen,
   handleConfirmModalClose,
+  action,
 }: Props) => {
   return (
     <Modal
@@ -34,18 +36,38 @@ const TournamentJoinConfirmModal = ({
       aria-describedby="parent-modal-description"
     >
       <Box className={cn(styles.parentModal)}>
-        {contribution.contributed ? (
+        {action === "join" ? (
+          contribution.contributed ? (
+            <>
+              <h4>
+                Click below to confirm. You are about to contribute{" "}
+                {dinero({
+                  amount: contribution.per_user.value,
+                  currency: contribution.per_user.currency,
+                }).toFormat()}{" "}
+                to join tournament {tournamentName}
+              </h4>
+              <Button
+                text="ᕦ(ò_óˇ)ᕤ"
+                disabled={false}
+                onClick={() => {
+                  confirmAction();
+                  handleConfirmModalClose();
+                }}
+              ></Button>
+            </>
+          ) : (
+            <h4>...</h4>
+          )
+        ) : (
           <>
             <h4>
-              Click below to confirm. You are about to contribute{" "}
-              {dinero({
-                amount: contribution.per_user.value,
-                currency: contribution.per_user.currency,
-              }).toFormat()}{" "}
-              to join tournament {tournamentName}
+              Click below to confirm. You are about to withdraw from tournament{" "}
+              {tournamentName}. You can only withdraw from contributed
+              tournaments 24 hours after you have joined.
             </h4>
             <Button
-              text="ᕦ(ò_óˇ)ᕤ"
+              text="o(TヘTo)"
               disabled={false}
               onClick={() => {
                 confirmAction();
@@ -53,8 +75,6 @@ const TournamentJoinConfirmModal = ({
               }}
             ></Button>
           </>
-        ) : (
-          <h4>...</h4>
         )}
       </Box>
     </Modal>

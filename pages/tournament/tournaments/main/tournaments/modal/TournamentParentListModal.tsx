@@ -88,6 +88,14 @@ const ADD_TO_MATCH = gql`
   }
 `;
 
+const REMOVE_FROM_MATCH = gql`
+  mutation RemoveFromMatch($id: ID!) {
+    removeFromMatch(id: $id) {
+      id
+    }
+  }
+`;
+
 const USER = gql`
   query GetUser {
     user {
@@ -124,6 +132,18 @@ const TournamentParentListModal = ({
     errorPolicy: "all",
   });
 
+  const [
+    removeFromMatch,
+    {
+      data: removeFromMatchData,
+      loading: removeFromMatchLoading,
+      error: removeFromMatchError,
+      reset: removeFromMatchReset,
+    },
+  ] = useMutation(REMOVE_FROM_MATCH, {
+    errorPolicy: "all",
+  });
+
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [joined, setJoined] = useState(false);
   const [displayUsers, setDisplayUsers] = useState<Array<any>>([]);
@@ -132,7 +152,7 @@ const TournamentParentListModal = ({
     setConfirmModalOpen(false);
   };
 
-  const handleConfirmModalOpen = () => {
+  const handleConfirmModalOpen: () => void = () => {
     setConfirmModalOpen(true);
   };
 
@@ -149,12 +169,21 @@ const TournamentParentListModal = ({
     }
   };
 
+  const withdraw = () => {
+    if (data.tournament.contribution.contributed) {
+      handleConfirmModalOpen();
+    } else {
+      // Join the tournament
+      removeFromMatch({
+        variables: {
+          id: data.tournament.match.id,
+        },
+      });
+    }
+  };
+
   useEffect(() => {
     if (tournamentId) {
-      console.log(
-        tournamentId,
-        "We some poor high class niggas, made it we rich ooh"
-      );
       if (called) {
         refetch({
           id: tournamentId,
@@ -170,18 +199,34 @@ const TournamentParentListModal = ({
   }, [tournamentId]);
 
   useEffect(() => {
+    let timeOut: any;
     if (addToMatchError) {
-      setTimeout(() => {
+      let timeOut = setTimeout(() => {
         reset();
       }, 5000);
-    }
-    if (addToMatchData) {
-      setTimeout(() => {
+    } else if (addToMatchData) {
+      let timeOut = setTimeout(() => {
         reset();
         refetch();
-      }, 5000);
+      }, 2000);
     }
-  }, [addToMatchData, addToMatchError]);
+    if (removeFromMatchError) {
+      let timeOut = setTimeout(() => {
+        removeFromMatchReset();
+      }, 10000);
+    } else if (removeFromMatchData) {
+      let timeOut = setTimeout(() => {
+        removeFromMatchReset();
+        refetch();
+      }, 2000);
+    }
+    return () => clearTimeout(timeOut);
+  }, [
+    addToMatchData,
+    addToMatchError,
+    removeFromMatchData,
+    removeFromMatchError,
+  ]);
 
   useEffect(() => {
     if (userData && data?.tournament) {
@@ -193,6 +238,8 @@ const TournamentParentListModal = ({
       setDisplayUsers(data.tournament.match.users.joined.slice(0, 5));
       if (userIndex >= 0) {
         setJoined(true);
+      } else {
+        setJoined(false);
       }
     }
   }, [userData, data]);
@@ -226,12 +273,17 @@ const TournamentParentListModal = ({
             <div className={cn(styles.heading)}>
               <h3
                 className={cn(
-                  addToMatchLoading || addToMatchError ? styles.hideHeading : ""
+                  addToMatchLoading ||
+                    removeFromMatchLoading ||
+                    removeFromMatchError ||
+                    addToMatchError
+                    ? styles.hideHeading
+                    : ""
                 )}
               >
                 Join Tournament {data.tournament.information.name}
               </h3>
-              {addToMatchLoading ? (
+              {addToMatchLoading || removeFromMatchLoading ? (
                 <div className={cn(styles.joinLoading)}>
                   <Logo
                     thinking={true}
@@ -242,7 +294,11 @@ const TournamentParentListModal = ({
                 </div>
               ) : addToMatchError ? (
                 <div className={cn(styles.JoinError)}>
-                  <p>{addToMatchError.message}r</p>
+                  <p>{addToMatchError.message}</p>
+                </div>
+              ) : removeFromMatchError ? (
+                <div className={cn(styles.JoinError)}>
+                  <p>{removeFromMatchError.message}</p>
                 </div>
               ) : (
                 ""
@@ -367,6 +423,13 @@ const TournamentParentListModal = ({
                 {joined ? (
                   <div className={cn(styles.joinStatus)}>
                     <p>You are one with this tournament (✿◡‿◡)</p>
+                    <Button
+                      text="Withdraw"
+                      disabled={
+                        removeFromMatchLoading || addToMatchError ? true : false
+                      }
+                      onClick={withdraw}
+                    ></Button>
                   </div>
                 ) : userLoading ? (
                   <div className={cn(styles.joinStatus)}>
@@ -395,12 +458,19 @@ const TournamentParentListModal = ({
               </div>
             </div>
             <TournamentJoinConfirmModal
+              action={joined ? "withdraw" : "join"}
               confirmAction={() =>
-                addToMatch({
-                  variables: {
-                    id: data.tournament.match.id,
-                  },
-                })
+                joined
+                  ? removeFromMatch({
+                      variables: {
+                        id: data.tournament.match.id,
+                      },
+                    })
+                  : addToMatch({
+                      variables: {
+                        id: data.tournament.match.id,
+                      },
+                    })
               }
               tournamentName={data.tournament.information.name}
               contribution={data.tournament.contribution}

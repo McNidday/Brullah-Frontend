@@ -190,8 +190,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   & > p {
     color: red;
+  }
+}
+
+.JoinError {
+  @include media("<tablet") {
+    width: 100%;
+  }
+  & > p {
+    font-size: small;
+    @include media("<tablet") {
+      width: 100%;
+      text-align: center;
+    }
   }
 }
 
@@ -218,6 +232,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   p {
     text-align: center;
     color: $textColor;

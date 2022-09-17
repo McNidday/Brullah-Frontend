@@ -44,7 +44,9 @@ const HomeNav = ({ hash }: Props) => {
         <li>
           <div>
             <Link href={`/#`}>
-              <Image src={`/icons/logo/active.svg`} layout={"fill"}></Image>
+              <a>
+                <Image src={`/icons/logo/active.svg`} layout={"fill"}></Image>
+              </a>
             </Link>
           </div>
         </li>
