@@ -10,7 +10,7 @@ import Cookies from "../../../../../functions/Cookies";
 
 interface Props {
   updateProfile: Function;
-  signup: Function;
+  signup: (excludeAffiliate: boolean) => void;
   password: string;
   confirm_password: string;
   errors: ApolloError | undefined;
@@ -39,6 +39,9 @@ const SignupPassword = ({
       if (errorArray[0] === "password") {
         setPasswordError(errorArray[1].trim());
         swiper.slideTo(Cookies("affiliate") ? 6 : 5);
+      }
+      if (errorArray[0] === "affiliate" && Cookies("affiliate")) {
+        signup(true);
       }
     } else {
       setPasswordError(null);

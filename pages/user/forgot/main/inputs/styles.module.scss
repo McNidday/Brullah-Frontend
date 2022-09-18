@@ -44,6 +44,9 @@
     width: 85%;
     margin: 0 auto;
   }
+  @include media("<=tablet") {
+    margin: 0;
+  }
 }
 
 .loadingMiniContainer {
@@ -57,6 +60,10 @@
 }
 
 .inputs {
+  position: relative;
+  @include media("<=tablet") {
+    width: 250px;
+  }
   & > input {
     margin-right: 10px;
   }
@@ -85,15 +92,18 @@
 }
 
 .eyeIcons {
-  user-select: none;
   position: absolute;
   height: 30px;
   width: 30px;
-  right: 5px;
-  top: 12.5%;
+  right: 15px;
+  top: 15%;
   background-color: transparent;
   &:hover {
     cursor: pointer;
+  }
+  @include media("<=tablet") {
+    top: 65%;
+    right: 5px;
   }
 }
 
@@ -151,6 +161,9 @@
 .cover {
   width: fit-content;
   height: fit-content;
+  @include media("<=tablet") {
+    width: 90%;
+  }
 }
 
 .error {

@@ -5,6 +5,7 @@ import Button from "../../../../../components/Button/Button";
 import { useSwiper } from "swiper/react";
 import { FormEvent, useEffect, useState } from "react";
 import { ApolloError } from "@apollo/client";
+import Cookies from "../../../../../functions/Cookies";
 
 interface Props {
   updateProfile: Function;
@@ -25,7 +26,7 @@ const SignupAffiliate = ({
   useEffect(() => {
     if (error) {
       const errorArray = error.message.split(":");
-      if (errorArray[0] === "affiliate") {
+      if (errorArray[0] === "affiliate" && !Cookies("affiliate")) {
         setEmailError(errorArray[1].trim());
         swiper.slideTo(4);
       }

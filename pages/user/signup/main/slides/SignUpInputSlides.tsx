@@ -16,7 +16,7 @@ import SignupEmail from "./email/SignupEmail";
 import SignUpAgreement from "./agreement/SignUpAgreement";
 import Logo from "../../../../components/Logo/Logo";
 import { encodeImageToBlurHash } from "../../../../functions/helpers";
-import Cookies from "../../../../functions/Cookies";
+import Cookies, { deleteCookie } from "../../../../functions/Cookies";
 import SignupAffiliate from "./affiliate/SignupAffiliate";
 
 const CREATE_USER = gql`
@@ -54,7 +54,7 @@ const SignUpInputSlides = () => {
     });
   };
 
-  const signup = async () => {
+  const signup = async (excludeAffiliate: boolean) => {
     const imageHash = await new Promise((resolve) => {
       const image = new FileReader();
       image.readAsDataURL(profile.avatar);
@@ -67,13 +67,26 @@ const SignUpInputSlides = () => {
     });
     delete profile.confirm_password;
     const profileInput: any = { ...profile, blurhash: imageHash };
-    if (Cookies("affiliate")) profileInput.affiliate = Cookies("affiliate");
+    if (Cookies("affiliate") && !excludeAffiliate) {
+      profileInput.affiliate = Cookies("affiliate");
+    } else if (excludeAffiliate && Cookies("affiliate")) {
+      deleteCookie("affiliate");
+      delete profileInput.affiliate;
+    }
+
     await createUser({ variables: { input: profileInput } });
   };
 
   useEffect(() => {
     // If there is an error reset it after 5 seconds
-    if (error) setTimeout(reset, 5000);
+    if (error) {
+      const errorArray = error.message.split(":");
+      if (errorArray[0] !== "affiliate" && !Cookies("affiliate")) {
+        setTimeout(reset, 5000);
+      } else if (errorArray[0] === "affiliate" && !Cookies("affiliate")) {
+        setTimeout(reset, 5000);
+      }
+    }
   }, [error]);
 
   if (error) {
