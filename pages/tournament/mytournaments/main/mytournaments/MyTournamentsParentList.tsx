@@ -24,6 +24,7 @@ interface Props {
     };
     status: { progress: string };
     analytics: { joined_users: number };
+    access: { secret: string };
     creator: {
       identity: {
         arena_name: string;

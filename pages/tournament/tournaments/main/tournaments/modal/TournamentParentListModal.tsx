@@ -18,6 +18,7 @@ import Button from "../../../../../components/Button/Button";
 import TournamentJoinConfirmModal from "./confirm/TournamentJoinConfirmModal";
 
 interface Props {
+  search: string | null;
   modalOpen: boolean;
   handleModalClose: () => void;
   tournamentId: string | null;
@@ -81,8 +82,8 @@ const TOURNAMENT = gql`
 `;
 
 const ADD_TO_MATCH = gql`
-  mutation AddToMatch($id: ID!) {
-    addToMatch(id: $id) {
+  mutation AddToMatch($id: ID!, $secret: String) {
+    addToMatch(id: $id, secret: $secret) {
       id
     }
   }
@@ -105,6 +106,7 @@ const USER = gql`
 `;
 
 const TournamentParentListModal = ({
+  search,
   tournamentId,
   modalOpen,
   handleModalClose,
@@ -164,6 +166,7 @@ const TournamentParentListModal = ({
       addToMatch({
         variables: {
           id: data.tournament.match.id,
+          secret: search,
         },
       });
     }
@@ -469,6 +472,7 @@ const TournamentParentListModal = ({
                   : addToMatch({
                       variables: {
                         id: data.tournament.match.id,
+                        secret: search,
                       },
                     })
               }

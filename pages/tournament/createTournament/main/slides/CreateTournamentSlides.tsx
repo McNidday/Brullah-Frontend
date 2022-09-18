@@ -30,8 +30,6 @@ const CREATE_TOURNAMENT = gql`
 `;
 
 const CreateTournamentSlides = () => {
-  // Track if tournament is being created
-  const [creatingTournament, setCreatingTounament] = useState(false);
   // Tournament name
   const [name, setName] = useState<string | undefined>(undefined);
 
@@ -122,6 +120,9 @@ const CreateTournamentSlides = () => {
                 ? "SPONSORED"
                 : "CONTRIBUTION"
               : "NONE",
+          access: {
+            type: accessType,
+          },
           start_date: date?.unix,
         },
       },

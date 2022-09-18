@@ -17,12 +17,9 @@ const USER_LOGIN = gql`
   }
 `;
 
-const LoginInputs = () => {
+const ForotInputs = () => {
   const router = useRouter();
   const [arenaName, setArenaName] = useState<string | undefined>(undefined);
-  const [password, setPassword] = useState<string | undefined>(undefined);
-  const [showPassword, setShowPassword] = useState(false);
-  const [eyeIconHover, setEyeIconHover] = useState(false);
   let [userLogin, { data, loading, error, reset }] = useMutation(USER_LOGIN, {
     errorPolicy: "all",
   });
@@ -32,7 +29,6 @@ const LoginInputs = () => {
       variables: {
         input: {
           username: arenaName,
-          password: password,
         },
       },
     });
@@ -70,7 +66,10 @@ const LoginInputs = () => {
         <div className={cn(styles.cover)}>
           <div className={cn(styles.title)}>
             <label>
-              <h3>Welcome back. Login to your brullah account.</h3>
+              <h3>
+                Please enter your email address or your brullah name to reset
+                your password.
+              </h3>
             </label>
           </div>
           {error ? (
@@ -91,7 +90,7 @@ const LoginInputs = () => {
           <div className={cn(styles.inputs)}>
             <input
               type="text"
-              placeholder="Brulah Name"
+              placeholder="Brullah Name"
               value={arenaName || ""}
               onInput={(
                 e: FormEvent & { target: EventTarget & { [key: string]: any } }
@@ -99,57 +98,12 @@ const LoginInputs = () => {
                 setArenaName(e.target.value);
               }}
             ></input>
-            <div
-              className={cn(styles.inputContainer)}
-              onMouseEnter={() => setEyeIconHover(true)}
-              onMouseLeave={() => setEyeIconHover(false)}
-            >
-              <input
-                type={`${showPassword ? `text` : `password`}`}
-                placeholder="Password"
-                value={password || ""}
-                onInput={(
-                  e: FormEvent & {
-                    target: EventTarget & { [key: string]: any };
-                  }
-                ) => {
-                  setPassword(e.target.value);
-                }}
-              ></input>
-              <div
-                className={cn(styles.eyeIcons)}
-                onClick={() => setShowPassword(showPassword ? false : true)}
-              >
-                {showPassword ? (
-                  <div className={cn(styles.eyeIcon)}>
-                    <Icon
-                      activeLink="/icons/eye_visible/active.svg"
-                      inactiveLink="/icons/eye_visible/inactive.svg"
-                      hover={eyeIconHover}
-                    ></Icon>
-                  </div>
-                ) : (
-                  <div className={cn(styles.eyeIcon)}>
-                    <Icon
-                      activeLink="/icons/eye_slash/active.svg"
-                      inactiveLink="/icons/eye_slash/inactive.svg"
-                      hover={eyeIconHover}
-                    ></Icon>
-                  </div>
-                )}
-              </div>
-            </div>
           </div>
           <div className={cn(styles.buttons)} data-swiper-parallax="-100">
             <Button
-              text="Login"
+              text="Reset"
               disabled={loading || data?.login ? true : false}
               onClick={login}
-            ></Button>
-            <Button
-              link="/user/forgot"
-              text="Forgot Password"
-              disabled={loading || data?.login ? true : false}
             ></Button>
           </div>
         </div>
@@ -158,4 +112,4 @@ const LoginInputs = () => {
   );
 };
 
-export default LoginInputs;
+export default ForotInputs;

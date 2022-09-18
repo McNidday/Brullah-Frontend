@@ -44,7 +44,11 @@ const PlayMain = () => {
         <ul className={cn(styles.listParent)}>
           <li className={cn(styles.listItem)}>
             <div>
-              <Image src={`/images/Checkers-Tai.jpg`} layout="fill"></Image>
+              <Image
+                src={`/images/Checkers-Tai.jpg`}
+                layout="fill"
+                priority
+              ></Image>
             </div>
             <div>
               <h3>Checkers</h3>

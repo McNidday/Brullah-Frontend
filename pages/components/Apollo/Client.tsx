@@ -87,6 +87,8 @@ const pageLimitPaginationHelper: () => any = () => {
 
 const cache = new InMemoryCache({
   typePolicies: {
+    TournamentInformation: { keyFields: ["thumbnail", ["image"]] },
+    UserIdentity: { keyFields: ["arena_name"] },
     Query: {
       fields: {
         tournaments: { ...pageLimitPaginationHelper(), keyArgs: ["search"] },

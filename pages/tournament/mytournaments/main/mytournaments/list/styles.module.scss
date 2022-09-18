@@ -89,6 +89,29 @@
   background-color: $activeColor;
 }
 
+.copyLink {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 5px;
+}
+
+.copiedLink {
+  &::after {
+    content: "copied link";
+    position: absolute;
+    width: 70px;
+    height: fit-content;
+    padding: 5px;
+    background-color: $backgroundLight;
+    border-radius: 5px;
+    bottom: 105%;
+    left: -100%;
+    color: white;
+    font-size: small;
+  }
+}
+
 .disabled {
   &::after {
     content: "";

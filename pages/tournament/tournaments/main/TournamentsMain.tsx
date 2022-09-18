@@ -10,6 +10,7 @@ import TournamentParentListModal from "./tournaments/modal/TournamentParentListM
 import TournamentsLoading from "./loading/TournamentsLoading";
 import TournamentsError from "./error/TournamentsError";
 import debounce from "lodash.debounce";
+import { useRouter } from "next/router";
 
 const TOURNAMENTS = gql`
   query GetPublicTournaments($page: Int!, $limit: Int!, $search: String) {
@@ -31,6 +32,7 @@ const USER = gql`
 `;
 
 const TournamentsMain = () => {
+  const router = useRouter();
   const [page, setPage] = useState(1);
   const { loading, error, data, networkStatus, fetchMore, refetch } = useQuery(
     TOURNAMENTS,
@@ -98,7 +100,20 @@ const TournamentsMain = () => {
     }
   }, [data]);
 
-  if (loading && NetworkStatus.loading === networkStatus)
+  useEffect(() => {
+    if (router.isReady) {
+      const { joinTournSecret } = router.query;
+      if (joinTournSecret) {
+        handleSearch(joinTournSecret as string);
+      }
+    }
+  }, [router.isReady]);
+
+  if (
+    (loading && NetworkStatus.loading === networkStatus) ||
+    (!error && !data?.tournaments) ||
+    !router.isReady
+  )
     return <TournamentsLoading></TournamentsLoading>;
 
   if (error) {
@@ -129,6 +144,7 @@ const TournamentsMain = () => {
           tournaments={data.tournaments.docs}
         ></TournamentsParentList>
         <TournamentParentListModal
+          search={search}
           tournamentId={joinTournamentId}
           modalOpen={modalOpen}
           handleModalClose={handleModalClose}

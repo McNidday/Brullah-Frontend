@@ -13,6 +13,7 @@ import { decodeBlurHash } from "../../../../../functions/helpers";
 import { CircularProgress, Tooltip } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import numeral from "numeral";
+import { useRouter } from "next/router";
 
 interface Props {
   setJoinTournamentId: (id: string) => void;
@@ -98,6 +99,7 @@ const TOURNAMENT = gql`
 `;
 
 const TournamentList = (props: Props) => {
+  const router = useRouter();
   const [likeStatus, setLikeStatus] = useState(false);
   const [joined, setJoined] = useState<"joined" | "loading" | "not-joined">(
     "loading"
@@ -170,6 +172,16 @@ const TournamentList = (props: Props) => {
       setJoined("not-joined");
     }
   }, [data]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      const { joinTournId } = router.query;
+      if (joinTournId === props.id) {
+        props.setJoinTournamentId(props.id);
+        props.handleModalOpen();
+      }
+    }
+  }, [router.isReady]);
 
   return (
     <li className={cn(styles.container)}>

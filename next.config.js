@@ -9,10 +9,12 @@ const nextConfig = {
       "/affiliate": { page: "/affiliate/Affiliate" },
       "/user/signup": { page: "/user/signup/Signup" },
       "/user/login": { page: "/user/login/Login" },
+      "/user/forgot": { page: "/user/forgot/Forgot" },
       "/user/update": { page: "/user/update/UpdateUser" },
       "/dashboard": { page: "/dashboard/Dashboard" },
       "/tournament/mytournaments": {
         page: "/tournament/mytournaments/MyTournaments",
+        query: { joinTournId: "", joinTournSecret: "" },
       },
       "/tournament/tournaments": {
         page: "/tournament/tournaments/Tournaments",

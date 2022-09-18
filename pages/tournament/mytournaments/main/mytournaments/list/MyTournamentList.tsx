@@ -5,10 +5,13 @@ import { gql } from "@apollo/client";
 import Button from "../../../../../components/Button/Button";
 import { decodeBlurHash } from "../../../../../functions/helpers";
 import { Tooltip } from "@mui/material";
+import { useEffect, useState } from "react";
+import Icon from "../../../../../components/Icon/Icon";
 
 interface Props {
   id: string;
   status: { progress: string };
+  access: { secret: string };
   information: {
     name: string;
     description: string;
@@ -27,6 +30,28 @@ interface Props {
 }
 
 const MyTournamentList = (props: Props) => {
+  const [copyLink, setCopyLink] = useState(false);
+  const [copyLinkHover, setCopyLinkHover] = useState(false);
+  const copyTournamentLink = () => {
+    setCopyLink(true);
+    if (props.access.secret) {
+      navigator.clipboard.writeText(
+        `${process.env.BRULLAH_URL}/tournament/tournaments?joinTournId=${props.id}&joinTournSecret=${props.access.secret}`
+      );
+    } else {
+      navigator.clipboard.writeText(
+        `${process.env.BRULLAH_URL}/tournament/tournaments?joinTournId=${props.id}`
+      );
+    }
+  };
+
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      setCopyLink(false);
+    }, 3000);
+    return () => clearTimeout(timeout);
+  }, [copyLink]);
+
   return (
     <li className={cn(styles.container)}>
       <div>
@@ -124,11 +149,25 @@ const MyTournamentList = (props: Props) => {
             onClick={() => props.setEditId(props.id)}
           ></Button>
         ) : (
-          <Button
-            text="edit"
-            disabled={false}
-            onClick={() => props.setEditId(props.id)}
-          ></Button>
+          <>
+            <div
+              className={cn(copyLink ? styles.copiedLink : "", styles.copyLink)}
+              onMouseEnter={() => setCopyLinkHover(true)}
+              onMouseLeave={() => setCopyLinkHover(false)}
+              onClick={() => copyTournamentLink()}
+            >
+              <Icon
+                hover={copyLinkHover}
+                activeLink="/icons/copy/active.svg"
+                inactiveLink="/icons/copy/inactive.svg"
+              ></Icon>
+            </div>
+            <Button
+              text="edit"
+              disabled={false}
+              onClick={() => props.setEditId(props.id)}
+            ></Button>
+          </>
         )}
       </div>
     </li>
@@ -157,6 +196,9 @@ export const MyTournamentListFragment = gql`
     }
     contribution {
       contributed
+    }
+    access {
+      secret
     }
     information {
       name
