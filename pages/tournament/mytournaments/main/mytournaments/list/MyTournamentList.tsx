@@ -33,6 +33,7 @@ const MyTournamentList = (props: Props) => {
   const [copyLink, setCopyLink] = useState(false);
   const [copyLinkHover, setCopyLinkHover] = useState(false);
   const copyTournamentLink = () => {
+    if (!navigator.clipboard) return;
     setCopyLink(true);
     if (props.access.secret) {
       navigator.clipboard.writeText(

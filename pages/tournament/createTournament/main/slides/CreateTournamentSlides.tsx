@@ -111,7 +111,7 @@ const CreateTournamentSlides = () => {
             sponsored: isSponsored,
             balance: {
               currency: "BRC",
-              value: sponsorAmount,
+              value: sponsorAmount * 100,
             },
           },
           reward:

@@ -9,7 +9,7 @@ const HomeCommunitySlide = () => {
     <section className={cn(styles.section)}>
       <div className={cn(styles.container)}>
         <YouTube
-          videoId={"zdRYP2azu2U"}
+          videoId={"dO0u9XlUk90"}
           className={cn(styles.youtube)}
           iframeClassName={cn(styles.iframe)}
         ></YouTube>

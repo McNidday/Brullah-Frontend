@@ -58,7 +58,7 @@ const customFetch = (uri: string, options: any) => {
 
 const uploadLink = createUploadLink({
   fetch: customFetch,
-  uri: "http://localhost:8080",
+  uri: process.env.RELAY_API_ENDPOINT,
 });
 
 const pageLimitPaginationHelper: () => any = () => {

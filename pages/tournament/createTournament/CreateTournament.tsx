@@ -18,7 +18,7 @@ const CreateTournament: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navigation hideSideNav={true}></Navigation>
+      <Navigation></Navigation>
       <ApolloClientOnly fallback={<Fallback></Fallback>}>
         <CreateTournamentMain></CreateTournamentMain>
       </ApolloClientOnly>

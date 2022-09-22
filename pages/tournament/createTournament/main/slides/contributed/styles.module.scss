@@ -251,8 +251,4 @@ $number-of-options: 5;
     opacity: 0;
     pointer-events: none;
   }
-
-  @include media(">phone", "<=tablet") {
-    width: 60%;
-  }
 }
