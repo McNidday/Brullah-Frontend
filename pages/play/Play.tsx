@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import cn from "classnames";
-import Footer from "../components/Footer/Footer";
+import Footer from "../../components/Footer/Footer";
 import PlayMain from "./main/PlayMain";
-import ApolloClientOnly from "../components/Apollo/ApolloClientOnly";
+import ApolloClientOnly from "../../Apollo/ApolloClientOnly";
 import PlayLoading from "./main/loading/PlayLoading";
-import Navigation from "../components/Navigation/Navigation";
+import Navigation from "../../components/Navigation/Navigation";
 
 const Play: NextPage = () => {
   return (

@@ -9,7 +9,8 @@ const UpdateUserComplete = ({ data }: { data: undefined | any }) => {
     if (data && data.updateUser) {
       swiper.slideTo(6);
     }
-  }, [data]);
+  }, [data, swiper]);
+
   return (
     <div className={cn(styles.container)}>
       {data && data.updateUser ? (

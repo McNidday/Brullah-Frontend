@@ -1,13 +1,13 @@
 import anime from "animejs";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState, useCallback } from "react";
 import cn from "classnames";
 import styles from "./styles.module.scss";
-import Icon from "../../../../components/Icon/Icon";
+import Icon from "../../../../../components/Icon/Icon";
 import {
   cleanAmount,
   formatNumber,
   inputSelection,
-} from "../../../../functions/helpers";
+} from "../../../../../functions/helpers";
 import { gql, useMutation } from "@apollo/client";
 import PayoutOrderStatus from "./status/PayoutOrderStatus";
 
@@ -42,7 +42,7 @@ const PaypalPayouts = ({ overflowTab, setOverflowTab, refreshUser }: Props) => {
   const convertRef = useRef(null);
 
   const payoutButtonAnimation = useRef<anime.AnimeInstance>();
-
+  const resetUser = useCallback(reset, [reset]);
   const formatCurrency = (
     e: FormEvent & { target: EventTarget & { [key: string]: any } },
     blur?: boolean
@@ -141,7 +141,7 @@ const PaypalPayouts = ({ overflowTab, setOverflowTab, refreshUser }: Props) => {
       delay: 1000,
       loop: true,
     });
-  }, [navBackRef.current]);
+  }, []);
 
   useEffect(() => {
     payoutButtonAnimation.current = anime({
@@ -150,7 +150,7 @@ const PaypalPayouts = ({ overflowTab, setOverflowTab, refreshUser }: Props) => {
       loop: true,
       autoplay: false,
     });
-  }, [convertRef.current]);
+  }, []);
 
   useEffect(() => {
     inputRef?.current!.setSelectionRange(curretPos, curretPos);
@@ -158,13 +158,13 @@ const PaypalPayouts = ({ overflowTab, setOverflowTab, refreshUser }: Props) => {
 
   useEffect(() => {
     if (data?.paypalPayoutOrder || error) {
-      setTimeout(reset, 5000);
+      setTimeout(resetUser, 5000);
       payoutButtonAnimation.current?.pause();
     }
     if (data?.paypalPayoutOrder) {
       refreshUser();
     }
-  }, [error, data]);
+  }, [error, data, refreshUser, resetUser]);
 
   useEffect(() => {
     setPayoutAmount(cleanAmount(formattedAmount) * 100);
@@ -206,6 +206,7 @@ const PaypalPayouts = ({ overflowTab, setOverflowTab, refreshUser }: Props) => {
             activeLink="/icons/currencyExchange/active.svg"
             inactiveLink="/icons/currencyExchange/inactive.svg"
             hover={exchangeHover}
+            alt="Currency Exchenge Icon"
           ></Icon>
         </div>
       </div>
@@ -227,6 +228,7 @@ const PaypalPayouts = ({ overflowTab, setOverflowTab, refreshUser }: Props) => {
           activeLink="/icons/beforeNav/active.svg"
           inactiveLink="/icons/beforeNav/inactive.svg"
           hover={navBackHover}
+          alt="Previous Card Icon"
         ></Icon>
       </div>
     </div>

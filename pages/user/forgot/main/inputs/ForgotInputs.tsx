@@ -1,9 +1,9 @@
 import cn from "classnames";
 import styles from "./styles.module.scss";
 import { FormEvent, useEffect, useState } from "react";
-import Button from "../../../../components/Button/Button";
+import Button from "../../../../../components/Button/Button";
 import { gql, useMutation } from "@apollo/client";
-import Logo from "../../../../components/Logo/Logo";
+import Logo from "../../../../../components/Logo/Logo";
 
 const RESET_PASSWORD = gql`
   mutation ResetPassword($username: String!) {
@@ -40,7 +40,7 @@ const ForotInputs = () => {
       timeout = setTimeout(reset, 5000);
     }
     return () => clearTimeout(timeout);
-  }, [error]);
+  }, [error, reset]);
 
   if (data?.resetPassword)
     return (

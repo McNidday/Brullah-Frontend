@@ -1,6 +1,6 @@
 import cn from "classnames";
 import { useState } from "react";
-import Icon from "../../../../../components/Icon/Icon";
+import Icon from "../../../../../../components/Icon/Icon";
 import styles from "./styles.module.scss";
 import dinero from "dinero.js";
 import { gql } from "@apollo/client";
@@ -48,6 +48,7 @@ const DashboardButtonsDefault = ({ setOverflowTab, user }: Props) => {
                   hover={exchangeHover}
                   activeLink="/icons/exchange/active.svg"
                   inactiveLink="/icons/exchange/inactive.svg"
+                  alt="Exchange Curreny Icon"
                 ></Icon>
               </div>
             </div>
@@ -74,6 +75,7 @@ const DashboardButtonsDefault = ({ setOverflowTab, user }: Props) => {
                   hover={withdrawHover}
                   activeLink="/icons/withdraw/active.svg"
                   inactiveLink="/icons/withdraw/inactive.svg"
+                  alt="Payout Icon"
                 ></Icon>
               </div>
               <div
@@ -85,6 +87,7 @@ const DashboardButtonsDefault = ({ setOverflowTab, user }: Props) => {
                   hover={depositHover}
                   activeLink="/icons/deposit/active.svg"
                   inactiveLink="/icons/deposit/inactive.svg"
+                  alt="Deposit Icon"
                 ></Icon>
               </div>
             </div>

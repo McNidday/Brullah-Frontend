@@ -1,12 +1,12 @@
 import cn from "classnames";
 
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { FormEvent, useEffect, useState } from "react";
 import { useSwiper } from "swiper/react";
 import { ApolloError } from "@apollo/client";
-import Icon from "../../../../../components/Icon/Icon";
-import Cookies from "../../../../../functions/Cookies";
+import Icon from "../../../../../../components/Icon/Icon";
+import Cookies from "../../../../../../functions/Cookies";
 
 interface Props {
   updateProfile: Function;
@@ -46,7 +46,7 @@ const SignupPassword = ({
     } else {
       setPasswordError(null);
     }
-  });
+  }, [errors, signup, swiper, password]);
 
   useEffect(() => {
     if (password === confirm_password && error) {
@@ -60,7 +60,7 @@ const SignupPassword = ({
     if (password !== confirm_password) {
       setButtonDisabled(true);
     }
-  }, [confirm_password]);
+  }, [confirm_password, password, error]);
 
   return (
     <>
@@ -89,6 +89,7 @@ const SignupPassword = ({
         )}
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
           <input
+            className={cn("swiper-no-swiping")}
             tabIndex={isActive ? 0 : -1}
             type={`${showPassword ? `text` : `password`}`}
             placeholder="Password"
@@ -100,6 +101,7 @@ const SignupPassword = ({
             }}
           ></input>
           <input
+            className={cn("swiper-no-swiping")}
             tabIndex={isActive ? 0 : -1}
             type={`${showPassword ? `text` : `password`}`}
             placeholder="Confirm Password"
@@ -129,6 +131,7 @@ const SignupPassword = ({
                   activeLink="/icons/eye_visible/active.svg"
                   inactiveLink="/icons/eye_visible/inactive.svg"
                   hover={eyeIconHover}
+                  alt="Hide Password Icon"
                 ></Icon>
               </div>
             ) : (
@@ -137,6 +140,7 @@ const SignupPassword = ({
                   activeLink="/icons/eye_slash/active.svg"
                   inactiveLink="/icons/eye_slash/inactive.svg"
                   hover={eyeIconHover}
+                  alt="Show Password Icon"
                 ></Icon>
               </div>
             )}

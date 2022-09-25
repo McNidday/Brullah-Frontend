@@ -1,7 +1,7 @@
 import cn from "classnames";
 
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { ChangeEvent } from "react";
 import { useSwiper } from "swiper/react";
 
@@ -57,8 +57,9 @@ const TournamentContribution = ({
           </label>
         </div>
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
-          <label className={cn(styles.checkbox)}>
+          <label className={cn("swiper-no-swiping", styles.checkbox)}>
             <input
+              className={cn("swiper-no-swiping")}
               tabIndex={isActive ? 0 : -1}
               type="checkbox"
               checked={isContributed}
@@ -68,6 +69,7 @@ const TournamentContribution = ({
           </label>
           <div
             className={cn(
+              "swiper-no-swiping",
               styles.brcSliderContainer,
               isContributed ? "" : "disabled"
             )}

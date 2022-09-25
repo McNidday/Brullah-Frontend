@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { useEffect } from "react";
 import { useSwiper } from "swiper/react";
-import Cookies from "../../../../../functions/Cookies";
+import Cookies from "../../../../../../functions/Cookies";
 import styles from "./styles.module.scss";
 
 const SignUpComplete = ({ data }: { data: undefined | any }) => {
@@ -11,7 +11,7 @@ const SignUpComplete = ({ data }: { data: undefined | any }) => {
       swiper.slideTo(Cookies("affiliate") ? 6 : 7);
       swiper.disable();
     }
-  }, [data]);
+  }, [data, swiper]);
   return (
     <div className={cn(styles.container)}>
       {data && data.signup ? (

@@ -1,7 +1,7 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
-import { decodeBlurHash } from "../../../../../../../functions/helpers";
+import { decodeBlurHash } from "../../../../../../../../functions/helpers";
 import moment from "moment";
 
 interface Props {
@@ -98,11 +98,19 @@ const EditTournamentBracket = ({
             {activeEdit ===
             `${arenaNumber}:${roundNumber}:${match?.matchNumber}` ? (
               <div className={cn(styles.editIcon)}>
-                <Image src={"/icons/edit/green.svg"} layout="fill"></Image>
+                <Image
+                  src={"/icons/edit/green.svg"}
+                  layout="fill"
+                  alt=""
+                ></Image>
               </div>
             ) : (
               <div className={cn(styles.editIcon)}>
-                <Image src={"/icons/edit/white.svg"} layout="fill"></Image>
+                <Image
+                  src={"/icons/edit/white.svg"}
+                  layout="fill"
+                  alt=""
+                ></Image>
               </div>
             )}
           </div>
@@ -116,6 +124,7 @@ const EditTournamentBracket = ({
                   >
                     <Image
                       src={match.slot_one.user.identity.avatar.image}
+                      alt={match.slot_one.user.identity.arena_name}
                       layout="fill"
                       placeholder="blur"
                       blurDataURL={decodeBlurHash(
@@ -136,6 +145,7 @@ const EditTournamentBracket = ({
                   >
                     <Image
                       src={bye.user.identity.avatar.image}
+                      alt={bye.user.identity.arena_name}
                       layout="fill"
                       placeholder="blur"
                       blurDataURL={decodeBlurHash(
@@ -157,6 +167,7 @@ const EditTournamentBracket = ({
                     <Image
                       src={"/icons/cyclone/active.svg"}
                       layout="fill"
+                      alt=""
                     ></Image>
                   </div>
                   <div className={cn(styles.tournamentBracketDataName)}>
@@ -174,6 +185,7 @@ const EditTournamentBracket = ({
                   >
                     <Image
                       src={match.slot_two.user.identity.avatar.image}
+                      alt={match.slot_two.user.identity.arena_name}
                       layout="fill"
                       placeholder="blur"
                       blurDataURL={decodeBlurHash(
@@ -195,6 +207,7 @@ const EditTournamentBracket = ({
                     <Image
                       src={"/icons/cyclone/active.svg"}
                       layout="fill"
+                      alt=""
                     ></Image>
                   </div>
                   <div className={cn(styles.tournamentBracketDataName)}>

@@ -2,7 +2,7 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
 import moment from "moment";
-import { decodeBlurHash } from "../../../../../../functions/helpers";
+import { decodeBlurHash } from "../../../../../../../functions/helpers";
 import { Tooltip, Typography } from "@mui/material";
 
 interface User {
@@ -160,6 +160,7 @@ const TrackTournamentBracket = ({
                     >
                       <Image
                         src={match.slot_one.user.identity.avatar.image}
+                        alt={match.slot_one.user.identity.arena_name}
                         layout="fill"
                         placeholder="blur"
                         blurDataURL={decodeBlurHash(
@@ -180,6 +181,7 @@ const TrackTournamentBracket = ({
                     >
                       <Image
                         src={bye.user.identity.avatar.image}
+                        alt={bye.user.identity.arena_name}
                         layout="fill"
                         placeholder="blur"
                         blurDataURL={decodeBlurHash(
@@ -201,6 +203,7 @@ const TrackTournamentBracket = ({
                       <Image
                         src={"/icons/cyclone/active.svg"}
                         layout="fill"
+                        alt=""
                       ></Image>
                     </div>
                     <div className={cn(styles.tournamentBracketDataName)}>
@@ -218,6 +221,7 @@ const TrackTournamentBracket = ({
                     >
                       <Image
                         src={match.slot_two.user.identity.avatar.image}
+                        alt={match.slot_two.user.identity.arena_name}
                         layout="fill"
                         placeholder="blur"
                         blurDataURL={decodeBlurHash(
@@ -239,6 +243,7 @@ const TrackTournamentBracket = ({
                       <Image
                         src={"/icons/cyclone/active.svg"}
                         layout="fill"
+                        alt=""
                       ></Image>
                     </div>
                     <div className={cn(styles.tournamentBracketDataName)}>

@@ -13,6 +13,10 @@ import ManageAffiliatesContentAddButton from "./addButton/ManageAffiliatesConten
 import styles from "./styles.module.scss";
 
 interface Props {
+  totalDocs: number;
+  page: number;
+  limit: number;
+  handleChangePage: (page: number) => void;
   docs: Array<{
     id: String;
     identity: {
@@ -21,10 +25,6 @@ interface Props {
       email: String;
     };
   }>;
-  totalDocs: number;
-  page: number;
-  limit: number;
-  handleChangePage: (page: number) => void;
 }
 
 const ManageAffiliatesContent = ({

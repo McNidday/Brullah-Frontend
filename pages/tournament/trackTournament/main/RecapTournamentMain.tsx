@@ -6,12 +6,12 @@ import TrackTournamentError from "./error/TrackTournamentError";
 import TrackTournamentLoading from "./loading/TrackingTournamentLoading";
 import TrackTournamentNav from "./nav/TrackTournamentNav";
 import TrackTournamentArenaBrackets from "./brackets/arena/TrackTournamentArenaBrackets";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   createOnlineConfigFromLocalConfig,
   getNumOfArenas,
   matchConfigShallowCopy,
-} from "../../../functions/helpers";
+} from "../../../../functions/helpers";
 import moment from "moment";
 import dinero from "dinero.js";
 import RecapTournamentList from "./recapCard/RecapTournamentList";
@@ -195,24 +195,27 @@ const RecapTournamentMain = () => {
   const [perUser, setPerUser] = useState("NONE");
   const [recapNumber, setRecapNumber] = useState(0);
 
-  const matchTime = (arm: string) => {
-    // arm stands for arena rounds and match number
-    let time: number = 0;
-    const armArray = arm.split(":");
-    data.tournament.match.configuration.timmers.match_time.forEach(
-      (ma: any) => {
-        if (armArray[0] !== ma.arenaNumber) return;
-        ma.rounds.forEach((ra: any) => {
-          if (armArray[1] !== ra.roundNumber) return;
-          ra.matches.forEach((mt: any) => {
-            if (mt.matchNumber !== armArray[2]) return;
-            time = mt.time;
+  const matchTime = useCallback(
+    (arm: string) => {
+      // arm stands for arena rounds and match number
+      let time: number = 0;
+      const armArray = arm.split(":");
+      data.tournament.match.configuration.timmers.match_time.forEach(
+        (ma: any) => {
+          if (armArray[0] !== ma.arenaNumber) return;
+          ma.rounds.forEach((ra: any) => {
+            if (armArray[1] !== ra.roundNumber) return;
+            ra.matches.forEach((mt: any) => {
+              if (mt.matchNumber !== armArray[2]) return;
+              time = mt.time;
+            });
           });
-        });
-      }
-    );
-    return time;
-  };
+        }
+      );
+      return time;
+    },
+    [data?.tournament?.match?.configuration?.timmers?.match_time]
+  );
 
   useEffect(() => {
     if (
@@ -305,14 +308,14 @@ const RecapTournamentMain = () => {
       }
       setReward(data.tournament.reward);
     }
-  }, [recapNumber]);
+  }, [recapNumber, data?.tournament, userData?.user?.id, matchTime]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
     }, moment.duration(10, "minutes").asMilliseconds());
     return () => clearInterval(interval);
-  }, []);
+  }, [refetch]);
 
   if (loading || userDataLoading)
     return <TrackTournamentLoading></TrackTournamentLoading>;

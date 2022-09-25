@@ -3,9 +3,9 @@ import cn from "classnames";
 import styles from "./styles.module.scss";
 import { FormEvent, useEffect, useState } from "react";
 import { gql, useMutation } from "@apollo/client";
-import Icon from "../../../../components/Icon/Icon";
-import Button from "../../../../components/Button/Button";
-import Logo from "../../../../components/Logo/Logo";
+import Icon from "../../../../../components/Icon/Icon";
+import Button from "../../../../../components/Button/Button";
+import Logo from "../../../../../components/Logo/Logo";
 
 interface Props {
   token: string;
@@ -59,7 +59,7 @@ const ForgotReset = ({ token }: Props) => {
     if (password !== confirmPassword) {
       setButtonDisabled(true);
     }
-  }, [confirmPassword]);
+  }, [confirmPassword, password, error]);
 
   useEffect(() => {
     let timeout: any;
@@ -67,7 +67,7 @@ const ForgotReset = ({ token }: Props) => {
       timeout = setTimeout(reset, 5000);
     }
     return () => clearTimeout(timeout);
-  }, [error]);
+  }, [error, reset]);
 
   if (data?.verifyPasswordReset)
     return (
@@ -157,6 +157,7 @@ const ForgotReset = ({ token }: Props) => {
                     activeLink="/icons/eye_visible/active.svg"
                     inactiveLink="/icons/eye_visible/inactive.svg"
                     hover={eyeIconHover}
+                    alt="Hide Password Icon"
                   ></Icon>
                 </div>
               ) : (
@@ -165,6 +166,7 @@ const ForgotReset = ({ token }: Props) => {
                     activeLink="/icons/eye_slash/active.svg"
                     inactiveLink="/icons/eye_slash/inactive.svg"
                     hover={eyeIconHover}
+                    alt="Show Password Icon"
                   ></Icon>
                 </div>
               )}

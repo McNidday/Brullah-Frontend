@@ -1,7 +1,7 @@
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { setCookie } from "../../functions/Cookies";
+import { setCookie } from "../../../functions/Cookies";
 import HowToNav from "./nav/HowToNav";
 import HowToSections from "./sections/HowToSections";
 
@@ -25,7 +25,7 @@ const HowToMain = () => {
         );
       }
     }
-  }, [router.isReady]);
+  }, [router.isReady, router.query]);
 
   // The reason there is a hash change event is because
   // Swiper watch state does not trigger the hashChaneg event

@@ -1,7 +1,7 @@
 import anime from "animejs";
 import cn from "classnames";
 import { useEffect, useRef, useState } from "react";
-import Icon from "../../../../components/Icon/Icon";
+import Icon from "../../../../../components/Icon/Icon";
 import styles from "./styles.module.scss";
 
 interface Props {
@@ -56,6 +56,7 @@ const DashboardProfileSuccess = ({
           activeLink="/icons/x/active.svg"
           inactiveLink="/icons/x/inactive.svg"
           hover={cancelHover}
+          alt="Close Success Card"
         ></Icon>
       </div>
       <div

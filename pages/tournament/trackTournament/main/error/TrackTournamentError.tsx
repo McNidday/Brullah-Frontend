@@ -2,7 +2,7 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import { ApolloError } from "@apollo/client";
 import { useRouter } from "next/router";
-import { useInterval } from "../../../../functions/hooks";
+import { useInterval } from "../../../../../functions/hooks";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -29,14 +29,14 @@ const TrackTournamentError = ({ errorNum, error, message }: Props) => {
       setCountDown(undefined);
       router.push(redirect!);
     }
-  }, [countDown]);
+  }, [countDown, router, redirect]);
 
   useEffect(() => {
     if (!redirect && errorNum === 401) {
       setRedirect("/user/login");
       setCountDown(5);
     }
-  }, [redirect]);
+  }, [redirect, errorNum]);
 
   if (message) {
     return (
@@ -69,7 +69,7 @@ const TrackTournamentError = ({ errorNum, error, message }: Props) => {
         <div className={cn(styles.error)}>
           <h3>
             An error occured. Please check your internet connection and try
-            again. "{error?.message}"
+            again. &quot;{error?.message}&quot;
           </h3>
         </div>
       </div>

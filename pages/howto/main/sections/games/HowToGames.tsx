@@ -80,9 +80,9 @@ const HowToGames = () => {
                   <p>
                     You can also declare a draw in a rogue mode. It works the
                     same way as in the skill mode. You get back everything plus
-                    more xp. Don't just bail from a match, you will loose not
-                    all but some of your BRC to your opponent. If both of you
-                    bail brullah take 1 BRC to discourage bails and the rest
+                    more xp. Don&apos;t just bail from a match, you will loose
+                    not all but some of your BRC to your opponent. If both of
+                    you bail brullah take 1 BRC to discourage bails and the rest
                     returned to the players 🧑‍⚖️
                   </p>
                   <h4>Here is the coin mapping for rogue bails:</h4>

@@ -7,12 +7,12 @@ import styles from "./styles.module.scss";
 import UpdateUserFullName from "./names/UpdateUserFullName";
 import UpdateUserBrullahName from "./arenaname/UpdateUserBrullahName";
 import UpdateUserAvatar from "./avatar/UpdateUserAvatar";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import UpdateUserComplete from "./complete/UpdateUserComplete";
 import { gql, useMutation } from "@apollo/client";
 import UpdateUserEmail from "./email/UpdateUserEmail";
-import Logo from "../../../../components/Logo/Logo";
-import { encodeImageToBlurHash } from "../../../../functions/helpers";
+import Logo from "../../../../../components/Logo/Logo";
+import { encodeImageToBlurHash } from "../../../../../functions/helpers";
 import UpdateUserPassword from "./new_password/UpdateUserPassword";
 import ConfirmPasswordUpdate from "./password/ConfirmPasswordUpdate";
 
@@ -45,6 +45,7 @@ const UpdateUserInputSlides = ({ user }: Props) => {
       errorPolicy: "all",
     }
   );
+
   const updateProfile = (name: string, value: string) => {
     setProfileUpload((prev) => {
       if (value === "" || !value) {
@@ -101,7 +102,7 @@ const UpdateUserInputSlides = ({ user }: Props) => {
   useEffect(() => {
     // If there is an error reset it after 5 seconds
     if (error || data) setTimeout(reset, 5000);
-  }, [error, data]);
+  }, [error, data, reset]);
 
   if (error) {
     if (error.graphQLErrors.length <= 0) {

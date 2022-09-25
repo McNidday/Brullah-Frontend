@@ -2,8 +2,8 @@ import { useQuery, gql } from "@apollo/client";
 import cn from "classnames";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Logo from "../../../components/Logo/Logo";
-import { useInterval } from "../../../functions/hooks";
+import Logo from "../../../../components/Logo/Logo";
+import { useInterval } from "../../../../functions/hooks";
 import CreateTournamentSlides from "./slides/CreateTournamentSlides";
 import styles from "./styles.module.scss";
 
@@ -36,7 +36,7 @@ const CreateTournamentMain = () => {
       setCountDown(undefined);
       router.push(redirect!);
     }
-  }, [countDown]);
+  }, [countDown, redirect, router]);
 
   useEffect(() => {
     if (error) {

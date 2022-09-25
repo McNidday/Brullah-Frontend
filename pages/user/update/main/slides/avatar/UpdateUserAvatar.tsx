@@ -2,12 +2,12 @@ import Croppie from "croppie";
 import cn from "classnames";
 import "croppie/croppie.css";
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import {
   blobToFile,
   validateImageUpload,
-} from "../../../../../functions/helpers";
+} from "../../../../../../functions/helpers";
 import { useSwiper, useSwiperSlide } from "swiper/react";
 import { ApolloError } from "@apollo/client";
 
@@ -77,7 +77,7 @@ const UpdateUserAvatar = ({ updateProfile, error }: Props) => {
         swiper.slideTo(3);
       }
     }
-  }, [error]);
+  }, [error, swiper]);
 
   useEffect(() => {
     if (!avatarUrl) return;
@@ -117,7 +117,7 @@ const UpdateUserAvatar = ({ updateProfile, error }: Props) => {
       crop?.current!.destroy();
       crop.current = null;
     };
-  }, [avatarUrl]);
+  }, [avatarUrl, updateProfile]);
 
   return (
     <>

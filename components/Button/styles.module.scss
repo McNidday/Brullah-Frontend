@@ -1,0 +1,27 @@
+@use "../../styles/theme" as *;
+
+.button {
+  user-select: none;
+  width: fit-content;
+  height: 25px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $iconColor;
+  border-radius: 10px;
+  padding: 10px;
+  &:hover {
+    cursor: pointer;
+    background-color: $activeColor;
+  }
+}
+
+.disabled {
+  background-color: $backgroundLight;
+  pointer-events: none;
+}
+
+.forceActive {
+  background-color: $activeColor;
+}

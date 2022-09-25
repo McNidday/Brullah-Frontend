@@ -2,7 +2,7 @@ import cn from "classnames";
 import { FreeMode, Mousewheel, Scrollbar } from "swiper";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 
 const SignUpAgreement = () => {
   const swiper = useSwiper();
@@ -24,9 +24,10 @@ const SignUpAgreement = () => {
           <p>
             These terms help define the relationship between you and Brullah.
             Broadly speaking, we give you permission to use our services if
-            youagree to follow these terms, which reflects how Brullah's
-            business works and how we earn money. Whwn we speak of "Brullah",
-            "we", "us" and "our", we mean Brullah and its affiliates.
+            youagree to follow these terms, which reflects how Brullah&apos;s
+            business works and how we earn money. Whwn we speak of
+            &quot;Brullah&quot;, &quot;we&quot;, &quot;us&quot; and
+            &quot;our&quot;, we mean Brullah and its affiliates.
           </p>
           <h2>What you can expect from us</h2>
           <h3>Provide a broad range of useful services</h3>
@@ -56,8 +57,8 @@ const SignUpAgreement = () => {
           </p>
           <p>
             If we make material changes that negatively impact your use of our
-            service or if we stop offering a service, we'll provide you with
-            reasonable advance notice, except in urgent situations such as
+            service or if we stop offering a service, we&apos;ll provide you
+            with reasonable advance notice, except in urgent situations such as
             preventing abuse, responding to legal requirements, or addressing
             security and operability issues.
           </p>
@@ -95,14 +96,14 @@ const SignUpAgreement = () => {
               property rights
             </li>
             <li>
-              don't abuse or harm others or yourself (or threaten or encourage
-              such abuse or harm) — for example, by misleading, defrauding,
-              illegally impersonating, defaming, bullying, harassing, or
-              stalking others
+              don&apos;t abuse or harm others or yourself (or threaten or
+              encourage such abuse or harm) — for example, by misleading,
+              defrauding, illegally impersonating, defaming, bullying,
+              harassing, or stalking others
             </li>
             <li>
-              don't abuse, harm, interfere with, or disrupt the services — for
-              example, by accessing or using them in fraudulent or deceptive
+              don&apos;t abuse, harm, interfere with, or disrupt the services —
+              for example, by accessing or using them in fraudulent or deceptive
               ways, introducing malware, or spamming, hacking, or bypassing our
               systems or protective measures.
             </li>
@@ -111,10 +112,10 @@ const SignUpAgreement = () => {
           <p>
             Some of our services are designed to let you upload, submit, store,
             send, receive, or share your content. You have no obligation to
-            provide any content to our services and you're free to choose the
-            content that you want to provide. If you choose to upload or share
-            content, please make sure you have the necessary rights to do so and
-            that the content is lawful.
+            provide any content to our services and you&apos;re free to choose
+            the content that you want to provide. If you choose to upload or
+            share content, please make sure you have the necessary rights to do
+            so and that the content is lawful.
           </p>
         </SwiperSlide>
         <SwiperSlide>
@@ -123,7 +124,7 @@ const SignUpAgreement = () => {
           <p>
             Our mission is to make as many people as possible financially
             independent and give a chance at people in making this possible.
-            It's why we make so many of our products, like tournaments,
+            It&apos;s why we make so many of our products, like tournaments,
             accessible and free of charge to everyone
           </p>
           <p>
@@ -139,7 +140,7 @@ const SignUpAgreement = () => {
           <h2>Using Brullah services</h2>
           <h3>Your Brullah account</h3>
           <p>
-            You're responsible for what you do with your Brullah Account,
+            You&apos;re responsible for what you do with your Brullah Account,
             including taking reasonable steps to keep your Brullah Account
             secure, and we encourage you to create a strong password.
           </p>
@@ -161,24 +162,24 @@ const SignUpAgreement = () => {
           </p>
           <p>
             If you think someone is infringing your intellectual property
-            rights, you can send us notice of the infringement and we'll take
-            appropriate action.
+            rights, you can send us notice of the infringement and we&apos;ll
+            take appropriate action.
           </p>
           <h3>Brullah content</h3>
           <p>
             We retain any intellectual property rights that we have in our
-            content. Don't remove, obscure, or alter any of our branding, logos,
-            or legal notices. If you want to use our branding or logos, please
-            contact us.
+            content. Don&apos;t remove, obscure, or alter any of our branding,
+            logos, or legal notices. If you want to use our branding or logos,
+            please contact us.
           </p>
           <h3>Other content</h3>
           <p>
             Finally, some of our services give you access to content that
             belongs to other people or organizations. You may not use this
-            content without that person or organization's permission, or as
+            content without that person or organization&apos;s permission, or as
             otherwise allowed by law. The views expressed in other people or
-            organizations' content are theirs, and don't necessarily reflect
-            Brullah's views.
+            organizations&apos; content are theirs, and don&apos;t necessarily
+            reflect Brullah&apos;s views.
           </p>
         </SwiperSlide>
         <SwiperSlide>
@@ -191,7 +192,7 @@ const SignUpAgreement = () => {
             content in accordance with applicable law. Examples include child
             pornography, content that facilitates human trafficking or
             harassment, terrorist content, and content that infringes someone
-            else's intellectual property rights.
+            else&apos;s intellectual property rights.
           </p>
         </SwiperSlide>
         <SwiperSlide>
@@ -204,24 +205,26 @@ const SignUpAgreement = () => {
         <SwiperSlide>
           <h2>About these terms</h2>
           <p>
-            By law, you have certain rights that can't be limited by a contract
-            like these terms of service. These terms are in no way intended to
-            restrict those rights. If it turns out that a particular term is not
-            valid or enforceable, this will not affect any other terms.
+            By law, you have certain rights that can&apos;t be limited by a
+            contract like these terms of service. These terms are in no way
+            intended to restrict those rights. If it turns out that a particular
+            term is not valid or enforceable, this will not affect any other
+            terms.
           </p>
           <p>
             These terms describe the relationship between you and Brullah. They
-            don't create any legal rights for other people or organizations,
-            even if others benefit from that relationship under these terms.
+            don&apos;t create any legal rights for other people or
+            organizations, even if others benefit from that relationship under
+            these terms.
           </p>
           <p>
-            We want to make these terms easy to understand, so we've used
+            We want to make these terms easy to understand, so we&apos;ve used
             examples from our services.
           </p>
           <p>
-            If you don't follow these terms, and we don't take action right
-            away, that doesn't mean we're giving up any rights that we may have,
-            such as taking action in the future.
+            If you don&apos;t follow these terms, and we don&apos;t take action
+            right away, that doesn&apos;t mean we&apos;re giving up any rights
+            that we may have, such as taking action in the future.
           </p>
           <p>
             We may update these terms (1) to reflect changes in our services or
@@ -232,10 +235,10 @@ const SignUpAgreement = () => {
           </p>
           <p>
             If we materially change these terms or service-specific additional
-            terms, we'll provide you with reasonable advance notice and the
+            terms, we&apos;ll provide you with reasonable advance notice and the
             opportunity to review the changes, except (1) when we launch a new
             service or feature, or (2) in urgent situations, such as preventing
-            ongoing abuse or responding to legal requirements. If you don't
+            ongoing abuse or responding to legal requirements. If you don&apos;t
             agree to the new terms, you should remove your content and stop
             using the services. You can also end your relationship with us at
             any time by closing your Brullah Account.

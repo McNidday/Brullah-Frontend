@@ -3,8 +3,8 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import moment from "moment";
 import { gql, useMutation } from "@apollo/client";
-import Button from "../../../../../components/Button/Button";
-import { useEffect } from "react";
+import Button from "../../../../../../components/Button/Button";
+import { useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 
 const PUBLISH_TOURNAMENT = gql`
@@ -40,18 +40,20 @@ const PublishTournamentModal = ({
       errorPolicy: "all",
     });
 
+  const resetCallback = useCallback(reset, [reset]);
+
   useEffect(() => {
     if (error) {
       setTimeout(() => {
         refetchTournament();
-        reset();
+        resetCallback();
       }, 10000);
     }
     if (data && !error) {
       // Redirect to tournament tracker
       router.replace(`/track?id=${tournament.id}`);
     }
-  }, [data, error]);
+  }, [data, error, router, tournament.id, refetchTournament, resetCallback]);
 
   return (
     <Modal
@@ -63,9 +65,9 @@ const PublishTournamentModal = ({
     >
       <Box className={cn(styles.parentModal)}>
         <h2>
-          Ready to publish your tournament "{tournament.information.name}", to
-          start on {moment.unix(tournament.start_date).format("LLL")}. You are
-          One Click away ( $ _ $ ).
+          Ready to publish your tournament &quot;{tournament.information.name}
+          &quot;, to start on {moment.unix(tournament.start_date).format("LLL")}
+          . You are One Click away ( $ _ $ ).
         </h2>
         <h3>
           If you did not get the above statement, i meant that you can click the

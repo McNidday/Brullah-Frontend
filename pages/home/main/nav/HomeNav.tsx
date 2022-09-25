@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow } from "swiper";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import TopNavigationRight from "../../../components/Navigation/TopNavigation/right/TopNavigationRight";
+import TopNavigationRight from "../../../../components/Navigation/TopNavigation/right/TopNavigationRight";
 
 interface Props {
   hash: string | null;
@@ -36,7 +36,7 @@ const HomeNav = ({ hash }: Props) => {
         controlledSwiper!.slideTo(4);
         break;
     }
-  }, [hash]);
+  }, [hash, controlledSwiper]);
 
   return (
     <nav className={cn(styles.container)}>
@@ -45,7 +45,11 @@ const HomeNav = ({ hash }: Props) => {
           <div>
             <Link href={`/#`}>
               <a>
-                <Image src={`/icons/logo/active.svg`} layout={"fill"}></Image>
+                <Image
+                  src={`/icons/logo/active.svg`}
+                  layout={"fill"}
+                  alt={`Brullah Logo`}
+                ></Image>
               </a>
             </Link>
           </div>

@@ -28,7 +28,7 @@ const HowToTournament = () => {
                     Creating tournaments is a breeze brullah. For this type of
                     feature you need to have signed up and logged in to your
                     brullah account. Remember to confirm your email address as
-                    this feature won't be available to you.
+                    this feature won&apos;t be available to you.
                   </p>
                   <p>
                     Navigate to the dashboard and click on the my tournaments
@@ -84,16 +84,17 @@ const HowToTournament = () => {
                 <section>
                   <h4>Joining Tournaments</h4>
                   <p>
-                    Joining tournaments doesn't have much to it. Navigate to the
-                    dashboard, click on tournaments link. A list of all the
-                    availabe tournaments will show up and you can choose one to
-                    join.
+                    Joining tournaments doesn&apos;t have much to it. Navigate
+                    to the dashboard, click on tournaments link. A list of all
+                    the availabe tournaments will show up and you can choose one
+                    to join.
                   </p>
                   <p>
                     You can view your joined tournaments from the side
-                    navigation. When it's your time to play, you will recieve an
-                    email and will also be shown on the side navigation. You can
-                    also track your joined tournaments from the side navigation.
+                    navigation. When it&apos;s your time to play, you will
+                    recieve an email and will also be shown on the side
+                    navigation. You can also track your joined tournaments from
+                    the side navigation.
                   </p>
                 </section>
               </SwiperSlide>

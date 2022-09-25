@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import cn from "classnames";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import DashboardGraph from "./graph/DashboardGraph";
 import DashboardModal from "./modal/DashboardModal";
 import DashboardProfile, {
@@ -29,6 +29,7 @@ const DashboardMain = () => {
   const [modalName, setModalName] = useState("depositTransactions");
   const handleModalClose = () => setModalOpen(false);
   const handleModalOpen = () => setModalOpen(true);
+  const refreshUser = useCallback(refetch, [refetch]);
 
   if (loading) return <DashboardMainLoading></DashboardMainLoading>;
 
@@ -56,7 +57,7 @@ const DashboardMain = () => {
         <div className={cn(styles.topContainer)}>
           <DashboardProfile
             user={data.user}
-            refreshUser={() => refetch()}
+            refreshUser={refreshUser}
           ></DashboardProfile>
           <DashboardGraph user={data.user}></DashboardGraph>
         </div>

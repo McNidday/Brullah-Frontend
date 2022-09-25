@@ -2,11 +2,11 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
 import moment from "moment";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { useEffect, useRef, useState } from "react";
-import { decodeBlurHash, isByeNumber } from "../../../../../functions/helpers";
+import { decodeBlurHash, isByeNumber } from "../../../../../../functions/helpers";
 import anime from "animejs";
-import Icon from "../../../../../components/Icon/Icon";
+import Icon from "../../../../../../components/Icon/Icon";
 
 interface Props {
   joinedUsers: Array<{
@@ -240,7 +240,7 @@ const EditTournamentModal = ({
       });
       setEditting(null);
     }
-  }, [activeEdit, config]);
+  }, [activeEdit, config, joinedUsers]);
 
   return (
     <div
@@ -272,6 +272,7 @@ const EditTournamentModal = ({
             activeLink="/icons/x/active.svg"
             inactiveLink="/icons/x/inactive.svg"
             hover={closeIconHover}
+            alt="Close Icon"
           ></Icon>
         </div>
       </div>
@@ -286,6 +287,7 @@ const EditTournamentModal = ({
                       <div className={cn(styles.editUserListItemImage)}>
                         <Image
                           src={u.identity.avatar.image}
+                          alt={u.identity.arena_name}
                           layout="fill"
                           placeholder="blur"
                           blurDataURL={decodeBlurHash(
@@ -410,6 +412,7 @@ const EditTournamentModal = ({
                 <div className={cn(styles.containedUsersImage)}>
                   <Image
                     src={editting.slot_one.user.identity.avatar.image}
+                    alt={editting.slot_one.user.identity.arena_name}
                     layout="fill"
                     placeholder="blur"
                     blurDataURL={decodeBlurHash(
@@ -442,6 +445,7 @@ const EditTournamentModal = ({
                 <div className={cn(styles.containedUsersImage)}>
                   <Image
                     src={editting.slot_two.user.identity.avatar.image}
+                    alt={editting.slot_two.user.identity.arena_name}
                     layout="fill"
                     placeholder="blur"
                     blurDataURL={decodeBlurHash(
@@ -476,6 +480,7 @@ const EditTournamentModal = ({
                     <div className={cn(styles.containedUsersImage)}>
                       <Image
                         src={editting.bye.user.identity.avatar.image}
+                        alt={editting.bye.user.identity.arena_name}
                         layout="fill"
                         placeholder="blur"
                         blurDataURL={decodeBlurHash(

@@ -2,11 +2,11 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
 import { gql } from "@apollo/client";
-import Button from "../../../../../components/Button/Button";
-import { decodeBlurHash } from "../../../../../functions/helpers";
+import Button from "../../../../../../components/Button/Button";
+import { decodeBlurHash } from "../../../../../../functions/helpers";
 import { Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
-import Icon from "../../../../../components/Icon/Icon";
+import Icon from "../../../../../../components/Icon/Icon";
 
 interface Props {
   id: string;
@@ -63,6 +63,7 @@ const MyTournamentList = (props: Props) => {
           <div>
             <Image
               src={props.creator.identity.avatar.image}
+              alt={props.creator.identity.arena_name}
               placeholder="blur"
               layout="fill"
               blurDataURL={decodeBlurHash(
@@ -78,7 +79,7 @@ const MyTournamentList = (props: Props) => {
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
           <div className={cn(!props.sponsor.sponsored ? styles.disabled : "")}>
-            <Image src="/icons/sponsor.svg" layout="fill"></Image>
+            <Image src="/icons/sponsor.svg" layout="fill" alt=""></Image>
           </div>
         </Tooltip>
         <Tooltip
@@ -92,7 +93,7 @@ const MyTournamentList = (props: Props) => {
               !props.contribution.contributed ? styles.disabled : ""
             )}
           >
-            <Image src="/icons/bit.svg" layout="fill"></Image>
+            <Image src="/icons/bit.svg" layout="fill" alt=""></Image>
           </div>
         </Tooltip>
         <Tooltip
@@ -115,6 +116,7 @@ const MyTournamentList = (props: Props) => {
       <div>
         <Image
           src={props.information.thumbnail.image}
+          alt={props.information.name}
           layout="fill"
           placeholder="blur"
           blurDataURL={decodeBlurHash(
@@ -161,6 +163,7 @@ const MyTournamentList = (props: Props) => {
                 hover={copyLinkHover}
                 activeLink="/icons/copy/active.svg"
                 inactiveLink="/icons/copy/inactive.svg"
+                alt={"Copy Tournament Link Icon"}
               ></Icon>
             </div>
             <Button

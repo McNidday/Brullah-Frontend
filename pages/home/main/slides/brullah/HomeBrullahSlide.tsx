@@ -24,11 +24,16 @@ const HomeBrullahSlide = () => {
       </div>
       <div>
         <div data-swiper-parallax-y="2000" data-swiper-parallax-duration="3000">
-          <Image src={"/images/smartmockup.png"} layout="fill" priority></Image>
+          <Image
+            src={"/images/smartmockup.png"}
+            layout="fill"
+            priority
+            alt=""
+          ></Image>
         </div>
       </div>
     </section>
-  ); 
+  );
 };
 
 export default HomeBrullahSlide;

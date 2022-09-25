@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import cn from "classnames";
-import Footer from "../components/Footer/Footer";
-import ApolloClientOnly from "../components/Apollo/ApolloClientOnly";
-import Navigation from "../components/Navigation/Navigation";
+import Footer from "../../components/Footer/Footer";
+import ApolloClientOnly from "../../Apollo/ApolloClientOnly";
+import Navigation from "../../components/Navigation/Navigation";
 import AffiliateMainLoading from "./main/loading/AffiliateMainLoading";
 import AffiliateMain from "./main/AffiliateMain";
 import "swiper/css/bundle";

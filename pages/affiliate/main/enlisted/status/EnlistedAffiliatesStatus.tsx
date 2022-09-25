@@ -5,7 +5,7 @@ import { useState, FormEvent, useRef, useEffect } from "react";
 import debounce from "lodash.debounce";
 import Image from "next/image";
 import { gql, useQuery } from "@apollo/client";
-import Icon from "../../../../components/Icon/Icon";
+import Icon from "../../../../../components/Icon/Icon";
 
 interface Props {
   search: string | null;
@@ -87,7 +87,11 @@ const EnlistedAffiliatesStatus = ({ search, setSearch }: Props) => {
           onInput={handleSearchVal}
         ></input>
         <div>
-          <Image src={`/icons/search/inactive.svg`} layout="fill"></Image>
+          <Image
+            src={`/icons/search/inactive.svg`}
+            layout="fill"
+            alt="Search Enlisted Affiliates"
+          ></Image>
         </div>
       </div>
       <div>
@@ -117,6 +121,7 @@ const EnlistedAffiliatesStatus = ({ search, setSearch }: Props) => {
                 hover={copyCodeHover}
                 activeLink="/icons/copy/active.svg"
                 inactiveLink="/icons/copy/inactive.svg"
+                alt="Copy Affiliate Code"
               ></Icon>
             </div>
             <div
@@ -129,6 +134,7 @@ const EnlistedAffiliatesStatus = ({ search, setSearch }: Props) => {
                 hover={copyLinkHover}
                 activeLink="/icons/link/active.svg"
                 inactiveLink="/icons/link/inactive.svg"
+                alt="Copy Affiliate Link"
               ></Icon>
             </div>
           </div>

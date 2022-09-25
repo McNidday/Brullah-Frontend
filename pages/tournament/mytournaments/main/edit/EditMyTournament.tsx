@@ -9,7 +9,7 @@ import {
   createOnlineConfigFromLocalConfig,
   createTimeConfig,
   getNumOfArenas,
-} from "../../../../functions/helpers";
+} from "../../../../../functions/helpers";
 import EditTournamentModal from "./modal/EditTournamentModal";
 import debounce from "lodash.debounce";
 import EditMyTournamentLoading from "./loading/EditMyTournamentLoading";
@@ -220,7 +220,7 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
         },
       });
     }, 5000)
-  ).current;
+  );
 
   const handleActiveEdit = (arb: string | null) => {
     setActiveEdit(arb);
@@ -500,7 +500,7 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
       // Set the joined users
       setUsersJoined(data.tournament.match.users.joined);
     }
-  }, [numOfArenas]);
+  }, [numOfArenas, data.tournament]);
 
   useEffect(() => {
     if (localConfig.length > 0) {
@@ -510,19 +510,23 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
       }
       setArenas(theArenas);
     }
-  }, [localConfig, data]);
+  }, [localConfig, data, numOfArenas]);
 
   useEffect(() => {
     if (data?.tournament && onlineConfig.length > 0) {
-      saveConfigDebounce(data.tournament.match.id, onlineConfig, timeConfig);
+      saveConfigDebounce.current(
+        data.tournament.match.id,
+        onlineConfig,
+        timeConfig
+      );
     }
-  }, [onlineConfig, timeConfig, data]);
+  }, [onlineConfig, timeConfig, data, data.tournament]);
 
   useEffect(() => {
     if (saveConfigData || saveConfigError) {
       setTimeout(reset, 10000);
     }
-  }, [saveConfigData]);
+  }, [saveConfigData, reset, saveConfigError]);
 
   if (loading) return <EditMyTournamentLoading></EditMyTournamentLoading>;
   if (error)
@@ -571,7 +575,7 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
         <div className={cn(styles.editContainer)}>
           <div className={cn(styles.noUsers)}>
             <div>
-              <Image src="/illustrations/02.png" layout="fill"></Image>
+              <Image src="/illustrations/02.png" layout="fill" alt=""></Image>
             </div>
             <div>
               <h3>
@@ -585,7 +589,7 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
 
       {data?.tournament ? (
         <PublishTournamentModal
-          refetchTournament={() => refetch({ id: editId })}
+          refetchTournament={() => refetch()}
           tournament={data.tournament}
           showPublishModal={showPublishModal}
           handlePublishModalClose={handlePublishModalClose}

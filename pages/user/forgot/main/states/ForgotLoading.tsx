@@ -1,6 +1,6 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import Logo from "../../../../components/Logo/Logo";
+import Logo from "../../../../../components/Logo/Logo";
 
 const ForgotLoading = () => {
   return (

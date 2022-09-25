@@ -3,7 +3,7 @@ import cn from "classnames";
 import { useState, FormEvent, useRef, useEffect } from "react";
 import debounce from "lodash.debounce";
 import Image from "next/image";
-import Icon from "../../../../../components/Icon/Icon";
+import Icon from "../../../../../../components/Icon/Icon";
 
 interface Props {
   search: string | null;
@@ -45,7 +45,11 @@ const ViewAffiliatesSearch = ({
           onInput={handleSearchVal}
         ></input>
         <div>
-          <Image src={`/icons/search/inactive.svg`} layout="fill"></Image>
+          <Image
+            src={`/icons/search/inactive.svg`}
+            layout="fill"
+            alt="Search Affiliates"
+          ></Image>
         </div>
       </div>
       <div>
@@ -58,6 +62,7 @@ const ViewAffiliatesSearch = ({
             activeLink="/icons/add_user/active.svg"
             inactiveLink="/icons/add_user/inactive.svg"
             hover={addUserHover}
+            alt={"Add Brullah Affiliate"}
           ></Icon>
         </div>
         <div
@@ -69,6 +74,7 @@ const ViewAffiliatesSearch = ({
             activeLink="/icons/remove_user/active.svg"
             inactiveLink="/icons/remove_user/inactive.svg"
             hover={removeUserHover}
+            alt={"Remove Brullah Affiliate"}
           ></Icon>
         </div>
       </div>

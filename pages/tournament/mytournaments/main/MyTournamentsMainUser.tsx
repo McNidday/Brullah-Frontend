@@ -24,6 +24,14 @@ const MyTournamentsMainUser = () => {
         </div>
       </div>
     );
+  } else if (error && (error?.networkError as any).statusCode === 401) {
+    return (
+      <div className={cn(styles.container)}>
+        <div className={cn(styles.miniContainer)}>
+          <MyTournamentsError errorNum={0} error={error}></MyTournamentsError>;
+        </div>
+      </div>
+    );
   }
   return <MyTournamentsMain id={data.user.id}></MyTournamentsMain>;
 };

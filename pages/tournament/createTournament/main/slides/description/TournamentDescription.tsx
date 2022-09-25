@@ -1,7 +1,7 @@
 import cn from "classnames";
 
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { FormEvent, useState, useEffect } from "react";
 import { useSwiper } from "swiper/react";
 import { ApolloError } from "@apollo/client";
@@ -31,14 +31,15 @@ const TournamentDescription = ({
     } else {
       setDescriptionError(null);
     }
-  }, [error]);
+  }, [error, swiper]);
   return (
     <>
       <div>
         <div className={cn(styles.title)} data-swiper-parallax="-1000">
           <label>
             <h3>
-              Simple description of your tournament. As simple as "sponsored".
+              Simple description of your tournament. As simple as
+              &quot;sponsored&quot;.
             </h3>
           </label>
         </div>
@@ -51,6 +52,7 @@ const TournamentDescription = ({
         )}
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
           <textarea
+            className={cn("swiper-no-swiping")}
             maxLength={60}
             tabIndex={isActive ? 0 : -1}
             placeholder="Tournament Description"

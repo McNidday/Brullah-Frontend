@@ -3,8 +3,8 @@ import cn from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Icon from "../../../../components/Icon/Icon";
-import { decodeBlurHash } from "../../../../functions/helpers";
+import Icon from "../../../../../components/Icon/Icon";
+import { decodeBlurHash } from "../../../../../functions/helpers";
 import styles from "./styles.module.scss";
 import numeral from "numeral";
 
@@ -45,7 +45,7 @@ const DashboardUserProfile = ({ user }: Props) => {
     if (affiliateIndex > -1) {
       setAffiliateStatus(true);
     }
-  }, []);
+  }, [user?.badges]);
 
   useEffect(() => {
     let timeout = setTimeout(() => {
@@ -59,6 +59,7 @@ const DashboardUserProfile = ({ user }: Props) => {
       <div>
         <Image
           src={user.identity.avatar.image}
+          alt={user.identity.arena_name}
           layout="fill"
           placeholder="blur"
           blurDataURL={decodeBlurHash(user.identity.avatar.blurhash, 100, 100)}
@@ -82,6 +83,7 @@ const DashboardUserProfile = ({ user }: Props) => {
             hover={copyHover}
             activeLink="/icons/copy/active.svg"
             inactiveLink="/icons/copy/inactive.svg"
+            alt="Copy Arena Id"
           ></Icon>
         </div>
       </div>
@@ -96,6 +98,7 @@ const DashboardUserProfile = ({ user }: Props) => {
                 activeLink="/icons/edit/active.svg"
                 inactiveLink="/icons/edit/inactive.svg"
                 hover={editIconHover}
+                alt="Edit Profile"
               ></Icon>
             </a>
           </Link>
@@ -111,6 +114,7 @@ const DashboardUserProfile = ({ user }: Props) => {
                   activeLink="/icons/affiliate/active.svg"
                   inactiveLink="/icons/affiliate/inactive.svg"
                   hover={affiliateIconHover}
+                  alt="Affiate Dashboard"
                 ></Icon>
               </a>
             </Link>

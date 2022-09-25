@@ -1,9 +1,9 @@
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import cn from "classnames";
-import Logo from "../../../../../../components/Logo/Logo";
+import Logo from "../../../../../../../components/Logo/Logo";
 import styles from "./styles.module.scss";
-import { useEffect } from "react";
-import client from "../../../../../../components/Apollo/Client";
+import { useEffect, useCallback } from "react";
+import client from "../../../../../../../Apollo/Client";
 import { gql } from "@apollo/client";
 import dinero from "dinero.js";
 
@@ -28,16 +28,17 @@ const PaypalButtonWrapper = ({
 }: Props) => {
   const [{ options, isPending, isResolved, isRejected }, dispatch] =
     usePayPalScriptReducer();
+  const dispatchPaypal = useCallback(dispatch, [dispatch]);
 
   useEffect(() => {
-    dispatch({
+    dispatchPaypal({
       type: "resetOptions",
       value: {
         ...options,
         currency: activeCurrency,
       },
     });
-  }, [activeCurrency]);
+  }, [activeCurrency, dispatchPaypal, options]);
 
   useEffect(() => {
     if (isPending) {
@@ -49,7 +50,7 @@ const PaypalButtonWrapper = ({
     if (isRejected) {
       setPaypalScriptState("rejected");
     }
-  }, [isPending, isResolved, isRejected]);
+  }, [isPending, isResolved, isRejected, setPaypalScriptState]);
 
   useEffect(() => {
     amount = depositAmount * 100;

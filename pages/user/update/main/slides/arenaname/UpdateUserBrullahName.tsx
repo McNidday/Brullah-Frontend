@@ -1,7 +1,7 @@
 import cn from "classnames";
 
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { useSwiper } from "swiper/react";
 import { FormEvent, useEffect, useState } from "react";
 import { ApolloError } from "@apollo/client";
@@ -31,7 +31,7 @@ const UpdateUserBrullahName = ({
     } else {
       setNameError(null);
     }
-  });
+  }, [error, swiper]);
   return (
     <>
       <div>
@@ -49,6 +49,7 @@ const UpdateUserBrullahName = ({
         )}
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
           <input
+            className={cn("swiper-no-swiping")}
             tabIndex={isActive ? 0 : -1}
             type="text"
             placeholder="Arena Name"

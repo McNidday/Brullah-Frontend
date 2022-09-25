@@ -1,10 +1,10 @@
 import "../styles/globals.scss";
 import "../node_modules/normalize.css/normalize.css";
-import client from "./components/Apollo/Client";
+import client from "../Apollo/Client";
 import type { AppProps } from "next/app";
 import { ApolloProvider, gql } from "@apollo/client";
 import { useEffect } from "react";
-import Cookies, { setCookie } from "./functions/Cookies";
+import Cookies, { setCookie } from "../functions/Cookies";
 import moment from "moment";
 import { createTheme, ThemeProvider } from "@mui/material";
 

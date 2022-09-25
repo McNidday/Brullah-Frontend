@@ -38,7 +38,7 @@ const HomeSlides = ({ hash, hashChange }: Props) => {
         controlledSwiper!.slideTo(4);
         break;
     }
-  }, [hash]);
+  }, [hash, controlledSwiper]);
 
   return (
     <main>

@@ -2,21 +2,22 @@ import Croppie from "croppie";
 import cn from "classnames";
 import "croppie/croppie.css";
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import {
   blobToFile,
   validateImageUpload,
-} from "../../../../../functions/helpers";
+} from "../../../../../../functions/helpers";
 import { useSwiper, useSwiperSlide } from "swiper/react";
 import { ApolloError } from "@apollo/client";
 
 interface Props {
   updateProfile: Function;
+  localAvatarError: string | null;
   error: ApolloError | undefined;
 }
 
-const SignUpAvatar = ({ updateProfile, error }: Props) => {
+const SignUpAvatar = ({ updateProfile, error, localAvatarError }: Props) => {
   const swiper = useSwiper();
   const swiperSlide = useSwiperSlide();
 
@@ -76,8 +77,12 @@ const SignUpAvatar = ({ updateProfile, error }: Props) => {
         setUploadError(errorArray[1].trim());
         swiper.slideTo(3);
       }
+    } else if (localAvatarError) {
+      setAvaratUrl(null);
+      setUploadError(localAvatarError);
+      swiper.slideTo(3);
     }
-  }, [error]);
+  }, [error, localAvatarError, swiper]);
 
   useEffect(() => {
     if (!avatarUrl) return;
@@ -117,7 +122,7 @@ const SignUpAvatar = ({ updateProfile, error }: Props) => {
       crop?.current!.destroy();
       crop.current = null;
     };
-  }, [avatarUrl]);
+  }, [avatarUrl, updateProfile]);
 
   return (
     <>

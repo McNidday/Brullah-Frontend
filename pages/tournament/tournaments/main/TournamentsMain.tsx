@@ -5,7 +5,7 @@ import TournamentsParentList, {
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import { gql, NetworkStatus, useQuery } from "@apollo/client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import TournamentParentListModal from "./tournaments/modal/TournamentParentListModal";
 import TournamentsLoading from "./loading/TournamentsLoading";
 import TournamentsError from "./error/TournamentsError";
@@ -51,8 +51,12 @@ const TournamentsMain = () => {
   const [search, setSearch] = useState<string | null>(null);
   const [joinTournamentId, setJoinTournamentId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const handleModalClose = () => setModalOpen(false);
-  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = useCallback(() => setModalOpen(false), []);
+  const handleModalOpen = useCallback(() => setModalOpen(true), []);
+  const setJoinTournamentIdCallback = useCallback(
+    (id: string) => setJoinTournamentId(id),
+    []
+  );
   const getSearchResults = useRef(
     debounce((val: string) => {
       if (val) {
@@ -69,16 +73,16 @@ const TournamentsMain = () => {
         });
       }
     }, 500)
-  ).current;
+  );
 
-  const handleSearch = (val: string) => {
+  const handleSearch = useCallback((val: string) => {
     if (val && val !== "") {
       setSearch(val);
     } else {
       setSearch(null);
     }
-    getSearchResults(val);
-  };
+    getSearchResults.current(val);
+  }, []);
 
   const onLoadMore = () => {
     if (
@@ -107,7 +111,7 @@ const TournamentsMain = () => {
         handleSearch(joinTournSecret as string);
       }
     }
-  }, [router.isReady]);
+  }, [router.isReady, router.query, handleSearch]);
 
   if (
     (loading && NetworkStatus.loading === networkStatus) ||
@@ -139,7 +143,7 @@ const TournamentsMain = () => {
           hasNextPage={data.tournaments.hasNextPage}
           networkStatus={networkStatus}
           onLoadMore={onLoadMore}
-          setJoinTournamentId={(id: string) => setJoinTournamentId(id)}
+          setJoinTournamentId={setJoinTournamentIdCallback}
           handleModalOpen={handleModalOpen}
           tournaments={data.tournaments.docs}
         ></TournamentsParentList>

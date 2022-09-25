@@ -2,12 +2,12 @@ import Croppie from "croppie";
 import cn from "classnames";
 import "croppie/croppie.css";
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import {
   blobToFile,
   validateImageUpload,
-} from "../../../../../functions/helpers";
+} from "../../../../../../functions/helpers";
 import { useSwiper } from "swiper/react";
 import { ApolloError } from "@apollo/client";
 
@@ -85,7 +85,7 @@ const TournamentThumbnail = ({
       swiper.slideTo(6);
       setButtonDisabled(false);
     }
-  }, [error]);
+  }, [error, swiper]);
 
   useEffect(() => {
     if (serverError) {
@@ -131,13 +131,13 @@ const TournamentThumbnail = ({
         crop.current = null;
       }
     };
-  }, [avatarUrl]);
+  }, [avatarUrl, setThumbnail]);
 
   useEffect(() => {
     if (buttonDisabled) {
       setTimeout(createTournament, 2000);
     }
-  }, [buttonDisabled]);
+  }, [buttonDisabled, createTournament]);
 
   return (
     <>

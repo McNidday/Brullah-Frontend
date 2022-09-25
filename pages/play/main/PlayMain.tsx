@@ -1,9 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
 import cn from "classnames";
 import Image from "next/image";
-import { useState } from "react";
-import Button from "../../components/Button/Button";
-import Cookies from "../../functions/Cookies";
+import Button from "../../../components/Button/Button";
+import Cookies from "../../../functions/Cookies";
 import PlayError from "./error/PlayError";
 import PlayLoading from "./loading/PlayLoading";
 import styles from "./styles.module.scss";
@@ -46,6 +45,7 @@ const PlayMain = () => {
             <div>
               <Image
                 src={`/images/Checkers-Tai.jpg`}
+                alt="Checkers"
                 layout="fill"
                 priority
               ></Image>

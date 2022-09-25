@@ -1,7 +1,7 @@
 import cn from "classnames";
 
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { FormEvent, useEffect, useState } from "react";
 import { useSwiper } from "swiper/react";
 import { ApolloError } from "@apollo/client";
@@ -34,13 +34,13 @@ const SignUpFullName = ({
     } else {
       setNamesError(null);
     }
-  });
+  }, [error, swiper]);
   return (
     <>
       <div>
         <div className={cn(styles.title)} data-swiper-parallax="-1000">
           <label>
-            <h3>What's your name?</h3>
+            <h3>What&apos;s your name?</h3>
           </label>
         </div>
         {namesError ? (
@@ -52,6 +52,7 @@ const SignUpFullName = ({
         )}
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
           <input
+            className={cn("swiper-no-swiping")}
             tabIndex={isActive ? 0 : -1}
             type="text"
             placeholder="First Name"
@@ -63,6 +64,7 @@ const SignUpFullName = ({
             }}
           ></input>
           <input
+            className={cn("swiper-no-swiping")}
             tabIndex={isActive ? 0 : -1}
             type="text"
             placeholder="Last Name"

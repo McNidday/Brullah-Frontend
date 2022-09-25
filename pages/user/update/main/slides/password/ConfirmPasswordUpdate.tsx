@@ -1,11 +1,11 @@
 import cn from "classnames";
 
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { FormEvent, useEffect, useState } from "react";
 import { useSwiper } from "swiper/react";
 import { ApolloError } from "@apollo/client";
-import Icon from "../../../../../components/Icon/Icon";
+import Icon from "../../../../../../components/Icon/Icon";
 
 interface Props {
   updateProfile: Function;
@@ -47,7 +47,7 @@ const ConfirmPasswordUpdate = ({
     } else {
       setPasswordError(null);
     }
-  });
+  }, [errors, swiper]);
 
   return (
     <>
@@ -66,6 +66,7 @@ const ConfirmPasswordUpdate = ({
         )}
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
           <input
+            className={cn("swiper-no-swiping")}
             tabIndex={isActive ? 0 : -1}
             type={`${showPassword ? `text` : `password`}`}
             placeholder="Password"
@@ -88,6 +89,7 @@ const ConfirmPasswordUpdate = ({
                   activeLink="/icons/eye_visible/active.svg"
                   inactiveLink="/icons/eye_visible/inactive.svg"
                   hover={eyeIconHover}
+                  alt="Hide Password Icon"
                 ></Icon>
               </div>
             ) : (
@@ -96,6 +98,7 @@ const ConfirmPasswordUpdate = ({
                   activeLink="/icons/eye_slash/active.svg"
                   inactiveLink="/icons/eye_slash/inactive.svg"
                   hover={eyeIconHover}
+                  alt="Show Password Icon"
                 ></Icon>
               </div>
             )}

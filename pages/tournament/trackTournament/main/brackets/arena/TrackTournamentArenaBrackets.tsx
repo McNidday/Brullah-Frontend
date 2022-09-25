@@ -2,10 +2,10 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import TrackTournamentBrackets from "../plain/TrackTournamentBrackets";
 import { useEffect, useState } from "react";
-import Icon from "../../../../../components/Icon/Icon";
-import Button from "../../../../../components/Button/Button";
+import Icon from "../../../../../../components/Icon/Icon";
+import Button from "../../../../../../components/Button/Button";
 import Image from "next/image";
-import { decodeBlurHash } from "../../../../../functions/helpers";
+import { decodeBlurHash } from "../../../../../../functions/helpers";
 
 interface User {
   id: string;
@@ -162,6 +162,7 @@ const TrackTournamentArenaBrackets = ({
             activeLink="/icons/dropdown/active.svg"
             inactiveLink="/icons/dropdown/inactive.svg"
             hover={arenaHover}
+            alt="Dropdown Icon"
           ></Icon>
         </div>
         {config.winner?.status === "DONE" ? (
@@ -172,6 +173,7 @@ const TrackTournamentArenaBrackets = ({
             <div className={cn(styles.arenaWinnerImage)}>
               <Image
                 src={config.winner.user.identity.avatar.image}
+                alt={config.winner.user.identity.arena_name}
                 layout="fill"
                 placeholder="blur"
                 blurDataURL={decodeBlurHash(
@@ -188,7 +190,11 @@ const TrackTournamentArenaBrackets = ({
               Arena Winner: No Winner ¯\(°_o)/¯
             </div>
             <div className={cn(styles.arenaWinnerImage)}>
-              <Image src={"/icons/cyclone/active.svg"} layout="fill"></Image>
+              <Image
+                src={"/icons/cyclone/active.svg"}
+                layout="fill"
+                alt=""
+              ></Image>
             </div>
           </div>
         ) : (
@@ -197,7 +203,11 @@ const TrackTournamentArenaBrackets = ({
               Arena Winner: Battle In Progress
             </div>
             <div className={cn(styles.arenaWinnerImage)}>
-              <Image src={"/icons/cyclone/active.svg"} layout="fill"></Image>
+              <Image
+                src={"/icons/cyclone/active.svg"}
+                layout="fill"
+                alt=""
+              ></Image>
             </div>
           </div>
         )}

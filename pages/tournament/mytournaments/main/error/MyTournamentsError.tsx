@@ -1,6 +1,6 @@
 import { ApolloError } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { useInterval } from "../../../../functions/hooks";
+import { useInterval } from "../../../../../functions/hooks";
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import { useRouter } from "next/router";
@@ -28,14 +28,14 @@ const MyTournamentsError = ({ errorNum, error }: Props) => {
       setCountDown(undefined);
       router.push(redirect!);
     }
-  }, [countDown]);
+  }, [countDown, router, redirect]);
 
   useEffect(() => {
     if (!redirect && errorNum === 0) {
       setRedirect("/user/login");
       setCountDown(5);
     }
-  }, [redirect]);
+  }, [redirect, errorNum]);
 
   if (errorNum === 0)
     return (
@@ -57,7 +57,7 @@ const MyTournamentsError = ({ errorNum, error }: Props) => {
         <div className={cn(styles.error)}>
           <h3>
             An error occured. Please check your internet connection and try
-            again. "{error.message}"
+            again. &quot;{error.message}&quot;
           </h3>
         </div>
       </div>

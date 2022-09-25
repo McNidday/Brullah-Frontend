@@ -1,7 +1,7 @@
 import anime from "animejs";
 import cn from "classnames";
 import { useEffect, useRef, useState } from "react";
-import Icon from "../../../../components/Icon/Icon";
+import Icon from "../../../../../components/Icon/Icon";
 import styles from "./styles.module.scss";
 
 interface Props {
@@ -49,6 +49,7 @@ const DashboardProfileError = ({ error, setError }: Props) => {
           activeLink="/icons/x/active.svg"
           inactiveLink="/icons/x/inactive.svg"
           hover={cancelHover}
+          alt="Close Icon"
         ></Icon>
       </div>
       <div className="failure-checkmark">

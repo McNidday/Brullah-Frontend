@@ -1,14 +1,14 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import Icon from "../../../../components/Icon/Icon";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import Icon from "../../../../../components/Icon/Icon";
+import { FormEvent, useEffect, useRef, useState, useCallback } from "react";
 import anime from "animejs";
 import { gql, useMutation } from "@apollo/client";
 import {
   cleanAmount,
   formatNumber,
   inputSelection,
-} from "../../../../functions/helpers";
+} from "../../../../../functions/helpers";
 import dinero from "dinero.js";
 
 const CURRENCY_EXCHANGE = gql`
@@ -60,6 +60,7 @@ const CurrencyExchange = ({
   const convertRef = useRef(null);
 
   const convertButtonAnimation = useRef<anime.AnimeInstance>();
+  const resetData = useCallback(reset, [reset]);
 
   const formatCurrency = (
     e: FormEvent & { target: EventTarget & { [key: string]: any } },
@@ -180,7 +181,7 @@ const CurrencyExchange = ({
       loop: true,
       autoplay: false,
     });
-  }, [convertRef.current]);
+  }, []);
 
   useEffect(() => {
     if (overflowTab === "exchange") {
@@ -196,7 +197,7 @@ const CurrencyExchange = ({
       delay: 1000,
       loop: true,
     });
-  }, [navBackRef.current]);
+  }, []);
 
   useEffect(() => {
     setConvertAmount(cleanAmount(formattedFromAmount) * 100);
@@ -204,13 +205,13 @@ const CurrencyExchange = ({
 
   useEffect(() => {
     if (data?.convert || error) {
-      setTimeout(reset, 5000);
+      setTimeout(resetData, 5000);
       convertButtonAnimation.current?.pause();
     }
     if (data?.convert) {
       refreshUser();
     }
-  }, [error, data]);
+  }, [error, data, refreshUser, resetData]);
 
   return (
     <div ref={containerRef} className={cn(styles.container)}>
@@ -252,6 +253,7 @@ const CurrencyExchange = ({
             activeLink="/icons/transfer/active.svg"
             inactiveLink="/icons/transfer/inactive.svg"
             hover={transferHover}
+            alt={"Transfer Currency Icon"}
           ></Icon>
         </div>
         <div className="input-wrapper">
@@ -294,6 +296,7 @@ const CurrencyExchange = ({
           activeLink="/icons/currencyExchange/active.svg"
           inactiveLink="/icons/currencyExchange/inactive.svg"
           hover={exchangeHover}
+          alt={"Change Currency Icon"}
         ></Icon>
       </div>
       {data?.convert ? (
@@ -323,6 +326,7 @@ const CurrencyExchange = ({
           activeLink="/icons/beforeNav/active.svg"
           inactiveLink="/icons/beforeNav/inactive.svg"
           hover={navBackHover}
+          alt={"Previous Card Icon"}
         ></Icon>
       </div>
     </div>

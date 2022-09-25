@@ -66,7 +66,7 @@ const TournamentsParentList = ({
     if (tournaments.length > 0 && !tournamentsExist) {
       setTournamentsExist(true);
     }
-  }, [tournaments]);
+  }, [tournaments, tournamentsExist]);
 
   if (
     (search && !tournaments) ||
@@ -75,12 +75,12 @@ const TournamentsParentList = ({
     return (
       <div className={cn(styles.noTournaments, styles.container)}>
         <div>
-          <Image src="/illustrations/04.png" layout="fill"></Image>
+          <Image src="/illustrations/04.png" layout="fill" alt=""></Image>
         </div>
         <div>
           <h3>
-            Couldn't find the searched tournament / tournaments, if you are just
-            from typing, give me a moment to think about it.
+            Couldn&apos;t find the searched tournament / tournaments, if you are
+            just from typing, give me a moment to think about it.
           </h3>
         </div>
       </div>
@@ -91,7 +91,7 @@ const TournamentsParentList = ({
     return (
       <div className={cn(styles.noTournaments, styles.container)}>
         <div>
-          <Image src="/illustrations/01.png" layout="fill"></Image>
+          <Image src="/illustrations/01.png" layout="fill" alt=""></Image>
         </div>
         <div>
           <h3>
@@ -108,7 +108,7 @@ const TournamentsParentList = ({
     return (
       <div className={cn(styles.noTournaments, styles.container)}>
         <div>
-          <Image src="/illustrations/04.png" layout="fill"></Image>
+          <Image src="/illustrations/04.png" layout="fill" alt=""></Image>
         </div>
         <div>
           <h3>Looking into the future...</h3>

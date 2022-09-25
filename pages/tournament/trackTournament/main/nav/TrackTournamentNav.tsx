@@ -2,10 +2,10 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import { CircularProgress } from "@mui/material";
 import { NetworkStatus } from "@apollo/client";
-import Button from "../../../../components/Button/Button";
+import Button from "../../../../../components/Button/Button";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import Cookies from "../../../../functions/Cookies";
+import Cookies from "../../../../../functions/Cookies";
 
 interface Props {
   setRecapNumber?: (num: number) => void;

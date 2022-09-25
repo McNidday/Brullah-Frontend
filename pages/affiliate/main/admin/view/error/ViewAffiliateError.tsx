@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import { useRouter } from "next/router";
-import { useInterval } from "../../../../../functions/hooks";
+import { useInterval } from "../../../../../../functions/hooks";
 
 interface Props {
   errorNum: number;
@@ -28,14 +28,14 @@ const ViewAffiliateError = ({ errorNum, error }: Props) => {
       setCountDown(undefined);
       router.push(redirect!);
     }
-  }, [countDown]);
+  }, [countDown, router, redirect]);
 
   useEffect(() => {
     if (!redirect && errorNum === 0) {
       setRedirect("/user/login");
       setCountDown(5);
     }
-  }, [redirect]);
+  }, [redirect, errorNum]);
 
   if (errorNum === 0)
     return (
@@ -55,8 +55,8 @@ const ViewAffiliateError = ({ errorNum, error }: Props) => {
       <div className={cn(styles.miniContainer)}>
         <div className={cn(styles.error)}>
           <h3>
-            An error occured. Please check your internet connection and try
-            again. "{error.message}"
+            {`An error occured. Please check your internet connection and try
+            again. "${error.message}"`}
           </h3>
         </div>
       </div>

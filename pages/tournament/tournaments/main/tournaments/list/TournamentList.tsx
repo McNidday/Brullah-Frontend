@@ -1,7 +1,7 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import {
   gql,
   NetworkStatus,
@@ -9,9 +9,9 @@ import {
   useMutation,
   useQuery,
 } from "@apollo/client";
-import { decodeBlurHash } from "../../../../../functions/helpers";
+import { decodeBlurHash } from "../../../../../../functions/helpers";
 import { CircularProgress, Tooltip } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import numeral from "numeral";
 import { useRouter } from "next/router";
 
@@ -98,7 +98,18 @@ const TOURNAMENT = gql`
   }
 `;
 
-const TournamentList = (props: Props) => {
+const TournamentList = ({
+  setJoinTournamentId,
+  handleModalOpen,
+  user,
+  id,
+  information,
+  analytics,
+  creator,
+  match,
+  sponsor,
+  contribution,
+}: Props) => {
   const router = useRouter();
   const [likeStatus, setLikeStatus] = useState(false);
   const [joined, setJoined] = useState<"joined" | "loading" | "not-joined">(
@@ -109,23 +120,23 @@ const TournamentList = (props: Props) => {
     errorPolicy: "all",
     notifyOnNetworkStatusChange: true,
     variables: {
-      id: props.creator.id,
+      id: creator.id,
     },
   });
   const [like, { data: likeData }] = useMutation(LIKE, {
     variables: {
-      id: props.creator.id,
+      id: creator.id,
     },
   });
   const [unLike, { data: unLikeData }] = useMutation(UNLIKE, {
     variables: {
-      id: props.creator.id,
+      id: creator.id,
     },
   });
   const [getTournament, { data: statsData, called, refetch: statsRefetch }] =
     useLazyQuery(TOURNAMENT, {
       variables: {
-        id: props.id,
+        id: id,
       },
     });
 
@@ -139,6 +150,10 @@ const TournamentList = (props: Props) => {
     }
   };
 
+  const getTournamentCallback = useCallback(getTournament, [getTournament]);
+  const refetchCallback = useCallback(refetch, [refetch]);
+  const statsRefetchCallback = useCallback(statsRefetch, [statsRefetch]);
+
   useEffect(() => {
     if (data?.liked) {
       setLikeStatus(true);
@@ -149,19 +164,26 @@ const TournamentList = (props: Props) => {
 
   useEffect(() => {
     if (likeData || unLikeData) {
-      refetch();
+      refetchCallback();
       if (called) {
-        statsRefetch();
+        statsRefetchCallback();
       } else {
-        getTournament();
+        getTournamentCallback();
       }
     }
-  }, [likeData, unLikeData]);
+  }, [
+    likeData,
+    unLikeData,
+    called,
+    statsRefetchCallback,
+    getTournamentCallback,
+    refetchCallback,
+  ]);
 
   useEffect(() => {
-    if (props?.match?.users?.joined) {
-      const userIndex = props.match.users.joined.findIndex((u: any) => {
-        return u.id === props.user?.id;
+    if (match?.users?.joined) {
+      const userIndex = match.users.joined.findIndex((u: any) => {
+        return u.id === user?.id;
       });
       if (userIndex >= 0) {
         setJoined("joined");
@@ -171,32 +193,33 @@ const TournamentList = (props: Props) => {
     } else {
       setJoined("not-joined");
     }
-  }, [data]);
+  }, [data, match.users.joined, user?.id]);
 
   useEffect(() => {
     if (router.isReady) {
       const { joinTournId } = router.query;
-      if (joinTournId === props.id) {
-        props.setJoinTournamentId(props.id);
-        props.handleModalOpen();
+      if (joinTournId === id) {
+        setJoinTournamentId(id);
+        handleModalOpen();
       }
     }
-  }, [router.isReady]);
+  }, [router.isReady, id, router.query, handleModalOpen, setJoinTournamentId]);
 
   return (
     <li className={cn(styles.container)}>
       <div>
         <Tooltip
-          title={props.creator.identity.arena_name}
+          title={creator.identity.arena_name}
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
           <div>
             <Image
-              src={props.creator.identity.avatar.image}
+              src={creator.identity.avatar.image}
+              alt={creator.identity.arena_name}
               placeholder="blur"
               layout="fill"
               blurDataURL={decodeBlurHash(
-                props.creator.identity.avatar.blurhash,
+                creator.identity.avatar.blurhash,
                 50,
                 50
               )}
@@ -204,61 +227,48 @@ const TournamentList = (props: Props) => {
           </div>
         </Tooltip>
         <Tooltip
-          title={props.sponsor.sponsored ? "Sponsored" : "Not Sponsored"}
+          title={sponsor.sponsored ? "Sponsored" : "Not Sponsored"}
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
-          <div className={cn(!props.sponsor.sponsored ? styles.disabled : "")}>
-            <Image src="/icons/sponsor.svg" layout="fill"></Image>
+          <div className={cn(!sponsor.sponsored ? styles.disabled : "")}>
+            <Image src="/icons/sponsor.svg" layout="fill" alt=""></Image>
+          </div>
+        </Tooltip>
+        <Tooltip
+          title={contribution.contributed ? "Contributed" : "Not Contributed"}
+          componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
+        >
+          <div className={cn(!contribution.contributed ? styles.disabled : "")}>
+            <Image src="/icons/bit.svg" layout="fill" alt=""></Image>
           </div>
         </Tooltip>
         <Tooltip
           title={
-            props.contribution.contributed ? "Contributed" : "Not Contributed"
-          }
-          componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
-        >
-          <div
-            className={cn(
-              !props.contribution.contributed ? styles.disabled : ""
-            )}
-          >
-            <Image src="/icons/bit.svg" layout="fill"></Image>
-          </div>
-        </Tooltip>
-        <Tooltip
-          title={
-            props?.analytics?.joined_users
-              ? `${props?.analytics?.joined_users} Joined`
+            analytics?.joined_users
+              ? `${analytics?.joined_users} Joined`
               : `0 Joined`
           }
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
           <div>
-            <p>
-              {props?.analytics?.joined_users
-                ? props?.analytics?.joined_users
-                : 0}
-            </p>
+            <p>{analytics?.joined_users ? analytics?.joined_users : 0}</p>
           </div>
         </Tooltip>
       </div>
       <div>
         <Image
-          src={props.information.thumbnail.image}
+          src={information.thumbnail.image}
+          alt={information.name}
           layout="fill"
           placeholder="blur"
-          blurDataURL={decodeBlurHash(
-            props.information.thumbnail.blurhash,
-            200,
-            100
-          )}
+          blurDataURL={decodeBlurHash(information.thumbnail.blurhash, 200, 100)}
         ></Image>
       </div>
       <div>
-        <h3>{props.information.name}</h3>
+        <h3>{information.name}</h3>
       </div>
       <div>
-        <p>{props.information.description}</p>
+        <p>{information.description}</p>
       </div>
       <div>
         <Button
@@ -271,8 +281,8 @@ const TournamentList = (props: Props) => {
           }
           disabled={false}
           onClick={() => {
-            props.setJoinTournamentId(props.id);
-            props.handleModalOpen();
+            setJoinTournamentId(id);
+            handleModalOpen();
           }}
         ></Button>
       </div>
@@ -283,21 +293,17 @@ const TournamentList = (props: Props) => {
               type="checkbox"
               checked={likeStatus}
               onChange={handleLike}
-              id={`${props.id}~liked`}
+              id={`${id}~liked`}
             ></input>
             <label
               data-likes={
                 statsData?.tournament?.creator?.stats?.tournament?.likes
                   ? statsData.tournament.creator.stats.tournament.likes
-                  : numeral(props?.creator?.stats?.tournament?.likes).format(
-                      "0a"
-                    )
-                  ? numeral(props?.creator?.stats?.tournament?.likes).format(
-                      "0a"
-                    )
+                  : numeral(creator?.stats?.tournament?.likes).format("0a")
+                  ? numeral(creator?.stats?.tournament?.likes).format("0a")
                   : 0
               }
-              htmlFor={`${props.id}~liked`}
+              htmlFor={`${id}~liked`}
             >
               <span></span>
             </label>
@@ -312,22 +318,18 @@ const TournamentList = (props: Props) => {
                 type="checkbox"
                 checked={likeStatus}
                 onChange={handleLike}
-                id={`${props.id}~liked`}
+                id={`${id}~liked`}
               ></input>
               <label
                 data-likes={
                   statsData?.tournament?.creator?.stats?.tournament?.likes
                     ? statsData.tournament.creator.stats.tournament.likes
-                    : numeral(props?.creator?.stats?.tournament?.likes).format(
-                        "0a"
-                      )
-                    ? numeral(props?.creator?.stats?.tournament?.likes).format(
-                        "0a"
-                      )
+                    : numeral(creator?.stats?.tournament?.likes).format("0a")
+                    ? numeral(creator?.stats?.tournament?.likes).format("0a")
                     : 0
                 }
-                className={cn(!props.user ? styles.disableLike : "")}
-                htmlFor={`${props.id}~liked`}
+                className={cn(!user ? styles.disableLike : "")}
+                htmlFor={`${id}~liked`}
               >
                 <span></span>
               </label>
@@ -342,8 +344,8 @@ const TournamentList = (props: Props) => {
           <p>
             {statsData?.tournament?.creator?.stats?.tournament?.likes
               ? statsData.tournament.creator.stats.tournament.likes
-              : numeral(props?.creator?.stats?.tournament?.likes).format("0a")
-              ? numeral(props?.creator?.stats?.tournament?.likes).format("0a")
+              : numeral(creator?.stats?.tournament?.likes).format("0a")
+              ? numeral(creator?.stats?.tournament?.likes).format("0a")
               : 0}
           </p>
         </div>

@@ -1,7 +1,7 @@
 import cn from "classnames";
 
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { useEffect, FormEvent, ChangeEvent, useState } from "react";
 import { useSwiper } from "swiper/react";
 import { ApolloError } from "@apollo/client";
@@ -51,7 +51,7 @@ const TournamentSponsored = ({
         swiper.slideTo(3);
       }
     }
-  }, [error]);
+  }, [error, swiper]);
 
   return (
     <>
@@ -74,8 +74,9 @@ const TournamentSponsored = ({
           ""
         )}
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
-          <label className={cn(styles.checkbox)}>
+          <label className={cn("swiper-no-swiping", styles.checkbox)}>
             <input
+              className={cn("swiper-no-swiping")}
               tabIndex={isActive ? 0 : -1}
               type="checkbox"
               checked={isSponsored}
@@ -85,6 +86,7 @@ const TournamentSponsored = ({
           </label>
           <div className={cn(styles.brcInput, isSponsored ? "" : "disabled")}>
             <input
+              className={cn("swiper-no-swiping")}
               tabIndex={isActive ? 0 : -1}
               type="number"
               placeholder="BRC AMOUNT"

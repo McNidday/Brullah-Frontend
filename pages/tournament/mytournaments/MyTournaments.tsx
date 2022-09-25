@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import cn from "classnames";
-import Footer from "../../components/Footer/Footer";
-import ApolloClientOnly from "../../components/Apollo/ApolloClientOnly";
+import Footer from "../../../components/Footer/Footer";
+import ApolloClientOnly from "../../../Apollo/ApolloClientOnly";
 import MyTournamentsMain from "./main/MyTournamentsMain";
 import MyTournamentsLoading from "./main/loading/MyTournamentsLoading";
-import Navigation from "../../components/Navigation/Navigation";
+import Navigation from "../../../components/Navigation/Navigation";
 import MyTournamentsMainUser from "./main/MyTournamentsMainUser";
 
 const MyTournaments: NextPage = () => {

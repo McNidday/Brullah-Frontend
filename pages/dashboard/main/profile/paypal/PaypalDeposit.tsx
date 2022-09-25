@@ -1,13 +1,13 @@
 import cn from "classnames";
 import styles from "./styles.module.scss";
 import "swiper/css/bundle";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import PaypalCountries from "./countries/PaypalCountries";
 import PaypalTitle from "./title/PaypalTitle";
 import PaypalInput from "./input/PaypalInput";
 import PaypalButton from "./button/PaypalButton";
 import debounce from "lodash.debounce";
-import Icon from "../../../../components/Icon/Icon";
+import Icon from "../../../../../components/Icon/Icon";
 import anime from "animejs";
 
 interface Props {
@@ -33,6 +33,14 @@ const PaypalDeposit = ({
   const containerRef = useRef(null);
   const navBackRef = useRef(null);
 
+  const setDepositAmountCallback = useCallback((val: number) => {
+    setDepositAmount(val);
+  }, []);
+
+  const setPaypalScriptStateCallback = useCallback((val: string) => {
+    setPaypalScriptState(val);
+  }, []);
+
   const hidePaypalDeposit = () => {
     anime({
       targets: containerRef.current,
@@ -57,7 +65,7 @@ const PaypalDeposit = ({
       delay: 1000,
       loop: true,
     });
-  }, [navBackRef.current]);
+  }, []);
 
   useEffect(() => {
     if (overflowTab === "deposit") {
@@ -81,6 +89,7 @@ const PaypalDeposit = ({
           activeLink="/icons/beforeNav/active.svg"
           inactiveLink="/icons/beforeNav/inactive.svg"
           hover={navBackHover}
+          alt={"Previous Card Icon"}
         ></Icon>
       </div>
       <PaypalCountries
@@ -90,7 +99,7 @@ const PaypalDeposit = ({
       <PaypalTitle></PaypalTitle>
       <PaypalInput
         activeCurrency={activeCurrency}
-        setDepositAmount={(val: number) => setDepositAmount(val)}
+        setDepositAmount={setDepositAmountCallback}
       ></PaypalInput>
       <PaypalButton
         refreshUser={refreshUser}
@@ -98,7 +107,7 @@ const PaypalDeposit = ({
         setError={setError}
         depositAmount={depositAmount}
         activeCurrency={activeCurrency}
-        setPaypalScriptState={(val: string) => setPaypalScriptState(val)}
+        setPaypalScriptState={setPaypalScriptStateCallback}
       ></PaypalButton>
     </div>
   );

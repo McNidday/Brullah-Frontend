@@ -47,7 +47,7 @@ const HowToDashboard = () => {
                   <p>
                     This is the InGame currency. Actual cash is not used ingame,
                     due to security concerns. You can convert the actual mullah
-                    to Brullah Coins (BRC) and back. It's free.
+                    to Brullah Coins (BRC) and back. It&apos;s free.
                   </p>
                 </section>
               </SwiperSlide>

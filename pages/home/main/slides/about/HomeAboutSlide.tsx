@@ -33,9 +33,9 @@ const HomeAboutSlide = () => {
               <section>
                 <h3>Intuitive 🍬</h3>
                 <p>
-                  It's <strong>unique</strong> (Built from scratch, designed
-                  with you in mind). Sweet animations (Admit it, you loved it
-                  loading this page). Simply made with the best (▀̿Ĺ̯▀̿ ̿).
+                  It&apos;s <strong>unique</strong> (Built from scratch,
+                  designed with you in mind). Sweet animations (Admit it, you
+                  loved it loading this page). Simply made with the best (▀̿Ĺ̯▀̿ ̿).
                 </p>
               </section>
             </SwiperSlide>
@@ -46,7 +46,7 @@ const HomeAboutSlide = () => {
                   Brullah runs on a <strong>secure https protocal</strong>.
                   Ingame currency called Brullah Coins (BRC) is also used to
                   prevent fraud and confusion. You can always convert it to real
-                  currency and vice-versa. It's free (✿◡‿◡).
+                  currency and vice-versa. It&apos;s free (✿◡‿◡).
                 </p>
               </section>
             </SwiperSlide>
@@ -55,7 +55,7 @@ const HomeAboutSlide = () => {
                 <h3>Easy 🤌🧠</h3>
                 <p>
                   Brullah, is easy to navigate. It also has a dedicated{" "}
-                  <strong>how-to</strong> page incase you don't understand
+                  <strong>how-to</strong> page incase you don&apos;t understand
                   anything. Their is also a dedicated <strong>community</strong>{" "}
                   that you can join and get help, if need be ༼ つ ◕_◕ ༽つ.
                 </p>

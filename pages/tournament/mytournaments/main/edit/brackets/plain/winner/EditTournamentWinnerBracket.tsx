@@ -17,7 +17,11 @@ const EditTournamentWinnerBracket = () => {
           <div className={cn(styles.tournamentBracketData)}>
             <div className={cn(styles.tournamentBracketDataWinnerContainer)}>
               <div className={cn(styles.tournamentBracketDataWinner)}>
-                <Image src={"/illustrations/05.png"} layout="fill"></Image>
+                <Image
+                  src={"/illustrations/05.png"}
+                  layout="fill"
+                  alt=""
+                ></Image>
               </div>
             </div>
           </div>

@@ -5,10 +5,10 @@ import cn from "classnames";
 
 import "swiper/css/bundle";
 import styles from "./styles.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { gql, useMutation } from "@apollo/client";
-import Logo from "../../../../components/Logo/Logo";
-import { encodeImageToBlurHash } from "../../../../functions/helpers";
+import Logo from "../../../../../components/Logo/Logo";
+import { encodeImageToBlurHash } from "../../../../../functions/helpers";
 import TournamentName from "./name/TournamentName";
 import TournamentDescription from "./description/TournamentDescription";
 import TournamentContribution from "./contributed/TournamentContribution";
@@ -68,7 +68,11 @@ const CreateTournamentSlides = () => {
     }
   );
 
-  const createTournament = async () => {
+  const setThumbnailCallback = useCallback((val: File) => {
+    setThumbnail(val);
+  }, []);
+
+  const createTournament = useCallback(async () => {
     if (loading || error || data) return;
     if (!thumbnail) {
       setThumbnailError(new Error("No image has been selected"));
@@ -111,7 +115,7 @@ const CreateTournamentSlides = () => {
             sponsored: isSponsored,
             balance: {
               currency: "BRC",
-              value: sponsorAmount * 100,
+              value: sponsorAmount ? sponsorAmount * 100 : undefined,
             },
           },
           reward:
@@ -128,13 +132,27 @@ const CreateTournamentSlides = () => {
       },
     };
     create(TData);
-  };
+  }, [
+    accessType,
+    contribution,
+    create,
+    data,
+    date?.unix,
+    description,
+    error,
+    isContributed,
+    isSponsored,
+    loading,
+    name,
+    sponsorAmount,
+    thumbnail,
+  ]);
 
   useEffect(() => {
     // If there is an error reset it after 5 seconds
     if (thumbnailError) setTimeout(() => setThumbnailError(undefined), 5000);
     if (error) setTimeout(reset, 5000);
-  }, [error]);
+  }, [error, thumbnailError, reset]);
 
   if (error) {
     if (error.graphQLErrors.length <= 0) {
@@ -257,7 +275,7 @@ const CreateTournamentSlides = () => {
               <TournamentThumbnail
                 serverError={error}
                 createTournament={() => createTournament()}
-                setThumbnail={(val: File) => setThumbnail(val)}
+                setThumbnail={setThumbnailCallback}
                 isActive={isActive}
                 error={thumbnailError}
               ></TournamentThumbnail>

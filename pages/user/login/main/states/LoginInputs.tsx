@@ -1,13 +1,13 @@
 import cn from "classnames";
 import styles from "./styles.module.scss";
-import { FormEvent, useEffect, useState } from "react";
-import Button from "../../../../components/Button/Button";
+import { FormEvent, useCallback, useEffect, useState } from "react";
+import Button from "../../../../../components/Button/Button";
 import { gql, useMutation } from "@apollo/client";
-import Logo from "../../../../components/Logo/Logo";
+import Logo from "../../../../../components/Logo/Logo";
 import { useRouter } from "next/router";
-import { setCookie } from "../../../../functions/Cookies";
+import { setCookie } from "../../../../../functions/Cookies";
 import moment from "moment";
-import Icon from "../../../../components/Icon/Icon";
+import Icon from "../../../../../components/Icon/Icon";
 
 const USER_LOGIN = gql`
   mutation UserLogin($input: LoginInput) {
@@ -44,7 +44,7 @@ const LoginInputs = () => {
       setCookie("token", data.login.token, moment.duration(15, "minutes"));
       router.replace("/dashboard");
     }
-  }, [error, data]);
+  }, [error, data, router, reset]);
 
   if (error) {
     if (error.graphQLErrors.length <= 0) {
@@ -91,7 +91,7 @@ const LoginInputs = () => {
           <div className={cn(styles.inputs)}>
             <input
               type="text"
-              placeholder="Brulah Name"
+              placeholder="Brullah Name"
               value={arenaName || ""}
               onInput={(
                 e: FormEvent & { target: EventTarget & { [key: string]: any } }
@@ -126,6 +126,7 @@ const LoginInputs = () => {
                       activeLink="/icons/eye_visible/active.svg"
                       inactiveLink="/icons/eye_visible/inactive.svg"
                       hover={eyeIconHover}
+                      alt={"Hide Password Icon"}
                     ></Icon>
                   </div>
                 ) : (
@@ -134,6 +135,7 @@ const LoginInputs = () => {
                       activeLink="/icons/eye_slash/active.svg"
                       inactiveLink="/icons/eye_slash/inactive.svg"
                       hover={eyeIconHover}
+                      alt={"Sow Password Icon"}
                     ></Icon>
                   </div>
                 )}

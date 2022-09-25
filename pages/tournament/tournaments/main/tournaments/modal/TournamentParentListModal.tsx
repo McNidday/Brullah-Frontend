@@ -10,11 +10,11 @@ import {
 } from "@apollo/client";
 import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
-import Logo from "../../../../../components/Logo/Logo";
+import Logo from "../../../../../../components/Logo/Logo";
 import moment from "moment";
 import dinero from "dinero.js";
-import { decodeBlurHash } from "../../../../../functions/helpers";
-import Button from "../../../../../components/Button/Button";
+import { decodeBlurHash } from "../../../../../../functions/helpers";
+import Button from "../../../../../../components/Button/Button";
 import TournamentJoinConfirmModal from "./confirm/TournamentJoinConfirmModal";
 
 interface Props {
@@ -199,7 +199,7 @@ const TournamentParentListModal = ({
         });
       }
     }
-  }, [tournamentId]);
+  }, [tournamentId, getTournament, refetch, called]);
 
   useEffect(() => {
     let timeOut: any;
@@ -229,6 +229,9 @@ const TournamentParentListModal = ({
     addToMatchError,
     removeFromMatchData,
     removeFromMatchError,
+    refetch,
+    reset,
+    removeFromMatchReset,
   ]);
 
   useEffect(() => {
@@ -343,13 +346,13 @@ const TournamentParentListModal = ({
                   {data.tournament.contribution.contributed ? (
                     <>
                       <h4>
-                        Contribution ~ Pool "
+                        Contribution ~ Pool &quot;
                         {dinero({
                           amount: data.tournament.contribution.balance.value,
                           currency:
                             data.tournament.contribution.balance.currency,
                         }).toFormat()}
-                        "
+                        &quot;
                       </h4>
                       <p>
                         Every player contributes{" "}
@@ -372,6 +375,7 @@ const TournamentParentListModal = ({
                 <div className={cn(styles.thumbnailImage)}>
                   <Image
                     src={data.tournament.information.thumbnail.image}
+                    alt={data.tournament.information.name}
                     layout="fill"
                     placeholder="blur"
                     blurDataURL={decodeBlurHash(
@@ -407,6 +411,7 @@ const TournamentParentListModal = ({
                               <div className={cn(styles.joinedUserImage)}>
                                 <Image
                                   src={u.identity.avatar.image}
+                                  alt={u.identity.arena_name}
                                   layout="fill"
                                   blurDataURL={decodeBlurHash(
                                     u.identity.avatar.blurhash,

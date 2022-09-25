@@ -1,0 +1,7 @@
+@use "../../styles/theme" as *;
+
+.loading {
+  width: 20px !important;
+  height: 20px !important;
+  color: $activeColor !important;
+}

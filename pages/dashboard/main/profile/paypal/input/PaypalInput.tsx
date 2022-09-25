@@ -5,7 +5,7 @@ import {
   cleanAmount,
   formatNumber,
   inputSelection,
-} from "../../../../../functions/helpers";
+} from "../../../../../../functions/helpers";
 import getSymbolFromCurrency from "currency-symbol-map";
 
 interface Props {
@@ -152,7 +152,7 @@ const PaypalInput = ({ activeCurrency, setDepositAmount }: Props) => {
 
   useEffect(() => {
     setDepositAmount(cleanAmount(formattedAmount));
-  }, [formattedAmount]);
+  }, [formattedAmount, setDepositAmount]);
 
   return (
     <div className={cn(styles.container)}>

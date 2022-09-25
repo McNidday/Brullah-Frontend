@@ -34,7 +34,7 @@ const HowToSections = ({ hash, hashChange }: Props) => {
         controlledSwiper!.slideTo(3);
         break;
     }
-  }, [hash]);
+  }, [hash, controlledSwiper]);
 
   return (
     <main>

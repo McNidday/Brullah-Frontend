@@ -1,7 +1,7 @@
 import cn from "classnames";
 
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { ChangeEvent } from "react";
 import { useSwiper } from "swiper/react";
 
@@ -40,8 +40,9 @@ const TournamentAccess = ({ accessType, setAccessType, isActive }: Props) => {
           </label>
         </div>
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
-          <label className={cn(styles.checkbox)}>
+          <label className={cn("swiper-no-swiping", styles.checkbox)}>
             <input
+              className={cn("swiper-no-swiping")}
               tabIndex={isActive ? 0 : -1}
               type="radio"
               value="PUBLIC"
@@ -51,8 +52,9 @@ const TournamentAccess = ({ accessType, setAccessType, isActive }: Props) => {
             ></input>
             <span></span>
           </label>
-          <label className={cn(styles.checkbox)}>
+          <label className={cn("swiper-no-swiping", styles.checkbox)}>
             <input
+              className={cn("swiper-no-swiping")}
               tabIndex={isActive ? 0 : -1}
               value="SECRET"
               type="radio"

@@ -1,8 +1,8 @@
 import { gql, useMutation } from "@apollo/client";
 import cn from "classnames";
 import styles from "./styles.module.scss";
-import Button from "../../../../../../components/Button/Button";
-import CircularLoading from "../../../../../../components/CricularLoad/CircularLoading";
+import Button from "../../../../../../../components/Button/Button";
+import CircularLoading from "../../../../../../../components/CricularLoad/CircularLoading";
 
 interface Props {
   id: String;

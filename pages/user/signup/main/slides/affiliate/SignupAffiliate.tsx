@@ -1,11 +1,11 @@
 import cn from "classnames";
 
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { useSwiper } from "swiper/react";
 import { FormEvent, useEffect, useState } from "react";
 import { ApolloError } from "@apollo/client";
-import Cookies from "../../../../../functions/Cookies";
+import Cookies from "../../../../../../functions/Cookies";
 
 interface Props {
   updateProfile: Function;
@@ -33,7 +33,7 @@ const SignupAffiliate = ({
     } else {
       setEmailError(null);
     }
-  });
+  }, [error, swiper]);
 
   return (
     <>
@@ -52,6 +52,7 @@ const SignupAffiliate = ({
         )}
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
           <input
+            className={cn("swiper-no-swiping")}
             tabIndex={isActive ? 0 : -1}
             type="text"
             placeholder="Promo"

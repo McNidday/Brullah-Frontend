@@ -1,7 +1,7 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
-import { decodeBlurHash } from "../../../../../../functions/helpers";
+import { decodeBlurHash } from "../../../../../../../functions/helpers";
 
 interface User {
   id: string;
@@ -42,11 +42,16 @@ const TrackTournamentWinnerBracket = ({ arenaWinner }: Props) => {
           <div className={cn(styles.tournamentBracketData)}>
             <div className={cn(styles.tournamentBracketDataWinnerContainer)}>
               <div className={cn(styles.tournamentBracketDataWinner)}>
-                <Image src={"/illustrations/05.png"} layout="fill"></Image>
+                <Image
+                  src={"/illustrations/05.png"}
+                  layout="fill"
+                  alt=""
+                ></Image>
                 {arenaWinner.status === "DONE" ? (
                   <div className={cn(styles.tournamentBracketDataWinnerImage)}>
                     <Image
                       src={arenaWinner.user.identity.avatar.image}
+                      alt={arenaWinner.user.identity.arena_name}
                       placeholder="blur"
                       blurDataURL={decodeBlurHash(
                         arenaWinner.user.identity.avatar.blurhash,

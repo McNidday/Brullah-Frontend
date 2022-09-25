@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Parallax, Pagination } from "swiper";
 import { gql, useMutation } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import cn from "classnames";
 
 import "swiper/css/bundle";
@@ -14,9 +14,9 @@ import SignupPassword from "./password/SignupPassword";
 import SignUpComplete from "./complete/SignUpComplete";
 import SignupEmail from "./email/SignupEmail";
 import SignUpAgreement from "./agreement/SignUpAgreement";
-import Logo from "../../../../components/Logo/Logo";
-import { encodeImageToBlurHash } from "../../../../functions/helpers";
-import Cookies, { deleteCookie } from "../../../../functions/Cookies";
+import Logo from "../../../../../components/Logo/Logo";
+import { encodeImageToBlurHash } from "../../../../../functions/helpers";
+import Cookies, { deleteCookie } from "../../../../../functions/Cookies";
 import SignupAffiliate from "./affiliate/SignupAffiliate";
 
 const CREATE_USER = gql`
@@ -41,53 +41,74 @@ const SignUpInputSlides = () => {
   const [profile, setProfile] = useState<{ [key: string]: any }>({
     timezone: momenttz.tz.guess(),
   });
+  const [localAvatarError, setLocalAvatarError] = useState<string | null>(null);
   const [createUser, { data, loading, error, reset }] = useMutation(
     CREATE_USER,
     {
       errorPolicy: "all",
     }
   );
-  const updateProfile = (name: string, value: string) => {
+
+  const updateProfile = useCallback((name: string, value: string) => {
     setProfile((prev) => {
       prev[name] = value;
       return { ...prev };
     });
-  };
+  }, []);
 
-  const signup = async (excludeAffiliate: boolean) => {
-    const imageHash = await new Promise((resolve) => {
-      const image = new FileReader();
-      image.readAsDataURL(profile.avatar);
-      image.onload = async () => {
-        const imageHash = await encodeImageToBlurHash(
-          typeof image.result! === "string" ? image.result : ""
-        );
-        resolve(imageHash);
-      };
-    });
-    delete profile.confirm_password;
-    const profileInput: any = { ...profile, blurhash: imageHash };
-    if (Cookies("affiliate") && !excludeAffiliate) {
-      profileInput.affiliate = Cookies("affiliate");
-    } else if (excludeAffiliate && Cookies("affiliate")) {
-      deleteCookie("affiliate");
-      delete profileInput.affiliate;
-    }
+  const signup = useCallback(
+    async (excludeAffiliate: boolean) => {
+      if (!profile.avatar) {
+        setLocalAvatarError("Please select the icon and upload avatar.");
+        return;
+      }
+      const imageHash = await new Promise((resolve) => {
+        const image = new FileReader();
+        image.readAsDataURL(profile.avatar);
+        image.onload = async () => {
+          const imageHash = await encodeImageToBlurHash(
+            typeof image.result! === "string" ? image.result : ""
+          );
+          resolve(imageHash);
+        };
+      });
+      delete profile.confirm_password;
+      const profileInput: any = { ...profile, blurhash: imageHash };
+      if (Cookies("affiliate") && !excludeAffiliate) {
+        profileInput.affiliate = Cookies("affiliate");
+      } else if (excludeAffiliate && Cookies("affiliate")) {
+        deleteCookie("affiliate");
+        delete profileInput.affiliate;
+      }
 
-    await createUser({ variables: { input: profileInput } });
-  };
+      await createUser({ variables: { input: profileInput } });
+    },
+    [profile, createUser]
+  );
 
   useEffect(() => {
+    let timeout: any;
     // If there is an error reset it after 5 seconds
     if (error) {
       const errorArray = error.message.split(":");
       if (errorArray[0] !== "affiliate" && !Cookies("affiliate")) {
-        setTimeout(reset, 5000);
+        timeout = setTimeout(reset, 5000);
       } else if (errorArray[0] === "affiliate" && !Cookies("affiliate")) {
-        setTimeout(reset, 5000);
+        timeout = setTimeout(reset, 5000);
       }
     }
-  }, [error]);
+    return () => clearTimeout(timeout);
+  }, [error, reset]);
+
+  useEffect(() => {
+    let timeout: any;
+    if (localAvatarError) {
+      timeout = setTimeout(() => {
+        setLocalAvatarError(null);
+      }, 5000);
+    }
+    return () => clearTimeout(timeout);
+  }, [localAvatarError]);
 
   if (error) {
     if (error.graphQLErrors.length <= 0) {
@@ -167,6 +188,7 @@ const SignUpInputSlides = () => {
         </SwiperSlide>
         <SwiperSlide className={cn(styles.swiperSlide)}>
           <SignUpAvatar
+            localAvatarError={localAvatarError}
             updateProfile={updateProfile}
             error={error}
           ></SignUpAvatar>

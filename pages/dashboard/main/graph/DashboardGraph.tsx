@@ -5,7 +5,7 @@ import styles from "./styles.module.scss";
 import { gql, useQuery } from "@apollo/client";
 import { useState, useEffect } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import Logo from "../../../components/Logo/Logo";
+import Logo from "../../../../components/Logo/Logo";
 import DashboardGraphTooltip from "./tooltip/DashboardGraphTooltip";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -116,7 +116,7 @@ const DashboardGraph = ({ user }: Props) => {
       }
       setGraphData(update);
     }
-  }, [data]);
+  }, [data, user.id]);
 
   if (loading || typeof window === "undefined") {
     return (

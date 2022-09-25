@@ -39,7 +39,11 @@ const MyTournamentSearch = ({ search, setSearch }: Props) => {
           onInput={handleSearchVal}
         ></input>
         <div>
-          <Image src={`/icons/search/inactive.svg`} layout="fill"></Image>
+          <Image
+            src={`/icons/search/inactive.svg`}
+            layout="fill"
+            alt=""
+          ></Image>
         </div>
       </div>
       <div className={cn(styles.createTournamentLink)}>

@@ -2,7 +2,7 @@ import cn from "classnames";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSwiper } from "swiper/react";
-import { useInterval } from "../../../../../functions/hooks";
+import { useInterval } from "../../../../../../functions/hooks";
 import styles from "./styles.module.scss";
 
 const TournamentCreationComplete = ({ data }: { data: undefined | any }) => {
@@ -24,22 +24,22 @@ const TournamentCreationComplete = ({ data }: { data: undefined | any }) => {
       swiper.disable();
       setCountDown(5);
     }
-  }, [data]);
+  }, [data, swiper]);
 
   useEffect(() => {
     if (countDown === 0) {
       setCountDown(undefined);
       router.replace("/tournament/mytournaments");
     }
-  }, [countDown]);
+  }, [countDown, router]);
 
   return (
     <div className={cn(styles.container)}>
       {data && data.createTournament ? (
         <h3>
-          Greate, tournament "{data.createTournament.information.name}" has been
-          created, you will be directed to the tournament dashboard in $
-          {countDown || 0}.
+          Greate, tournament &quot;{data.createTournament.information.name}
+          &quot; has been created, you will be directed to the tournament
+          dashboard in ${countDown || 0}.
         </h3>
       ) : (
         <h3>You are a few steps away from making a brullah tournament.</h3>

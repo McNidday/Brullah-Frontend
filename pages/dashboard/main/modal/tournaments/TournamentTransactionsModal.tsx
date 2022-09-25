@@ -16,7 +16,7 @@ import { useState, useEffect } from "react";
 import { gql, useQuery, NetworkStatus } from "@apollo/client";
 import dinero from "dinero.js";
 import moment from "moment";
-import Logo from "../../../../components/Logo/Logo";
+import Logo from "../../../../../components/Logo/Logo";
 
 interface Props {
   modalOpen: boolean;

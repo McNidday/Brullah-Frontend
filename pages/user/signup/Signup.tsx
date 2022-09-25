@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import cn from "classnames";
-import Footer from "../../components/Footer/Footer";
+import Footer from "../../../components/Footer/Footer";
 import SignupMain from "./main/SignupMain";
-import ApolloClientOnly from "../../components/Apollo/ApolloClientOnly";
-import Fallback from "../../components/Fallback/Fallback";
-import Navigation from "../../components/Navigation/Navigation";
+import ApolloClientOnly from "../../../Apollo/ApolloClientOnly";
+import Fallback from "../../../components/Fallback/Fallback";
+import Navigation from "../../../components/Navigation/Navigation";
 
 const Signup: NextPage = () => {
   return (
@@ -18,7 +18,7 @@ const Signup: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navigation hideSideNav={true}></Navigation>
+      <Navigation></Navigation>
       <ApolloClientOnly fallback={<Fallback></Fallback>}>
         <SignupMain></SignupMain>
       </ApolloClientOnly>

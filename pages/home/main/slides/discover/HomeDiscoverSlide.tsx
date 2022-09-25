@@ -8,7 +8,11 @@ const HomeDiscoverSlide = () => {
     <section className={cn(styles.section)}>
       <div>
         <div>
-          <Image src={`/icons/helping_hand/default.svg`} layout="fill"></Image>
+          <Image
+            src={`/icons/helping_hand/default.svg`}
+            layout="fill"
+            alt="Helping Hand Icon"
+          ></Image>
         </div>
         <Link href={`/howto`}>
           <a>

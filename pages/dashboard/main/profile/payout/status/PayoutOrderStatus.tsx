@@ -1,7 +1,13 @@
 import { ApolloError, gql, useQuery } from "@apollo/client";
 import cn from "classnames";
 import moment from "moment";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import styles from "./styles.module.scss";
 
 const PAYOUT_ORDER_STATUS = gql`
@@ -26,6 +32,7 @@ const PayoutOrderStatus = ({
   const [formattedCountDown, setFormattedCountDown] = useState("");
   const [payoutMoment, setPayoutMoment] = useState<moment.Moment | null>(null);
   const firstRender = useRef(true);
+  const refetcUser = useCallback(refetch, [refetch]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -60,10 +67,10 @@ const PayoutOrderStatus = ({
       return;
     }
     if (!mutatePayoutOrderLoading) {
-      refetch();
+      refetcUser();
       setPayoutMoment(null);
     }
-  }, [mutatePayoutOrderLoading]);
+  }, [mutatePayoutOrderLoading, refetcUser]);
 
   if (loading || error) {
     return (

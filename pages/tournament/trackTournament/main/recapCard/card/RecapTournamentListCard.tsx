@@ -1,5 +1,5 @@
 import cn from "classnames";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import styles from "./styles.module.scss";
 
 interface Props {

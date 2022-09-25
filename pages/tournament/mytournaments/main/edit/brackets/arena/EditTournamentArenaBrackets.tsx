@@ -1,9 +1,9 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import EditTournamentBrackets from "../plain/EditTournamentBrackets";
-import Button from "../../../../../../components/Button/Button";
+import Button from "../../../../../../../components/Button/Button";
 import { useEffect, useState } from "react";
-import Icon from "../../../../../../components/Icon/Icon";
+import Icon from "../../../../../../../components/Icon/Icon";
 
 interface Props {
   activeArena: boolean;
@@ -181,6 +181,7 @@ const EditTournamentArenaBrackets = ({
             activeLink="/icons/dropdown/active.svg"
             inactiveLink="/icons/dropdown/inactive.svg"
             hover={arenaHover}
+            alt="DropDown Icon"
           ></Icon>
         </div>
       </div>

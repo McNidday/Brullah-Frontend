@@ -1,7 +1,7 @@
 import cn from "classnames";
 
 import styles from "./styles.module.scss";
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import { useEffect, ChangeEvent, useState } from "react";
 import { useSwiper } from "swiper/react";
 import { ApolloError } from "@apollo/client";
@@ -34,7 +34,7 @@ const TournamentStartDate = ({ setDate, date, error, isActive }: Props) => {
     } else {
       setNameError(null);
     }
-  }, [error]);
+  }, [error, swiper]);
 
   return (
     <>
@@ -58,6 +58,7 @@ const TournamentStartDate = ({ setDate, date, error, isActive }: Props) => {
         <div className={cn(styles.inputs)} data-swiper-parallax="-500">
           <label className={cn(styles.checkbox)}>
             <input
+              className={cn("swiper-no-swiping")}
               tabIndex={isActive ? 0 : -1}
               value={date?.date || ""}
               type="datetime-local"

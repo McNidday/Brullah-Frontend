@@ -1,4 +1,4 @@
-import Button from "../../../../../components/Button/Button";
+import Button from "../../../../../../components/Button/Button";
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import { CircularProgress } from "@mui/material";
