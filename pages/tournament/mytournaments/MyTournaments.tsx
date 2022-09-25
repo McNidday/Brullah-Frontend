@@ -3,10 +3,10 @@ import Head from "next/head";
 import cn from "classnames";
 import Footer from "../../../components/Footer/Footer";
 import ApolloClientOnly from "../../../Apollo/ApolloClientOnly";
-import MyTournamentsMain from "./main/MyTournamentsMain";
-import MyTournamentsLoading from "./main/loading/MyTournamentsLoading";
+import MyTournamentsMain from "../../../modules/tournament/myTournaments/MyTournamentsMain";
+import MyTournamentsLoading from "../../../modules/tournament/myTournaments/loading/MyTournamentsLoading";
 import Navigation from "../../../components/Navigation/Navigation";
-import MyTournamentsMainUser from "./main/MyTournamentsMainUser";
+import MyTournamentsMainUser from "../../../modules/tournament/myTournaments/MyTournamentsMainUser";
 
 const MyTournaments: NextPage = () => {
   return (

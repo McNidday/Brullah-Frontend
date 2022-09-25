@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Footer from "../../../components/Footer/Footer";
-import ForgotMain from "./main/ForgotMain";
+import ForgotMain from "../../../modules/user/forgot/ForgotMain";
 import ApolloClientOnly from "../../../Apollo/ApolloClientOnly";
 import cn from "classnames";
 import Fallback from "../../../components/Fallback/Fallback";

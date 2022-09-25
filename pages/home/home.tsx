@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import cn from "classnames";
 import styles from "./styles.module.scss";
 import Head from "next/head";
-import HomeMain from "./main/HomeMain";
+import HomeMain from "../../modules/home/HomeMain";
 import "swiper/css/bundle";
 
 const Home: NextPage = () => {

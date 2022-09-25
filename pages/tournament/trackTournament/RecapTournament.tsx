@@ -3,8 +3,8 @@ import Head from "next/head";
 import cn from "classnames";
 import Footer from "../../../components/Footer/Footer";
 import ApolloClientOnly from "../../../Apollo/ApolloClientOnly";
-import TrackTournamentLoading from "./main/loading/TrackingTournamentLoading";
-import RecapTournamentMain from "./main/RecapTournamentMain";
+import TrackTournamentLoading from "../../../modules/tournament/trackTournament/loading/TrackingTournamentLoading";
+import RecapTournamentMain from "../../../modules/tournament/trackTournament/RecapTournamentMain";
 import Navigation from "../../../components/Navigation/Navigation";
 
 const TrackTournament: NextPage = () => {

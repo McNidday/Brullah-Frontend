@@ -1,0 +1,166 @@
+@use "../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.title {
+  h3 {
+    margin: 20px 0 20px 0;
+    color: white;
+    @include media("<tablet") {
+      font-size: large;
+      width: 90%;
+    }
+  }
+}
+
+.container {
+  position: relative;
+  grid-area: navigationside / navigationside / maincontent / maincontent;
+  background-color: $background;
+  width: 100%;
+  height: 100%;
+  background-image: url("/icons/logo/active.svg");
+  background-position: 80% 50%;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  @include media("<tablet") {
+    background-size: 100%;
+    grid-area: maincontent / maincontent;
+  }
+}
+
+.miniContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color: $background, $alpha: 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include media(">=phone", "<tablet") {
+    width: 85%;
+    margin: 0 auto;
+  }
+  @include media("<=phone") {
+    width: 85%;
+    margin: 0 auto;
+  }
+}
+
+.loadingMiniContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color: $background, $alpha: 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputs {
+  & > input {
+    margin-right: 10px;
+  }
+  input {
+    border: 1px solid black;
+    outline: none;
+    padding: 10px;
+    border-radius: 5px;
+    width: 250px;
+  }
+  & > input:nth-child(1) {
+    @include media(">=phone", "<tablet") {
+      margin-bottom: 20px;
+    }
+    @include media("<=phone") {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.inputContainer {
+  display: inline-block;
+  position: relative;
+  height: fit-content;
+  width: fit-content;
+}
+
+.eyeIcons {
+  user-select: none;
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  right: 5px;
+  top: 12.5%;
+  background-color: transparent;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.eyeIcon {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.buttons {
+  display: flex;
+  margin: 20px 0 20px 0;
+  & > a {
+    margin-right: 10px;
+    padding: 20px;
+  }
+  & > div {
+    margin-right: 10px;
+    padding: 20px;
+  }
+}
+
+.errors {
+  color: red;
+  margin: 5px;
+  p::before {
+    content: "*";
+    margin-right: 5px;
+  }
+}
+
+.loading {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  h3 {
+    color: white;
+    @include media("<tablet") {
+      text-align: center;
+      font-size: small;
+      width: 90%;
+    }
+  }
+}
+
+.loaderActive {
+  background-color: rgba($color: #000, $alpha: 0.9);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.cover {
+  width: fit-content;
+  height: fit-content;
+}
+
+.error {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: red;
+}

@@ -1,10 +1,10 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import cn from "classnames";
-import TrackTournamentMain from "./main/TrackTournamentMain";
+import TrackTournamentMain from "../../../modules/tournament/trackTournament/TrackTournamentMain";
 import Footer from "../../../components/Footer/Footer";
 import ApolloClientOnly from "../../../Apollo/ApolloClientOnly";
-import TrackTournamentLoading from "./main/loading/TrackingTournamentLoading";
+import TrackTournamentLoading from "../../../modules/tournament/trackTournament/loading/TrackingTournamentLoading";
 import Navigation from "../../../components/Navigation/Navigation";
 
 const TrackTournament: NextPage = () => {

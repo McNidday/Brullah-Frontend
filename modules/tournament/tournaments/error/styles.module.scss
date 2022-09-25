@@ -1,0 +1,51 @@
+@use "../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.container {
+  position: relative;
+  grid-area: search / search / tournaments / tournaments;
+  width: 100%;
+  height: 100%;
+  background-color: $background;
+  background-image: url("/icons/logo/active.svg");
+  background-position: 80% 50%;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  overflow: hidden;
+  border-radius: $borderRadius;
+  @include media("<tablet") {
+    background-size: 100%;
+  }
+}
+
+.miniContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color: $background, $alpha: 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  h3 {
+    color: white;
+    text-align: center;
+    @include media("<tablet") {
+      width: 90%;
+    }
+  }
+}
+
+.cover {
+  width: fit-content;
+  height: fit-content;
+}

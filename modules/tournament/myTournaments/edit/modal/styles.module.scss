@@ -1,0 +1,188 @@
+@use "../../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.container {
+  width: 320px;
+  height: 450px;
+  position: absolute;
+  background-color: $background;
+  bottom: -450px;
+  right: 0px;
+  z-index: 1;
+  border-top-left-radius: $borderRadius;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.12fr minmax(0, 1fr);
+  grid-template-areas: "nav" "content";
+  border-bottom-right-radius: $borderRadius;
+  border-top-right-radius: $borderRadius;
+  pointer-events: all;
+  @include media("height>=tablet") {
+    height: 500px;
+  }
+  @include media("height>=phone") {
+    height: 460px;
+  }
+  @include media("<tablet") {
+    position: fixed;
+    width: 100%;
+    height: 460px;
+  }
+}
+
+.activeTab {
+  color: $activeColor !important;
+}
+
+.editUserListPlaceHolder {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    width: 90%;
+    color: $textColor;
+    text-align: center;
+  }
+}
+
+.byeContainer {
+  height: 490px;
+}
+
+.editUserList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding: 10px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.editUserListItem {
+  width: 100%;
+  border: 1px solid $backgroundLight;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $textColor;
+  height: 50px;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.editUserListItemImage {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+  justify-content: space-between;
+
+  li {
+    color: $textColor;
+    &:hover {
+      color: $activeColor;
+      cursor: pointer;
+    }
+  }
+}
+
+.editUsers {
+  width: 100%;
+  height: 55%;
+  border-bottom: 2px solid $backgroundLight;
+}
+
+.editUsersBye {
+  height: 43% !important;
+}
+
+.containedUsersBye {
+  height: 57% !important;
+}
+
+.containedUsers {
+  width: 100%;
+  height: 45%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  h3 {
+    margin: 5px 0px 5px 0px;
+    color: $activeColor;
+  }
+}
+
+.containedUsersContainer {
+  width: 100%;
+  border: 1px solid $backgroundLight;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $textColor;
+  height: 50px;
+  padding: 5px;
+}
+
+.containedUsersImage {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.navigation {
+  grid-area: nav;
+  border-bottom: 2px solid $backgroundLight;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content {
+  grid-area: content;
+}
+
+.setTime {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  input {
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    outline: none;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    -moz-appearance: textfield;
+  }
+}
+
+.closeIcon {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  padding: 5px;
+}

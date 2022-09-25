@@ -5,7 +5,7 @@ import ApolloClientOnly from "../../../Apollo/ApolloClientOnly";
 import cn from "classnames";
 import Fallback from "../../../components/Fallback/Fallback";
 import Navigation from "../../../components/Navigation/Navigation";
-import VerifyAccountMain from "./main/VerifyAccountMain";
+import VerifyAccountMain from "../../../modules/user/verify/VerifyAccountMain";
 
 const Forgot: NextPage = () => {
   return (

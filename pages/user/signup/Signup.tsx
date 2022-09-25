@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import cn from "classnames";
 import Footer from "../../../components/Footer/Footer";
-import SignupMain from "./main/SignupMain";
+import SignupMain from "../../../modules/user/signup/SignupMain";
 import ApolloClientOnly from "../../../Apollo/ApolloClientOnly";
 import Fallback from "../../../components/Fallback/Fallback";
 import Navigation from "../../../components/Navigation/Navigation";

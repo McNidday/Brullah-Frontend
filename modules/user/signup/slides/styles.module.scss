@@ -1,0 +1,86 @@
+@use "../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.swiper {
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color: $background, $alpha: 0.5);
+
+  span[class~="swiper-pagination-bullet"] {
+    background-color: $textColor;
+  }
+
+  span[class~="swiper-pagination-bullet-active"] {
+    background-color: $activeColor !important;
+  }
+}
+
+.swiperSlide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 18px;
+  color: white;
+  padding: 40px 60px;
+
+  @include media("<tablet") {
+    padding: 0px 0px;
+  }
+
+  & > div {
+    width: 70%;
+    @include media("<tablet") {
+      width: 90%;
+    }
+  }
+}
+
+.parallaxBg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/icons/logo/active.svg");
+  background-position: 80% 50%;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  @include media("<tablet") {
+    background-size: 100%;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($color: $background, $alpha: 0.8);
+  }
+}
+
+.loading {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loaderActive {
+  background-color: rgba($color: #000, $alpha: 0.9);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.error {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: red;
+}

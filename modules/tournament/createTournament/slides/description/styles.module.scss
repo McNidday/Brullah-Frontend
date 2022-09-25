@@ -1,0 +1,44 @@
+@use "../../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.title {
+  h3 {
+    @include media("<tablet") {
+      font-size: large;
+    }
+  }
+}
+
+.inputs {
+  textarea {
+    padding: 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+    height: 100px !important;
+    width: 350px !important;
+    outline: none;
+    border: 1px solid black;
+    @include media("<tablet") {
+      width: 250px !important;
+      height: 80px !important;
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  margin: 20px 0 20px 0;
+  & > div {
+    margin-right: 10px;
+    padding: 20px;
+  }
+}
+
+.errors {
+  color: red;
+  margin: 5px;
+  p::before {
+    content: "*";
+    margin-right: 5px;
+  }
+}

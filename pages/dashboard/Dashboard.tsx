@@ -3,9 +3,9 @@ import Head from "next/head";
 import cn from "classnames";
 import Footer from "../../components/Footer/Footer";
 import ApolloClientOnly from "../../Apollo/ApolloClientOnly";
-import DashboardMain from "./main/DashboardMain";
-import DashboardMainLoading from "./main/loading/DashboardMainLoading";
 import Navigation from "../../components/Navigation/Navigation";
+import DashboardMainLoading from "../../modules/dashboard/loading/DashboardMainLoading";
+import DashboardMain from "../../modules/dashboard/DashboardMain";
 
 const Dashboard: NextPage = () => {
   return (

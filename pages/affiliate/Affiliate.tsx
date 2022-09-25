@@ -4,8 +4,8 @@ import cn from "classnames";
 import Footer from "../../components/Footer/Footer";
 import ApolloClientOnly from "../../Apollo/ApolloClientOnly";
 import Navigation from "../../components/Navigation/Navigation";
-import AffiliateMainLoading from "./main/loading/AffiliateMainLoading";
-import AffiliateMain from "./main/AffiliateMain";
+import AffiliateMainLoading from "../../modules/affiliate/loading/AffiliateMainLoading";
+import AffiliateMain from "../../modules/affiliate/AffiliateMain";
 import "swiper/css/bundle";
 
 const Affiliate: NextPage = () => {

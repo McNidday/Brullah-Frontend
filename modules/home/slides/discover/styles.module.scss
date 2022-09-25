@@ -1,0 +1,36 @@
+@use "../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  & > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: $borderRadius;
+    background-color: $backgroundLight;
+    @include media("<tablet") {
+      width: 90%;
+    }
+
+    & > div {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+
+    a {
+      text-align: center;
+      &:hover {
+        color: $activeColor;
+      }
+    }
+  }
+}

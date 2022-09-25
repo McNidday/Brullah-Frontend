@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className={classNames(styles.footer)}>
       <p>B.V: 2.0.0</p>
       <Link href={"/"} passHref>
-        <a>@copyright 2020: nidday/brullah 🏠</a>
+        <a>@2020: nidday/brullah 🏠</a>
       </Link>
       <div className={classNames(styles.socialIcons)}>
         <div>

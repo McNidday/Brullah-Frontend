@@ -3,7 +3,7 @@ import cn from "classnames";
 import styles from "./styles.module.scss";
 import Head from "next/head";
 import "swiper/css/bundle";
-import HowToMain from "./main/HowToMain";
+import HowToMain from "../../modules/howto/HowToMain";
 
 const HowTo: NextPage = () => {
   return (

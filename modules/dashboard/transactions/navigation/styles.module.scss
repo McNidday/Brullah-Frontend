@@ -1,0 +1,42 @@
+@use "../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.container {
+  height: fit-content;
+  width: 50%;
+}
+
+.title {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $backgroundLight;
+  h3 {
+    color: $textColor;
+    margin: 5px 0px 5px 0px;
+    @include media("<tablet") {
+      font-size: large;
+    }
+  }
+}
+
+.links {
+  padding: 10px;
+  grid-area: navigationlinks;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  border-left: 1px solid $backgroundLight;
+  a {
+    color: $textColor;
+    @include media("<tablet") {
+      font-size: small;
+    }
+    &:hover {
+      color: $activeColor;
+    }
+    * {
+      margin: 10px 0px 10px 0px;
+    }
+  }
+}

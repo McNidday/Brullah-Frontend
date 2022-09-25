@@ -1,0 +1,33 @@
+@use "../../../../styles/theme" as *;
+@use "include-media" as *;
+
+.container {
+  position: relative;
+  grid-area: navigationside / navigationside / maincontent / maincontent;
+  background-color: $background;
+  width: 100%;
+  height: 100%;
+  background-image: url("/icons/logo/active.svg");
+  background-position: 80% 50%;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  @include media("<tablet") {
+    background-size: 100%;
+    grid-area: maincontent / maincontent;
+  }
+}
+
+.miniContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color: $background, $alpha: 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > p {
+    color: white;
+    text-align: center;
+  }
+}
