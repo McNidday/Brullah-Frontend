@@ -17,21 +17,9 @@ const MyTournamentsMainUser = () => {
   const { data, loading, error } = useQuery(USER);
   if (loading) return <MyTournamentsLoading></MyTournamentsLoading>;
   if (error && (error?.networkError as any).statusCode !== 401) {
-    return (
-      <div className={cn(styles.container)}>
-        <div className={cn(styles.miniContainer)}>
-          <MyTournamentsError errorNum={1} error={error}></MyTournamentsError>;
-        </div>
-      </div>
-    );
+    return <MyTournamentsError errorNum={1} error={error}></MyTournamentsError>;
   } else if (error && (error?.networkError as any).statusCode === 401) {
-    return (
-      <div className={cn(styles.container)}>
-        <div className={cn(styles.miniContainer)}>
-          <MyTournamentsError errorNum={0} error={error}></MyTournamentsError>;
-        </div>
-      </div>
-    );
+    return <MyTournamentsError errorNum={0} error={error}></MyTournamentsError>;
   }
   return <MyTournamentsMain id={data.user.id}></MyTournamentsMain>;
 };

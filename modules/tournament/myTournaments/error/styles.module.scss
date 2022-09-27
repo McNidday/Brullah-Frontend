@@ -3,9 +3,10 @@
 
 .container {
   position: relative;
-  grid-area: search / search / tournaments / tournaments;
-  width: 100%;
-  height: 100%;
+  grid-area: maincontent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: $background;
   background-image: url("/icons/logo/active.svg");
   background-position: 80% 50%;
@@ -15,17 +16,26 @@
   border-radius: $borderRadius;
   @include media("<tablet") {
     background-size: 100%;
+    border-radius: unset;
   }
 }
 
 .miniContainer {
+  border-radius: $borderRadius;
+  border: 1px solid $backgroundLight;
   position: relative;
-  width: 100%;
-  height: 100%;
+  height: 95%;
+  width: 98%;
   background-color: rgba($color: $background, $alpha: 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
+  @include media("<tablet") {
+    height: 100%;
+    width: 100%;
+    border: none;
+    border-radius: unset;
+  }
 }
 
 .error {
