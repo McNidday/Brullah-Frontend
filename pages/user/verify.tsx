@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Footer from "../../../components/Footer/Footer";
-import ApolloClientOnly from "../../../Apollo/ApolloClientOnly";
+import Footer from "../../components/Footer/Footer";
+import ApolloClientOnly from "../../Apollo/ApolloClientOnly";
 import cn from "classnames";
-import Fallback from "../../../components/Fallback/Fallback";
-import Navigation from "../../../components/Navigation/Navigation";
-import VerifyAccountMain from "../../../modules/user/verify/VerifyAccountMain";
+import Fallback from "../../components/Fallback/Fallback";
+import Navigation from "../../components/Navigation/Navigation";
+import VerifyAccountMain from "../../modules/user/verify/VerifyAccountMain";
 
 const Forgot: NextPage = () => {
   return (

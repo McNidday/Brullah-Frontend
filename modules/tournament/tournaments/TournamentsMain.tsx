@@ -106,9 +106,9 @@ const TournamentsMain = () => {
 
   useEffect(() => {
     if (router.isReady) {
-      const { joinTournSecret } = router.query;
-      if (joinTournSecret) {
-        handleSearch(joinTournSecret as string);
+      const { secret } = router.query;
+      if (secret) {
+        handleSearch(secret as string);
       }
     }
   }, [router.isReady, router.query, handleSearch]);

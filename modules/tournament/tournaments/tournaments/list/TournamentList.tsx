@@ -197,8 +197,8 @@ const TournamentList = ({
 
   useEffect(() => {
     if (router.isReady) {
-      const { joinTournId } = router.query;
-      if (joinTournId === id) {
+      const { tid } = router.query;
+      if (tid === id) {
         setJoinTournamentId(id);
         handleModalOpen();
       }

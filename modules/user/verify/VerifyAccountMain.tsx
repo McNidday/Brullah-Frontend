@@ -1,6 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import VerifyAccountError from "./error/VerifyAccountError";
 import VerifyAccountLoading from "./loading/VerifyAccountLoading";
 import VerifyAccountSuccess from "./success/VerifyAccountSuccess";

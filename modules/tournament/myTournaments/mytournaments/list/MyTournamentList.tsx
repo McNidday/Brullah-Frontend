@@ -37,11 +37,11 @@ const MyTournamentList = (props: Props) => {
     setCopyLink(true);
     if (props.access.secret) {
       navigator.clipboard.writeText(
-        `${process.env.BRULLAH_URL}/tournament/tournaments?joinTournId=${props.id}&joinTournSecret=${props.access.secret}`
+        `${process.env.BRULLAH_URL}/tournament/tournaments?tid=${props.id}&secret=${props.access.secret}`
       );
     } else {
       navigator.clipboard.writeText(
-        `${process.env.BRULLAH_URL}/tournament/tournaments?joinTournId=${props.id}`
+        `${process.env.BRULLAH_URL}/tournament/tournaments?tid=${props.id}`
       );
     }
   };

@@ -12,11 +12,13 @@ import TournamentsNotStarted from "./tournamentsNoStarted/TournamentsNotStarted"
 const cn = classNames.bind(styles);
 
 interface Props {
+  hideSideNav?: boolean;
   sideNavigationOpen: boolean;
   handleSideNavigation: () => void;
 }
 
 const SideNavigation = ({
+  hideSideNav,
   sideNavigationOpen,
   handleSideNavigation,
 }: Props) => {
@@ -25,6 +27,7 @@ const SideNavigation = ({
     <nav
       className={cn(
         styles.container,
+        hideSideNav ? styles.hideNav : "",
         sideNavigationOpen ? styles.containerOpen : ""
       )}
     >

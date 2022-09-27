@@ -17,6 +17,7 @@ const USER = gql`
     user {
       id
       identity {
+        arena_name
         affiliate {
           code
           commission
@@ -49,11 +50,13 @@ const EnlistedAffiliatesStatus = ({ search, setSearch }: Props) => {
   };
 
   const copyAffiliateCode = () => {
+    if (!navigator.clipboard) return;
     setCopyCode(true);
     navigator.clipboard.writeText(data?.user.identity.affiliate.code);
   };
 
   const copyAffiliateLink = () => {
+    if (!navigator.clipboard) return;
     setCopyLink(true);
     navigator.clipboard.writeText(
       `${process.env.BRULLAH_URL}/?affiliate=${data?.user.identity.affiliate.code}`

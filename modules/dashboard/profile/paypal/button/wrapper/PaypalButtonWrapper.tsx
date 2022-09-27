@@ -1,7 +1,7 @@
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import cn from "classnames";
 import styles from "./styles.module.scss";
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { gql } from "@apollo/client";
 import dinero from "dinero.js";
 import Logo from "../../../../../../components/Logo/Logo";
@@ -28,17 +28,16 @@ const PaypalButtonWrapper = ({
 }: Props) => {
   const [{ options, isPending, isResolved, isRejected }, dispatch] =
     usePayPalScriptReducer();
-  const dispatchPaypal = useCallback(dispatch, [dispatch]);
 
   useEffect(() => {
-    dispatchPaypal({
+    dispatch({
       type: "resetOptions",
       value: {
         ...options,
         currency: activeCurrency,
       },
     });
-  }, [activeCurrency, dispatchPaypal, options]);
+  }, [activeCurrency, dispatch]);
 
   useEffect(() => {
     if (isPending) {

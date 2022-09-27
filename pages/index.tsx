@@ -1,13 +1,24 @@
 import type { NextPage } from "next";
-import cn from "classnames";
-import styles from "./styles.module.scss";
+import styled from "@emotion/styled";
 import Head from "next/head";
-import HomeMain from "../../modules/home/HomeMain";
+import HomeMain from "../modules/home/HomeMain";
 import "swiper/css/bundle";
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  display: grid;
+  background-color: ${(props) => props.theme.colors.background};
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 60px minmax(0, 1fr);
+  grid-template-areas:
+    "navigationtop"
+    "maincontent";
+`;
 
 const Home: NextPage = () => {
   return (
-    <div className={cn(styles.grid)}>
+    <Container>
       <Head>
         <title>Home | Brullah</title>
         <meta
@@ -17,7 +28,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <HomeMain></HomeMain>
-    </div>
+    </Container>
   );
 };
 

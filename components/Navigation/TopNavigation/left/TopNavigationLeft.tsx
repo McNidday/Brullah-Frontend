@@ -25,7 +25,7 @@ const TopNavigationLeft = ({ handleSideNavigation, hideSideNav }: Props) => {
             componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
           >
             <div
-              className={cn(styles.icon, styles.homeIcon)}
+              className={cn(styles.icon, hideSideNav ? "" : styles.homeIcon)}
               onMouseEnter={() => setHomeIconHover(true)}
               onMouseLeave={() => setHomeIconHover(false)}
             >

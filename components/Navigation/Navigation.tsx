@@ -29,6 +29,7 @@ const Navigation = ({ hideTopNav, hideSideNav }: Props) => {
       )}
       {!hideSideNav ? (
         <SideNavigation
+          hideSideNav={hideSideNav}
           handleSideNavigation={handleSideNavigation}
           sideNavigationOpen={sideNavigationOpen}
         ></SideNavigation>

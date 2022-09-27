@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import cn from "classnames";
-import Footer from "../../../components/Footer/Footer";
-import CreateTournamentMain from "../../../modules/tournament/createTournament/CreateTournamentMain";
-import ApolloClientOnly from "../../../Apollo/ApolloClientOnly";
-import Fallback from "../../../components/Fallback/Fallback";
-import Navigation from "../../../components/Navigation/Navigation";
+import Footer from "../../components/Footer/Footer";
+import CreateTournamentMain from "../../modules/tournament/createTournament/CreateTournamentMain";
+import ApolloClientOnly from "../../Apollo/ApolloClientOnly";
+import Fallback from "../../components/Fallback/Fallback";
+import Navigation from "../../components/Navigation/Navigation";
 
 const CreateTournament: NextPage = () => {
   return (
@@ -18,7 +18,7 @@ const CreateTournament: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navigation></Navigation>
+      <Navigation hideSideNav={true}></Navigation>
       <ApolloClientOnly fallback={<Fallback></Fallback>}>
         <CreateTournamentMain></CreateTournamentMain>
       </ApolloClientOnly>

@@ -2,7 +2,7 @@ import { useQuery, gql } from "@apollo/client";
 import anime from "animejs";
 import classNames from "classnames";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Icon from "../../../Icon/Icon";
 import TopNavigationRightLoading from "./Loading/TopNavigationRightLoading";
 import TopRightNavigationLogin from "./Login/TopRightNavigationLogin";
@@ -31,7 +31,7 @@ const USER = gql`
 
 const TopNavigationRight = () => {
   const router = useRouter();
-  const { loading, error, data } = useQuery(USER);
+  const { loading, error, data, refetch } = useQuery(USER);
   const [dashboardHover, setDashboardHover] = useState(false);
   const [logoutHover, setLogoutHover] = useState(false);
   // Get access to the dropdown ref
@@ -55,8 +55,14 @@ const TopNavigationRight = () => {
   };
   const logout = () => {
     deleteCookie("token");
-    router.push("/");
+    router.push("/?logout=true");
   };
+  useEffect(() => {
+    const { logout } = router.query;
+    if (logout) {
+      refetch();
+    }
+  }, [router.query, refetch]);
 
   if (loading) return <TopNavigationRightLoading></TopNavigationRightLoading>;
   if (error) return <TopRightNavigationLogin></TopRightNavigationLogin>;
