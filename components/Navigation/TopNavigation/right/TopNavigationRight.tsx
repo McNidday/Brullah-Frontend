@@ -53,16 +53,11 @@ const TopNavigationRight = () => {
       opacity: 0,
     });
   };
+
   const logout = () => {
     deleteCookie("token");
-    router.push("/?logout=true");
+    router.reload();
   };
-  useEffect(() => {
-    const { logout } = router.query;
-    if (logout) {
-      refetch();
-    }
-  }, [router.query, refetch]);
 
   if (loading) return <TopNavigationRightLoading></TopNavigationRightLoading>;
   if (error) return <TopRightNavigationLogin></TopRightNavigationLogin>;
