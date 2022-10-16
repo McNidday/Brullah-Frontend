@@ -188,7 +188,7 @@ const SignUpAgreement = () => {
             If we reasonably believe that any of your content (1) breaches these
             terms, service-specific additional terms or policies, (2) violates
             applicable law, or (3) could harm our users, third parties, or
-            Google, then we reserve the right to take down some or all of that
+            Brullah, then we reserve the right to take down some or all of that
             content in accordance with applicable law. Examples include child
             pornography, content that facilitates human trafficking or
             harassment, terrorist content, and content that infringes someone
