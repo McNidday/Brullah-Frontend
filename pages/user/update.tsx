@@ -6,6 +6,7 @@ import UpdateUserMain from "../../modules/user/update/UpdateUserMain";
 import ApolloClientOnly from "../../Apollo/ApolloClientOnly";
 import Fallback from "../../components/Fallback/Fallback";
 import Navigation from "../../components/Navigation/Navigation";
+import Favicon from "../../components/Favicon/Favicon";
 
 const Update: NextPage = () => {
   return (
@@ -16,7 +17,7 @@ const Update: NextPage = () => {
           name="Update brullah account info"
           content="Make mullah playing games (A.K.A) Making money with your brain"
         />
-        <link rel="icon" href="/favicon.ico" />
+        <Favicon></Favicon>
       </Head>
       <Navigation hideSideNav={true}></Navigation>
       <ApolloClientOnly fallback={<Fallback></Fallback>}>

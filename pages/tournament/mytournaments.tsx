@@ -7,6 +7,7 @@ import MyTournamentsMain from "../../modules/tournament/myTournaments/MyTourname
 import MyTournamentsLoading from "../../modules/tournament/myTournaments/loading/MyTournamentsLoading";
 import Navigation from "../../components/Navigation/Navigation";
 import MyTournamentsMainUser from "../../modules/tournament/myTournaments/MyTournamentsMainUser";
+import Favicon from "../../components/Favicon/Favicon";
 
 const MyTournaments: NextPage = () => {
   return (
@@ -14,7 +15,7 @@ const MyTournaments: NextPage = () => {
       <Head>
         <title>My Tournaments | Brullah</title>
         <meta name="My Tournaments" content="Tournaments you have created" />
-        <link rel="icon" href="/favicon.ico" />
+        <Favicon></Favicon>
       </Head>
       <Navigation></Navigation>
       <ApolloClientOnly

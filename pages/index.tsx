@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import Head from "next/head";
 import HomeMain from "../modules/home/HomeMain";
 import "swiper/css/bundle";
+import Favicon from "../components/Favicon/Favicon";
 
 const Container = styled.div`
   width: 100%;
@@ -25,7 +26,7 @@ const Home: NextPage = () => {
           name="Welcome to Brullah"
           content="Make money for for fun, for hustle and for checkers. A brain with mullah is worth 2 jobs in the bush."
         />
-        <link rel="icon" href="/favicon.ico" />
+        <Favicon></Favicon>
       </Head>
       <HomeMain></HomeMain>
     </Container>

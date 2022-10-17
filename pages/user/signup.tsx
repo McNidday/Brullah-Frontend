@@ -6,6 +6,7 @@ import SignupMain from "../../modules/user/signup/SignupMain";
 import ApolloClientOnly from "../../Apollo/ApolloClientOnly";
 import Fallback from "../../components/Fallback/Fallback";
 import Navigation from "../../components/Navigation/Navigation";
+import Favicon from "../../components/Favicon/Favicon";
 
 const Signup: NextPage = () => {
   return (
@@ -16,7 +17,7 @@ const Signup: NextPage = () => {
           name="Make a brullah account"
           content="Make mullah playing games (A.K.A) Making money with your brain"
         />
-        <link rel="icon" href="/favicon.ico" />
+        <Favicon></Favicon>
       </Head>
       <Navigation hideSideNav={true}></Navigation>
       <ApolloClientOnly fallback={<Fallback></Fallback>}>

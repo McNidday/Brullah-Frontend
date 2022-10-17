@@ -6,6 +6,7 @@ import ApolloClientOnly from "../../Apollo/ApolloClientOnly";
 import cn from "classnames";
 import Fallback from "../../components/Fallback/Fallback";
 import Navigation from "../../components/Navigation/Navigation";
+import Favicon from "../../components/Favicon/Favicon";
 
 const Forgot: NextPage = () => {
   return (
@@ -16,7 +17,7 @@ const Forgot: NextPage = () => {
           name="Brullah forgot password"
           content="Reset to your brullah account password."
         />
-        <link rel="icon" href="/favicon.ico" />
+        <Favicon></Favicon>
       </Head>
       <Navigation hideSideNav={true}></Navigation>
       <ApolloClientOnly fallback={<Fallback></Fallback>}>

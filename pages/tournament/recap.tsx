@@ -6,6 +6,7 @@ import ApolloClientOnly from "../../Apollo/ApolloClientOnly";
 import TrackTournamentLoading from "../../modules/tournament/trackTournament/loading/TrackingTournamentLoading";
 import RecapTournamentMain from "../../modules/tournament/trackTournament/RecapTournamentMain";
 import Navigation from "../../components/Navigation/Navigation";
+import Favicon from "../../components/Favicon/Favicon";
 
 const TrackTournament: NextPage = () => {
   return (
@@ -16,7 +17,7 @@ const TrackTournament: NextPage = () => {
           name="Recap Tournament Brullah"
           content="Recap tournament progress"
         />
-        <link rel="icon" href="/favicon.ico" />
+        <Favicon></Favicon>
       </Head>
       <Navigation></Navigation>
       <ApolloClientOnly

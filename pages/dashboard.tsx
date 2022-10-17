@@ -6,6 +6,7 @@ import ApolloClientOnly from "../Apollo/ApolloClientOnly";
 import Navigation from "../components/Navigation/Navigation";
 import DashboardMainLoading from "../modules/dashboard/loading/DashboardMainLoading";
 import DashboardMain from "../modules/dashboard/DashboardMain";
+import Favicon from "../components/Favicon/Favicon";
 
 const Dashboard: NextPage = () => {
   return (
@@ -13,7 +14,7 @@ const Dashboard: NextPage = () => {
       <Head>
         <title>Dashboard | Brullah</title>
         <meta name="Brullah dashboard" content="Manage your brullah account" />
-        <link rel="icon" href="/favicon.ico" />
+        <Favicon></Favicon>
       </Head>
       <Navigation></Navigation>
       <ApolloClientOnly

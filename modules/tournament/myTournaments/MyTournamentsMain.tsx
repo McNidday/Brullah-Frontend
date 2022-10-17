@@ -1,6 +1,6 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import { ApolloError, gql, NetworkStatus, useQuery } from "@apollo/client";
+import { gql, NetworkStatus, useQuery } from "@apollo/client";
 import MyTournamentsParentList, {
   MyTournamentsParentListFragment,
 } from "./mytournaments/MyTournamentsParentList";
