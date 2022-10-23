@@ -23,8 +23,8 @@ const HowTo: NextPage = () => {
       <Head>
         <title>HowTo | Brullah</title>
         <meta
-          name="Brullah how to"
-          content="Learn how to utilize brullah, for your own benefit."
+          name="description"
+          content="Learn how to utilize brullah, for your own benefit"
         />
         <Favicon></Favicon>
       </Head>

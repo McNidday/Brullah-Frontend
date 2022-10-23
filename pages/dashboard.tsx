@@ -13,7 +13,7 @@ const Dashboard: NextPage = () => {
     <div className={cn("page-grid")}>
       <Head>
         <title>Dashboard | Brullah</title>
-        <meta name="Brullah dashboard" content="Manage your brullah account" />
+        <meta name="description" content="Manage your brullah account" />
         <Favicon></Favicon>
       </Head>
       <Navigation></Navigation>

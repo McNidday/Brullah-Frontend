@@ -14,8 +14,8 @@ const Signup: NextPage = () => {
       <Head>
         <title>SignUp | Brullah</title>
         <meta
-          name="Make a brullah account"
-          content="Make mullah playing games (A.K.A) Making money with your brain"
+          name="description"
+          content="Make a brullah account. Let's become mullah buddies"
         />
         <Favicon></Favicon>
       </Head>

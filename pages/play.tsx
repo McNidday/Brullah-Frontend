@@ -14,7 +14,7 @@ const Play: NextPage = () => {
       <Head>
         <title>Play Games | Brullah</title>
         <meta
-          name="Brullah games"
+          name="description"
           content="Play games by brullah for money, for fun, for skill, for all"
         />
         <Favicon></Favicon>

@@ -64,11 +64,11 @@ const TopNavigationRight = () => {
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.profileContainer)}>
-        <ul>
+        <div>
           <ClickAwayListener onClickAway={closeDropDropDown}>
             <div>
-              <li>
-                <div className={cn(styles.profileImage)} onClick={dropDropDown}>
+              <ul>
+                <li className={cn(styles.profileImage)} onClick={dropDropDown}>
                   <Image
                     src={data.user.identity.avatar.image}
                     alt={data.user.identity.arena_name}
@@ -80,11 +80,11 @@ const TopNavigationRight = () => {
                       100
                     )}
                   ></Image>
-                </div>
-                <div className={cn(styles.profileName)}>
+                </li>
+                <li className={cn(styles.profileName)}>
                   {data.user.identity.arena_name}
-                </div>
-              </li>
+                </li>
+              </ul>
               <ul
                 ref={dropDownRef}
                 className={cn(dropDownHover ? styles.dropDownActive : "")}
@@ -125,7 +125,7 @@ const TopNavigationRight = () => {
               </ul>
             </div>
           </ClickAwayListener>
-        </ul>
+        </div>
       </div>
     </div>
   );

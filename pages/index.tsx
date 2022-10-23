@@ -23,8 +23,8 @@ const Home: NextPage = () => {
       <Head>
         <title>Home | Brullah</title>
         <meta
-          name="Welcome to Brullah"
-          content="Make money for for fun, for hustle and for checkers. A brain with mullah is worth 2 jobs in the bush."
+          name="description"
+          content="Make money for for fun, for hustle and for independence. A brain with mullah is worth 2 jobs in the bush."
         />
         <Favicon></Favicon>
       </Head>

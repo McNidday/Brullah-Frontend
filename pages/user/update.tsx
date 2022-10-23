@@ -14,8 +14,8 @@ const Update: NextPage = () => {
       <Head>
         <title>Update User | Brullah</title>
         <meta
-          name="Update brullah account info"
-          content="Make mullah playing games (A.K.A) Making money with your brain"
+          name="description"
+          content="Update your brullah account information"
         />
         <Favicon></Favicon>
       </Head>

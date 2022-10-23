@@ -14,8 +14,8 @@ const Forgot: NextPage = () => {
       <Head>
         <title>Forgot Password | Brullah</title>
         <meta
-          name="Brullah forgot password"
-          content="Reset to your brullah account password."
+          name="description"
+          content="Reset to your brullah account password"
         />
         <Favicon></Favicon>
       </Head>

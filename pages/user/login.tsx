@@ -13,7 +13,7 @@ const Login: NextPage = () => {
     <div className={cn("page-grid")}>
       <Head>
         <title>Login | Brullah</title>
-        <meta name="Brullah login" content="Login to your brullah account." />
+        <meta name="description" content="Login to your brullah account" />
         <Favicon></Favicon>
       </Head>
       <Navigation hideSideNav={true}></Navigation>

@@ -13,10 +13,7 @@ const TrackTournament: NextPage = () => {
     <div className={cn("page-grid")}>
       <Head>
         <title>Track Tournament | Brullah</title>
-        <meta
-          name="Track Tournament Brullah"
-          content="Track tournament progress"
-        />
+        <meta name="description" content="Track tournament progress" />
         <Favicon></Favicon>
       </Head>
       <Navigation></Navigation>

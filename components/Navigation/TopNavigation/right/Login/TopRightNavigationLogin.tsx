@@ -31,23 +31,24 @@ const TopRightNavigationLogin = () => {
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.profileContainer)}>
-        <ul>
+        <div>
           <ClickAwayListener onClickAway={closeDropDropDown}>
             <div>
-              <li>
-                <div className={cn(styles.profileImage)} onClick={dropDropDown}>
+              <ul>
+                <li className={cn(styles.profileImage)} onClick={dropDropDown}>
                   <Icon
                     inactiveLink="/icons/person/inactive.svg"
                     activeLink="/icons/person/active.svg"
                     hover={dropDownHover}
                     alt={"No Avatar"}
                   ></Icon>
-                </div>
-
-                <Link href="/user/login">
-                  <a>Login</a>
-                </Link>
-              </li>
+                </li>
+                <li>
+                  <Link href="/user/login">
+                    <a>Login</a>
+                  </Link>
+                </li>
+              </ul>
               <ul
                 ref={dropDownRef}
                 className={cn(dropDownHover ? styles.dropDownActive : "")}
@@ -72,7 +73,7 @@ const TopRightNavigationLogin = () => {
               </ul>
             </div>
           </ClickAwayListener>
-        </ul>
+        </div>
       </div>
     </div>
   );

@@ -13,10 +13,7 @@ const CreateTournament: NextPage = () => {
     <div className={cn("page-grid")}>
       <Head>
         <title>Create Tournament | Brullah</title>
-        <meta
-          name="Create a new brullah tournament"
-          content="Brullah tournaments would fripple your earnings. Make your mullah brain more happy."
-        />
+        <meta name="description" content="Create a new tournament" />
         <Favicon></Favicon>
       </Head>
       <Navigation hideSideNav={true}></Navigation>

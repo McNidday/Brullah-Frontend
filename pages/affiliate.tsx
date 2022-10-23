@@ -14,7 +14,7 @@ const Affiliate: NextPage = () => {
     <div className={cn("page-grid")}>
       <Head>
         <title>Affiliate | Brullah</title>
-        <meta name="Brullah affiliates" content="Brullah affiliate program" />
+        <meta name="description" content="Brullah affiliate program" />
         <Favicon></Favicon>
       </Head>
       <Navigation></Navigation>

@@ -15,7 +15,7 @@ const Forgot: NextPage = () => {
         <title>Verify Account | Brullah</title>
         <meta
           name="Verify brullah account"
-          content="Verify account to gain access to more brullah services"
+          content="Verify your brullah account to gain access to more brullah services"
         />
         <Favicon></Favicon>
       </Head>

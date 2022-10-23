@@ -14,7 +14,7 @@ const Tournaments: NextPage = () => {
       <Head>
         <title>Tournaments | Brullah</title>
         <meta
-          name="Brullah Tournaments"
+          name="description"
           content="Brullah tournaments would fripple your earnings. Make your mullah brain more happy."
         />
         <Favicon></Favicon>
