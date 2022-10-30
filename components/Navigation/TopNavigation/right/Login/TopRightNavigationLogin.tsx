@@ -44,9 +44,7 @@ const TopRightNavigationLogin = () => {
                   ></Icon>
                 </li>
                 <li>
-                  <Link href="/user/login">
-                    <a>Login</a>
-                  </Link>
+                  <Link href="/user/login">Login</Link>
                 </li>
               </ul>
               <ul
@@ -66,9 +64,7 @@ const TopRightNavigationLogin = () => {
                     ></Icon>
                   </div>
 
-                  <Link href="/user/signup">
-                    <a>Signup</a>
-                  </Link>
+                  <Link href="/user/signup">Signup</Link>
                 </li>
               </ul>
             </div>

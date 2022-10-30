@@ -15,14 +15,14 @@ const Icon = (props: Props) => {
       <Image
         className={cn(props.hover ? styles.hideIcon : "")}
         src={props.inactiveLink}
-        layout="fill"
         alt={props.alt}
+        fill
       ></Image>
       <Image
         className={cn(!props.hover ? styles.hideIcon : "")}
         src={props.activeLink}
-        layout="fill"
         alt={props.alt}
+        fill
       ></Image>
     </>
   );

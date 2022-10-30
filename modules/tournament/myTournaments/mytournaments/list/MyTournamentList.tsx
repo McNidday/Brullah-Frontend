@@ -62,10 +62,10 @@ const MyTournamentList = (props: Props) => {
         >
           <div>
             <Image
+              fill
               src={props.creator.identity.avatar.image}
               alt={props.creator.identity.arena_name}
               placeholder="blur"
-              layout="fill"
               blurDataURL={decodeBlurHash(
                 props.creator.identity.avatar.blurhash,
                 50,
@@ -79,7 +79,7 @@ const MyTournamentList = (props: Props) => {
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
           <div className={cn(!props.sponsor.sponsored ? styles.disabled : "")}>
-            <Image src="/icons/sponsor.svg" layout="fill" alt=""></Image>
+            <Image fill src="/icons/sponsor.svg" alt=""></Image>
           </div>
         </Tooltip>
         <Tooltip
@@ -93,7 +93,7 @@ const MyTournamentList = (props: Props) => {
               !props.contribution.contributed ? styles.disabled : ""
             )}
           >
-            <Image src="/icons/bit.svg" layout="fill" alt=""></Image>
+            <Image fill src="/icons/bit.svg" alt=""></Image>
           </div>
         </Tooltip>
         <Tooltip
@@ -115,9 +115,9 @@ const MyTournamentList = (props: Props) => {
       </div>
       <div>
         <Image
+          fill
           src={props.information.thumbnail.image}
           alt={props.information.name}
-          layout="fill"
           placeholder="blur"
           blurDataURL={decodeBlurHash(
             props.information.thumbnail.blurhash,

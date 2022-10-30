@@ -57,6 +57,7 @@
       flex-direction: column;
     }
     & > div:nth-child(2) {
+      width: 100%;
       & > div {
         display: flex;
         flex-direction: row;
@@ -68,6 +69,12 @@
           width: 25px;
           height: 25px;
         }
+      }
+      & > p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
       }
     }
     & > div {
@@ -83,6 +90,7 @@
       }
       p {
         color: $activeColor;
+        text-align: center;
       }
     }
   }

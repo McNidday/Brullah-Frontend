@@ -58,9 +58,9 @@ const DashboardUserProfile = ({ user }: Props) => {
     <div className={cn(styles.profile)}>
       <div>
         <Image
+          fill
           src={user.identity.avatar.image}
           alt={user.identity.arena_name}
-          layout="fill"
           placeholder="blur"
           blurDataURL={decodeBlurHash(user.identity.avatar.blurhash, 100, 100)}
         ></Image>
@@ -93,14 +93,12 @@ const DashboardUserProfile = ({ user }: Props) => {
           onMouseLeave={() => setEditIconHover(false)}
         >
           <Link href={`/user/update`}>
-            <a>
-              <Icon
-                activeLink="/icons/edit/active.svg"
-                inactiveLink="/icons/edit/inactive.svg"
-                hover={editIconHover}
-                alt="Edit Profile"
-              ></Icon>
-            </a>
+            <Icon
+              activeLink="/icons/edit/active.svg"
+              inactiveLink="/icons/edit/inactive.svg"
+              hover={editIconHover}
+              alt="Edit Profile"
+            ></Icon>
           </Link>
         </div>
         {affiliateStatus ? (
@@ -109,14 +107,12 @@ const DashboardUserProfile = ({ user }: Props) => {
             onMouseLeave={() => setAffiliateIconHover(false)}
           >
             <Link href={`/affiliate`}>
-              <a>
-                <Icon
-                  activeLink="/icons/affiliate/active.svg"
-                  inactiveLink="/icons/affiliate/inactive.svg"
-                  hover={affiliateIconHover}
-                  alt="Affiate Dashboard"
-                ></Icon>
-              </a>
+              <Icon
+                activeLink="/icons/affiliate/active.svg"
+                inactiveLink="/icons/affiliate/inactive.svg"
+                hover={affiliateIconHover}
+                alt="Affiate Dashboard"
+              ></Icon>
             </Link>
           </div>
         ) : (

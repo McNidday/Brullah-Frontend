@@ -70,9 +70,9 @@ const TopNavigationRight = () => {
               <ul>
                 <li className={cn(styles.profileImage)} onClick={dropDropDown}>
                   <Image
+                    fill
                     src={data.user.identity.avatar.image}
                     alt={data.user.identity.arena_name}
-                    layout="fill"
                     placeholder="blur"
                     blurDataURL={decodeBlurHash(
                       data.user.identity.avatar.blurhash,
@@ -102,9 +102,7 @@ const TopNavigationRight = () => {
                     ></Icon>
                   </div>
                   <div>
-                    <Link href={"/dashboard"}>
-                      <a>Dashboard</a>
-                    </Link>{" "}
+                    <Link href={"/dashboard"}>Dashboard</Link>
                   </div>
                 </li>
                 <li

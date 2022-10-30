@@ -286,9 +286,9 @@ const EditTournamentModal = ({
                     <li key={u.id} className={cn(styles.editUserListItem)}>
                       <div className={cn(styles.editUserListItemImage)}>
                         <Image
+                          fill
                           src={u.identity.avatar.image}
                           alt={u.identity.arena_name}
-                          layout="fill"
                           placeholder="blur"
                           blurDataURL={decodeBlurHash(
                             u.identity.avatar.blurhash,
@@ -411,9 +411,9 @@ const EditTournamentModal = ({
               <div className={cn(styles.containedUsersContainer)}>
                 <div className={cn(styles.containedUsersImage)}>
                   <Image
+                    fill
                     src={editting.slot_one.user.identity.avatar.image}
                     alt={editting.slot_one.user.identity.arena_name}
-                    layout="fill"
                     placeholder="blur"
                     blurDataURL={decodeBlurHash(
                       editting.slot_one.user.identity.avatar.blurhash,
@@ -444,9 +444,9 @@ const EditTournamentModal = ({
               <div className={cn(styles.containedUsersContainer)}>
                 <div className={cn(styles.containedUsersImage)}>
                   <Image
+                    fill
                     src={editting.slot_two.user.identity.avatar.image}
                     alt={editting.slot_two.user.identity.arena_name}
-                    layout="fill"
                     placeholder="blur"
                     blurDataURL={decodeBlurHash(
                       editting.slot_two.user.identity.avatar.blurhash,
@@ -479,9 +479,9 @@ const EditTournamentModal = ({
                   <div className={cn(styles.containedUsersContainer)}>
                     <div className={cn(styles.containedUsersImage)}>
                       <Image
+                        fill
                         src={editting.bye.user.identity.avatar.image}
                         alt={editting.bye.user.identity.arena_name}
-                        layout="fill"
                         placeholder="blur"
                         blurDataURL={decodeBlurHash(
                           editting.bye.user.identity.avatar.blurhash,

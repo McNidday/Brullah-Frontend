@@ -9,11 +9,7 @@ const TopNavigationRightLoading = () => {
     <div className={cn(styles.container)}>
       <div>
         <div className={cn(styles.profileImage)}>
-          <Image
-            src="/icons/person/inactive.svg"
-            layout="fill"
-            alt="No Image"
-          ></Image>
+          <Image fill src="/icons/person/inactive.svg" alt="No Image"></Image>
         </div>
         <div>
           <CircularLoading></CircularLoading>

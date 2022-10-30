@@ -47,8 +47,8 @@ const ManageAffiliatesSearch = ({
         <div>
           <Image
             src={`/icons/search/inactive.svg`}
-            layout="fill"
             alt="Search Brullah Affiliates"
+            fill
           ></Image>
         </div>
       </div>

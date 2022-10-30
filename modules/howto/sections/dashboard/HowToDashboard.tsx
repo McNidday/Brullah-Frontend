@@ -35,7 +35,7 @@ const HowToDashboard = () => {
                       <Image
                         src={`/images/Dashboard.png`}
                         alt={`Dashboard brullah page`}
-                        layout={"fill"}
+                        fill
                       ></Image>
                     </div>
                   </div>

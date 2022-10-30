@@ -18,13 +18,11 @@ const HomeCommunitySlide = () => {
         <div className={cn(styles.whatsapp)}>
           <div>
             <Link href="https://chat.whatsapp.com/BfO9knIg4VQ4Z7xea7e1Cs">
-              <a>
-                <Image
-                  alt="WhatsApp Qr Code"
-                  src="/images/WhatsAppGroup.png"
-                  layout="fill"
-                ></Image>
-              </a>
+              <Image
+                alt="WhatsApp Qr Code"
+                src="/images/WhatsAppGroup.png"
+                fill
+              ></Image>
             </Link>
           </div>
           <p>Click on image to join via link or scan QR</p>

@@ -46,8 +46,8 @@ const PlayMain = () => {
               <Image
                 src={`/images/Checkers-Tai.jpg`}
                 alt="Checkers"
-                layout="fill"
                 priority
+                fill
               ></Image>
             </div>
             <div>

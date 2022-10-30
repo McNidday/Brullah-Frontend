@@ -20,9 +20,9 @@ const Completed = ({ tournament }: Props) => {
     <li className={cn(styles.container)}>
       <div>
         <Image
+          fill
           src={tournament.information.thumbnail.image}
           alt={`Touenament ${tournament.information.name}`}
-          layout="fill"
           placeholder="blur"
           blurDataURL={decodeBlurHash(
             tournament.information.thumbnail.blurhash,

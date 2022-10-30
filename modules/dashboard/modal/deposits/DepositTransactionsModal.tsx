@@ -23,8 +23,8 @@ interface Props {
 }
 
 const DEPOSIT_TRANSACTIONS = gql`
-  query PaypalDepositTransactions($page: Int!, $limit: Int!) {
-    paypalDepositTransactions(page: $page, limit: $limit) {
+  query DepositTransactions($page: Int!, $limit: Int!) {
+    depositTransactions(page: $page, limit: $limit) {
       docs {
         payer {
           identity {

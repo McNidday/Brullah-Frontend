@@ -172,9 +172,9 @@ const TrackTournamentArenaBrackets = ({
             </div>
             <div className={cn(styles.arenaWinnerImage)}>
               <Image
+                fill
                 src={config.winner.user.identity.avatar.image}
                 alt={config.winner.user.identity.arena_name}
-                layout="fill"
                 placeholder="blur"
                 blurDataURL={decodeBlurHash(
                   config.winner.user.identity.avatar.blurhash,
@@ -190,11 +190,7 @@ const TrackTournamentArenaBrackets = ({
               Arena Winner: No Winner ¯\(°_o)/¯
             </div>
             <div className={cn(styles.arenaWinnerImage)}>
-              <Image
-                src={"/icons/cyclone/active.svg"}
-                layout="fill"
-                alt=""
-              ></Image>
+              <Image fill src={"/icons/cyclone/active.svg"} alt=""></Image>
             </div>
           </div>
         ) : (
@@ -203,11 +199,7 @@ const TrackTournamentArenaBrackets = ({
               Arena Winner: Battle In Progress
             </div>
             <div className={cn(styles.arenaWinnerImage)}>
-              <Image
-                src={"/icons/cyclone/active.svg"}
-                layout="fill"
-                alt=""
-              ></Image>
+              <Image fill src={"/icons/cyclone/active.svg"} alt=""></Image>
             </div>
           </div>
         )}

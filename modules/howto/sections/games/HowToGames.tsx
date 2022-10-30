@@ -33,8 +33,8 @@ const HowToGames = () => {
                   </p>
                   <div className={cn(styles.checkersCard)}>
                     <Image
-                      width={"198px"}
-                      height={"248px"}
+                      width={198}
+                      height={248}
                       src={`/images/PlayCard.png`}
                       alt={`Play checkers 3d game card`}
                     ></Image>
@@ -53,7 +53,7 @@ const HowToGames = () => {
                       <Image
                         src={`/images/CheckersGame.png`}
                         alt={`Play checkers 3d game card`}
-                        layout={"fill"}
+                        fill
                       ></Image>
                     </div>
                   </div>

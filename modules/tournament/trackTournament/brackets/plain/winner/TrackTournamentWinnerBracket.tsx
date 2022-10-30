@@ -42,14 +42,11 @@ const TrackTournamentWinnerBracket = ({ arenaWinner }: Props) => {
           <div className={cn(styles.tournamentBracketData)}>
             <div className={cn(styles.tournamentBracketDataWinnerContainer)}>
               <div className={cn(styles.tournamentBracketDataWinner)}>
-                <Image
-                  src={"/illustrations/05.png"}
-                  layout="fill"
-                  alt=""
-                ></Image>
+                <Image fill src={"/illustrations/05.png"} alt=""></Image>
                 {arenaWinner.status === "DONE" ? (
                   <div className={cn(styles.tournamentBracketDataWinnerImage)}>
                     <Image
+                      fill
                       src={arenaWinner.user.identity.avatar.image}
                       alt={arenaWinner.user.identity.arena_name}
                       placeholder="blur"
@@ -58,7 +55,6 @@ const TrackTournamentWinnerBracket = ({ arenaWinner }: Props) => {
                         50,
                         50
                       )}
-                      layout="fill"
                     ></Image>
                   </div>
                 ) : (

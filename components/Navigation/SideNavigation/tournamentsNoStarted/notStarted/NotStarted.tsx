@@ -31,9 +31,9 @@ const NotStarted = ({ information, start_date }: Props) => {
     <li className={cn(styles.container)}>
       <div>
         <Image
+          fill
           src={information.thumbnail.image}
           alt={`Tournament ${information.name}`}
-          layout="fill"
           placeholder="blur"
           blurDataURL={decodeBlurHash(information.thumbnail.blurhash, 65, 40)}
         ></Image>

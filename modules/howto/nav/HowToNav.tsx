@@ -44,13 +44,11 @@ const HowToNav = ({ hash }: Props) => {
         <li>
           <div>
             <Link href={`/howto/#`}>
-              <a>
-                <Image
-                  src={`/icons/logo/active.svg`}
-                  layout={"fill"}
-                  alt={"Brullah Logo"}
-                ></Image>
-              </a>
+              <Image
+                src={`/icons/logo/active.svg`}
+                alt={"Brullah Logo"}
+                fill
+              ></Image>
             </Link>
           </div>
         </li>
@@ -74,24 +72,16 @@ const HowToNav = ({ hash }: Props) => {
             noSwipingClass="swiper-no-swiping"
           >
             <SwiperSlide data-hash="brullah">
-              <Link href={`/howto/#brullah`}>
-                <a>Brullah</a>
-              </Link>
+              <Link href={`/howto/#brullah`}>Brullah</Link>
             </SwiperSlide>
             <SwiperSlide data-hash="games">
-              <Link href={`/howto/#games`}>
-                <a>Games</a>
-              </Link>
+              <Link href={`/howto/#games`}>Games</Link>
             </SwiperSlide>
             <SwiperSlide data-hash="tournament">
-              <Link href={`/howto/#tournament`}>
-                <a>Tournament</a>
-              </Link>
+              <Link href={`/howto/#tournament`}>Tournament</Link>
             </SwiperSlide>
             <SwiperSlide data-hash="dashboard">
-              <Link href={`/howto/#dashboard`}>
-                <a>Dashboard</a>
-              </Link>
+              <Link href={`/howto/#dashboard`}>Dashboard</Link>
             </SwiperSlide>
           </Swiper>
         </li>

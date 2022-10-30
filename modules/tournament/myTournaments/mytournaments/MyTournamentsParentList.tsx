@@ -67,7 +67,7 @@ const MyTournamentsParentList = ({
     return (
       <div className={cn(styles.noTournaments, styles.container)}>
         <div>
-          <Image src="/illustrations/04.png" layout="fill" alt=""></Image>
+          <Image fill src="/illustrations/04.png" alt=""></Image>
         </div>
         <div>
           <h3>
@@ -83,7 +83,7 @@ const MyTournamentsParentList = ({
     return (
       <div className={cn(styles.noTournaments, styles.container)}>
         <div>
-          <Image src="/illustrations/01.png" layout="fill" alt=""></Image>
+          <Image fill src="/illustrations/01.png" alt=""></Image>
         </div>
         <div>
           <h3>
@@ -100,7 +100,7 @@ const MyTournamentsParentList = ({
     return (
       <div className={cn(styles.noTournaments, styles.container)}>
         <div>
-          <Image src="/illustrations/04.png" layout="fill" alt=""></Image>
+          <Image fill src="/illustrations/04.png" alt=""></Image>
         </div>
         <div>
           <h3>Looking into the future...</h3>

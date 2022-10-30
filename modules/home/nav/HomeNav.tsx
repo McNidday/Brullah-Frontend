@@ -44,13 +44,11 @@ const HomeNav = ({ hash }: Props) => {
         <li>
           <div>
             <Link href={`/#`}>
-              <a>
-                <Image
-                  src={`/icons/logo/active.svg`}
-                  layout={"fill"}
-                  alt={`Brullah Logo`}
-                ></Image>
-              </a>
+              <Image
+                src={`/icons/logo/active.svg`}
+                alt={`Brullah Logo`}
+                fill
+              ></Image>
             </Link>
           </div>
         </li>
@@ -74,29 +72,19 @@ const HomeNav = ({ hash }: Props) => {
             noSwipingClass="swiper-no-swiping"
           >
             <SwiperSlide data-hash="brullah">
-              <Link href={`/#brullah`}>
-                <a>Brullah</a>
-              </Link>
+              <Link href={`/#brullah`}>Brullah</Link>
             </SwiperSlide>
             <SwiperSlide data-hash="about">
-              <Link href={`/#about`}>
-                <a>About</a>
-              </Link>
+              <Link href={`/#about`}>About</Link>
             </SwiperSlide>
             <SwiperSlide data-hash="features">
-              <Link href={`/#features`}>
-                <a>Features</a>
-              </Link>
+              <Link href={`/#features`}>Features</Link>
             </SwiperSlide>
             <SwiperSlide data-hash="community">
-              <Link href={`/#community`}>
-                <a>Colony</a>
-              </Link>
+              <Link href={`/#community`}>Colony</Link>
             </SwiperSlide>
             <SwiperSlide data-hash="discover">
-              <Link href={`/#discover`}>
-                <a>Discover</a>
-              </Link>
+              <Link href={`/#discover`}>Discover</Link>
             </SwiperSlide>
           </Swiper>
         </li>

@@ -47,8 +47,8 @@ const ViewAffiliatesSearch = ({
         <div>
           <Image
             src={`/icons/search/inactive.svg`}
-            layout="fill"
             alt="Search Affiliates"
+            fill
           ></Image>
         </div>
       </div>

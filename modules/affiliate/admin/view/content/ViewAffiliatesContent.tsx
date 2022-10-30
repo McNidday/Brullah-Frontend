@@ -20,6 +20,8 @@ interface Props {
     identity: {
       arena_name: String;
       arena_id: String;
+    };
+    finance: {
       affiliate: {
         code: String;
         start_date: number;
@@ -65,19 +67,19 @@ const ViewAffiliatesContent = ({
                   </TableCell>
                   <TableCell align="center">{t.identity.arena_name}</TableCell>
                   <TableCell align="center">
-                    {t.identity.affiliate.enlisted}
+                    {t.finance.affiliate.enlisted}
                   </TableCell>
                   <TableCell align="center">
                     {dinero({
-                      amount: t.identity.affiliate.commission,
+                      amount: t.finance.affiliate.commission,
                       currency: "USD",
                     }).toFormat()}
                   </TableCell>
                   <TableCell align="center">
-                    {t.identity.affiliate.code}
+                    {t.finance.affiliate.code}
                   </TableCell>
                   <TableCell align="center">
-                    {moment.unix(t.identity.affiliate.start_date).format("LLL")}
+                    {moment.unix(t.finance.affiliate.start_date).format("LLL")}
                   </TableCell>
                   <TableCell align="center">
                     <ViewAffiliatesContentRemoveButton

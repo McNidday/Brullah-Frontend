@@ -17,18 +17,16 @@ const HomeBrullahSlide = () => {
           Make money playing checkers and other online games created by brullah.
         </h3>
         <div data-swiper-parallax="-2000" data-swiper-parallax-duration="2400">
-          <Link href={`/user/signup`}>
-            <a>Get Started</a>
-          </Link>
+          <Link href={`/user/signup`}>Get Started</Link>
         </div>
       </div>
       <div>
         <div data-swiper-parallax-y="2000" data-swiper-parallax-duration="3000">
           <Image
             src={"/images/smartmockup.png"}
-            layout="fill"
             priority
-            alt=""
+            alt="Brullah website on mobile"
+            fill
           ></Image>
         </div>
       </div>

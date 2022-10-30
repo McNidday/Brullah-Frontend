@@ -13,8 +13,8 @@ interface Props {
 const Button = ({ text, disabled, onClick, forceActive, link }: Props) => {
   if (link)
     return (
-      <Link href={link}>
-        <a className={cn(styles.button)}>{text}</a>
+      <Link href={link} className={cn(styles.button)}>
+        {text}
       </Link>
     );
   return (

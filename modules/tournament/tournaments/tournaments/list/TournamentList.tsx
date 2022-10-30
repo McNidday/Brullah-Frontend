@@ -214,10 +214,10 @@ const TournamentList = ({
         >
           <div>
             <Image
+              fill
               src={creator.identity.avatar.image}
               alt={creator.identity.arena_name}
               placeholder="blur"
-              layout="fill"
               blurDataURL={decodeBlurHash(
                 creator.identity.avatar.blurhash,
                 50,
@@ -231,7 +231,7 @@ const TournamentList = ({
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
           <div className={cn(!sponsor.sponsored ? styles.disabled : "")}>
-            <Image src="/icons/sponsor.svg" layout="fill" alt=""></Image>
+            <Image fill src="/icons/sponsor.svg" alt=""></Image>
           </div>
         </Tooltip>
         <Tooltip
@@ -239,7 +239,7 @@ const TournamentList = ({
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
           <div className={cn(!contribution.contributed ? styles.disabled : "")}>
-            <Image src="/icons/bit.svg" layout="fill" alt=""></Image>
+            <Image fill src="/icons/bit.svg" alt=""></Image>
           </div>
         </Tooltip>
         <Tooltip
@@ -257,9 +257,9 @@ const TournamentList = ({
       </div>
       <div>
         <Image
+          fill
           src={information.thumbnail.image}
           alt={information.name}
-          layout="fill"
           placeholder="blur"
           blurDataURL={decodeBlurHash(information.thumbnail.blurhash, 200, 100)}
         ></Image>

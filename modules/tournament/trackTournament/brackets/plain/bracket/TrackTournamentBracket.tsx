@@ -159,9 +159,9 @@ const TrackTournamentBracket = ({
                       className={cn(styles.tournamentBracketDataProfilePicture)}
                     >
                       <Image
+                        fill
                         src={match.slot_one.user.identity.avatar.image}
                         alt={match.slot_one.user.identity.arena_name}
-                        layout="fill"
                         placeholder="blur"
                         blurDataURL={decodeBlurHash(
                           match.slot_one.user.identity.avatar.blurhash,
@@ -180,9 +180,9 @@ const TrackTournamentBracket = ({
                       className={cn(styles.tournamentBracketDataProfilePicture)}
                     >
                       <Image
+                        fill
                         src={bye.user.identity.avatar.image}
                         alt={bye.user.identity.arena_name}
-                        layout="fill"
                         placeholder="blur"
                         blurDataURL={decodeBlurHash(
                           bye.user.identity.avatar.blurhash,
@@ -201,8 +201,8 @@ const TrackTournamentBracket = ({
                       className={cn(styles.tournamentBracketDataProfilePicture)}
                     >
                       <Image
+                        fill
                         src={"/icons/cyclone/active.svg"}
-                        layout="fill"
                         alt=""
                       ></Image>
                     </div>
@@ -220,9 +220,9 @@ const TrackTournamentBracket = ({
                       className={cn(styles.tournamentBracketDataProfilePicture)}
                     >
                       <Image
+                        fill
                         src={match.slot_two.user.identity.avatar.image}
                         alt={match.slot_two.user.identity.arena_name}
-                        layout="fill"
                         placeholder="blur"
                         blurDataURL={decodeBlurHash(
                           match.slot_two.user.identity.avatar.blurhash,
@@ -241,8 +241,8 @@ const TrackTournamentBracket = ({
                       className={cn(styles.tournamentBracketDataProfilePicture)}
                     >
                       <Image
+                        fill
                         src={"/icons/cyclone/active.svg"}
-                        layout="fill"
                         alt=""
                       ></Image>
                     </div>

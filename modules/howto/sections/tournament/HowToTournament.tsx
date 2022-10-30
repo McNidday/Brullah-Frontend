@@ -41,7 +41,7 @@ const HowToTournament = () => {
                       <Image
                         src={`/images/CreateTournament.png`}
                         alt={`Create tournament brullah page`}
-                        layout={"fill"}
+                        fill
                       ></Image>
                     </div>
                   </div>
@@ -55,7 +55,7 @@ const HowToTournament = () => {
                       <Image
                         src={`/images/EditTournament.png`}
                         alt={`Edit tournament brullah page`}
-                        layout={"fill"}
+                        fill
                       ></Image>
                     </div>
                   </div>
@@ -70,7 +70,7 @@ const HowToTournament = () => {
                       <Image
                         src={`/images/EditTournamentPopUp.png`}
                         alt={`Edit tournament brullah page`}
-                        layout={"fill"}
+                        fill
                       ></Image>
                     </div>
                   </div>

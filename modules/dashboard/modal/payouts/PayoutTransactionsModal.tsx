@@ -23,8 +23,8 @@ interface Props {
 }
 
 const PAYPAL_TRANSACTIONS = gql`
-  query PaypalPayoutTransactions($page: Int!, $limit: Int!) {
-    paypalPayoutTransactions(page: $page, limit: $limit) {
+  query PayoutTransactions($page: Int!, $limit: Int!) {
+    payoutTransactions(page: $page, limit: $limit) {
       docs {
         sender_item_id {
           identity {

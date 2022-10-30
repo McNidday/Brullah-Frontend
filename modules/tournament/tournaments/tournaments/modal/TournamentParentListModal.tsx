@@ -374,9 +374,9 @@ const TournamentParentListModal = ({
               <div className={cn(styles.thumbnail)}>
                 <div className={cn(styles.thumbnailImage)}>
                   <Image
+                    fill
                     src={data.tournament.information.thumbnail.image}
                     alt={data.tournament.information.name}
-                    layout="fill"
                     placeholder="blur"
                     blurDataURL={decodeBlurHash(
                       data.tournament.information.thumbnail.blurhash,
@@ -410,9 +410,9 @@ const TournamentParentListModal = ({
                             <div className={cn(styles.joinedUser)}>
                               <div className={cn(styles.joinedUserImage)}>
                                 <Image
+                                  fill
                                   src={u.identity.avatar.image}
                                   alt={u.identity.arena_name}
-                                  layout="fill"
                                   blurDataURL={decodeBlurHash(
                                     u.identity.avatar.blurhash,
                                     50,

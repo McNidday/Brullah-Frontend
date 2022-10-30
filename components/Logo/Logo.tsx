@@ -1,6 +1,5 @@
 import cn from "classnames";
 import Image from "next/image";
-import SVG from "react-inlinesvg";
 import styles from "./styles.module.scss";
 
 interface Props {
@@ -17,17 +16,17 @@ const Logo = ({ thinking, text, image, container }: Props) => {
         <div style={image}>
           <div style={image}>
             <Image
+              fill
               priority
               src="/icons/logo/inactive.svg"
-              layout="fill"
               alt="Brillah Logo Inactive"
             ></Image>
           </div>
           <div style={image}>
             <Image
+              fill
               priority
               src="/icons/logo/active.svg"
-              layout="fill"
               alt="Brullah Logo Active"
             ></Image>
           </div>
@@ -43,17 +42,17 @@ const Logo = ({ thinking, text, image, container }: Props) => {
         <div style={image}>
           <div style={image}>
             <Image
+              fill
               priority
               src="/icons/logo/inactive.svg"
-              layout="fill"
               alt="Brillah Logo Inactive"
             ></Image>
           </div>
           <div style={image}>
             <Image
+              fill
               priority
               src="/icons/logo/active.svg"
-              layout="fill"
               alt="Brillah Logo Active"
             ></Image>
           </div>
@@ -67,17 +66,17 @@ const Logo = ({ thinking, text, image, container }: Props) => {
         <div style={image}>
           <div style={image}>
             <Image
+              fill
               priority
               src="/icons/logo/inactive.svg"
-              layout="fill"
               alt="Brillah Logo Inactive"
             ></Image>
           </div>
           <div style={image}>
             <Image
+              fill
               priority
               src="/icons/logo/active.svg"
-              layout="fill"
               alt="Brillah Logo Active"
             ></Image>
           </div>

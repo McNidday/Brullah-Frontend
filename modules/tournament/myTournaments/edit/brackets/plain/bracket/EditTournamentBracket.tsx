@@ -98,19 +98,11 @@ const EditTournamentBracket = ({
             {activeEdit ===
             `${arenaNumber}:${roundNumber}:${match?.matchNumber}` ? (
               <div className={cn(styles.editIcon)}>
-                <Image
-                  src={"/icons/edit/green.svg"}
-                  layout="fill"
-                  alt=""
-                ></Image>
+                <Image fill src={"/icons/edit/green.svg"} alt=""></Image>
               </div>
             ) : (
               <div className={cn(styles.editIcon)}>
-                <Image
-                  src={"/icons/edit/white.svg"}
-                  layout="fill"
-                  alt=""
-                ></Image>
+                <Image fill src={"/icons/edit/white.svg"} alt=""></Image>
               </div>
             )}
           </div>
@@ -123,9 +115,9 @@ const EditTournamentBracket = ({
                     className={cn(styles.tournamentBracketDataProfilePicture)}
                   >
                     <Image
+                      fill
                       src={match.slot_one.user.identity.avatar.image}
                       alt={match.slot_one.user.identity.arena_name}
-                      layout="fill"
                       placeholder="blur"
                       blurDataURL={decodeBlurHash(
                         match.slot_one.user.identity.avatar.blurhash,
@@ -144,9 +136,9 @@ const EditTournamentBracket = ({
                     className={cn(styles.tournamentBracketDataProfilePicture)}
                   >
                     <Image
+                      fill
                       src={bye.user.identity.avatar.image}
                       alt={bye.user.identity.arena_name}
-                      layout="fill"
                       placeholder="blur"
                       blurDataURL={decodeBlurHash(
                         bye.user.identity.avatar.blurhash,
@@ -165,8 +157,8 @@ const EditTournamentBracket = ({
                     className={cn(styles.tournamentBracketDataProfilePicture)}
                   >
                     <Image
+                      fill
                       src={"/icons/cyclone/active.svg"}
-                      layout="fill"
                       alt=""
                     ></Image>
                   </div>
@@ -184,9 +176,9 @@ const EditTournamentBracket = ({
                     className={cn(styles.tournamentBracketDataProfilePicture)}
                   >
                     <Image
+                      fill
                       src={match.slot_two.user.identity.avatar.image}
                       alt={match.slot_two.user.identity.arena_name}
-                      layout="fill"
                       placeholder="blur"
                       blurDataURL={decodeBlurHash(
                         match.slot_two.user.identity.avatar.blurhash,
@@ -205,8 +197,8 @@ const EditTournamentBracket = ({
                     className={cn(styles.tournamentBracketDataProfilePicture)}
                   >
                     <Image
+                      fill
                       src={"/icons/cyclone/active.svg"}
-                      layout="fill"
                       alt=""
                     ></Image>
                   </div>

@@ -10,14 +10,12 @@ const HomeDiscoverSlide = () => {
         <div>
           <Image
             src={`/icons/helping_hand/default.svg`}
-            layout="fill"
             alt="Helping Hand Icon"
+            fill
           ></Image>
         </div>
         <Link href={`/howto`}>
-          <a>
-            Click This link to learn how to use brullah and more features 😎
-          </a>
+          Click This link to learn how to use brullah and more features 😎
         </Link>
       </div>
     </section>

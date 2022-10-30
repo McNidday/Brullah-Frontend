@@ -37,9 +37,9 @@ const WaitingQueue = ({ tournament, timeToMatch }: Props) => {
     <li className={cn(styles.container)}>
       <div>
         <Image
+          fill
           src={tournament.information.thumbnail.image}
           alt={`Tournament ${tournament.information.name}`}
-          layout="fill"
           placeholder="blur"
           blurDataURL={decodeBlurHash(
             tournament.information.thumbnail.blurhash,
@@ -49,9 +49,7 @@ const WaitingQueue = ({ tournament, timeToMatch }: Props) => {
         ></Image>
       </div>
       <div>{tournament.information.name}</div>
-      <Link href={`/tournament/track?id=${tournament.id}`}>
-        <a>{countDown}</a>
-      </Link>
+      <Link href={`/tournament/track?id=${tournament.id}`}>{countDown}</Link>
     </li>
   );
 };

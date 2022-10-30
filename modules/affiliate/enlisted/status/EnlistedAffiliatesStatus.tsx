@@ -18,6 +18,8 @@ const USER = gql`
       id
       identity {
         arena_name
+      }
+      finance {
         affiliate {
           code
           commission
@@ -92,8 +94,8 @@ const EnlistedAffiliatesStatus = ({ search, setSearch }: Props) => {
         <div>
           <Image
             src={`/icons/search/inactive.svg`}
-            layout="fill"
             alt="Search Enlisted Affiliates"
+            fill
           ></Image>
         </div>
       </div>
@@ -103,7 +105,7 @@ const EnlistedAffiliatesStatus = ({ search, setSearch }: Props) => {
             {loading || error
               ? `...`
               : dinero({
-                  amount: data?.user.identity?.affiliate.commission || 0,
+                  amount: data?.user.finance?.affiliate.commission || 0,
                   currency: "USD",
                 }).toFormat()}
           </p>
@@ -111,7 +113,7 @@ const EnlistedAffiliatesStatus = ({ search, setSearch }: Props) => {
         <div>
           <p>
             {loading || error ? `...` : process.env.BRULLAH_URL}/?affiliate=
-            {data?.user.identity.affiliate.code || "nidday"}
+            {data?.user.finance.affiliate.code || "nidday"}
           </p>
           <div>
             <div

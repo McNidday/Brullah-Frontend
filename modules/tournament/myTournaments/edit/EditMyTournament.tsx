@@ -575,7 +575,11 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
         <div className={cn(styles.editContainer)}>
           <div className={cn(styles.noUsers)}>
             <div>
-              <Image src="/illustrations/02.png" layout="fill" alt=""></Image>
+              <Image
+                fill
+                src="/illustrations/02.png"
+                alt="Illustration"
+              ></Image>
             </div>
             <div>
               <h3>

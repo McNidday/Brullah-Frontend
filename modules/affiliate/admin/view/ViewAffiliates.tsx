@@ -20,6 +20,8 @@ const AFFILIATES = gql`
         identity {
           arena_name
           arena_id
+        }
+        finance {
           affiliate {
             code
             start_date
