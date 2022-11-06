@@ -1,0 +1,21 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  div > h5 {
+    color: white;
+  }
+}
+
+.errorContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    width: 90%;
+    text-align: center;
+    color: red;
+  }
+}

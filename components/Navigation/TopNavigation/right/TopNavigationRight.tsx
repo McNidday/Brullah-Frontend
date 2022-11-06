@@ -31,7 +31,7 @@ const USER = gql`
 
 const TopNavigationRight = () => {
   const router = useRouter();
-  const { loading, error, data, refetch } = useQuery(USER);
+  const { loading, error, data } = useQuery(USER);
   const [dashboardHover, setDashboardHover] = useState(false);
   const [logoutHover, setLogoutHover] = useState(false);
   // Get access to the dropdown ref
@@ -61,6 +61,7 @@ const TopNavigationRight = () => {
 
   if (loading) return <TopNavigationRightLoading></TopNavigationRightLoading>;
   if (error) return <TopRightNavigationLogin></TopRightNavigationLogin>;
+
   return (
     <div className={cn(styles.container)}>
       <div className={cn(styles.profileContainer)}>

@@ -37,6 +37,8 @@ const ENDPOINTS: { [key: string]: string } = {
   AddAffiliate: "affiliates",
   RemoveAffiliate: "affiliates",
   GetEnlisted: "affiliates",
+  GetPool: "admin",
+  WithdrawFromProfit: "admin",
 };
 
 const customFetch = (uri: string, options: any) => {

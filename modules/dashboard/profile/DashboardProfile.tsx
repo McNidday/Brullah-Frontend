@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import cn from "classnames";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DashboardMoneyButtons, {
   DashboardMoneyButtonsFragment,
 } from "./buttons/DashboardMoneyButtons";
@@ -8,6 +8,7 @@ import DashboardProfileError from "./error/DashboardProfileError";
 import CurrencyExchange from "./exchange/CurrencyExchange";
 import PaypalPayouts from "./payout/PaypalPayouts";
 import PaypalDeposit from "./paypal/PaypalDeposit";
+import Pool from "./pool/Pool";
 import DashboardUserProfile, {
   DashboardUserProfileFragment,
 } from "./profile/DashboardUserProfile";
@@ -20,11 +21,21 @@ interface Props {
 }
 
 const DashboardProfile = ({ user, refreshUser }: Props) => {
+  const [admin, setAdmin] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<
     string | JSX.Element | null
   >(null);
   const [overflowTab, setOverflowTab] = useState<string | null>(null);
+
+  useEffect(() => {
+    const adminIndex = user.badges.findIndex((a: { status: string }) => {
+      return a.status === "ADMIN";
+    });
+    if (adminIndex > -1) {
+      setAdmin(true);
+    }
+  }, [user?.badges]);
 
   return (
     <div className={cn(styles.container)}>
@@ -64,13 +75,29 @@ const DashboardProfile = ({ user, refreshUser }: Props) => {
           }
           setError={(val: string) => setError(val)}
         ></PaypalDeposit>
-        <DashboardUserProfile user={user}></DashboardUserProfile>
+        <DashboardUserProfile
+          user={user}
+          setOverflowTab={(val: string | null) => {
+            setOverflowTab(val);
+          }}
+        ></DashboardUserProfile>
         <DashboardMoneyButtons
           user={user}
           setOverflowTab={(val: string | null) => {
             setOverflowTab(val);
           }}
         ></DashboardMoneyButtons>
+        {admin ? (
+          <Pool
+            refreshUser={refreshUser}
+            overflowTab={overflowTab}
+            setOverflowTab={(val: string | null) => {
+              setOverflowTab(val);
+            }}
+          ></Pool>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
@@ -78,6 +105,9 @@ const DashboardProfile = ({ user, refreshUser }: Props) => {
 
 export const DashboardProfileFragment = gql`
   fragment DashboardProfile_User on User {
+    badges {
+      status
+    }
     ...DashboardUserProfile_User
     ...DashboardMoneyButtons_User
   }

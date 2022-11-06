@@ -9,6 +9,7 @@ import Icon from "../../../../components/Icon/Icon";
 import { decodeBlurHash } from "../../../../functions/helpers";
 
 interface Props {
+  setOverflowTab: (tab: string | null) => void;
   user: {
     identity: {
       arena_name: string;
@@ -27,12 +28,14 @@ interface Props {
   };
 }
 
-const DashboardUserProfile = ({ user }: Props) => {
+const DashboardUserProfile = ({ setOverflowTab, user }: Props) => {
   const [copyHover, setCopyHover] = useState(false);
   const [copy, setCopy] = useState(false);
   const [editIconHover, setEditIconHover] = useState(false);
   const [affiliateIconHover, setAffiliateIconHover] = useState(false);
   const [affiliateStatus, setAffiliateStatus] = useState(false);
+  const [poolIconHover, setPoolIconHover] = useState(false);
+  const [admin, setAdmin] = useState(false);
   const copyArenaId = () => {
     setCopy(true);
     navigator.clipboard.writeText(user.identity.arena_id);
@@ -44,6 +47,12 @@ const DashboardUserProfile = ({ user }: Props) => {
     });
     if (affiliateIndex > -1) {
       setAffiliateStatus(true);
+    }
+    const adminIndex = user.badges.findIndex((a) => {
+      return a.status === "ADMIN";
+    });
+    if (adminIndex > -1) {
+      setAdmin(true);
     }
   }, [user?.badges]);
 
@@ -114,6 +123,22 @@ const DashboardUserProfile = ({ user }: Props) => {
                 alt="Affiate Dashboard"
               ></Icon>
             </Link>
+          </div>
+        ) : (
+          ""
+        )}
+        {admin ? (
+          <div
+            onMouseEnter={() => setPoolIconHover(true)}
+            onMouseLeave={() => setPoolIconHover(false)}
+            onClick={() => setOverflowTab("pool")}
+          >
+            <Icon
+              activeLink="/icons/pool/active.svg"
+              inactiveLink="/icons/pool/inactive.svg"
+              hover={poolIconHover}
+              alt="Pool data icon"
+            ></Icon>
           </div>
         ) : (
           ""

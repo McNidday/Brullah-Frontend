@@ -96,7 +96,8 @@
     position: absolute;
     height: fit-content;
     width: fit-content;
-    & > div:nth-child(2) {
+    & > div:nth-child(2),
+    & > div:nth-child(3) {
       margin-top: 10px;
     }
     & > div {
