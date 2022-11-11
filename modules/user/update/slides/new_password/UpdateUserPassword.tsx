@@ -45,6 +45,8 @@ const UpdateUserPassword = ({
   useEffect(() => {
     if (password === confirm_password && error) {
       setError(null);
+    } else if (!confirm_password && error) {
+      setError(null);
     }
 
     if (password === confirm_password) {
@@ -101,7 +103,7 @@ const UpdateUserPassword = ({
             placeholder="Confirm New Pass"
             value={confirm_password || ""}
             onBlur={() => {
-              if (password !== confirm_password) {
+              if (password !== confirm_password && confirm_password) {
                 setError("Password and confirmation do not match.");
               } else {
                 setError(null);

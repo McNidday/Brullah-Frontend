@@ -75,15 +75,7 @@ const LoginInputs = () => {
           </div>
           {error ? (
             <div className={cn(styles.errors)}>
-              {error.graphQLErrors.length > 0 ? (
-                <p>
-                  {error.message.split(":")[1]
-                    ? error.message.split(":")[1].trim()
-                    : error.message.split(":")[0].trim()}
-                </p>
-              ) : (
-                <p>{error.message.trim()}</p>
-              )}
+              <p>{error.message.trim()}</p>
             </div>
           ) : (
             ""
