@@ -24,7 +24,7 @@ const UPDATE_USER = gql`
   mutation UpdateUser($input: UserInput) {
     updateUser(input: $input) {
       identity {
-        arena_name
+        brullah_name
         first_name
         last_name
         email
@@ -173,7 +173,7 @@ const UpdateUserInputSlides = ({ user }: Props) => {
             return (
               <UpdateUserBrullahName
                 updateProfile={updateProfile}
-                arena_name={profile.arena_name}
+                brullah_name={profile.brullah_name}
                 error={error}
                 isActive={isActive}
               ></UpdateUserBrullahName>

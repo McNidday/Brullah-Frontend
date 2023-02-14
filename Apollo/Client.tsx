@@ -23,12 +23,13 @@ const ENDPOINTS: { [key: string]: string } = {
   TournamentTransactions: "payments",
   GetMyTournaments: "tournaments",
   GetTournament: "public/tournaments",
-  AddToMatch: "matches",
-  SaveMatchConfig: "matches",
-  PublishMatchConfig: "matches",
-  JoinedNotStartedMatches: "matches",
-  UserOngoingMatches: "matches",
-  RemoveFromMatch: "matches",
+  GetMatch: "public/tournaments",
+  AddToTournament: "tournaments",
+  SaveMatchConfig: "tournaments",
+  PublishMatchConfig: "tournaments",
+  JoinedNotStartedMatches: "tournaments",
+  UserOngoingMatches: "tournaments",
+  RemoveFromMatch: "tournaments",
   LikeCreator: "likes",
   UnLikeCreator: "likes",
   CheckLike: "likes",
@@ -93,7 +94,7 @@ const pageLimitPaginationHelper: () => any = () => {
 const cache = new InMemoryCache({
   typePolicies: {
     TournamentInformation: { keyFields: ["thumbnail", ["image"]] },
-    UserIdentity: { keyFields: ["arena_name"] },
+    UserIdentity: { keyFields: ["brullah_name"] },
     Query: {
       fields: {
         tournaments: { ...pageLimitPaginationHelper(), keyArgs: ["search"] },

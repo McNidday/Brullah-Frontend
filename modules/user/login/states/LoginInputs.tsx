@@ -6,7 +6,7 @@ import { gql, useMutation } from "@apollo/client";
 import Logo from "../../../../components/Logo/Logo";
 import { useRouter } from "next/router";
 import { setCookie } from "../../../../functions/Cookies";
-import moment from "moment";
+import { Duration } from "luxon";
 import Icon from "../../../../components/Icon/Icon";
 
 const USER_LOGIN = gql`
@@ -41,7 +41,11 @@ const LoginInputs = () => {
   useEffect(() => {
     if (error) setTimeout(reset, 5000);
     if (data?.login) {
-      setCookie("token", data.login.token, moment.duration(15, "minutes"));
+      setCookie(
+        "token",
+        data.login.token,
+        Duration.fromObject({ minutes: 15 })
+      );
       router.replace("/dashboard");
     }
   }, [error, data, router, reset]);

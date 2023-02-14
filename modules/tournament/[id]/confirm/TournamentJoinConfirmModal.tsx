@@ -1,6 +1,6 @@
 import { Box, Modal } from "@mui/material";
 import cn from "classnames";
-import Button from "../../../../../../components/Button/Button";
+import Button from "../../../../components/Button/Button";
 import styles from "./styles.module.scss";
 import dinero from "dinero.js";
 

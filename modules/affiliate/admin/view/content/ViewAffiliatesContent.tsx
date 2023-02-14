@@ -8,8 +8,8 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
+import { DateTime } from "luxon";
 import cn from "classnames";
-import moment from "moment";
 import dinero from "dinero.js";
 import styles from "./styles.module.scss";
 import ViewAffiliatesContentRemoveButton from "./removeButton/ViewAffiliatesContentRemoveButton";
@@ -18,8 +18,8 @@ interface Props {
   docs: Array<{
     id: String;
     identity: {
-      arena_name: String;
-      arena_id: String;
+      brullah_name: String;
+      brullah_id: String;
     };
     finance: {
       affiliate: {
@@ -61,11 +61,13 @@ const ViewAffiliatesContent = ({
           <TableBody>
             {docs.map((t) => {
               return (
-                <TableRow key={`${t.identity.arena_id}~view~affiliates`}>
+                <TableRow key={`${t.identity.brullah_id}~view~affiliates`}>
                   <TableCell component="th" scope="row">
-                    {t.identity.arena_id}
+                    {t.identity.brullah_id}
                   </TableCell>
-                  <TableCell align="center">{t.identity.arena_name}</TableCell>
+                  <TableCell align="center">
+                    {t.identity.brullah_name}
+                  </TableCell>
                   <TableCell align="center">
                     {t.finance.affiliate.enlisted}
                   </TableCell>
@@ -79,7 +81,9 @@ const ViewAffiliatesContent = ({
                     {t.finance.affiliate.code}
                   </TableCell>
                   <TableCell align="center">
-                    {moment.unix(t.finance.affiliate.start_date).format("LLL")}
+                    {DateTime.fromISO(
+                      t.finance.affiliate.start_date
+                    ).toLocaleString(DateTime.DATETIME_FULL)}
                   </TableCell>
                   <TableCell align="center">
                     <ViewAffiliatesContentRemoveButton

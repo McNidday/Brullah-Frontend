@@ -15,8 +15,8 @@ const ENLISTED = gql`
         id
         enlisted {
           identity {
-            arena_id
-            arena_name
+            brullah_id
+            brullah_name
           }
         }
         commission {

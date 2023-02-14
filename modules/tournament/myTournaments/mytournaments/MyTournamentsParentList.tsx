@@ -23,11 +23,11 @@ interface Props {
       thumbnail: { image: string; blurhash: string };
     };
     status: { progress: string };
-    analytics: { joined_users: number };
+    joined: Array<{ id: string }>;
     access: { secret: string };
     creator: {
       identity: {
-        arena_name: string;
+        brullah_name: string;
         avatar: { image: string; blurhash: string };
       };
     };

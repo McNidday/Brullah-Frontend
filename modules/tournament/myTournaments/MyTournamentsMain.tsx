@@ -11,13 +11,9 @@ import EditMyTournament from "./edit/EditMyTournament";
 import MyTournamentsError from "./error/MyTournamentsError";
 import debounce from "lodash.debounce";
 
-interface Props {
-  id: string;
-}
-
 const TOURNAMENTS = gql`
-  query GetMyTournaments($id: ID!, $page: Int!, $limit: Int!, $search: String) {
-    myTournaments(id: $id, page: $page, limit: $limit, search: $search) {
+  query GetMyTournaments($page: Int!, $limit: Int!, $search: String) {
+    myTournaments(page: $page, limit: $limit, search: $search) {
       page
       hasNextPage
       ...MyTournamentsParentList_PaginatedTournament
@@ -26,7 +22,7 @@ const TOURNAMENTS = gql`
   ${MyTournamentsParentListFragment}
 `;
 
-const MyTournamentsMain = ({ id }: Props) => {
+const MyTournamentsMain = () => {
   const [page, setPage] = useState(1);
   const { loading, error, data, networkStatus, fetchMore, refetch } = useQuery(
     TOURNAMENTS,
@@ -34,7 +30,6 @@ const MyTournamentsMain = ({ id }: Props) => {
       errorPolicy: "all",
       notifyOnNetworkStatusChange: true,
       variables: {
-        id: id,
         page: page,
         limit: 10,
         search: "",

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import moment from "moment";
+import { DateTime } from "luxon";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -23,11 +23,11 @@ const WaitingQueue = ({ tournament, timeToMatch }: Props) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (moment().isSameOrAfter(moment.unix(timeToMatch))) {
+      if (DateTime.now() >= DateTime.fromISO(timeToMatch)) {
         setCountDown(">>>");
         clearInterval(interval);
       } else {
-        setCountDown(moment().to(moment.unix(timeToMatch)));
+        setCountDown(DateTime.fromISO(timeToMatch).diffNow());
       }
     }, 2000);
     return () => clearInterval(interval);

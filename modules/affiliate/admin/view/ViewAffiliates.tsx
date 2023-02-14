@@ -18,8 +18,8 @@ const AFFILIATES = gql`
       docs {
         id
         identity {
-          arena_name
-          arena_id
+          brullah_name
+          brullah_id
         }
         finance {
           affiliate {

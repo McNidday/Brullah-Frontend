@@ -8,14 +8,14 @@ import { ApolloError } from "@apollo/client";
 
 interface Props {
   updateProfile: Function;
-  arena_name: string;
+  brullah_name: string;
   error: ApolloError | undefined;
   isActive: boolean;
 }
 
 const SignUpArenaName = ({
   updateProfile,
-  arena_name,
+  brullah_name,
   error,
   isActive,
 }: Props) => {
@@ -24,7 +24,7 @@ const SignUpArenaName = ({
   useEffect(() => {
     if (error) {
       const errorArray = error.message.split(":");
-      if (errorArray[0] === "arena_name") {
+      if (errorArray[0] === "brullah_name") {
         setNameError(errorArray[1].trim());
         swiper.slideTo(2);
       }
@@ -54,11 +54,11 @@ const SignUpArenaName = ({
             tabIndex={isActive ? 0 : -1}
             type="text"
             placeholder="Brullah Name"
-            value={arena_name || ""}
+            value={brullah_name || ""}
             onInput={(
               e: FormEvent & { target: EventTarget & { [key: string]: any } }
             ) => {
-              updateProfile("arena_name", e.target.value);
+              updateProfile("brullah_name", e.target.value);
             }}
           ></input>
         </div>

@@ -1,12 +1,8 @@
-import moment from "moment";
-export function setCookie(
-  cname: string,
-  cvalue: string,
-  duration: moment.Duration
-) {
+import { DateTime, Duration } from "luxon";
+export function setCookie(cname: string, cvalue: string, duration: Duration) {
   if (typeof window !== "undefined") {
-    const d = moment().add(duration);
-    const expires = "expires=" + d.toDate().toUTCString();
+    const d = DateTime.now().plus(duration);
+    const expires = "expires=" + d.toJSDate().toUTCString();
     document.cookie = `${cname}=${cvalue};${expires};path=/`;
   }
 }

@@ -12,10 +12,10 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
+import { DateTime } from "luxon";
 import { useState, useEffect } from "react";
 import { gql, useQuery, NetworkStatus } from "@apollo/client";
 import dinero from "dinero.js";
-import moment from "moment";
 import Logo from "../../../../components/Logo/Logo";
 
 interface Props {
@@ -29,12 +29,12 @@ const TOURNAMENT_TRANSACTIONS = gql`
       docs {
         payer {
           identity {
-            arena_name
+            brullah_name
           }
         }
         payee {
           identity {
-            arena_name
+            brullah_name
           }
         }
         gross_amount {
@@ -59,12 +59,12 @@ const TournamentTransactionsModal = ({
     Array<{
       payer: {
         identity: {
-          arena_name: string;
+          brullah_name: string;
         };
       };
       payee: {
         identity: {
-          arena_name: string;
+          brullah_name: string;
         };
       };
       gross_amount: {
@@ -154,10 +154,10 @@ const TournamentTransactionsModal = ({
                         {transaction.id}
                       </TableCell>
                       <TableCell align="center">
-                        {transaction.payer.identity.arena_name}
+                        {transaction.payer.identity.brullah_name}
                       </TableCell>
                       <TableCell align="center">
-                        {transaction.payee.identity.arena_name}
+                        {transaction.payee.identity.brullah_name}
                       </TableCell>
                       <TableCell align="center">
                         {dinero({
@@ -166,7 +166,9 @@ const TournamentTransactionsModal = ({
                         }).toFormat()}
                       </TableCell>
                       <TableCell align="center">
-                        {moment.unix(transaction.joinDate).format("LLL")}
+                        {DateTime.fromISO(transaction.joinDate).toLocaleString(
+                          DateTime.DATETIME_FULL
+                        )}
                       </TableCell>
                       <TableCell align="center">{transaction.status}</TableCell>
                     </TableRow>

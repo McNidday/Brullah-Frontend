@@ -3,156 +3,76 @@ import cn from "classnames";
 import EditTournamentBrackets from "../plain/EditTournamentBrackets";
 import Button from "../../../../../../components/Button/Button";
 import { useEffect, useState } from "react";
+import { isByeNumber, numOfMatches } from "../../../../../../functions/helpers";
 import Icon from "../../../../../../components/Icon/Icon";
 
 interface Props {
+  removeBye: (input: {
+    id: string;
+    arena_number: number;
+    round_number: number;
+    match_number: number;
+    slot_one?: string;
+    slot_two?: string;
+    bye_slot?: string;
+  }) => Promise<void>;
+  time: string;
+  tournamentId: string;
+  numOfJoined: number;
+  arenaNumber: number;
   activeArena: boolean;
   activeEdit: string | null;
   setActiveEdit: (arbs: string | null) => void;
   handleActiveArena: (arena: number) => void;
-  config: {
-    arenaNumber: number;
-    rounds: [
-      {
-        roundNumber: number;
-        matches: [
-          {
-            matchNumber: number;
-            progress: string;
-            slot_one: {
-              joined: boolean;
-              user: {
-                identity: {
-                  arena_name: string;
-                  avatar: {
-                    image: string;
-                    blurhash: string;
-                  };
-                };
-              };
-              reason: string;
-            };
-            slot_two: {
-              joined: boolean;
-              user: {
-                identity: {
-                  arena_name: string;
-                  avatar: {
-                    image: string;
-                    blurhash: string;
-                  };
-                };
-              };
-              reason: string;
-            };
-          }
-        ];
-      }
-    ];
+  markConfigured: (id: string) => void;
+  removeMarked: (arbs: string) => void;
+  timeConfig: {
+    round_offset: number;
+    before_dq: number;
+    after_dq: number;
+    match_length: number;
   };
-  time: {
-    arenaNumber: number;
-    rounds: [
-      {
-        roundNumber: number;
-        matches: [
-          {
-            matchNumber: number;
-            time: number;
-          }
-        ];
-      }
-    ];
-  };
+  config: Array<{ id: string; configured: boolean; arbs: string }>;
 }
 
 const EditTournamentArenaBrackets = ({
-  activeArena,
-  handleActiveArena,
-  config,
-  setActiveEdit,
-  activeEdit,
   time,
+  removeBye,
+  timeConfig,
+  tournamentId,
+  numOfJoined,
+  arenaNumber,
+  activeArena,
+  markConfigured,
+  handleActiveArena,
+  setActiveEdit,
+  removeMarked,
+  activeEdit,
+  config,
 }: Props) => {
   const [arenaHover, setArenaHover] = useState(false);
   const [section, setSection] = useState(1);
-  const [sectionOne, setSectionOne] = useState<
-    Array<{
-      matchNumber: number;
-      progress: string;
-      slot_one: {
-        joined: boolean;
-        user: {
-          identity: {
-            arena_name: string;
-            avatar: {
-              image: string;
-              blurhash: string;
-            };
-          };
-        };
-        reason: string;
-      };
-      slot_two: {
-        joined: boolean;
-        user: {
-          identity: {
-            arena_name: string;
-            avatar: {
-              image: string;
-              blurhash: string;
-            };
-          };
-        };
-        reason: string;
-      };
-    }>
-  >([]);
-  const [sectionTwo, setSectionTwo] = useState<
-    Array<{
-      matchNumber: number;
-      progress: string;
-      slot_one: {
-        joined: boolean;
-        user: {
-          identity: {
-            arena_name: string;
-            avatar: {
-              image: string;
-              blurhash: string;
-            };
-          };
-        };
-        reason: string;
-      };
-      slot_two: {
-        joined: boolean;
-        user: {
-          identity: {
-            arena_name: string;
-            avatar: {
-              image: string;
-              blurhash: string;
-            };
-          };
-        };
-        reason: string;
-      };
-    }>
-  >([]);
+  const [sectionOne, setSectionOne] = useState<boolean>(false);
+  const [sectionTwo, setSectionTwo] = useState<boolean>(false);
+  const [numOfUsersInArena, setNumOfUsersInArena] = useState(0);
 
   useEffect(() => {
+    let num = numOfJoined;
+    for (let i = 1; i < arenaNumber; i++) {
+      num -= 16;
+    }
+    setNumOfUsersInArena(num);
     if (
-      config.rounds[0].matches.length <= 4 ||
-      config.rounds[0].matches.length > 4
+      numOfMatches(numOfJoined, arenaNumber, 1) <= 4 ||
+      numOfMatches(numOfJoined, arenaNumber, 1) > 4
     ) {
-      setSectionOne(config.rounds[0].matches.slice(0, 4));
+      setSectionOne(true);
     }
 
-    if (config.rounds[0].matches.length > 4) {
-      setSectionTwo(config.rounds[0].matches.slice(4, 9));
+    if (numOfMatches(numOfJoined, arenaNumber, 1) > 4) {
+      setSectionTwo(true);
     }
-  }, [config]);
+  }, [numOfJoined, arenaNumber]);
 
   return (
     <div className={cn(styles.container)}>
@@ -163,14 +83,14 @@ const EditTournamentArenaBrackets = ({
         onClick={() => {
           if (
             activeEdit &&
-            parseInt(activeEdit?.split(":")[0]) !== config.arenaNumber
+            parseInt(activeEdit?.split(":")[0]) !== arenaNumber
           ) {
             setActiveEdit(null);
           }
-          handleActiveArena(config.arenaNumber);
+          handleActiveArena(arenaNumber);
         }}
       >
-        <h2>Arena {config.arenaNumber}</h2>
+        <h2>Arena {arenaNumber}</h2>
         <div
           className={cn(
             styles.openArenaIcon,
@@ -192,7 +112,7 @@ const EditTournamentArenaBrackets = ({
         )}
       >
         <div className={cn(styles.sectionNav)}>
-          {sectionOne.length >= 1 ? (
+          {sectionOne ? (
             <Button
               text="Section 1"
               disabled={false}
@@ -207,7 +127,7 @@ const EditTournamentArenaBrackets = ({
           ) : (
             ""
           )}
-          {sectionTwo.length >= 1 ? (
+          {sectionTwo ? (
             <Button
               text="Section 2"
               disabled={false}
@@ -224,29 +144,47 @@ const EditTournamentArenaBrackets = ({
           )}
         </div>
         <div className={cn(styles.sections)}>
-          {sectionOne.length >= 1 && section === 1 ? (
+          {sectionOne && section === 1 ? (
             <section>
               <EditTournamentBrackets
+                time={time}
+                removeBye={removeBye}
+                isABye={isByeNumber(numOfUsersInArena)}
+                removeMarked={removeMarked}
+                config={config}
+                markConfigured={markConfigured}
+                timeConfig={timeConfig}
+                numOfUsersInSection={
+                  numOfUsersInArena >= 8 ? 8 : numOfUsersInArena
+                }
+                tournamentId={tournamentId}
                 activeEdit={activeEdit}
                 setActiveEdit={setActiveEdit}
                 roundNumber={1}
-                arenaNumber={config.arenaNumber}
-                matches={sectionOne}
-                time={time}
+                arenaNumber={arenaNumber}
+                sectionNumber={1}
               ></EditTournamentBrackets>
             </section>
           ) : (
             ""
           )}
-          {sectionTwo.length >= 1 && section === 2 ? (
+          {sectionTwo && section === 2 ? (
             <section>
               <EditTournamentBrackets
+                time={time}
+                removeBye={removeBye}
+                isABye={isByeNumber(numOfUsersInArena)}
+                removeMarked={removeMarked}
+                config={config}
+                markConfigured={markConfigured}
+                timeConfig={timeConfig}
+                numOfUsersInSection={numOfUsersInArena - 8}
+                tournamentId={tournamentId}
                 activeEdit={activeEdit}
                 setActiveEdit={setActiveEdit}
                 roundNumber={1}
-                arenaNumber={config.arenaNumber}
-                matches={sectionTwo}
-                time={time}
+                arenaNumber={arenaNumber}
+                sectionNumber={2}
               ></EditTournamentBrackets>
             </section>
           ) : (

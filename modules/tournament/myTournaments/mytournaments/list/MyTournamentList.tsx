@@ -17,10 +17,10 @@ interface Props {
     description: string;
     thumbnail: { image: string; blurhash: string };
   };
-  analytics: { joined_users: number };
+  joined: Array<{ id: string }>;
   creator: {
     identity: {
-      arena_name: string;
+      brullah_name: string;
       avatar: { image: string; blurhash: string };
     };
   };
@@ -37,11 +37,11 @@ const MyTournamentList = (props: Props) => {
     setCopyLink(true);
     if (props.access.secret) {
       navigator.clipboard.writeText(
-        `${process.env.BRULLAH_URL}/tournament/tournaments?tid=${props.id}&secret=${props.access.secret}`
+        `${process.env.BRULLAH_URL}/tournament/${props.id}/${props.access.secret}`
       );
     } else {
       navigator.clipboard.writeText(
-        `${process.env.BRULLAH_URL}/tournament/tournaments?tid=${props.id}`
+        `${process.env.BRULLAH_URL}/tournament/${props.id}`
       );
     }
   };
@@ -57,14 +57,14 @@ const MyTournamentList = (props: Props) => {
     <li className={cn(styles.container)}>
       <div>
         <Tooltip
-          title={props.creator.identity.arena_name}
+          title={props.creator.identity.brullah_name}
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
           <div>
             <Image
               fill
               src={props.creator.identity.avatar.image}
-              alt={props.creator.identity.arena_name}
+              alt={props.creator.identity.brullah_name}
               placeholder="blur"
               blurDataURL={decodeBlurHash(
                 props.creator.identity.avatar.blurhash,
@@ -97,19 +97,11 @@ const MyTournamentList = (props: Props) => {
           </div>
         </Tooltip>
         <Tooltip
-          title={
-            props?.analytics?.joined_users
-              ? `${props?.analytics?.joined_users} Joined`
-              : `0 Joined`
-          }
+          title={`${props?.joined.length} Joined`}
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
           <div>
-            <p>
-              {props?.analytics?.joined_users
-                ? props?.analytics?.joined_users
-                : 0}
-            </p>
+            <p>{props?.joined.length}</p>
           </div>
         </Tooltip>
       </div>
@@ -180,20 +172,18 @@ const MyTournamentList = (props: Props) => {
 
 export const MyTournamentListFragment = gql`
   fragment MyTournamentList_Tournament on Tournament {
-    status {
-      progress
-    }
+    status
     creator {
       identity {
-        arena_name
+        brullah_name
         avatar {
           image
           blurhash
         }
       }
     }
-    analytics {
-      joined_users
+    joined {
+      id
     }
     sponsor {
       sponsored

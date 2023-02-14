@@ -1,11 +1,11 @@
-import { Box, CircularProgress, Modal } from "@mui/material";
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import moment from "moment";
-import { gql, useMutation } from "@apollo/client";
 import Button from "../../../../../components/Button/Button";
+import { Box, CircularProgress, Modal } from "@mui/material";
+import { gql, useMutation } from "@apollo/client";
 import { useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
+import { DateTime } from "luxon";
 
 const PUBLISH_TOURNAMENT = gql`
   mutation PublishMatchConfig($id: ID!) {
@@ -21,13 +21,11 @@ interface Props {
   handlePublishModalClose: () => void;
   tournament: {
     id: string;
-    start_date: number;
+    start_date: string;
     information: { name: string };
-    match: {
-      id: string;
-    };
   };
 }
+
 const PublishTournamentModal = ({
   refetchTournament,
   tournament,
@@ -66,7 +64,10 @@ const PublishTournamentModal = ({
       <Box className={cn(styles.parentModal)}>
         <h2>
           Ready to publish your tournament &quot;{tournament.information.name}
-          &quot;, to start on {moment.unix(tournament.start_date).format("LLL")}
+          &quot;, to start on{" "}
+          {DateTime.fromISO(tournament.start_date).toLocaleString(
+            DateTime.DATETIME_FULL
+          )}
           . You are One Click away ( $ _ $ ).
         </h2>
         <h3>
@@ -91,7 +92,7 @@ const PublishTournamentModal = ({
               onClick={() => {
                 publishTournamentConfig({
                   variables: {
-                    id: tournament.match.id,
+                    id: tournament.id,
                   },
                 });
               }}

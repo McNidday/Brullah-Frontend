@@ -13,11 +13,9 @@ import { decodeBlurHash } from "../../../../../functions/helpers";
 import { CircularProgress, Tooltip } from "@mui/material";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import numeral from "numeral";
-import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface Props {
-  setJoinTournamentId: (id: string) => void;
-  handleModalOpen: () => void;
   user: { id: string } | null;
   id: string;
   information: {
@@ -25,11 +23,11 @@ interface Props {
     description: string;
     thumbnail: { image: string; blurhash: string };
   };
-  analytics: { joined_users: number };
+  joined: Array<{ id: string }>;
   creator: {
     id: string;
     identity: {
-      arena_name: string;
+      brullah_name: string;
       avatar: { image: string; blurhash: string };
     };
     stats: {
@@ -38,7 +36,6 @@ interface Props {
       };
     };
   };
-  match: { users: { joined: Array<string> } };
   sponsor: { sponsored: boolean };
   contribution: { contributed: boolean };
 }
@@ -75,17 +72,10 @@ const TOURNAMENT = gql`
       creator {
         id
         identity {
-          arena_name
+          brullah_name
           avatar {
             image
             blurhash
-          }
-        }
-        match {
-          users {
-            joined {
-              id
-            }
           }
         }
         stats {
@@ -99,22 +89,18 @@ const TOURNAMENT = gql`
 `;
 
 const TournamentList = ({
-  setJoinTournamentId,
-  handleModalOpen,
   user,
   id,
   information,
-  analytics,
+  joined,
   creator,
-  match,
   sponsor,
   contribution,
 }: Props) => {
-  const router = useRouter();
   const [likeStatus, setLikeStatus] = useState(false);
-  const [joined, setJoined] = useState<"joined" | "loading" | "not-joined">(
-    "loading"
-  );
+  const [joinedStatus, setJoinedStatus] = useState<
+    "joined" | "loading" | "not-joined"
+  >("loading");
 
   const { data, networkStatus, refetch } = useQuery(CHECKLIKE, {
     errorPolicy: "all",
@@ -139,7 +125,6 @@ const TournamentList = ({
         id: id,
       },
     });
-
   const handleLike = (
     e: ChangeEvent & { target: Element & { [key: string]: any } }
   ) => {
@@ -181,42 +166,28 @@ const TournamentList = ({
   ]);
 
   useEffect(() => {
-    if (match?.users?.joined) {
-      const userIndex = match.users.joined.findIndex((u: any) => {
-        return u.id === user?.id;
-      });
-      if (userIndex >= 0) {
-        setJoined("joined");
-      } else {
-        setJoined("not-joined");
-      }
+    const userIndex = joined.findIndex((u: any) => {
+      return u.id === user?.id;
+    });
+    if (userIndex >= 0) {
+      setJoinedStatus("joined");
     } else {
-      setJoined("not-joined");
+      setJoinedStatus("not-joined");
     }
-  }, [data, match.users.joined, user?.id]);
-
-  useEffect(() => {
-    if (router.isReady) {
-      const { tid } = router.query;
-      if (tid === id) {
-        setJoinTournamentId(id);
-        handleModalOpen();
-      }
-    }
-  }, [router.isReady, id, router.query, handleModalOpen, setJoinTournamentId]);
+  }, [data, joined, user?.id]);
 
   return (
     <li className={cn(styles.container)}>
       <div>
         <Tooltip
-          title={creator.identity.arena_name}
+          title={creator.identity.brullah_name}
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
           <div>
             <Image
               fill
               src={creator.identity.avatar.image}
-              alt={creator.identity.arena_name}
+              alt={creator.identity.brullah_name}
               placeholder="blur"
               blurDataURL={decodeBlurHash(
                 creator.identity.avatar.blurhash,
@@ -243,15 +214,11 @@ const TournamentList = ({
           </div>
         </Tooltip>
         <Tooltip
-          title={
-            analytics?.joined_users
-              ? `${analytics?.joined_users} Joined`
-              : `0 Joined`
-          }
+          title={`${joined.length} Joined`}
           componentsProps={{ tooltip: { className: cn(styles.tooltip) } }}
         >
           <div>
-            <p>{analytics?.joined_users ? analytics?.joined_users : 0}</p>
+            <p>{joined.length}</p>
           </div>
         </Tooltip>
       </div>
@@ -271,20 +238,18 @@ const TournamentList = ({
         <p>{information.description}</p>
       </div>
       <div>
-        <Button
-          text={
-            joined === "joined"
-              ? "withdraw"
-              : joined === "loading"
-              ? "..."
-              : "join"
-          }
-          disabled={false}
-          onClick={() => {
-            setJoinTournamentId(id);
-            handleModalOpen();
-          }}
-        ></Button>
+        <Link href={`/tournament/${id}`}>
+          <Button
+            text={
+              joinedStatus === "joined"
+                ? "withdraw"
+                : joinedStatus === "loading"
+                ? "..."
+                : "join"
+            }
+            disabled={false}
+          ></Button>
+        </Link>
       </div>
       <div>
         {networkStatus === NetworkStatus.ready ? (
@@ -359,7 +324,7 @@ export const TournamentListFragment = gql`
     creator {
       id
       identity {
-        arena_name
+        brullah_name
         avatar {
           image
           blurhash
@@ -371,15 +336,8 @@ export const TournamentListFragment = gql`
         }
       }
     }
-    match {
-      users {
-        joined {
-          id
-        }
-      }
-    }
-    analytics {
-      joined_users
+    joined {
+      id
     }
     sponsor {
       sponsored

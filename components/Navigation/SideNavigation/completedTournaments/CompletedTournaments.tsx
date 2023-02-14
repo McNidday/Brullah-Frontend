@@ -1,6 +1,6 @@
 import { gql, NetworkStatus, useQuery } from "@apollo/client";
 import classNames from "classnames";
-import moment from "moment";
+import { Duration } from "luxon";
 import { useEffect, useState, useCallback } from "react";
 import Completed from "./completed/Completed";
 import CompletedTournamentsError from "./error/CompletedTournamentsError";
@@ -9,21 +9,28 @@ import styles from "./styles.module.scss";
 const cn = classNames.bind(styles);
 
 const COMPLETED_MATCHES = gql`
-  query JoinedNotStartedMatches($page: Int!, $limit: Int!, $progress: String!) {
-    joinedMatches(page: $page, limit: $limit, progress: $progress) {
+  query JoinedNotStartedMatches(
+    $page: Int!
+    $limit: Int!
+    $search: String
+    $status: [String]
+  ) {
+    joinedTournaments(
+      page: $page
+      limit: $limit
+      search: $search
+      status: $status
+    ) {
       page
       hasNextPage
       docs {
         id
-        tournament {
-          id
-          start_date
-          information {
-            name
-            thumbnail {
-              image
-              blurhash
-            }
+        start_date
+        information {
+          name
+          thumbnail {
+            image
+            blurhash
           }
         }
       }
@@ -39,7 +46,8 @@ const CompletedTournaments = () => {
       variables: {
         page: page,
         limit: 10,
-        progress: "DONE",
+        search: "",
+        status: ["DONE"],
       },
       notifyOnNetworkStatusChange: true,
     }
@@ -80,7 +88,7 @@ const CompletedTournaments = () => {
     const interval = setInterval(() => {
       refetchData({ page: 1 });
       setPage(1);
-    }, moment.duration(10, "minutes").asMilliseconds());
+    }, Duration.fromObject({ minutes: 10 }).as("milliseconds"));
     return () => clearInterval(interval);
   }, [refetchData]);
 

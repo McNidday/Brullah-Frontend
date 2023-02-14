@@ -1,4 +1,5 @@
 import { gql, NetworkStatus, useQuery } from "@apollo/client";
+import { DateTime, Duration } from "luxon";
 import classNames from "classnames";
 import { useEffect, useState, useCallback } from "react";
 import DqTournaments from "./dqTournaments/DqTournaments";
@@ -7,65 +8,30 @@ import OngoingTournamentsError from "./error/OngoingTournamentsError";
 import OngoingTournamentsLoading from "./loading/OngoingTournamentsLoading";
 import styles from "./styles.module.scss";
 import WaitingQueue from "./WaitingQueue/WaitingQueue";
-import moment from "moment";
 const cn = classNames.bind(styles);
 
 const ONGOING_TOURNAMENTS = gql`
-  query UserOngoingMatches($page: Int!, $limit: Int!, $progress: String!) {
-    joinedMatches(page: $page, limit: $limit, progress: $progress) {
+  query UserOngoingMatches(
+    $page: Int!
+    $limit: Int!
+    $search: String
+    $status: [String]
+  ) {
+    joinedTournaments(
+      page: $page
+      limit: $limit
+      search: $search
+      status: $status
+    ) {
       page
       hasNextPage
       docs {
         id
-        tournament {
-          id
-          information {
-            name
-            thumbnail {
-              image
-              blurhash
-            }
-          }
-        }
-        configuration {
-          timmers {
-            match_time {
-              arenaNumber
-              rounds {
-                roundNumber
-                matches {
-                  matchNumber
-                  time
-                }
-              }
-            }
-          }
-          configure {
-            arenaNumber
-            rounds {
-              roundNumber
-              matches {
-                matchNumber
-                done
-                bye {
-                  user {
-                    id
-                  }
-                }
-                slot_two {
-                  winner
-                  user {
-                    id
-                  }
-                }
-                slot_one {
-                  winner
-                  user {
-                    id
-                  }
-                }
-              }
-            }
+        information {
+          name
+          thumbnail {
+            image
+            blurhash
           }
         }
       }
@@ -89,7 +55,8 @@ const OngoingTournaments = () => {
       variables: {
         page: page,
         limit: 10,
-        progress: "IN-PROGRESS:RECONFIGURE",
+        search: "",
+        status: ["IN-PROGRESS", "RECONFIGURE"],
       },
       notifyOnNetworkStatusChange: true,
     }
@@ -187,10 +154,10 @@ const OngoingTournaments = () => {
                   `${a.arenaNumber}:${r.roundNumber}:${s.matchNumber}`,
                   m.id
                 );
-                if (moment().isAfter(moment.unix(time))) {
+                if (DateTime.now() > DateTime.fromISO(time)) {
                   readyT.push(m);
                 }
-                if (moment().isSameOrBefore(moment.unix(time))) {
+                if (DateTime.now() <= DateTime.fromISO(time)) {
                   waitingT.push({ ...m, timeToMatch: time });
                 }
               } else if (user && s.done) {
@@ -213,7 +180,7 @@ const OngoingTournaments = () => {
     const interval = setInterval(() => {
       refetchOngoingTournaments({ page: 1 });
       setPage(1);
-    }, moment.duration(10, "minutes").asMilliseconds());
+    }, Duration.fromObject({ minutes: 10 }).as("milliseconds"));
     return () => clearInterval(interval);
   }, [refetchOngoingTournaments]);
 

@@ -15,7 +15,7 @@ const UpdateUserComplete = ({ data }: { data: undefined | any }) => {
     <div className={cn(styles.container)}>
       {data && data.updateUser ? (
         <h3>
-          Greate {data.updateUser.identity.arena_name}, your brullah account has
+          Greate {data.updateUser.identity.brullah_name}, your brullah account has
           been updated.
         </h3>
       ) : (

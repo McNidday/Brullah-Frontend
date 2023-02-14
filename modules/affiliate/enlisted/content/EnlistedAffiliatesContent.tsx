@@ -8,8 +8,8 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
+import { DateTime } from "luxon";
 import cn from "classnames";
-import moment from "moment";
 import dinero from "dinero.js";
 import styles from "./styles.module.scss";
 
@@ -18,8 +18,8 @@ interface Props {
     id: String;
     enlisted: {
       identity: {
-        arena_name: String;
-        arena_id: String;
+        brullah_name: String;
+        brullah_id: String;
       };
     };
     commission: {
@@ -60,12 +60,14 @@ const EnlistedAffiliatesContent = ({
           <TableBody>
             {docs.map((t) => {
               return (
-                <TableRow key={`${t.enlisted.identity.arena_id}~view~enlisted`}>
+                <TableRow
+                  key={`${t.enlisted.identity.brullah_id}~view~enlisted`}
+                >
                   <TableCell component="th" scope="row">
-                    {t.enlisted.identity.arena_id}
+                    {t.enlisted.identity.brullah_id}
                   </TableCell>
                   <TableCell align="center">
-                    {t.enlisted.identity.arena_name}
+                    {t.enlisted.identity.brullah_name}
                   </TableCell>
                   <TableCell align="center">
                     {dinero({
@@ -74,13 +76,17 @@ const EnlistedAffiliatesContent = ({
                     }).toFormat()}
                   </TableCell>
                   <TableCell align="center">
-                    {moment.unix(t.contract_commence).format("LLL")}
+                    {DateTime.fromISO(t.contract_commence).toLocaleString(
+                      DateTime.DATETIME_FULL
+                    )}
                   </TableCell>
                   <TableCell align="center">
-                    {moment.unix(t.contract_expiry).format("LLL")}
+                    {DateTime.fromISO(t.contract_expiry).toLocaleString(
+                      DateTime.DATETIME_FULL
+                    )}
                   </TableCell>
                   <TableCell align="center">
-                    {moment().isSameOrAfter(moment.unix(t.contract_expiry))
+                    {DateTime.now() >= DateTime.fromISO(t.contract_expiry)
                       ? "Expired"
                       : "Active"}
                   </TableCell>

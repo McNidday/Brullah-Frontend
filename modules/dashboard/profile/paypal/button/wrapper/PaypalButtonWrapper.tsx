@@ -90,7 +90,7 @@ const PaypalButtonWrapper = ({
                 capturePaypalDepositOrder(orderId: "${data.orderID}") {
                   payer {
                     identity {
-                      arena_name
+                      brullah_name
                     }
                   }
                   deposit_final_amount {
@@ -116,7 +116,7 @@ const PaypalButtonWrapper = ({
               Transaction completed successfully{" "}
               {
                 response.data.capturePaypalDepositOrder.payer.identity
-                  .arena_name
+                  .brullah_name
               }
               . Deposited <strong>{deposited.toFormat()}</strong> to your
               brullah account. Navigate to brullah coins tab and get your game

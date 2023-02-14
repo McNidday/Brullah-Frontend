@@ -1,4 +1,4 @@
-import moment from "moment";
+import { Duration } from "luxon";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { setCookie } from "../../functions/Cookies";
@@ -21,7 +21,7 @@ const HomeMain = () => {
         setCookie(
           "affiliate",
           affiliate as string,
-          moment.duration(1, "month")
+          Duration.fromObject({ month: 1 })
         );
       }
     }

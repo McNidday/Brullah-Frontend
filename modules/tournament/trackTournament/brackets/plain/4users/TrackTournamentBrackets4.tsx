@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 interface User {
   id: string;
   identity: {
-    arena_name: string;
+    brullah_name: string;
     avatar: {
       image: string;
       blurhash: string;

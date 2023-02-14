@@ -151,7 +151,9 @@ const SignUpAvatar = ({ updateProfile, error, localAvatarError }: Props) => {
               </div>
             ) : !avatarUrl && uploadError ? (
               <div className={cn(styles.imagePlaceholder)}>
-                <p>{uploadError}</p>
+                <p className={cn(styles.imagePlaceholderError)}>
+                  {uploadError}
+                </p>
               </div>
             ) : (
               ""

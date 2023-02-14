@@ -11,7 +11,7 @@ const RESET_PASSWORD = gql`
       id
       identity {
         email
-        arena_name
+        brullah_name
       }
     }
   }

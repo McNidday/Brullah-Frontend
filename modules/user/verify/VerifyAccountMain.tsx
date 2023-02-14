@@ -11,7 +11,7 @@ const VERIFY_ACCOUNT = gql`
       id
       identity {
         email
-        arena_name
+        brullah_name
       }
     }
   }

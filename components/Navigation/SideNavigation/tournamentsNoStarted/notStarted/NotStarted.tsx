@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import moment from "moment";
+import { DateTime } from "luxon";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { decodeBlurHash } from "../../../../../functions/helpers";
@@ -8,7 +8,7 @@ const cn = classNames.bind(styles);
 
 interface Props {
   information: { name: string; thumbnail: { image: string; blurhash: string } };
-  start_date: number;
+  start_date: string;
 }
 
 const NotStarted = ({ information, start_date }: Props) => {
@@ -16,12 +16,14 @@ const NotStarted = ({ information, start_date }: Props) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (moment().isSameOrAfter(moment.unix(start_date))) {
+      if (DateTime.now() >= DateTime.fromISO(start_date)) {
         setCountDown(">>>");
         clearInterval(interval);
         // Refetch
       } else {
-        setCountDown(moment().to(moment.unix(start_date)));
+        setCountDown(
+          DateTime.now().until(DateTime.fromISO(start_date)).toString()
+        );
       }
     }, 2000);
     return () => clearInterval(interval);

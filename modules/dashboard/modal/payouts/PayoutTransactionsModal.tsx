@@ -28,7 +28,7 @@ const PAYPAL_TRANSACTIONS = gql`
       docs {
         sender_item_id {
           identity {
-            arena_name
+            brullah_name
           }
         }
         id
@@ -50,7 +50,7 @@ const PayoutTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
     Array<{
       sender_item_id: {
         identity: {
-          arena_name: string;
+          brullah_name: string;
         };
       };
       id: string;
@@ -141,7 +141,7 @@ const PayoutTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
                         {transaction.id}
                       </TableCell>
                       <TableCell align="center">
-                        {transaction.sender_item_id.identity.arena_name}
+                        {transaction.sender_item_id.identity.brullah_name}
                       </TableCell>
                       <TableCell align="center">
                         {dinero({

@@ -27,7 +27,7 @@ const CREATE_USER = gql`
           image
           blurhash
         }
-        arena_name
+        brullah_name
         first_name
         last_name
         email
@@ -48,7 +48,7 @@ const SignUpInputSlides = () => {
       errorPolicy: "all",
     }
   );
-
+  
   const updateProfile = useCallback((name: string, value: string) => {
     setProfile((prev) => {
       prev[name] = value;
@@ -179,7 +179,7 @@ const SignUpInputSlides = () => {
             return (
               <SignUpArenaName
                 updateProfile={updateProfile}
-                arena_name={profile.arena_name}
+                brullah_name={profile.brullah_name}
                 error={error}
                 isActive={isActive}
               ></SignUpArenaName>

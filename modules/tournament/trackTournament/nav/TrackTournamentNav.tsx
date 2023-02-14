@@ -26,7 +26,7 @@ interface Props {
   winner: {
     id: string;
     identity: {
-      arena_name: string;
+      brullah_name: string;
       avatar: { image: string; blurhash: string };
     };
   } | null;

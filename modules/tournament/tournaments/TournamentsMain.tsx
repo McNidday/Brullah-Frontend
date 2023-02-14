@@ -6,7 +6,6 @@ import styles from "./styles.module.scss";
 import cn from "classnames";
 import { gql, NetworkStatus, useQuery } from "@apollo/client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import TournamentParentListModal from "./tournaments/modal/TournamentParentListModal";
 import TournamentsLoading from "./loading/TournamentsLoading";
 import TournamentsError from "./error/TournamentsError";
 import debounce from "lodash.debounce";
@@ -49,14 +48,6 @@ const TournamentsMain = () => {
 
   const { data: userData } = useQuery(USER);
   const [search, setSearch] = useState<string | null>(null);
-  const [joinTournamentId, setJoinTournamentId] = useState<string | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleModalClose = useCallback(() => setModalOpen(false), []);
-  const handleModalOpen = useCallback(() => setModalOpen(true), []);
-  const setJoinTournamentIdCallback = useCallback(
-    (id: string) => setJoinTournamentId(id),
-    []
-  );
   const getSearchResults = useRef(
     debounce((val: string) => {
       if (val) {
@@ -143,16 +134,8 @@ const TournamentsMain = () => {
           hasNextPage={data.tournaments.hasNextPage}
           networkStatus={networkStatus}
           onLoadMore={onLoadMore}
-          setJoinTournamentId={setJoinTournamentIdCallback}
-          handleModalOpen={handleModalOpen}
           tournaments={data.tournaments.docs}
         ></TournamentsParentList>
-        <TournamentParentListModal
-          search={search}
-          tournamentId={joinTournamentId}
-          modalOpen={modalOpen}
-          handleModalClose={handleModalClose}
-        ></TournamentParentListModal>
       </div>
     </div>
   );

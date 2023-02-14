@@ -28,7 +28,7 @@ const DEPOSIT_TRANSACTIONS = gql`
       docs {
         payer {
           identity {
-            arena_name
+            brullah_name
           }
         }
         id
@@ -64,7 +64,7 @@ const DepositTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
   const [transactions, setTransactions] = useState<
     Array<{
       payer: {
-        identity: { arena_name: string };
+        identity: { brullah_name: string };
       };
       gross_amount: {
         value: number;
@@ -166,7 +166,7 @@ const DepositTransactionsModal = ({ modalOpen, handleModalClose }: Props) => {
                         {transaction.id}
                       </TableCell>
                       <TableCell align="center">
-                        {transaction.payer.identity.arena_name}
+                        {transaction.payer.identity.brullah_name}
                       </TableCell>
                       <TableCell align="center">
                         {dinero({

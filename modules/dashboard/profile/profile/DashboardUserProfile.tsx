@@ -12,8 +12,8 @@ interface Props {
   setOverflowTab: (tab: string | null) => void;
   user: {
     identity: {
-      arena_name: string;
-      arena_id: string;
+      brullah_name: string;
+      brullah_id: string;
       avatar: {
         image: string;
         blurhash: string;
@@ -38,7 +38,7 @@ const DashboardUserProfile = ({ setOverflowTab, user }: Props) => {
   const [admin, setAdmin] = useState(false);
   const copyArenaId = () => {
     setCopy(true);
-    navigator.clipboard.writeText(user.identity.arena_id);
+    navigator.clipboard.writeText(user.identity.brullah_id);
   };
 
   useEffect(() => {
@@ -69,19 +69,19 @@ const DashboardUserProfile = ({ setOverflowTab, user }: Props) => {
         <Image
           fill
           src={user.identity.avatar.image}
-          alt={user.identity.arena_name}
+          alt={user.identity.brullah_name}
           placeholder="blur"
           blurDataURL={decodeBlurHash(user.identity.avatar.blurhash, 100, 100)}
         ></Image>
       </div>
       <div>
-        <h4>{user.identity.arena_name}</h4>
+        <h4>{user.identity.brullah_name}</h4>
       </div>
       <div>
         <h4>💘 {numeral(user?.stats?.tournament?.likes || 0).format("0a")}</h4>
       </div>
       <div>
-        <h4>{user.identity.arena_id}</h4>
+        <h4>{user.identity.brullah_id}</h4>
         <div
           className={copy ? "copy" : ""}
           onMouseEnter={() => setCopyHover(true)}
@@ -154,8 +154,8 @@ export const DashboardUserProfileFragment = gql`
       status
     }
     identity {
-      arena_name
-      arena_id
+      brullah_name
+      brullah_id
       avatar {
         image
         blurhash

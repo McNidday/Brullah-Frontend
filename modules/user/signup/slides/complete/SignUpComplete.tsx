@@ -16,7 +16,7 @@ const SignUpComplete = ({ data }: { data: undefined | any }) => {
     <div className={cn(styles.container)}>
       {data && data.signup ? (
         <h3>
-          Greate {data.signup.identity.arena_name}, you just became a brullah.
+          Greate {data.signup.identity.brullah_name}, you just became a brullah.
           One more step to give you full access to brullah services. A
           verification link has been sent to your email, click on it and you
           will be golden.

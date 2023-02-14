@@ -1,33 +1,21 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import moment from "moment";
 import EditTournamentArenaBrackets from "./brackets/arena/EditTournamentArenaBrackets";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { useEffect, useRef, useState } from "react";
-import {
-  createMatchConfig,
-  createOnlineConfigFromLocalConfig,
-  createTimeConfig,
-  getNumOfArenas,
-} from "../../../../functions/helpers";
+import { gql, useQuery, useMutation, useLazyQuery } from "@apollo/client";
+import { useState, useEffect } from "react";
+import { DateTime, Duration } from "luxon";
 import EditTournamentModal from "./modal/EditTournamentModal";
-import debounce from "lodash.debounce";
 import EditMyTournamentLoading from "./loading/EditMyTournamentLoading";
 import EditMyTournamentError from "./error/EditMyTournamentError";
 import EditMyTournamentNav from "./nav/EditMyTournamentNav";
 import PublishTournamentModal from "./publishModal/PublishTournamentModal";
 import Image from "next/image";
-
-interface User {
-  id: string;
-  identity: {
-    arena_name: string;
-    avatar: {
-      image: string;
-      blurhash: string;
-    };
-  };
-}
+import { MatchType } from "../../../../types/match";
+import {
+  isByeNumber,
+  numOfArenas,
+  numOfMatches,
+} from "../../../../functions/helpers";
 
 interface Props {
   editId: string;
@@ -39,117 +27,79 @@ const TOURNAMENT = gql`
     tournament(id: $id) {
       id
       start_date
-      analytics {
-        joined_users
-      }
       information {
         name
+        thumbnail {
+          image
+        }
       }
-      match {
+      config {
+        round_offset
+        match_length
+        before_dq
+        after_dq
+      }
+      configured {
         id
-        users {
-          configured {
-            id
-            identity {
-              arena_name
-              avatar {
-                image
-                blurhash
-              }
-            }
+        identity {
+          brullah_name
+          avatar {
+            image
+            blurhash
           }
-          joined {
-            id
-            identity {
-              arena_name
-              avatar {
-                image
-                blurhash
-              }
+        }
+      }
+      joined {
+        id
+        identity {
+          brullah_name
+          avatar {
+            image
+            blurhash
+          }
+        }
+      }
+    }
+  }
+`;
+
+const MATCH = gql`
+  query GetMatch($input: GetMatchInput!) {
+    match(input: $input) {
+      time
+      match_number
+      slot_two {
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
             }
           }
         }
-        configuration {
-          timmers {
-            afterDq
-            beforeDq
-            auto_reconfigure
-            match_time {
-              arenaNumber
-              rounds {
-                roundNumber
-                matches {
-                  matchNumber
-                  time
-                }
-              }
+      }
+      slot_one {
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
             }
           }
-          configure {
-            winner {
-              user {
-                id
-                identity {
-                  arena_name
-                  avatar {
-                    image
-                    blurhash
-                  }
-                }
-              }
-              status
-            }
-            arenaNumber
-            rounds {
-              roundNumber
-              matches {
-                matchNumber
-                progress
-                bye {
-                  advanced
-                  user {
-                    id
-                    identity {
-                      arena_name
-                      avatar {
-                        image
-                        blurhash
-                      }
-                    }
-                  }
-                  reason
-                }
-                slot_one {
-                  joined
-                  winner
-                  user {
-                    id
-                    identity {
-                      arena_name
-                      avatar {
-                        image
-                        blurhash
-                      }
-                    }
-                  }
-                  reason
-                }
-                slot_two {
-                  joined
-                  winner
-                  user {
-                    id
-                    identity {
-                      arena_name
-                      avatar {
-                        image
-                        blurhash
-                      }
-                    }
-                  }
-                  reason
-                }
-              }
+        }
+      }
+      bye_slot {
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
             }
           }
         }
@@ -159,414 +109,247 @@ const TOURNAMENT = gql`
 `;
 
 const SAVE_CONFIG = gql`
-  mutation SaveMatchConfig(
-    $id: ID!
-    $config: MatchConfigInput
-    $timmers: MatchTimmersInput
-  ) {
-    saveConfiguration(id: $id, config: $config, timmers: $timmers) {
+  mutation SaveMatchConfig($input: MatchConfigInput) {
+    saveMatchConfig(input: $input) {
       id
     }
   }
 `;
 
 const EditMyTournament = ({ editId, setEditId }: Props) => {
-  const { loading, error, data, refetch } = useQuery(TOURNAMENT, {
+  const { loading, error, data, refetch } = useQuery<{
+    tournament: {
+      id: string;
+      start_date: string;
+      information: {
+        name: string;
+      };
+      configured: Array<{
+        id: string;
+        identity: {
+          brullah_name: string;
+          avatar: {
+            image: string;
+            blurhash: string;
+          };
+        };
+      }>;
+      joined: Array<{
+        id: string;
+        identity: {
+          brullah_name: string;
+          avatar: {
+            image: string;
+            blurhash: string;
+          };
+        };
+      }>;
+      config: {
+        after_dq: number;
+        before_dq: number;
+        round_offset: number;
+        match_length: number;
+      };
+    };
+  }>(TOURNAMENT, {
     variables: {
       id: editId,
     },
   });
-
-  const [
-    saveTournamentConfig,
-    {
-      data: saveConfigData,
-      loading: saveConfigLoading,
-      error: saveConfigError,
-      reset,
-    },
-  ] = useMutation(SAVE_CONFIG, {
+  const [getMatch] = useLazyQuery<{
+    match: MatchType;
+  }>(MATCH);
+  const [saveConfig] = useMutation(SAVE_CONFIG, {
     errorPolicy: "all",
   });
-
   const [activeEdit, setActiveEdit] = useState<string | null>(null);
-  const [localConfig, setLocalConfig] = useState<Array<any>>([]);
-  const [onlineConfig, setOnlineConfig] = useState<Array<any>>([]);
-  const [timeConfig, setTimeConfig] = useState<Array<any>>([]);
   const [showPublishModal, setShowPublisModal] = useState(false);
-
-  const [numOfArenas, setNumOfArenas] = useState(0);
-  const [arenas, setArenas] = useState<Array<number>>([]);
-
-  const [usersToConfigure, setUsersToConfigure] = useState<Array<User>>([]);
-  const [usersJoined, setUsersJoined] = useState<Array<User>>([]);
-
+  const [config, setConfig] = useState<
+    Array<{ id: string; configured: boolean; arbs: string; removed?: boolean }>
+  >([]);
   const [activeArena, setActiveArena] = useState(1);
-
-  const saveConfigDebounce = useRef(
-    debounce((id, config, onlineTimeConfig) => {
-      saveTournamentConfig({
-        variables: {
-          id: id,
-          timmers: {
-            afterDq: 30,
-            beforeDq: 30,
-            auto_reconfigure: 30,
-            match_time: onlineTimeConfig,
-          },
-          config: {
-            configure: config,
-          },
-        },
-      });
-    }, 5000)
-  );
+  const [time, setTime] = useState("");
+  const [initialized, setInitialized] = useState(false);
 
   const handleActiveEdit = (arb: string | null) => {
     setActiveEdit(arb);
   };
 
-  const matchConfigShallowCopy = (config: any) => {
-    return config.map((a: any) => {
-      return {
-        ...a,
-        rounds: a.rounds.map((r: any) => {
-          return {
-            ...r,
-            matches: r.matches.map((m: any) => {
-              return {
-                ...m,
-                slot_one: {
-                  ...m.slot_one,
-                },
-                slot_two: {
-                  ...m.slot_two,
-                },
-              };
-            }),
-          };
-        }),
-      };
-    });
-  };
+  const handleAutoConfigure = () => {};
 
-  const handleConfigUserRemove = (arbs: string) => {
-    const arbsArray = arbs.split(":").map((v) => parseInt(v));
-    const newOnlineConfig = matchConfigShallowCopy(onlineConfig);
-    newOnlineConfig.forEach((a: any) => {
-      if (a.arenaNumber === arbsArray[0]) {
-        a.rounds.forEach((r: any, ri: number) => {
-          if (r.roundNumber === arbsArray[1]) {
-            a.rounds[ri].matches.forEach((m: any) => {
-              if (m.matchNumber === arbsArray[2]) {
-                if (arbsArray[3] === 1) {
-                  m.slot_one = {};
-                }
-                if (arbsArray[3] === 2) {
-                  m.slot_two = {};
-                }
-                delete m.bye;
-              }
-            });
-          }
-        });
-      }
-    });
-    setOnlineConfig(newOnlineConfig);
-    const newUsersToConfigure = [...usersToConfigure];
-    // Find user in joined users
-    const newLocalConfig = matchConfigShallowCopy(localConfig);
-    newLocalConfig.forEach((a: any) => {
-      if (a.arenaNumber === arbsArray[0]) {
-        a.rounds.forEach((r: any, ri: number) => {
-          if (r.roundNumber === arbsArray[1]) {
-            a.rounds[ri].matches.forEach((m: any) => {
-              if (m.matchNumber === arbsArray[2]) {
-                if (arbsArray[3] === 1) {
-                  newUsersToConfigure.push({ ...m.slot_one.user });
-                  m.slot_one = {};
-                }
-                if (arbsArray[3] === 2) {
-                  newUsersToConfigure.push({ ...m.slot_two.user });
-                  m.slot_two = {};
-                }
-                if (m.bye) {
-                  newUsersToConfigure.push({ ...m.bye.user });
-                  delete m.bye;
-                }
-              }
-            });
-          }
-        });
-      }
-    });
-    setUsersToConfigure(newUsersToConfigure);
-    setLocalConfig(newLocalConfig);
+  const removeBye = async (input: {
+    id: string;
+    arena_number: number;
+    round_number: number;
+    match_number: number;
+    slot_one?: string;
+    slot_two?: string;
+    bye_slot?: string;
+  }) => {
+    await saveConfig({ variables: { input } });
   };
-
-  const handleConfigUserUpdate = (userId: string, slot: number) => {
-    // arbs stands for arena, round, bracket and last;y the slot
-    // In the format of 1:1:1:1
-    const arbsArray = activeEdit!.split(":").map((v) => parseInt(v));
-    const newOnlineConfig = matchConfigShallowCopy(onlineConfig);
-    newOnlineConfig.forEach((a: any) => {
-      if (a.arenaNumber === arbsArray[0]) {
-        a.rounds.forEach((r: any) => {
-          if (r.roundNumber === arbsArray[1]) {
-            r.matches.forEach((m: any) => {
-              if (m.matchNumber === arbsArray[2]) {
-                if (slot === 1) {
-                  m.slot_one = {
-                    user: userId,
-                  };
-                }
-                if (slot === 2) {
-                  m.slot_two = {
-                    user: userId,
-                  };
-                }
-                if (slot === 3) {
-                  m.bye = {
-                    user: userId,
-                  };
-                }
-              }
-            });
-          }
-        });
-      }
-    });
-    setOnlineConfig(newOnlineConfig);
-    const newUsersToConfigure = usersToConfigure.filter((u) => {
-      return u.id !== userId;
-    });
-    setUsersToConfigure(newUsersToConfigure);
-    // Update local config
-    // Find user in joined users
-    const userIndex = usersJoined.findIndex((u: any) => u.id === userId);
-    const newLocalConfig = matchConfigShallowCopy(localConfig);
-    newLocalConfig.forEach((a: any) => {
-      if (a.arenaNumber === arbsArray[0]) {
-        a.rounds.forEach((r: any, ri: number) => {
-          if (r.roundNumber === arbsArray[1]) {
-            a.rounds[ri].matches.forEach((m: any) => {
-              if (m.matchNumber === arbsArray[2]) {
-                if (slot === 1) {
-                  m.slot_one = {
-                    user: { ...usersJoined[userIndex] },
-                  };
-                }
-                if (slot === 2) {
-                  m.slot_two = {
-                    user: { ...usersJoined[userIndex] },
-                  };
-                }
-                if (slot === 3) {
-                  m.bye = {
-                    user: { ...usersJoined[userIndex] },
-                  };
-                }
-              }
-            });
-          }
-        });
-      }
-    });
-    setLocalConfig(newLocalConfig);
-  };
-
-  const handleAutoPple = () => {
-    const newOnlineConfig = createMatchConfig(usersJoined.length);
-    usersJoined.forEach((u) => {
-      let inserted = false;
-      newOnlineConfig.forEach((a) => {
-        a.rounds.forEach((r: any) => {
-          r.matches.forEach((m: any) => {
-            if (inserted) return;
-            if (!m.slot_one.user) {
-              m.slot_one = { user: u.id };
-              inserted = true;
-            } else if (!m.slot_two.user) {
-              m.slot_two = { user: u.id };
-              inserted = true;
-            }
-          });
-        });
-      });
-    });
-    setOnlineConfig(newOnlineConfig);
-    const newLocalConfig = createMatchConfig(usersJoined.length);
-    usersJoined.forEach((u) => {
-      let inserted = false;
-      newLocalConfig.forEach((a) => {
-        a.rounds.forEach((r: any) => {
-          r.matches.forEach((m: any) => {
-            if (inserted) return;
-            if (!m.slot_one.user) {
-              m.slot_one = { user: { ...u } };
-              delete m.slot_one.user.__typename;
-              inserted = true;
-            } else if (!m.slot_two.user) {
-              m.slot_two = { user: { ...u } };
-              delete m.slot_two.user.__typename;
-              inserted = true;
-            }
-          });
-        });
-      });
-    });
-    setLocalConfig(newLocalConfig);
-    setUsersToConfigure([]);
-    handleTimeUpdate(4);
-  };
-
-  const handleTimeUpdate = (hours: number) => {
-    const roundOneTime = moment().add(hours, "hours");
-    const roundTwoTime = roundOneTime.clone().add(hours, "hours");
-    const roundThreeTime = roundTwoTime.clone().add(hours, "hours");
-    const roundFourTime = roundThreeTime.clone().add(hours, "hours");
-    const newTimeConfig = createTimeConfig(usersJoined.length);
-    newTimeConfig.forEach((a) => {
-      a.rounds.forEach((r: any) => {
-        r.matches.forEach((m: any) => {
-          if (r.roundNumber === 1) {
-            m.time = roundOneTime.unix();
-          }
-          if (r.roundNumber === 2) {
-            m.time = roundTwoTime.unix();
-          }
-          if (r.roundNumber === 3) {
-            m.time = roundThreeTime.unix();
-          }
-          if (r.roundNumber === 4) {
-            m.time = roundFourTime.unix();
-          }
-        });
-      });
-    });
-    setTimeConfig(newTimeConfig);
-  };
-
   const handlePublishModalOpen = () => {
     setShowPublisModal(true);
   };
-
   const handlePublishModalClose = () => {
     setShowPublisModal(false);
   };
-
-  useEffect(() => {
-    if (data?.tournament) {
-      setNumOfArenas(getNumOfArenas(data.tournament.analytics.joined_users));
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (data?.tournament) {
-      if (
-        !data.tournament.match.configuration.timmers ||
-        data.tournament.match.configuration.timmers.match_time.length !==
-          numOfArenas
-      ) {
-        setTimeConfig(createTimeConfig(data.tournament.analytics.joined_users));
-      } else {
-        setTimeConfig(
-          createTimeConfig(
-            data.tournament.analytics.joined_users,
-            data.tournament.match.configuration.timmers.match_time
-          )
-        );
-      }
-
-      if (
-        data.tournament.match.configuration.configure.length !== numOfArenas
-      ) {
-        setOnlineConfig(
-          createMatchConfig(data.tournament.analytics.joined_users)
-        );
-        setLocalConfig(
-          createMatchConfig(data.tournament.analytics.joined_users)
-        );
-        setUsersToConfigure(data.tournament.match.users.joined);
-      } else {
-        const config = createOnlineConfigFromLocalConfig(
-          data.tournament.match.users.joined,
-          matchConfigShallowCopy(data.tournament.match.configuration.configure)
-        );
-        setOnlineConfig(config.onlineConfig);
-        setUsersToConfigure(config.usersToConfigure);
-        setLocalConfig(config.localConfig);
-      }
-      // Set the joined users
-      setUsersJoined(data.tournament.match.users.joined);
-    }
-  }, [numOfArenas, data.tournament]);
-
-  useEffect(() => {
-    if (localConfig.length > 0) {
-      const theArenas = [];
-      for (let i = 0; i < numOfArenas; i++) {
-        theArenas.push(i + 1);
-      }
-      setArenas(theArenas);
-    }
-  }, [localConfig, data, numOfArenas]);
-
-  useEffect(() => {
-    if (data?.tournament && onlineConfig.length > 0) {
-      saveConfigDebounce.current(
-        data.tournament.match.id,
-        onlineConfig,
-        timeConfig
+  const markConfigured = (id: string) => {
+    setConfig((ic) => {
+      return ic.map((c) => (c.id === id ? { ...c, configured: true } : c));
+    });
+  };
+  const removeMarked = (arbs: string) => {
+    setConfig((ic) => {
+      return ic.filter((v) => v.arbs !== arbs);
+    });
+  };
+  const markRemovedFromConfigured = (arbs: string) => {
+    setConfig((ic) => {
+      // A bye should be removed if one of the slots have been removed
+      const byeArbs = `${arbs.split(":").splice(0, 3).join(":")}:3`;
+      return ic.map((v) =>
+        v.arbs === arbs
+          ? { ...v, removed: true }
+          : byeArbs !== arbs && v.arbs === byeArbs
+          ? { ...v, removed: true }
+          : v
       );
-    }
-  }, [onlineConfig, timeConfig, data, data.tournament]);
-
+    });
+  };
+  const addToConfigured = (id: string, arbs: string) => {
+    setConfig((ic) => {
+      return [...ic, { id, arbs, configured: false }];
+    });
+  };
   useEffect(() => {
-    if (saveConfigData || saveConfigError) {
-      setTimeout(reset, 10000);
-    }
-  }, [saveConfigData, reset, saveConfigError]);
+    (async () => {
+      if (data && !loading) {
+        let time = DateTime.fromISO(data?.tournament.start_date);
+        do {
+          time = time.plus(Duration.fromObject({ hours: 2 }));
+        } while (time < DateTime.now());
+        setTime(time.toISO());
+        for (let i = 1; i <= numOfArenas(data.tournament.joined.length); i++) {
+          for (
+            let m = 1;
+            m <= numOfMatches(data.tournament.joined.length, i, 1);
+            m++
+          ) {
+            const res = await getMatch({
+              variables: {
+                input: {
+                  tournament: data.tournament.id,
+                  game: 1,
+                  arena_number: i,
+                  round_number: 1,
+                  match_number: m,
+                },
+              },
+            });
 
-  if (loading) return <EditMyTournamentLoading></EditMyTournamentLoading>;
+            if (res.data?.match.slot_one?.user) {
+              setConfig((ic) => {
+                return [
+                  ...ic,
+                  {
+                    id: res.data!.match.slot_one!.user.id,
+                    arbs: `${i}:${1}:${m}:1`,
+                    configured: true,
+                  },
+                ];
+              });
+            }
+
+            if (res.data?.match.slot_two?.user) {
+              setConfig((ic) => {
+                return [
+                  ...ic,
+                  {
+                    id: res.data!.match.slot_two!.user.id,
+                    arbs: `${i}:${1}:${m}:2`,
+                    configured: true,
+                  },
+                ];
+              });
+            }
+
+            if (res.data?.match.bye_slot?.user) {
+              let num = data.tournament.joined.length;
+              for (
+                let k = 1;
+                k < numOfArenas(data.tournament.joined.length);
+                k++
+              ) {
+                num -= 16;
+              }
+              if (!isByeNumber(num >= 16 ? 16 : num)) {
+                setConfig((ic) => {
+                  return [
+                    ...ic,
+                    {
+                      id: res.data!.match.bye_slot!.user.id,
+                      arbs: `${i}:${1}:${m}:3`,
+                      configured: true,
+                    },
+                  ];
+                });
+              }
+            }
+          }
+        }
+        setInitialized(true);
+      }
+    })();
+  }, [data, loading, getMatch]);
+
   if (error)
     return <EditMyTournamentError error={error}></EditMyTournamentError>;
+
+  if (loading || !data)
+    return <EditMyTournamentLoading></EditMyTournamentLoading>;
 
   return (
     <>
       <EditMyTournamentNav
         setEditId={setEditId}
         handlePublishModalOpen={handlePublishModalOpen}
-        handleAutoPple={handleAutoPple}
-        saveConfigError={saveConfigError}
-        saveConfigLoading={saveConfigLoading}
+        handleAutoPple={handleAutoConfigure}
       ></EditMyTournamentNav>
-      {arenas.length > 0 ? (
+      {numOfArenas(data.tournament.joined.length) > 0 ? (
         <div className={cn(styles.editContainer)}>
-          {arenas?.map((a, i) => {
-            return (
-              <EditTournamentArenaBrackets
-                handleActiveArena={(val: number) => {
-                  setActiveArena(val);
-                }}
-                activeArena={activeArena === i + 1 ? true : false}
-                activeEdit={activeEdit}
-                key={`${data.tournament.match.id}:${a}`}
-                setActiveEdit={handleActiveEdit}
-                config={localConfig[i]}
-                time={timeConfig[i]}
-              ></EditTournamentArenaBrackets>
-            );
-          })}
+          {[...Array(numOfArenas(data.tournament.joined.length))].map(
+            (a, i) => {
+              return (
+                <EditTournamentArenaBrackets
+                  time={time}
+                  removeBye={removeBye}
+                  removeMarked={removeMarked}
+                  markConfigured={markConfigured}
+                  config={config}
+                  timeConfig={data.tournament.config}
+                  arenaNumber={i + 1}
+                  numOfJoined={data.tournament.joined.length}
+                  tournamentId={data.tournament.id}
+                  handleActiveArena={(val: number) => {
+                    setActiveArena(val);
+                  }}
+                  activeArena={activeArena === i + 1 ? true : false}
+                  activeEdit={activeEdit}
+                  key={`${data.tournament.id}:${i}`}
+                  setActiveEdit={handleActiveEdit}
+                ></EditTournamentArenaBrackets>
+              );
+            }
+          )}
           <div className={cn(styles.modalContainer)}>
             <EditTournamentModal
+              initialized={initialized}
+              config={config}
+              addToConfigured={addToConfigured}
               setActiveEdit={(val: string | null) => setActiveEdit(val)}
-              handleTimeUpdate={handleTimeUpdate}
-              joinedUsers={usersJoined}
-              handleConfigUserRemove={handleConfigUserRemove}
-              config={localConfig}
-              usersToConfigure={usersToConfigure}
-              handleConfigUserUpdate={handleConfigUserUpdate}
+              markRemovedFromConfigured={markRemovedFromConfigured}
+              usersToConfigure={data.tournament.joined}
               activeEdit={activeEdit}
             ></EditTournamentModal>
           </div>

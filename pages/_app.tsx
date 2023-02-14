@@ -5,7 +5,7 @@ import type { AppProps } from "next/app";
 import { ApolloProvider, gql } from "@apollo/client";
 import { useEffect } from "react";
 import Cookies, { setCookie } from "../functions/Cookies";
-import moment from "moment";
+import { Duration } from "luxon";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 declare module "@mui/material/styles" {
@@ -98,7 +98,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           setCookie(
             "token",
             result.data.user.token,
-            moment.duration(15, "minutes")
+            Duration.fromObject({ minutes: 15 })
           );
         });
     }
@@ -111,10 +111,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         setCookie(
           "token",
           result.data.user.token,
-          moment.duration(15, "minutes")
+          Duration.fromObject({ minutes: 15 })
         );
       }
-    }, moment.duration(10, "minutes").asMilliseconds());
+    }, Duration.fromObject({ minutes: 10 }).as("milliseconds"));
     return () => clearInterval(interval);
   }, []);
   return (

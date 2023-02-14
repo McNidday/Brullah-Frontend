@@ -5,23 +5,24 @@ import Button from "../../../../../components/Button/Button";
 import { useEffect, ChangeEvent, useState } from "react";
 import { useSwiper } from "swiper/react";
 import { ApolloError } from "@apollo/client";
-import moment, { unix } from "moment";
+import { DateTime } from "luxon";
 
 interface Props {
   setDate: Function;
-  date: { unix: number; date: string } | undefined;
   error: ApolloError | undefined;
   isActive: boolean;
 }
 
-const TournamentStartDate = ({ setDate, date, error, isActive }: Props) => {
+const TournamentStartDate = ({ setDate, error, isActive }: Props) => {
   const swiper = useSwiper();
+  const [displayDate, setDisplayDate] = useState<string | null>(null);
   const [nameError, setNameError] = useState<string | null>(null);
 
   const handleChange = (
     e: ChangeEvent & { target: Element & { [key: string]: any } }
   ) => {
-    setDate({ unix: moment(e.target.value).unix(), date: e.target.value });
+    setDisplayDate(e.target.value);
+    setDate(DateTime.fromISO(e.target.value).toISO());
   };
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const TournamentStartDate = ({ setDate, date, error, isActive }: Props) => {
             <input
               className={cn("swiper-no-swiping")}
               tabIndex={isActive ? 0 : -1}
-              value={date?.date || ""}
+              value={displayDate || ""}
               type="datetime-local"
               onChange={handleChange}
             ></input>

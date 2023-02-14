@@ -6,7 +6,7 @@ import { decodeBlurHash } from "../../../../../../functions/helpers";
 interface User {
   id: string;
   identity: {
-    arena_name: string;
+    brullah_name: string;
     avatar: {
       image: string;
       blurhash: string;
@@ -32,7 +32,7 @@ const TrackTournamentWinnerBracket = ({ arenaWinner }: Props) => {
               {arenaWinner.status === "NONE" ? (
                 <time>No winner for this arena</time>
               ) : arenaWinner.status === "DONE" ? (
-                <time>Graduate: {arenaWinner.user.identity.arena_name}</time>
+                <time>Graduate: {arenaWinner.user.identity.brullah_name}</time>
               ) : (
                 <time>Some time in future</time>
               )}
@@ -48,7 +48,7 @@ const TrackTournamentWinnerBracket = ({ arenaWinner }: Props) => {
                     <Image
                       fill
                       src={arenaWinner.user.identity.avatar.image}
-                      alt={arenaWinner.user.identity.arena_name}
+                      alt={arenaWinner.user.identity.brullah_name}
                       placeholder="blur"
                       blurDataURL={decodeBlurHash(
                         arenaWinner.user.identity.avatar.blurhash,

@@ -799,6 +799,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/luxon@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@types/luxon@npm:3.2.0"
+  checksum: 051bfbf841c6ce98728df6538342ce4aaddfcf0ec6e8b473e0195dcfc3ba6b1fe4b3ce17f2ba6d25344f41cb70032c1debe96da9e384e5f6e639665c1e6d368c
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:17.0.29":
   version: 17.0.29
   resolution: "@types/node@npm:17.0.29"
@@ -1315,6 +1322,7 @@ __metadata:
     "@types/croppie": ^2.6.1
     "@types/dinero.js": ^1.9.0
     "@types/lodash.debounce": ^4.0.7
+    "@types/luxon": ^3.2.0
     "@types/node": 17.0.29
     "@types/numeral": ^2.0.2
     "@types/react": 18.0.8
@@ -1335,6 +1343,7 @@ __metadata:
     graphql: ^16.6.0
     include-media: ^1.4.10
     lodash.debounce: ^4.0.8
+    luxon: ^3.2.1
     moment: ^2.29.4
     moment-timezone: ^0.5.40
     next: ^13.1.1
@@ -3168,6 +3177,13 @@ __metadata:
   version: 7.14.1
   resolution: "lru-cache@npm:7.14.1"
   checksum: d72c6713c6a6d86836a7a6523b3f1ac6764768cca47ec99341c3e76db06aacd4764620e5e2cda719a36848785a52a70e531822dc2b33fb071fa709683746c104
+  languageName: node
+  linkType: hard
+
+"luxon@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "luxon@npm:3.2.1"
+  checksum: 3fa3def2c5f5d3032b4c46220c4da8aeb467ac979888fc9d2557adcd22195f93516b4ad5909a75862bec8dc6ddc0953b0f38e6d2f4a8ab8450ddc531a83cf20d
   languageName: node
   linkType: hard
 

@@ -17,7 +17,7 @@ const UPDATE_PASSWORD = gql`
       id
       identity {
         email
-        arena_name
+        brullah_name
       }
     }
   }
@@ -75,7 +75,7 @@ const ForgotReset = ({ token }: Props) => {
         <div className={cn(styles.success)}>
           <p>
             Your password has been reset{" "}
-            {data.verifyPasswordReset.identity.arena_name}. Head on to login to
+            {data.verifyPasswordReset.identity.brullah_name}. Head on to login to
             continue using brullah services.
           </p>
         </div>

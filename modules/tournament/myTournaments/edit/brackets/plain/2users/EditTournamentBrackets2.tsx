@@ -1,99 +1,165 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import EditTournamentBracket from "../bracket/EditTournamentBracket";
+import { DateTime, Duration } from "luxon";
+import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
+import { gql } from "@apollo/client";
+import { MatchType } from "../../../../../../../types/match";
+import EditTournamentBracket from "../bracket/EditTournamentBracket";
 import EditTournamentWinnerBracket from "../winner/EditTournamentWinnerBracket";
 
 interface Props {
+  time: string;
+  removeBye: (input: {
+    id: string;
+    arena_number: number;
+    round_number: number;
+    match_number: number;
+    slot_one?: string;
+    slot_two?: string;
+    bye_slot?: string;
+  }) => Promise<void>;
+  isABye: boolean;
+  tournamentId: string;
   activeEdit: string | null;
   setActiveEdit: (arbs: string | null) => void;
+  markConfigured: (id: string) => void;
+  removeMarked: (arbs: string) => void;
   arenaNumber: number;
   roundNumber: number;
-  matches: Array<{
-    matchNumber: number;
-    progress: string;
-    slot_one: {
-      joined: boolean;
-      user: {
-        identity: {
-          arena_name: string;
-          avatar: {
-            image: string;
-            blurhash: string;
-          };
-        };
-      };
-      reason: string;
-    };
-    slot_two: {
-      joined: boolean;
-      user: {
-        identity: {
-          arena_name: string;
-          avatar: {
-            image: string;
-            blurhash: string;
-          };
-        };
-      };
-      reason: string;
-    };
-    bye?: {
-      joined: boolean;
-      user: {
-        identity: {
-          arena_name: string;
-          avatar: {
-            image: string;
-            blurhash: string;
-          };
-        };
-      };
-      reason: string;
-    };
-  }>;
-  time: {
-    arenaNumber: number;
-    rounds: Array<{
-      roundNumber: number;
-      matches: [
-        {
-          matchNumber: number;
-          time: number;
-        }
-      ];
-    }>;
+  matchNumber: number;
+  timeConfig: {
+    round_offset: number;
+    before_dq: number;
+    after_dq: number;
+    match_length: number;
   };
+  config: Array<{ id: string; configured: boolean; arbs: string }>;
 }
 
+const MATCH = gql`
+  query GetMatch($input: GetMatchInput!) {
+    match(input: $input) {
+      time
+      match_number
+      slot_two {
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
+            }
+          }
+        }
+      }
+      slot_one {
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
+            }
+          }
+        }
+      }
+      bye_slot {
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 const EditTournamentBrackets2 = ({
+  isABye,
+  config,
+  time,
+  tournamentId,
   activeEdit,
+  removeBye,
+  markConfigured,
   setActiveEdit,
+  removeMarked,
   arenaNumber,
   roundNumber,
-  matches,
-  time,
+  matchNumber,
 }: Props) => {
-  const [bye, setBye] = useState<{
-    user: {
-      identity: {
-        arena_name: string;
-        avatar: {
-          image: string;
-          blurhash: string;
-        };
-      };
-    };
-  } | null>(null);
+  const { loading, error, data, refetch } = useQuery<{
+    match: MatchType;
+  }>(MATCH, {
+    variables: {
+      input: {
+        tournament: tournamentId,
+        game: 1,
+        arena_number: arenaNumber,
+        round_number: roundNumber,
+        match_number: matchNumber,
+      },
+    },
+  });
+  const [initializedConfig, setInitializedConfig] = useState<boolean>(false);
+  const refetchMatch = () => refetch();
+
   useEffect(() => {
-    matches.forEach((m) => {
-      if (m.bye && m.bye.user) {
-        setBye(m.bye);
-      } else {
-        setBye(null);
+    if (!loading && data && !initializedConfig) {
+      if (data.match.bye_slot?.user) {
+        if (!isABye) {
+          const input: {
+            id: string;
+            arena_number: number;
+            round_number: number;
+            match_number: number;
+            time: string;
+            slot_one?: string;
+            slot_two?: string;
+            bye_slot?: string;
+          } = {
+            id: tournamentId,
+            time: time,
+            arena_number: arenaNumber,
+            round_number: roundNumber,
+            match_number: matchNumber,
+          };
+          // Check if slotTwo existed
+          const slotOneIndex = config.findIndex((s) => {
+            return s.arbs === `${arenaNumber}:${roundNumber}:${matchNumber}:1`;
+          });
+          if (slotOneIndex > -1) input.slot_one = config[slotOneIndex].id;
+          const slotTwoIndex = config.findIndex((s) => {
+            return s.arbs === `${arenaNumber}:${roundNumber}:${matchNumber}:2`;
+          });
+          if (slotTwoIndex > -1) input.slot_two = config[slotTwoIndex].id;
+          removeBye(input).then(() => refetch());
+        }
       }
-    });
-  }, [matches]);
+      setInitializedConfig(() => true);
+    }
+  }, [
+    time,
+    refetch,
+    isABye,
+    config,
+    tournamentId,
+    arenaNumber,
+    roundNumber,
+    matchNumber,
+    removeBye,
+    data,
+    loading,
+    initializedConfig,
+  ]);
 
   return (
     <>
@@ -103,35 +169,70 @@ const EditTournamentBrackets2 = ({
             className={cn(styles.tournamentBracket, "tournamentBracketRounded")}
           >
             <div className={cn(styles.tournamentBracketRound)}>
-              <h2 className={cn(styles.tournamentBracketRoundTitle)}>Finals</h2>
+              <h2 className={cn(styles.tournamentBracketRoundTitle)}>
+                {loading ? "Loading..." : "Finals"}
+              </h2>
               <ul className={cn(styles.tournamentBracketList)}>
-                {matches.map((m, mi) => (
-                  <EditTournamentBracket
-                    makeFinalAfter={true}
-                    time={time.rounds[0].matches[mi].time}
-                    activeEdit={activeEdit}
-                    key={`${arenaNumber}:${roundNumber}:${m.matchNumber}`}
-                    setActiveEdit={setActiveEdit}
-                    arenaNumber={arenaNumber}
-                    roundNumber={roundNumber}
-                    match={m}
-                  ></EditTournamentBracket>
-                ))}
+                <EditTournamentBracket
+                  removeMarked={removeMarked}
+                  matchNumber={matchNumber}
+                  refetchMatch={refetchMatch}
+                  config={config}
+                  tournamentId={tournamentId}
+                  markConfigured={markConfigured}
+                  byeOnly={false}
+                  timeOnly={false}
+                  makeFinalAfter={true}
+                  activeEdit={activeEdit}
+                  key={`${arenaNumber}:${roundNumber}:${matchNumber}`}
+                  setActiveEdit={setActiveEdit}
+                  arenaNumber={arenaNumber}
+                  roundNumber={roundNumber}
+                  match={
+                    data?.match || ({ match_number: matchNumber } as MatchType)
+                  }
+                  time={time}
+                ></EditTournamentBracket>
               </ul>
             </div>
             <div className={cn(styles.tournamentBracketRound)}>
-              <h3 className={cn(styles.tournamentBracketRoundTitle)}>Winner</h3>
+              <h3 className={cn(styles.tournamentBracketRoundTitle)}>
+                {loading
+                  ? error
+                    ? error.message
+                    : "Loading..."
+                  : "Almost there"}
+              </h3>
               <ul className={cn(styles.tournamentBracketList)}>
-                {bye ? (
+                {data?.match.bye_slot ? (
                   <EditTournamentBracket
+                    removeMarked={removeMarked}
+                    refetchMatch={refetchMatch}
+                    config={config}
+                    tournamentId={tournamentId}
+                    markConfigured={markConfigured}
+                    byeOnly={true}
+                    timeOnly={false}
                     makeFinalBefore={true}
-                    time={time.rounds[1].matches[0].time}
-                    bye={bye}
+                    match={
+                      data?.match ||
+                      ({ match_number: matchNumber } as MatchType)
+                    }
                   ></EditTournamentBracket>
                 ) : (
                   <EditTournamentBracket
+                    removeMarked={removeMarked}
+                    refetchMatch={refetchMatch}
+                    config={config}
+                    tournamentId={tournamentId}
+                    markConfigured={markConfigured}
+                    byeOnly={false}
+                    timeOnly={true}
                     makeFinalBefore={true}
-                    time={time.rounds[1].matches[0].time}
+                    match={
+                      data?.match ||
+                      ({ match_number: matchNumber } as MatchType)
+                    }
                   ></EditTournamentBracket>
                 )}
               </ul>

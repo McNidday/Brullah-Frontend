@@ -16,7 +16,7 @@ interface Props {
   setThumbnail: Function;
   error: Error | undefined;
   serverError: ApolloError | undefined;
-  createTournament: Function;
+  createTournament: () => Promise<void>;
 }
 
 const TournamentThumbnail = ({
@@ -41,6 +41,7 @@ const TournamentThumbnail = ({
         type: "blob",
       });
       setThumbnail(blobToFile(imageBlob));
+      setButtonDisabled(true);
     } else {
       setThumbnail(null);
     }
@@ -134,9 +135,7 @@ const TournamentThumbnail = ({
   }, [avatarUrl, setThumbnail]);
 
   useEffect(() => {
-    if (buttonDisabled) {
-      setTimeout(createTournament, 2000);
-    }
+    if (buttonDisabled) createTournament();
   }, [buttonDisabled, createTournament]);
 
   return (
@@ -187,7 +186,6 @@ const TournamentThumbnail = ({
             text="Let's go!"
             disabled={buttonDisabled}
             onClick={() => {
-              setButtonDisabled(true);
               cropThumbnail();
             }}
           ></Button>

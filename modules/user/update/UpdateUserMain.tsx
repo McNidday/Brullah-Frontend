@@ -10,7 +10,7 @@ const USER = gql`
     user {
       id
       identity {
-        arena_name
+        brullah_name
         email
         first_name
         last_name

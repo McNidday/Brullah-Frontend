@@ -24,7 +24,7 @@ const TOURNAMENT = gql`
       winner {
         id
         identity {
-          arena_name
+          brullah_name
           avatar {
             image
             blurhash
@@ -48,7 +48,7 @@ const TOURNAMENT = gql`
           configured {
             id
             identity {
-              arena_name
+              brullah_name
               avatar {
                 image
                 blurhash
@@ -58,7 +58,7 @@ const TOURNAMENT = gql`
           joined {
             id
             identity {
-              arena_name
+              brullah_name
               avatar {
                 image
                 blurhash
@@ -87,7 +87,7 @@ const TOURNAMENT = gql`
               user {
                 id
                 identity {
-                  arena_name
+                  brullah_name
                   avatar {
                     image
                     blurhash
@@ -107,7 +107,7 @@ const TOURNAMENT = gql`
                   user {
                     id
                     identity {
-                      arena_name
+                      brullah_name
                       avatar {
                         image
                         blurhash
@@ -122,7 +122,7 @@ const TOURNAMENT = gql`
                   user {
                     id
                     identity {
-                      arena_name
+                      brullah_name
                       avatar {
                         image
                         blurhash
@@ -137,7 +137,7 @@ const TOURNAMENT = gql`
                   user {
                     id
                     identity {
-                      arena_name
+                      brullah_name
                       avatar {
                         image
                         blurhash

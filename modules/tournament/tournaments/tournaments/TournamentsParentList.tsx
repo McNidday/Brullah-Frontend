@@ -2,7 +2,7 @@ import { CircularProgress } from "@mui/material";
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import TournamentList, { TournamentListFragment } from "./list/TournamentList";
-import { gql, NetworkStatus, useQuery } from "@apollo/client";
+import { gql, NetworkStatus } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -11,8 +11,6 @@ interface Props {
   hasNextPage: boolean;
   networkStatus: number;
   onLoadMore: () => void;
-  setJoinTournamentId: (id: string) => void;
-  handleModalOpen: () => void;
   search: string | null;
   user: { id: string } | null;
   tournaments: Array<{
@@ -22,12 +20,11 @@ interface Props {
       description: string;
       thumbnail: { image: string; blurhash: string };
     };
-    analytics: { joined_users: number };
-    match: { users: { joined: Array<string> } };
+    joined: Array<{ id: string }>;
     creator: {
       id: string;
       identity: {
-        arena_name: string;
+        brullah_name: string;
         avatar: { image: string; blurhash: string };
       };
       stats: {
@@ -48,8 +45,6 @@ const TournamentsParentList = ({
   networkStatus,
   onLoadMore,
   tournaments,
-  setJoinTournamentId,
-  handleModalOpen,
 }: Props) => {
   const [tournamentsExist, setTournamentsExist] = useState(false);
 
@@ -129,13 +124,7 @@ const TournamentsParentList = ({
       <ul onScroll={handleScroll}>
         {tournaments.map((t) => {
           return (
-            <TournamentList
-              user={user}
-              key={t.id}
-              {...t}
-              handleModalOpen={handleModalOpen}
-              setJoinTournamentId={setJoinTournamentId}
-            ></TournamentList>
+            <TournamentList user={user} key={t.id} {...t}></TournamentList>
           );
         })}
       </ul>

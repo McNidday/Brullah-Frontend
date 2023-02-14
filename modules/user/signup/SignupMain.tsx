@@ -10,7 +10,7 @@ const USER = gql`
     user {
       id
       identity {
-        arena_name
+        brullah_name
       }
     }
   }
@@ -27,7 +27,7 @@ const SignupMain = () => {
   if (data?.user?.id)
     return (
       <SignupError
-        arena_name={data.user.identity.arena_name}
+        brullah_name={data.user.identity.brullah_name}
         errorNum={0}
         error={error!}
       ></SignupError>

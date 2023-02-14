@@ -17,7 +17,7 @@ const USER = gql`
     user {
       id
       identity {
-        arena_name
+        brullah_name
       }
       finance {
         affiliate {

@@ -20,8 +20,8 @@ interface Props {
   docs: Array<{
     id: String;
     identity: {
-      arena_name: String;
-      arena_id: String;
+      brullah_name: String;
+      brullah_id: String;
       email: String;
     };
   }>;
@@ -49,11 +49,11 @@ const ManageAffiliatesContent = ({
           <TableBody>
             {docs.map((t) => {
               return (
-                <TableRow key={`${t.identity.arena_name}~table-row`}>
+                <TableRow key={`${t.identity.brullah_name}~table-row`}>
                   <TableCell component="th" scope="row">
-                    {t.identity.arena_id}
+                    {t.identity.brullah_id}
                   </TableCell>
-                  <TableCell align="center">{t.identity.arena_name}</TableCell>
+                  <TableCell align="center">{t.identity.brullah_name}</TableCell>
                   <TableCell align="center">{t.identity.email}</TableCell>
                   <TableCell align="center">
                     <ManageAffiliatesContentAddButton

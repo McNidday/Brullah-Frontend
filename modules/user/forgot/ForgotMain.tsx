@@ -10,7 +10,7 @@ const USER = gql`
     user {
       id
       identity {
-        arena_name
+        brullah_name
       }
     }
   }
@@ -26,7 +26,7 @@ const ForgotMain = () => {
   if (data && data.user && data.user.id)
     return (
       <LoginError
-        arena_name={data.user.identity.arena_name}
+        brullah_name={data.user.identity.brullah_name}
         errorNum={0}
         error={error!}
       ></LoginError>

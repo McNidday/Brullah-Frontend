@@ -6,12 +6,12 @@ import cn from "classnames";
 import { useRouter } from "next/router";
 
 interface Props {
-  arena_name?: string;
+  brullah_name?: string;
   errorNum: number;
   error: ApolloError;
 }
 
-const LoginError = ({ arena_name, errorNum, error }: Props) => {
+const LoginError = ({ brullah_name, errorNum, error }: Props) => {
   const router = useRouter();
   const [countDown, setCountDown] = useState<number | undefined>();
   const [redirect, setRedirect] = useState<string>();
@@ -44,7 +44,7 @@ const LoginError = ({ arena_name, errorNum, error }: Props) => {
         <div className={cn(styles.loadingMiniContainer)}>
           <div className={cn(styles.loading, styles.loaderActive)}>
             <h3>
-              You are already logged in {arena_name}, you will be directed to
+              You are already logged in {brullah_name}, you will be directed to
               the dashboard in ${countDown || 0}
             </h3>
           </div>

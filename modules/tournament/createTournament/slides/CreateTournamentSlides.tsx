@@ -1,6 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Parallax, Pagination } from "swiper";
-import uniqid from "uniqid";
 import cn from "classnames";
 
 import "swiper/css/bundle";
@@ -24,6 +23,9 @@ const CREATE_TOURNAMENT = gql`
       id
       information {
         name
+        thumbnail {
+          image
+        }
       }
     }
   }
@@ -49,10 +51,7 @@ const CreateTournamentSlides = () => {
   const [accessType, setAccessType] = useState<string>("PUBLIC");
 
   // Start Date
-  const [date, setDate] = useState<{ unix: number; date: string }>({
-    unix: 0,
-    date: "",
-  });
+  const [date, setDate] = useState<string>("");
 
   // Thumbnail
   const [thumbnail, setThumbnail] = useState<File | Blob>();
@@ -74,6 +73,7 @@ const CreateTournamentSlides = () => {
 
   const createTournament = useCallback(async () => {
     if (loading || error || data) return;
+    console.log(loading, error, data, "The three of them bitch ass pussy.");
     if (!thumbnail) {
       setThumbnailError(new Error("No image has been selected"));
       return;
@@ -92,10 +92,7 @@ const CreateTournamentSlides = () => {
     const TData = {
       variables: {
         input: {
-          game: {
-            id: uniqid(),
-            name: "Checkers",
-          },
+          game: "Checkers",
           information: {
             name: name,
             description: description,
@@ -124,10 +121,8 @@ const CreateTournamentSlides = () => {
                 ? "SPONSORED"
                 : "CONTRIBUTION"
               : "NONE",
-          access: {
-            type: accessType,
-          },
-          start_date: date?.unix,
+          access: accessType,
+          start_date: date,
         },
       },
     };
@@ -137,7 +132,7 @@ const CreateTournamentSlides = () => {
     contribution,
     create,
     data,
-    date?.unix,
+    date,
     description,
     error,
     isContributed,
@@ -261,8 +256,7 @@ const CreateTournamentSlides = () => {
           {({ isActive }) => {
             return (
               <TournamentStartDate
-                setDate={(val: { unix: number; date: string }) => setDate(val)}
-                date={date}
+                setDate={(val: string) => setDate(val)}
                 isActive={isActive}
                 error={error}
               ></TournamentStartDate>
@@ -274,7 +268,7 @@ const CreateTournamentSlides = () => {
             return (
               <TournamentThumbnail
                 serverError={error}
-                createTournament={() => createTournament()}
+                createTournament={createTournament}
                 setThumbnail={setThumbnailCallback}
                 isActive={isActive}
                 error={thumbnailError}

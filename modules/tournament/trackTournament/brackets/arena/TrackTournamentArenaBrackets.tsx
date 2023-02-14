@@ -10,7 +10,7 @@ import { decodeBlurHash } from "../../../../../functions/helpers";
 interface User {
   id: string;
   identity: {
-    arena_name: string;
+    brullah_name: string;
     avatar: {
       image: string;
       blurhash: string;
@@ -168,13 +168,13 @@ const TrackTournamentArenaBrackets = ({
         {config.winner?.status === "DONE" ? (
           <div className={cn(styles.arenaWinner)}>
             <div className={cn(styles.arenaWinnerName)}>
-              Arena Winner: {config.winner.user.identity.arena_name}
+              Arena Winner: {config.winner.user.identity.brullah_name}
             </div>
             <div className={cn(styles.arenaWinnerImage)}>
               <Image
                 fill
                 src={config.winner.user.identity.avatar.image}
-                alt={config.winner.user.identity.arena_name}
+                alt={config.winner.user.identity.brullah_name}
                 placeholder="blur"
                 blurDataURL={decodeBlurHash(
                   config.winner.user.identity.avatar.blurhash,

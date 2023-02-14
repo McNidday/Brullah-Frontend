@@ -185,23 +185,15 @@ export const numOfArenas = (numOfUsers: number) => {
 export const numOfRounds = (numOfUsers: number, arenaNumber: number) => {
   // Get the number of users in that arena
   let numberOfRounds = 0;
-  do {
-    for (let i = 1; i <= numOfUsers; i++) {
-      const usersShouldBe = i * 16;
-      // Now minus and see if only one user remains
-      const remainingUsers = numOfUsers - usersShouldBe;
-      if (i === arenaNumber) {
-        // Then get the number of rounds
-        // Check if remaining users is equal to 16
-        if (remainingUsers <= 0) {
-          numberOfRounds = getNumOfRounds(16 - (usersShouldBe - numOfUsers));
-          break;
-        }
-        numberOfRounds = getNumOfRounds(16);
-        break;
-      }
-    }
-  } while (numberOfRounds === 0);
+  const usersShouldBe = arenaNumber * 16;
+  // Now minus and see if only one user remains
+  const remainingUsers = numOfUsers - usersShouldBe;
+  // Then get the number of rounds
+  // Check if remaining users is equal to 16
+  if (remainingUsers <= 0) {
+    numberOfRounds = getNumOfRounds(16 - (usersShouldBe - numOfUsers));
+  }
+  numberOfRounds = getNumOfRounds(16);
   return numberOfRounds;
 };
 
@@ -215,340 +207,41 @@ export const numOfMatches = (
   let numberOfUsersInRound = 0;
 
   do {
-    for (let i = 1; i <= numOfUsers; i++) {
-      const usersShouldBe = i * 16;
-      // Now minus and see if only one user remains
-      const remainingUsers = numOfUsers - usersShouldBe;
-      if (i === arenaNumber) {
-        // Then get the number of rounds
-        // Check if remaining users is equal to 16
-        if (remainingUsers <= 0) {
-          numberOfUsersInRound = 16 - (usersShouldBe - numOfUsers);
-          numberOfRounds = getNumOfRounds(16 - (usersShouldBe - numOfUsers));
-        } else {
-          numberOfUsersInRound = 16;
-          numberOfRounds = getNumOfRounds(16);
-        }
-        numberOfMatches = Math.round(numberOfUsersInRound / 2);
-        for (let j = 1; j <= numberOfRounds; j++) {
-          if (j !== 1) numberOfMatches = Math.round(numberOfMatches / 2);
-          if (j === roundNumber) break;
-        }
+    const usersShouldBe = arenaNumber * 16;
+    // Now minus and see if only one user remains
+    const remainingUsers = numOfUsers - usersShouldBe;
+    // Then get the number of rounds
+    // Check if remaining users is equal to 16
+    if (remainingUsers <= 0) {
+      numberOfUsersInRound = 16 - (usersShouldBe - numOfUsers);
+      numberOfRounds = getNumOfRounds(16 - (usersShouldBe - numOfUsers));
+    } else {
+      numberOfUsersInRound = 16;
+      numberOfRounds = getNumOfRounds(16);
+    }
+    const validNumbers = [5, 9, 13];
+    const validIndex = validNumbers.findIndex((n) => {
+      return n === numberOfUsersInRound;
+    });
+    if (validIndex > -1) {
+      numberOfMatches = Math.round(numberOfUsersInRound / 2);
+    } else {
+      if (numberOfUsersInRound === 1) {
+        numberOfMatches = 1;
+      } else {
+        numberOfMatches = Math.floor(numberOfUsersInRound / 2);
       }
     }
+    for (let j = 1; j <= numberOfRounds; j++) {
+      if (j !== 1) numberOfMatches = Math.round(numberOfMatches / 2);
+      if (j === roundNumber) break;
+    }
   } while (numberOfMatches === 0);
-  return Math.floor(numberOfMatches);
+  return numberOfMatches;
 };
 
 export const isByeNumber = (num: number) => {
   const valid = [5, 9, 13];
   const byeIndex = valid.findIndex((v) => v === num);
   return byeIndex === -1 && num % 2 !== 0 ? true : false;
-};
-
-export function createTimeConfig(
-  numOfUsers: number,
-  serverConfig?: Array<any>
-) {
-  const config: Array<any> = new Array();
-  for (let a = 0; a < numOfArenas(numOfUsers); a++) {
-    config[a] = {
-      arenaNumber: a + 1,
-      rounds: [],
-    };
-
-    const roundsNumber = numOfRounds(numOfUsers, a + 1);
-    for (let r = 0; r < roundsNumber; r++) {
-      const round: { roundNumber: number; matches: Array<any> } = {
-        roundNumber: r + 1,
-        matches: [],
-      };
-      for (let m = 0; m < numOfMatches(numOfUsers, a + 1, r + 1); m++) {
-        const match = {
-          matchNumber: m + 1,
-          time: 0,
-        };
-        if (serverConfig) {
-          if (
-            serverConfig[a].rounds[r].matches[m] &&
-            serverConfig[a].rounds[r].matches[m].time
-          ) {
-            match.time = serverConfig[a].rounds[r].matches[m].time;
-          }
-        }
-        round.matches.push(match);
-      }
-      config[a].rounds.push(round);
-    }
-  }
-  return config;
-}
-
-export function createMatchConfigForRender(numOfUsers: number) {
-  if (numOfUsers >= 5 && numOfUsers <= 8) {
-    numOfUsers = 8;
-  }
-  if (numOfUsers >= 13 && numOfUsers <= 16) {
-    numOfUsers = 16;
-  }
-  const config: Array<any> = new Array();
-  for (let a = 0; a < numOfArenas(numOfUsers); a++) {
-    config[a] = new Object({
-      arenaNumber: a + 1,
-      rounds: [],
-    });
-    const numOfArenaRounds = numOfRounds(numOfUsers, a + 1);
-    for (let r = 0; r < numOfArenaRounds; r++) {
-      const round: { roundNumber: number; matches: Array<any> } = {
-        roundNumber: r + 1,
-        matches: [],
-      };
-      for (let m = 0; m < numOfMatches(numOfUsers, a + 1, r + 1); m++) {
-        const matchConfig = {
-          matchNumber: m + 1,
-          slot_one: {},
-          slot_two: {},
-        };
-        round.matches.push(matchConfig);
-      }
-      config[a].rounds.push(round);
-    }
-  }
-  return config;
-}
-
-export function createMatchConfig(numOfUsers: number) {
-  if (numOfUsers >= 5 && numOfUsers <= 8) {
-    numOfUsers = 8;
-  }
-  if (numOfUsers >= 13 && numOfUsers <= 16) {
-    numOfUsers = 16;
-  }
-  const config: Array<any> = new Array();
-  for (let a = 0; a < numOfArenas(numOfUsers); a++) {
-    config[a] = new Object({
-      arenaNumber: a + 1,
-      rounds: [
-        {
-          roundNumber: 1,
-          matches: [],
-        },
-      ],
-    });
-    const validNumbers = [5, 9, 13];
-    let bye;
-    if (numOfUsers % 2 !== 0) {
-      const validIndex = validNumbers.findIndex((n) => {
-        return n === numOfUsers;
-      });
-      if (validIndex === -1) bye = true;
-    }
-    let activeUsers = numOfUsers;
-    for (let m = 0; m < numOfMatches(numOfUsers, a + 1, 1); m++) {
-      let matchConfig;
-      if (bye && activeUsers === 3) {
-        matchConfig = {
-          matchNumber: m + 1,
-          slot_one: {},
-          slot_two: {},
-          bye: {},
-        };
-      } else {
-        matchConfig = {
-          matchNumber: m + 1,
-          slot_one: {},
-          slot_two: {},
-        };
-      }
-      activeUsers = activeUsers - 2;
-      config[a].rounds[0].matches[m] = matchConfig;
-    }
-  }
-  return config;
-}
-
-export const createOnlineConfigFromLocalConfig = (
-  joinedUsers: Array<any>,
-  localConfig: Array<any>,
-  leaveLocalVars?: boolean,
-  render?: boolean
-) => {
-  const usersToConfigure = joinedUsers.map((u) => {
-    const newUser = { ...u };
-    delete newUser.__typename;
-    // delete u.__typename;
-    return newUser;
-  });
-
-  // Create a new config
-  let newOnlineConfig;
-  let newLocalConfig;
-
-  if (render) {
-    newOnlineConfig = createMatchConfigForRender(usersToConfigure.length);
-    newLocalConfig = createMatchConfigForRender(usersToConfigure.length);
-  } else {
-    newOnlineConfig = createMatchConfig(usersToConfigure.length);
-    newLocalConfig = createMatchConfig(usersToConfigure.length);
-  }
-
-  for (let ai = 0; ai < localConfig.length; ai++) {
-    let a = localConfig[ai];
-    if (leaveLocalVars) {
-      const arenaVars = { ...a };
-      delete arenaVars.__typename;
-      delete arenaVars.rounds;
-      newLocalConfig[ai] = {
-        ...newLocalConfig[ai],
-        ...arenaVars,
-      };
-    }
-    for (let ri = 0; ri < a.rounds.length; ri++) {
-      const r = a.rounds[ri];
-      for (let mi = 0; mi < r.matches.length; mi++) {
-        const m = r.matches[mi];
-        if ((m.slot_one.user || m.slot_two.user) && leaveLocalVars) {
-          const matchVars = { ...m };
-          delete matchVars.__typename;
-          delete matchVars.slot_one;
-          delete matchVars.slot_two;
-          delete matchVars.bye;
-          if (newLocalConfig[ai].rounds[ri]) {
-            newLocalConfig[ai].rounds[ri].matches[mi] = {
-              ...newLocalConfig[ai].rounds[ri].matches[mi],
-              ...matchVars,
-            };
-          }
-        }
-        if (m.slot_one.user) {
-          // Check if user is in the config array
-          const userIndex = usersToConfigure.findIndex(
-            (u) => u.id === m.slot_one.user.id
-          );
-          if (userIndex > -1) {
-            // Check if the slot exists in the new local config
-            if (newOnlineConfig[ai]?.rounds[ri]?.matches[mi]?.slot_one) {
-              newOnlineConfig[ai].rounds[ri].matches[mi].slot_one = {
-                user: m.slot_one.user.id,
-              };
-              if (leaveLocalVars) {
-                const slotVars = { ...m.slot_one };
-                delete slotVars.user;
-                delete slotVars.__typename;
-                newLocalConfig[ai].rounds[ri].matches[mi].slot_one = {
-                  user: usersToConfigure[userIndex],
-                  ...slotVars,
-                };
-              } else {
-                newLocalConfig[ai].rounds[ri].matches[mi].slot_one = {
-                  user: usersToConfigure[userIndex],
-                };
-              }
-              // Remove user from users to configure
-              usersToConfigure.splice(userIndex, 1);
-            }
-          }
-        }
-
-        if (m.slot_two.user) {
-          // Check if user is in the config array
-          const userIndex = usersToConfigure.findIndex(
-            (u) => u.id === m.slot_two.user.id
-          );
-          if (userIndex > -1) {
-            // Check if the slot exists in the new local config
-            if (newOnlineConfig[ai]?.rounds[ri]?.matches[mi]?.slot_two) {
-              newOnlineConfig[ai].rounds[ri].matches[mi].slot_two = {
-                user: m.slot_two.user.id,
-              };
-
-              if (leaveLocalVars) {
-                const slotVars = { ...m.slot_two };
-                delete slotVars.user;
-                delete slotVars.__typename;
-                newLocalConfig[ai].rounds[ri].matches[mi].slot_two = {
-                  user: usersToConfigure[userIndex],
-                  ...slotVars,
-                };
-              } else {
-                newLocalConfig[ai].rounds[ri].matches[mi].slot_two = {
-                  user: usersToConfigure[userIndex],
-                };
-              }
-              // Remove user from users to configure
-              usersToConfigure.splice(userIndex, 1);
-            }
-          }
-        }
-
-        if (m.bye && m.bye.user && !render) {
-          // Check if user is in the config array
-          const userIndex = usersToConfigure.findIndex(
-            (u) => u.id === m.bye.user.id
-          );
-          if (userIndex > -1) {
-            // Check if a bye is viable in current arena
-            const isABye = isByeNumber(
-              joinedUsers.slice(ai * 16, (ai + 1) * 16).length
-            );
-            if (isABye) {
-              if (newOnlineConfig[ai]?.rounds[ri]?.matches[mi]) {
-                newOnlineConfig[ai].rounds[ri].matches[mi].bye = {
-                  user: m.bye.user.id,
-                };
-                newLocalConfig[ai].rounds[ri].matches[mi].bye = {
-                  user: usersToConfigure[userIndex],
-                };
-                if (leaveLocalVars) {
-                  const slotVars = { ...m.slot_two };
-                  delete slotVars.user;
-                  delete slotVars.__typename;
-                  newLocalConfig[ai].rounds[ri].matches[mi].bye = {
-                    user: usersToConfigure[userIndex],
-                    ...slotVars,
-                  };
-                } else {
-                  newLocalConfig[ai].rounds[ri].matches[mi].bye = {
-                    user: usersToConfigure[userIndex],
-                  };
-                }
-                // Remove user from users to configure
-                usersToConfigure.splice(userIndex, 1);
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  return {
-    onlineConfig: newOnlineConfig,
-    localConfig: newLocalConfig,
-    usersToConfigure: usersToConfigure,
-  };
-};
-
-export const matchConfigShallowCopy = (config: any) => {
-  return config.map((a: any) => {
-    return {
-      ...a,
-      rounds: a.rounds.map((r: any) => {
-        return {
-          ...r,
-          matches: r.matches.map((m: any) => {
-            return {
-              ...m,
-              slot_one: {
-                ...m.slot_one,
-              },
-              slot_two: {
-                ...m.slot_two,
-              },
-            };
-          }),
-        };
-      }),
-    };
-  });
 };

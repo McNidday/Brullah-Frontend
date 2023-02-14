@@ -8,7 +8,7 @@ import { Tooltip, Typography } from "@mui/material";
 interface User {
   id: string;
   identity: {
-    arena_name: string;
+    brullah_name: string;
     avatar: {
       image: string;
       blurhash: string;
@@ -69,20 +69,20 @@ const TrackTournamentBracket = ({
               {bye ? (
                 <div>
                   <h3>
-                    {bye.user.identity.arena_name}: <em>Currently a bye 👋</em>
+                    {bye.user.identity.brullah_name}: <em>Currently a bye 👋</em>
                   </h3>
                 </div>
               ) : match?.slot_one?.reason && match?.slot_two?.reason ? (
                 <>
                   <div>
                     <h3>
-                      {match?.slot_one?.user?.identity.arena_name}:{" "}
+                      {match?.slot_one?.user?.identity.brullah_name}:{" "}
                       <em>{match?.slot_one?.reason}</em>
                     </h3>
                   </div>
                   <div>
                     <h3>
-                      {match?.slot_two?.user?.identity.arena_name}:{" "}
+                      {match?.slot_two?.user?.identity.brullah_name}:{" "}
                       <em>{match?.slot_two?.reason}</em>
                     </h3>
                   </div>
@@ -90,14 +90,14 @@ const TrackTournamentBracket = ({
               ) : match?.slot_one?.reason ? (
                 <div>
                   <h3>
-                    {match?.slot_one?.user?.identity.arena_name}:{" "}
+                    {match?.slot_one?.user?.identity.brullah_name}:{" "}
                     <em>{match?.slot_one?.reason}</em>
                   </h3>
                 </div>
               ) : match?.slot_two?.reason ? (
                 <div>
                   <h3>
-                    {match?.slot_two?.user?.identity.arena_name}:{" "}
+                    {match?.slot_two?.user?.identity.brullah_name}:{" "}
                     <em>{match?.slot_two?.reason}</em>
                   </h3>
                 </div>
@@ -161,7 +161,7 @@ const TrackTournamentBracket = ({
                       <Image
                         fill
                         src={match.slot_one.user.identity.avatar.image}
-                        alt={match.slot_one.user.identity.arena_name}
+                        alt={match.slot_one.user.identity.brullah_name}
                         placeholder="blur"
                         blurDataURL={decodeBlurHash(
                           match.slot_one.user.identity.avatar.blurhash,
@@ -171,7 +171,7 @@ const TrackTournamentBracket = ({
                       ></Image>
                     </div>
                     <div className={cn(styles.tournamentBracketDataName)}>
-                      <span>{match.slot_one.user.identity.arena_name}</span>
+                      <span>{match.slot_one.user.identity.brullah_name}</span>
                     </div>
                   </>
                 ) : bye ? (
@@ -182,7 +182,7 @@ const TrackTournamentBracket = ({
                       <Image
                         fill
                         src={bye.user.identity.avatar.image}
-                        alt={bye.user.identity.arena_name}
+                        alt={bye.user.identity.brullah_name}
                         placeholder="blur"
                         blurDataURL={decodeBlurHash(
                           bye.user.identity.avatar.blurhash,
@@ -192,7 +192,7 @@ const TrackTournamentBracket = ({
                       ></Image>
                     </div>
                     <div className={cn(styles.tournamentBracketDataName)}>
-                      <span>{bye.user.identity.arena_name}</span>
+                      <span>{bye.user.identity.brullah_name}</span>
                     </div>
                   </>
                 ) : (
@@ -222,7 +222,7 @@ const TrackTournamentBracket = ({
                       <Image
                         fill
                         src={match.slot_two.user.identity.avatar.image}
-                        alt={match.slot_two.user.identity.arena_name}
+                        alt={match.slot_two.user.identity.brullah_name}
                         placeholder="blur"
                         blurDataURL={decodeBlurHash(
                           match.slot_two.user.identity.avatar.blurhash,
@@ -232,7 +232,7 @@ const TrackTournamentBracket = ({
                       ></Image>
                     </div>
                     <div className={cn(styles.tournamentBracketDataName)}>
-                      <span>{match.slot_two.user.identity.arena_name}</span>
+                      <span>{match.slot_two.user.identity.brullah_name}</span>
                     </div>
                   </>
                 ) : (

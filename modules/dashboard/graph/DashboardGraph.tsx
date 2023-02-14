@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import moment from "moment";
+import { DateTime } from "luxon";
 import cn from "classnames";
 import styles from "./styles.module.scss";
 import { gql, useQuery } from "@apollo/client";
@@ -18,13 +18,13 @@ const GAME_TRANSACTIONS = gql`
         winner {
           id
           identity {
-            arena_name
+            brullah_name
           }
         }
         looser {
           id
           identity {
-            arena_name
+            brullah_name
           }
         }
         gross_amount {
@@ -51,8 +51,8 @@ const DashboardGraph = ({ user }: Props) => {
     Array<{
       y: number;
       x: number;
-      winner: { id: string; identity: { arena_name: string } };
-      looser: { id: string; identity: { arena_name: string } };
+      winner: { id: string; identity: { brullah_name: string } };
+      looser: { id: string; identity: { brullah_name: string } };
     }>
   >([]);
   new Date().getTime();
@@ -60,15 +60,15 @@ const DashboardGraph = ({ user }: Props) => {
     if (data?.gameTransactions) {
       const update: Array<{
         y: number;
-        winner: { id: string; identity: { arena_name: string } };
-        looser: { id: string; identity: { arena_name: string } };
+        winner: { id: string; identity: { brullah_name: string } };
+        looser: { id: string; identity: { brullah_name: string } };
         x: number;
       }> = [];
       for (let i = 0; i < data.gameTransactions.docs.length; i++) {
         const d: {
           gross_amount: { value: number; currency: string };
-          winner: { id: string; identity: { arena_name: string } };
-          looser: { id: string; identity: { arena_name: string } };
+          winner: { id: string; identity: { brullah_name: string } };
+          looser: { id: string; identity: { brullah_name: string } };
           createdAt: string;
         } = data.gameTransactions.docs[i];
 
@@ -79,7 +79,7 @@ const DashboardGraph = ({ user }: Props) => {
               y: amount,
               winner: d.winner,
               looser: d.looser,
-              x: moment(d.createdAt).toDate().getTime(),
+              x: DateTime.fromISO(d.createdAt).toJSDate().getTime(),
             });
           }
 
@@ -89,7 +89,7 @@ const DashboardGraph = ({ user }: Props) => {
               y: amount,
               winner: d.winner,
               looser: d.looser,
-              x: moment(d.createdAt).toDate().getTime(),
+              x: DateTime.fromISO(d.createdAt).toJSDate().getTime(),
             });
           }
         } else {
@@ -99,7 +99,7 @@ const DashboardGraph = ({ user }: Props) => {
               y: amount,
               winner: d.winner,
               looser: d.looser,
-              x: moment(d.createdAt).toDate().getTime(),
+              x: DateTime.fromISO(d.createdAt).toJSDate().getTime(),
             });
           }
 
@@ -109,7 +109,7 @@ const DashboardGraph = ({ user }: Props) => {
               y: amount,
               winner: d.winner,
               looser: d.looser,
-              x: moment(d.createdAt).toDate().getTime(),
+              x: DateTime.fromISO(d.createdAt).toJSDate().getTime(),
             });
           }
         }
@@ -140,7 +140,7 @@ const DashboardGraph = ({ user }: Props) => {
       <div className={cn(styles.container)}>
         <div className={cn(styles.miniContainer)}>
           <div className={cn(styles.loading)}>
-            <h3>{error?.message}</h3>
+            <h3 className={cn(styles.error)}>{error?.message}</h3>
           </div>
         </div>
       </div>
@@ -185,9 +185,9 @@ const DashboardGraph = ({ user }: Props) => {
                   const brc = series[seriesIndex][dataPointIndex];
                   const winner = graphData[dataPointIndex].winner;
                   const looser = graphData[dataPointIndex].looser;
-                  const label = moment(graphData[dataPointIndex].x).format(
-                    "LL"
-                  );
+                  const label = DateTime.fromISO(
+                    graphData[dataPointIndex].x
+                  ).toLocaleString(DateTime.DATETIME_FULL);
                   return renderToStaticMarkup(
                     <DashboardGraphTooltip
                       brc={brc}

@@ -19,7 +19,7 @@ const USER = gql`
     user {
       id
       identity {
-        arena_name
+        brullah_name
         avatar {
           image
           blurhash
@@ -73,7 +73,7 @@ const TopNavigationRight = () => {
                   <Image
                     fill
                     src={data.user.identity.avatar.image}
-                    alt={data.user.identity.arena_name}
+                    alt={data.user.identity.brullah_name}
                     placeholder="blur"
                     blurDataURL={decodeBlurHash(
                       data.user.identity.avatar.blurhash,
@@ -83,7 +83,7 @@ const TopNavigationRight = () => {
                   ></Image>
                 </li>
                 <li className={cn(styles.profileName)}>
-                  {data.user.identity.arena_name}
+                  {data.user.identity.brullah_name}
                 </li>
               </ul>
               <ul
