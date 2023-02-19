@@ -58,7 +58,7 @@ const EditTournamentBracket = ({
   refetchMatch,
   tournamentId,
 }: Props) => {
-  const [saveConfig] = useMutation(SAVE_CONFIG, {
+  const [saveConfig, { loading }] = useMutation(SAVE_CONFIG, {
     errorPolicy: "all",
   });
 
@@ -330,7 +330,12 @@ const EditTournamentBracket = ({
       >
         <div className={cn(styles.tournamentBracketInformation)}>
           <div className={cn(styles.tournmentBracketCaptionContainer)}>
-            <span className={cn(styles.tournamentBracketCounter)}></span>
+            <span
+              className={cn(
+                styles.tournamentBracketCounter,
+                loading ? styles.tournamentBracketCounterFlicker : ""
+              )}
+            ></span>
             <div className={cn(styles.tournamentBracketCaption)}>
               <time>
                 {time

@@ -8,8 +8,8 @@ import { useRouter } from "next/router";
 import { DateTime } from "luxon";
 
 const PUBLISH_TOURNAMENT = gql`
-  mutation PublishMatchConfig($id: ID!) {
-    publishConfiguration(id: $id) {
+  mutation PublishTournament($id: ID!) {
+    publish(id: $id) {
       id
     }
   }

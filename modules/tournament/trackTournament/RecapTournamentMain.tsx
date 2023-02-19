@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import cn from "classnames";
 import styles from "./styles.module.scss";
@@ -6,25 +6,22 @@ import TrackTournamentError from "./error/TrackTournamentError";
 import TrackTournamentLoading from "./loading/TrackingTournamentLoading";
 import TrackTournamentNav from "./nav/TrackTournamentNav";
 import TrackTournamentArenaBrackets from "./brackets/arena/TrackTournamentArenaBrackets";
-import { useCallback, useEffect, useState } from "react";
-import {
-  createOnlineConfigFromLocalConfig,
-  getNumOfArenas,
-  matchConfigShallowCopy,
-} from "../../../functions/helpers";
-import moment from "moment";
+import { useEffect, useState } from "react";
+import { Duration } from "luxon";
 import dinero from "dinero.js";
 import RecapTournamentList from "./recapCard/RecapTournamentList";
+import { TournamentType } from "../../../types/tournament";
+import { MatchType } from "../../../types/match";
+import { numOfArenas } from "../../../functions/helpers";
 
 const TOURNAMENT = gql`
   query GetTournament($id: ID!) {
     tournament(id: $id) {
       id
-      reward
+      status
       start_date
-      status {
-        id
-        progress
+      game {
+        number
       }
       winner {
         id
@@ -36,117 +33,35 @@ const TOURNAMENT = gql`
           }
         }
       }
-      analytics {
-        id
-        joined_users
-      }
       information {
-        id
         name
+        thumbnail {
+          image
+        }
       }
-      match {
+      config {
+        round_offset
+        match_length
+        before_dq
+        after_dq
+      }
+      configured {
         id
-        users {
-          configured {
-            id
-            identity {
-              brullah_name
-              avatar {
-                image
-                blurhash
-              }
-            }
-          }
-          joined {
-            id
-            identity {
-              brullah_name
-              avatar {
-                image
-                blurhash
-              }
-            }
+        identity {
+          brullah_name
+          avatar {
+            image
+            blurhash
           }
         }
-        recap {
-          timmers {
-            afterDq
-            beforeDq
-            auto_reconfigure
-            match_time {
-              arenaNumber
-              rounds {
-                roundNumber
-                matches {
-                  matchNumber
-                  time
-                }
-              }
-            }
-          }
-          configure {
-            arenaNumber
-            winner {
-              status
-              user {
-                id
-                identity {
-                  brullah_name
-                  avatar {
-                    image
-                    blurhash
-                  }
-                }
-              }
-            }
-            rounds {
-              roundNumber
-              matches {
-                matchNumber
-                done
-                bye {
-                  reason
-                  user {
-                    id
-                    identity {
-                      brullah_name
-                      avatar {
-                        image
-                        blurhash
-                      }
-                    }
-                  }
-                }
-                slot_two {
-                  reason
-                  winner
-                  user {
-                    id
-                    identity {
-                      brullah_name
-                      avatar {
-                        image
-                        blurhash
-                      }
-                    }
-                  }
-                }
-                slot_one {
-                  reason
-                  winner
-                  user {
-                    id
-                    identity {
-                      brullah_name
-                      avatar {
-                        image
-                        blurhash
-                      }
-                    }
-                  }
-                }
-              }
-            }
+      }
+      joined {
+        id
+        identity {
+          brullah_name
+          avatar {
+            image
+            blurhash
           }
         }
       }
@@ -162,17 +77,69 @@ const USER = gql`
   }
 `;
 
+const MATCH = gql`
+  query GetPlayerMatch($input: GetPlayerMatchInput!) {
+    playerMatch(input: $input) {
+      time
+      match_number
+      status
+      slot_two {
+        joined
+        winner
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
+            }
+          }
+        }
+      }
+      slot_one {
+        winner
+        joined
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
+            }
+          }
+        }
+      }
+      bye_slot {
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 const RecapTournamentMain = () => {
   const router = useRouter();
-  const { loading, error, data, networkStatus, refetch } = useQuery(
-    TOURNAMENT,
-    {
-      errorPolicy: "all",
-      variables: {
-        id: router.query.id,
-      },
-    }
-  );
+  const { loading, error, data, networkStatus, refetch } = useQuery<{
+    tournament: TournamentType;
+  }>(TOURNAMENT, {
+    errorPolicy: "all",
+    variables: {
+      id: router.query.id,
+    },
+  });
+  const [getMatch] = useLazyQuery<{
+    playerMatch: MatchType;
+  }>(MATCH);
 
   const {
     data: userData,
@@ -180,13 +147,9 @@ const RecapTournamentMain = () => {
     error: userError,
   } = useQuery(USER, { errorPolicy: "all" });
 
-  const [timeConfig, setTimeConfig] = useState<Array<any>>([]);
-  const [userConfig, setUserConfig] = useState<Array<any>>([]);
-  const [arenas, setArenas] = useState<Array<number>>([]);
   const [activeArena, setActiveArena] = useState(1);
-
   const [ready, setReady] = useState(false);
-  const [waiting, setWaiting] = useState<number | null>(null);
+  const [waiting, setWaiting] = useState<string | undefined>(undefined);
   const [dq, setDq] = useState(false);
   const [notIn, setNotIn] = useState(false);
 
@@ -194,128 +157,92 @@ const RecapTournamentMain = () => {
   const [reward, setReward] = useState("NONE");
   const [perUser, setPerUser] = useState("NONE");
   const [recapNumber, setRecapNumber] = useState(0);
-
-  const matchTime = useCallback(
-    (arm: string) => {
-      // arm stands for arena rounds and match number
-      let time: number = 0;
-      const armArray = arm.split(":");
-      data.tournament.match.configuration.timmers.match_time.forEach(
-        (ma: any) => {
-          if (armArray[0] !== ma.arenaNumber) return;
-          ma.rounds.forEach((ra: any) => {
-            if (armArray[1] !== ra.roundNumber) return;
-            ra.matches.forEach((mt: any) => {
-              if (mt.matchNumber !== armArray[2]) return;
-              time = mt.time;
-            });
-          });
-        }
-      );
-      return time;
-    },
-    [data?.tournament?.match?.configuration?.timmers?.match_time]
-  );
+  const [recaps, setRecaps] = useState(0);
 
   useEffect(() => {
-    if (
-      data?.tournament &&
-      data.tournament.match.recap.length > 0 &&
-      recapNumber > 0
-    ) {
-      const numOfArenas = getNumOfArenas(
-        data.tournament.analytics.joined_users
-      );
-      const theArenas = [];
-      for (let i = 0; i < numOfArenas; i++) {
-        theArenas.push(i + 1);
-      }
-      const config = createOnlineConfigFromLocalConfig(
-        data.tournament.match.users.joined,
-        matchConfigShallowCopy(
-          data.tournament.match.recap[recapNumber - 1].configure
-        ),
-        true,
-        true
-      );
-      setArenas(theArenas);
-      setTimeConfig(
-        data.tournament.match.recap[recapNumber - 1].timmers.match_time
-      );
-      setUserConfig(config.localConfig);
-      let user: any = null;
-      data.tournament.match.recap[recapNumber - 1].configure.forEach(
-        (a: any) => {
-          a.rounds.forEach((r: any) => {
-            r.matches.forEach((s: any) => {
-              if (s.slot_one && s.slot_one.user) {
-                if (userData.user.id === s.slot_one.user.id) {
-                  // Get the time
-                  user = s.slot_one;
-                }
-              }
-              if (s.slot_two && s.slot_two.user) {
-                if (userData.user.id === s.slot_two.user.id) {
-                  // Get the time
-                  user = s.slot_two;
-                }
-              }
-              if (user && !s.done) {
-                const time = matchTime(
-                  `${a.arenaNumber}:${r.roundNumber}:${s.matchNumber}`
-                );
-                if (moment().isAfter(moment.unix(time))) {
-                  setReady(true);
-                }
-                if (moment().isSameOrBefore(moment.unix(time))) {
-                  setWaiting(time);
-                }
-              } else if (user && s.done) {
-                if (!user.winner) {
-                  setDq(true);
-                }
-              }
-            });
-          });
+    (async () => {
+      if (data?.tournament && data.tournament.status === "IN-PROGRESS") {
+        const res = await getMatch({
+          variables: {
+            input: {
+              tournament: data?.tournament.id,
+              user: userData?.user.id,
+            },
+          },
+        });
+        if (res.data?.playerMatch.status === "IN-ZONE") {
+          setReady(true);
         }
-      );
-      if (!user) {
-        setNotIn(true);
-      }
-      // Set the rewards
-      if (data.tournament.reward === "SPONSOR") {
-        setRewardAmount(
-          dinero({
-            currency: data.tournament.sponsor.balance.currency,
-            amount: data.tournament.sponsor.balance.value,
-          }).toFormat()
-        );
-      }
+        if (res.data?.playerMatch.status === "NOT-STARTED") {
+          setWaiting(res.data?.playerMatch.time);
+        }
 
-      if (data.tournament.reward === "CONTRIBUTION") {
-        setRewardAmount(
-          dinero({
-            currency: data.tournament.contribution.balance.currency,
-            amount: data.tournament.contribution.balance.value,
-          }).toFormat()
-        );
-        setPerUser(
-          dinero({
-            currency: data.tournament.contribution.per_user.currency,
-            amount: data.tournament.contribution.per_user.value,
-          }).toFormat()
-        );
+        if (
+          res.data?.playerMatch.slot_one?.user.id === userData?.user.id &&
+          !res.data?.playerMatch.slot_one?.winner &&
+          res.data?.playerMatch.status === "DONE"
+        ) {
+          setDq(true);
+        }
+        if (
+          res.data?.playerMatch.slot_two?.user.id === userData?.user.id &&
+          !res.data?.playerMatch.slot_two?.winner &&
+          res.data?.playerMatch.status === "DONE"
+        ) {
+          setDq(true);
+        }
+        if (!res.data) {
+          setNotIn(true);
+        }
+        // Set the rewards
+        if (data.tournament.reward === "SPONSORED") {
+          setRewardAmount(
+            dinero({
+              currency: data.tournament.sponsor.balance.currency,
+              amount: data.tournament.sponsor.balance.value,
+            }).toFormat()
+          );
+        }
+
+        if (data.tournament.reward === "CONTRIBUTED") {
+          setRewardAmount(
+            dinero({
+              currency: data.tournament.contribution.balance.currency,
+              amount: data.tournament.contribution.balance.value,
+            }).toFormat()
+          );
+          setPerUser(
+            dinero({
+              currency: data.tournament.contribution.per_user.currency,
+              amount: data.tournament.contribution.per_user.value,
+            }).toFormat()
+          );
+        }
+
+        setReward(data.tournament.reward);
       }
-      setReward(data.tournament.reward);
-    }
-  }, [recapNumber, data?.tournament, userData?.user?.id, matchTime]);
+    })();
+  }, [data, userData?.user?.id, getMatch]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
-    }, moment.duration(10, "minutes").asMilliseconds());
+    }, Duration.fromObject({ minutes: 10 }).as("milliseconds"));
     return () => clearInterval(interval);
   }, [refetch]);
+
+  useEffect(() => {
+    if (!data) return;
+    if (data?.tournament.status !== "DONE") {
+      if (data?.tournament.game.number > 1) {
+        setRecaps(data?.tournament.game.number - 1);
+      }
+    } else {
+      setRecaps(data?.tournament.game.number);
+    }
+  }, [data]);
+
+  console.log(recapNumber, recaps, "This is the recap bitch ass pussy");
 
   if (loading || userDataLoading)
     return <TrackTournamentLoading></TrackTournamentLoading>;
@@ -354,12 +281,16 @@ const RecapTournamentMain = () => {
         </div>
       </div>
     );
-  if (data.tournament.match.recap.length <= 0)
+  if (
+    (data?.tournament.game.number === 1 &&
+      data?.tournament.status !== "DONE") ||
+    !data
+  )
     return (
       <div className={cn(styles.container)}>
         <div className={cn(styles.miniContainer)}>
           <TrackTournamentError
-            message={`There is currently no recap for ${data.tournament.information.name}`}
+            message={`There is currently no recap for ${data?.tournament.information.name}`}
           ></TrackTournamentError>
         </div>
       </div>
@@ -369,7 +300,6 @@ const RecapTournamentMain = () => {
       <div className={cn(styles.container)}>
         <div className={cn(styles.miniContainer)}>
           <TrackTournamentNav
-            matchId={data.tournament.match.id}
             recapNumber={recapNumber}
             status={data.tournament.status}
             setRecapNumber={(num: number) => setRecapNumber(num)}
@@ -387,7 +317,7 @@ const RecapTournamentMain = () => {
             recap={true}
           ></TrackTournamentNav>
           <RecapTournamentList
-            recaps={data.tournament.match.recap.length}
+            recaps={recaps}
             setRecapNumber={(num: number) => setRecapNumber(num)}
           ></RecapTournamentList>
         </div>
@@ -399,7 +329,6 @@ const RecapTournamentMain = () => {
     <div className={cn(styles.container)}>
       <div className={cn(styles.miniContainer)}>
         <TrackTournamentNav
-          matchId={data.tournament.match.id}
           recapNumber={recapNumber}
           status={data.tournament.status}
           setRecapNumber={(num: number) => setRecapNumber(num)}
@@ -417,20 +346,24 @@ const RecapTournamentMain = () => {
           recap={true}
         ></TrackTournamentNav>
         <div className={cn(styles.tournamentContainer)}>
-          {arenas?.map((a, i) => {
-            return (
-              <TrackTournamentArenaBrackets
-                userId={userData.user.id}
-                handleActiveArena={(val: number) => {
-                  setActiveArena(val);
-                }}
-                activeArena={activeArena === i + 1 ? true : false}
-                key={`${data.tournament.match.id}:${a}`}
-                config={userConfig[i]}
-                time={timeConfig[i]}
-              ></TrackTournamentArenaBrackets>
-            );
-          })}
+          {[...Array(numOfArenas(data.tournament.configured.length))].map(
+            (a, i) => {
+              return (
+                <TrackTournamentArenaBrackets
+                  gameNumber={recapNumber > 0 ? recapNumber : 1}
+                  numOfJoined={data.tournament.configured.length}
+                  arenaNumber={activeArena}
+                  tournamentId={data.tournament.id}
+                  userId={userData.user.id}
+                  handleActiveArena={(val: number) => {
+                    setActiveArena(val);
+                  }}
+                  activeArena={activeArena === i + 1 ? true : false}
+                  key={`${data.tournament.id}:${i}`}
+                ></TrackTournamentArenaBrackets>
+              );
+            }
+          )}
         </div>
       </div>
     </div>

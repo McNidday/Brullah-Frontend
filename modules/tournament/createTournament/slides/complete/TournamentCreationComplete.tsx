@@ -22,7 +22,7 @@ const TournamentCreationComplete = ({ data }: { data: undefined | any }) => {
     if (data && data.createTournament) {
       swiper.slideTo(7);
       swiper.disable();
-      setCountDown(5);
+      setCountDown(10);
     }
   }, [data, swiper]);
 

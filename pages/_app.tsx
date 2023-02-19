@@ -1,5 +1,6 @@
 import "../styles/globals.scss";
 import "../node_modules/normalize.css/normalize.css";
+import Head from "next/head";
 import client from "../Apollo/Client";
 import type { AppProps } from "next/app";
 import { ApolloProvider, gql } from "@apollo/client";
@@ -118,11 +119,16 @@ function MyApp({ Component, pageProps }: AppProps) {
     return () => clearInterval(interval);
   }, []);
   return (
-    <ApolloProvider client={client}>
-      <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </ApolloProvider>
+    <>
+      <Head>
+        <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg" />
+      </Head>
+      <ApolloProvider client={client}>
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </ApolloProvider>
+    </>
   );
 }
 

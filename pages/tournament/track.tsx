@@ -6,7 +6,6 @@ import Footer from "../../components/Footer/Footer";
 import ApolloClientOnly from "../../Apollo/ApolloClientOnly";
 import TrackTournamentLoading from "../../modules/tournament/trackTournament/loading/TrackingTournamentLoading";
 import Navigation from "../../components/Navigation/Navigation";
-import Favicon from "../../components/Favicon/Favicon";
 
 const TrackTournament: NextPage = () => {
   return (
@@ -14,7 +13,6 @@ const TrackTournament: NextPage = () => {
       <Head>
         <title>Track Tournament | Brullah</title>
         <meta name="description" content="Track tournament progress" />
-        <Favicon></Favicon>
       </Head>
       <Navigation></Navigation>
       <ApolloClientOnly

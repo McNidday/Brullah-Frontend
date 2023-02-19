@@ -1,6 +1,5 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import { DateTime, Duration } from "luxon";
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { gql } from "@apollo/client";
@@ -28,12 +27,6 @@ interface Props {
   arenaNumber: number;
   roundNumber: number;
   matchNumber: number;
-  timeConfig: {
-    round_offset: number;
-    before_dq: number;
-    after_dq: number;
-    match_length: number;
-  };
   config: Array<{ id: string; configured: boolean; arbs: string }>;
 }
 

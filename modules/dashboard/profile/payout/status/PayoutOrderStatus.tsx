@@ -1,6 +1,6 @@
 import { ApolloError, gql, useQuery } from "@apollo/client";
 import cn from "classnames";
-import moment from "moment";
+import { DateTime, Duration } from "luxon";
 import {
   useEffect,
   useLayoutEffect,
@@ -30,7 +30,7 @@ const PayoutOrderStatus = ({
 }: Props) => {
   const { loading, data, error, refetch } = useQuery(PAYOUT_ORDER_STATUS);
   const [formattedCountDown, setFormattedCountDown] = useState("");
-  const [payoutMoment, setPayoutMoment] = useState<moment.Moment | null>(null);
+  const [payoutMoment, setPayoutMoment] = useState<DateTime | null>(null);
   const firstRender = useRef(true);
   const refetcUser = useCallback(refetch, [refetch]);
 
@@ -38,20 +38,21 @@ const PayoutOrderStatus = ({
     const interval = setInterval(() => {
       if (!loading && !error) {
         if (!payoutMoment && data?.payoutOrderStatus?.nextPayoutIn) {
-          const payoutTime = moment().add(
-            data.payoutOrderStatus.nextPayoutIn,
-            "milliseconds"
+          const payoutTime = DateTime.now().plus(
+            Duration.fromObject({
+              milliseconds: data.payoutOrderStatus.nextPayoutIn,
+            })
           );
           setPayoutMoment(payoutTime);
         }
 
         if (payoutMoment) {
-          if (moment().isSameOrAfter(payoutMoment)) {
+          if (DateTime.now() > payoutMoment) {
             refetch();
             setPayoutMoment(null);
             return;
           }
-          setFormattedCountDown(moment().to(payoutMoment));
+          setFormattedCountDown(payoutMoment.diffNow().toFormat("dd hh mm"));
         }
       }
     }, 1000);

@@ -8,6 +8,7 @@ import MyTournamentList, {
 } from "./list/MyTournamentList";
 import { CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
+import { TournamentType } from "../../../../types/tournament";
 
 interface Props {
   hasNextPage: boolean;
@@ -15,25 +16,7 @@ interface Props {
   onLoadMore: () => void;
   setEditId: (id: string) => void;
   search: string | null;
-  tournaments: Array<{
-    id: string;
-    information: {
-      name: string;
-      description: string;
-      thumbnail: { image: string; blurhash: string };
-    };
-    status: { progress: string };
-    joined: Array<{ id: string }>;
-    access: { secret: string };
-    creator: {
-      identity: {
-        brullah_name: string;
-        avatar: { image: string; blurhash: string };
-      };
-    };
-    sponsor: { sponsored: boolean };
-    contribution: { contributed: boolean };
-  }>;
+  tournaments: Array<TournamentType>;
 }
 
 const MyTournamentsParentList = ({

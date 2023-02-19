@@ -3,7 +3,7 @@ import dinero from "dinero.js";
 import cn from "classnames";
 import styles from "./styles.module.scss";
 import { useEffect } from "react";
-import moment from "moment";
+import { Duration } from "luxon";
 
 interface Props {
   amountSwitch: number;
@@ -26,12 +26,12 @@ const PoolAmount = ({ amountSwitch }: Props) => {
 
   useEffect(() => {
     if (!loading) refetch();
-  }, [amountSwitch]);
+  }, [amountSwitch, loading, refetch]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
-    }, moment.duration(10, "minutes").asMilliseconds());
+    }, Duration.fromObject({ minutes: 10 }).as("milliseconds"));
     return () => clearInterval(interval);
   }, [refetch]);
 

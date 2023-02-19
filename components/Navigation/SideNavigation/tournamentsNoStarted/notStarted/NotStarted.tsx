@@ -22,7 +22,7 @@ const NotStarted = ({ information, start_date }: Props) => {
         // Refetch
       } else {
         setCountDown(
-          DateTime.now().until(DateTime.fromISO(start_date)).toString()
+          DateTime.fromISO(start_date).diffNow().toFormat("dd hh mm")
         );
       }
     }, 2000);

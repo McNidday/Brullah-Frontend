@@ -7,25 +7,9 @@ import { decodeBlurHash } from "../../../../../functions/helpers";
 import { Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
 import Icon from "../../../../../components/Icon/Icon";
+import { TournamentType } from "../../../../../types/tournament";
 
-interface Props {
-  id: string;
-  status: { progress: string };
-  access: { secret: string };
-  information: {
-    name: string;
-    description: string;
-    thumbnail: { image: string; blurhash: string };
-  };
-  joined: Array<{ id: string }>;
-  creator: {
-    identity: {
-      brullah_name: string;
-      avatar: { image: string; blurhash: string };
-    };
-  };
-  sponsor: { sponsored: boolean };
-  contribution: { contributed: boolean };
+interface Props extends TournamentType {
   setEditId: (id: string) => void;
 }
 
@@ -35,7 +19,7 @@ const MyTournamentList = (props: Props) => {
   const copyTournamentLink = () => {
     if (!navigator.clipboard) return;
     setCopyLink(true);
-    if (props.access.secret) {
+    if (props.access.type === "SECRET") {
       navigator.clipboard.writeText(
         `${process.env.BRULLAH_URL}/tournament/${props.id}/${props.access.secret}`
       );
@@ -125,23 +109,17 @@ const MyTournamentList = (props: Props) => {
         <p>{props.information.description}</p>
       </div>
       <div>
-        {props.status.progress === "DONE" ? (
+        {props.status === "DONE" ? (
           <Button
             text="recap"
-            link={`/track/recap?id=${props.id}`}
+            link={`/tournament/recap?id=${props.id}`}
             disabled={false}
           ></Button>
-        ) : props.status.progress === "IN-PROGRESS" ? (
+        ) : props.status === "IN-PROGRESS" || props.status === "RECONFIGURE" ? (
           <Button
-            text="recap"
-            link={`/track?id=${props.id}`}
+            text="track"
+            link={`/tournament/track?id=${props.id}`}
             disabled={false}
-          ></Button>
-        ) : props.status.progress === "RECONFIGURE" ? (
-          <Button
-            text="reconfig"
-            disabled={false}
-            onClick={() => props.setEditId(props.id)}
           ></Button>
         ) : (
           <>

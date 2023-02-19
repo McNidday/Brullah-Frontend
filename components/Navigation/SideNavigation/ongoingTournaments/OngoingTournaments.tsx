@@ -1,4 +1,4 @@
-import { gql, NetworkStatus, useQuery } from "@apollo/client";
+import { gql, NetworkStatus, useQuery, useLazyQuery } from "@apollo/client";
 import { DateTime, Duration } from "luxon";
 import classNames from "classnames";
 import { useEffect, useState, useCallback } from "react";
@@ -8,10 +8,12 @@ import OngoingTournamentsError from "./error/OngoingTournamentsError";
 import OngoingTournamentsLoading from "./loading/OngoingTournamentsLoading";
 import styles from "./styles.module.scss";
 import WaitingQueue from "./WaitingQueue/WaitingQueue";
+import { MatchType } from "../../../../types/match";
+import { TournamentType } from "../../../../types/tournament";
 const cn = classNames.bind(styles);
 
 const ONGOING_TOURNAMENTS = gql`
-  query UserOngoingMatches(
+  query UserOngoingTournaments(
     $page: Int!
     $limit: Int!
     $search: String
@@ -34,6 +36,12 @@ const ONGOING_TOURNAMENTS = gql`
             blurhash
           }
         }
+        config {
+          round_offset
+          match_length
+          before_dq
+          after_dq
+        }
       }
     }
   }
@@ -47,60 +55,96 @@ const USER = gql`
   }
 `;
 
+const MATCH = gql`
+  query GetPlayerMatch($input: GetPlayerMatchInput!) {
+    playerMatch(input: $input) {
+      time
+      match_number
+      status
+      slot_two {
+        joined
+        winner
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
+            }
+          }
+        }
+      }
+      slot_one {
+        winner
+        joined
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
+            }
+          }
+        }
+      }
+      bye_slot {
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 const OngoingTournaments = () => {
   const [page, setPage] = useState(1);
-  const { data, error, loading, networkStatus, fetchMore, refetch } = useQuery(
-    ONGOING_TOURNAMENTS,
-    {
-      variables: {
-        page: page,
-        limit: 10,
-        search: "",
-        status: ["IN-PROGRESS", "RECONFIGURE"],
-      },
-      notifyOnNetworkStatusChange: true,
-    }
-  );
+  const { data, error, loading, networkStatus, fetchMore, refetch } = useQuery<{
+    joinedTournaments: {
+      hasNextPage: boolean;
+      page: number;
+      docs: Array<TournamentType>;
+    };
+  }>(ONGOING_TOURNAMENTS, {
+    variables: {
+      page: page,
+      limit: 10,
+      search: "",
+      status: ["IN-PROGRESS", "RECONFIGURE"],
+    },
+    notifyOnNetworkStatusChange: true,
+  });
+  const [getMatch] = useLazyQuery<{
+    playerMatch: MatchType;
+  }>(MATCH);
+
   const {
     data: userData,
     loading: userDataLoading,
     error: userError,
   } = useQuery(USER);
-  const [ready, setReady] = useState<Array<any>>([]);
-  const [Waiting, setWaiting] = useState<Array<any>>([]);
-  const [dq, setDq] = useState<Array<any>>([]);
+  const [ready, setReady] = useState<Array<TournamentType>>([]);
+  const [Waiting, setWaiting] = useState<
+    Array<TournamentType & { matchTime: string }>
+  >([]);
+  const [dq, setDq] = useState<Array<TournamentType>>([]);
 
   const refetchOngoingTournaments = useCallback(refetch, [refetch]);
 
-  const matchTime = useCallback(
-    (arm: string, id: string) => {
-      // arm stands for arena rounds and match number
-      let time: number = 0;
-      const armArray = arm.split(":");
-      data.joinedMatches.docs.forEach((m: any) => {
-        if (m.id == id) {
-          m.configuration.timmers.match_time.forEach((ma: any) => {
-            if (armArray[0] !== ma.arenaNumber) return;
-            ma.rounds.forEach((ra: any) => {
-              if (armArray[1] !== ra.roundNumber) return;
-              ra.matches.forEach((mt: any) => {
-                if (mt.matchNumber !== armArray[2]) return;
-                time = mt.time;
-              });
-            });
-          });
-        }
-      });
-      return time;
-    },
-    [data]
-  );
-
   const onLoadMore = () => {
+    if (!data || loading) return;
     if (
       networkStatus === NetworkStatus.fetchMore ||
       networkStatus === NetworkStatus.loading ||
-      !data.joinedMatches.hasNextPage
+      !data.joinedTournaments.hasNextPage
     )
       return;
     fetchMore({
@@ -120,61 +164,58 @@ const OngoingTournaments = () => {
   };
 
   useEffect(() => {
-    if (data?.joinedMatches && userData?.user) {
-      // Set the ready, waiting and dq tournaments
-      const readyT: Array<any> = [];
-      const waitingT: Array<any> = [];
-      const dqT: Array<any> = [];
-      // If the users matchTime is current, Then set match to ready
-      data.joinedMatches.docs.forEach((m: any) => {
-        m.configuration.configure.forEach((a: any) => {
-          a.rounds.forEach((r: any) => {
-            r.matches.forEach((s: any) => {
-              let user: any = null;
-              if (s.slot_one && s.slot_one.user) {
-                if (userData.user.id === s.slot_one.user.id) {
-                  // Get the time
-                  user = s.slot_one;
-                }
-              }
-              if (s.slot_two && s.slot_two.user) {
-                if (userData.user.id === s.slot_two.user.id) {
-                  // Get the time
-                  user = s.slot_two;
-                }
-              }
-              if (s.bye && s.bye.user) {
-                if (userData.user.id === s.bye.user.id) {
-                  // Get the time
-                  user = s.bye;
-                }
-              }
-              if (user && !s.done) {
-                const time = matchTime(
-                  `${a.arenaNumber}:${r.roundNumber}:${s.matchNumber}`,
-                  m.id
-                );
-                if (DateTime.now() > DateTime.fromISO(time)) {
-                  readyT.push(m);
-                }
-                if (DateTime.now() <= DateTime.fromISO(time)) {
-                  waitingT.push({ ...m, timeToMatch: time });
-                }
-              } else if (user && s.done) {
-                if (!user.winner) {
-                  dqT.push(m);
-                }
-              }
-            });
+    (async () => {
+      if (data?.joinedTournaments && userData?.user) {
+        // Set the ready, waiting and dq tournaments
+        const readyT: Array<TournamentType> = [];
+        const waitingT: Array<TournamentType & { matchTime: string }> = [];
+        const dqT: Array<TournamentType> = [];
+        for (let i = 0; i < data.joinedTournaments.docs.length; i++) {
+          const res = await getMatch({
+            variables: {
+              input: {
+                tournament: data.joinedTournaments.docs[i].id,
+                user: userData?.user.id,
+              },
+            },
           });
-        });
-      });
-      setReady(readyT);
-      setWaiting(waitingT);
-      setDq(dqT);
-      setPage(data.joinedMatches.page);
-    }
-  }, [data, matchTime, userData?.user]);
+          // Check if the user has been desqualified from tournament and push to dq tournaments
+          if (
+            res.data?.playerMatch.slot_one?.user.id === userData?.user.id &&
+            !res.data?.playerMatch.slot_one?.winner &&
+            res.data?.playerMatch.status === "DONE"
+          ) {
+            dqT.push(data.joinedTournaments.docs[i]);
+          }
+          if (
+            res.data?.playerMatch.slot_two?.user.id === userData?.user.id &&
+            !res.data?.playerMatch.slot_two?.winner &&
+            res.data?.playerMatch.status === "DONE"
+          ) {
+            dqT.push(data.joinedTournaments.docs[i]);
+          }
+
+          // Check if tournament is not ready yet
+          if (res.data?.playerMatch.status === "NOT-STARTED") {
+            waitingT.push({
+              ...data.joinedTournaments.docs[i],
+              matchTime: res.data?.playerMatch.time as string,
+            });
+          }
+
+          // Check if tournament is ready to play
+          if (res.data?.playerMatch.status === "IN-ZONE") {
+            readyT.push(data.joinedTournaments.docs[i]);
+          }
+        }
+        // If the users matchTime is current, Then set match to ready
+        setReady(readyT);
+        setWaiting(waitingT);
+        setDq(dqT);
+        setPage(data.joinedTournaments.page);
+      }
+    })();
+  }, [data, userData?.user, getMatch]);
 
   useEffect(() => {
     const interval = setInterval(() => {

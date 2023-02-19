@@ -35,8 +35,6 @@
     "include-media": "^1.4.10",
     "lodash.debounce": "^4.0.8",
     "luxon": "^3.2.1",
-    "moment": "^2.29.4",
-    "moment-timezone": "^0.5.40",
     "next": "^13.1.1",
     "normalize.css": "^8.0.1",
     "numeral": "^2.0.6",

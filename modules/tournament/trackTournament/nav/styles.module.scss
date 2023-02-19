@@ -2,6 +2,7 @@
 @use "include-media" as *;
 
 .navigationButtons {
+  width: -moz-fit-content;
   width: fit-content;
   display: flex;
   flex-direction: row;
@@ -79,6 +80,7 @@
 }
 
 .statusContainer {
+  width: -moz-fit-content;
   width: fit-content;
   display: flex;
   justify-content: space-between;
@@ -87,5 +89,14 @@
     padding: 5px 5px 5px 5px;
     border-bottom: 1px solid $background;
     width: 100%;
+  }
+}
+
+.tooltip {
+  background-color: $activeColor;
+  font-family: inherit;
+  h3 {
+    margin: 5px;
+    margin-left: 0px;
   }
 }

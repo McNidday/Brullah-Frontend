@@ -228,6 +228,7 @@
 }
 
 .tournamentBracketCounter {
+  width: -moz-fit-content;
   width: fit-content;
   height: fit-content;
 
@@ -236,6 +237,20 @@
     color: white;
     font-size: 0.8rem;
     text-align: center;
+  }
+}
+
+.tournamentBracketCounterFlicker {
+  @keyframes flicker {
+    from {
+      color: white;
+    }
+    to {
+      color: $activeColor;
+    }
+  }
+  &::after {
+    animation: flicker 0.5s linear 0s infinite normal;
   }
 }
 
@@ -280,6 +295,7 @@
   font-size: 0.8rem;
   color: #bdbdbd;
   font-weight: 300;
+  width: -moz-fit-content;
   width: fit-content;
   display: flex;
   justify-content: center;

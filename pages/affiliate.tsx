@@ -7,7 +7,6 @@ import Navigation from "../components/Navigation/Navigation";
 import AffiliateMainLoading from "../modules/affiliate/loading/AffiliateMainLoading";
 import AffiliateMain from "../modules/affiliate/AffiliateMain";
 import "swiper/css/bundle";
-import Favicon from "../components/Favicon/Favicon";
 
 const Affiliate: NextPage = () => {
   return (
@@ -15,7 +14,6 @@ const Affiliate: NextPage = () => {
       <Head>
         <title>Affiliate | Brullah</title>
         <meta name="description" content="Brullah affiliate program" />
-        <Favicon></Favicon>
       </Head>
       <Navigation></Navigation>
       <ApolloClientOnly

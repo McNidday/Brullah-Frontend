@@ -6,7 +6,6 @@ import cn from "classnames";
 import Fallback from "../../components/Fallback/Fallback";
 import Navigation from "../../components/Navigation/Navigation";
 import VerifyAccountMain from "../../modules/user/verify/VerifyAccountMain";
-import Favicon from "../../components/Favicon/Favicon";
 
 const Forgot: NextPage = () => {
   return (
@@ -17,7 +16,6 @@ const Forgot: NextPage = () => {
           name="Verify brullah account"
           content="Verify your brullah account to gain access to more brullah services"
         />
-        <Favicon></Favicon>
       </Head>
       <Navigation hideSideNav={true}></Navigation>
       <ApolloClientOnly fallback={<Fallback></Fallback>}>

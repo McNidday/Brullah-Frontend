@@ -69,6 +69,7 @@ const MATCH = gql`
       time
       match_number
       slot_two {
+        joined
         user {
           id
           identity {
@@ -81,6 +82,7 @@ const MATCH = gql`
         }
       }
       slot_one {
+        joined
         user {
           id
           identity {
@@ -174,19 +176,146 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
   const handleActiveEdit = (arb: string | null) => {
     setActiveEdit(arb);
   };
-
-  const handleAutoConfigure = () => {};
-
+  const addToConfigured = (id: string, arbs: string) => {
+    setConfig((ic) => {
+      return [...ic, { id, arbs, configured: false }];
+    });
+  };
+  const handleAutoConfigure = async () => {
+    if (loading || !data || !initialized) return;
+    setInitialized(() => false);
+    const newConfig: Array<{
+      id: string;
+      configured: boolean;
+      arbs: string;
+      removed?: boolean;
+    }> = [];
+    const validNumbers = [5, 9, 13];
+    let bye = false;
+    if (data.tournament.joined.length % 2 !== 0) {
+      let testBye = data.tournament.joined.length;
+      while (testBye > 16) {
+        testBye -= 16;
+      }
+      // Check if bye or just normales
+      const testIndex = validNumbers.findIndex((v) => {
+        return testBye === v;
+      });
+      if (testIndex <= -1) {
+        bye = true;
+      }
+    }
+    // Loop and create the matches with the arena winners
+    for (let a = 1; a <= numOfArenas(data.tournament.joined.length); a++) {
+      const mapped: Array<
+        Array<{
+          id: string;
+          identity: {
+            brullah_name: string;
+            avatar: {
+              image: string;
+              blurhash: string;
+            };
+          };
+        }>
+      > = [];
+      const mappedArena = data.tournament.joined.slice((a - 1) * 16, a * 16);
+      for (let i = 0; i < 16; i += 2) {
+        let map: Array<{
+          id: string;
+          identity: {
+            brullah_name: string;
+            avatar: {
+              image: string;
+              blurhash: string;
+            };
+          };
+        }> = [];
+        if (mappedArena[i]) map.push(mappedArena[i]);
+        if (mappedArena[i + 1]) map.push(mappedArena[i + 1]);
+        if (mappedArena[i] || mappedArena[i + 1]) mapped.push(map);
+      }
+      for (
+        let m = 1;
+        m <= numOfMatches(data.tournament.joined.length, a, 1);
+        m++
+      ) {
+        const input: {
+          id: string;
+          arena_number: number;
+          round_number: number;
+          match_number: number;
+          time?: string;
+          slot_one?: string;
+          slot_two?: string;
+          bye_slot?: string;
+        } = {
+          id: data.tournament.id,
+          arena_number: a,
+          round_number: 1,
+          match_number: m,
+          time: time,
+        };
+        if (
+          a === numOfArenas(data.tournament.joined.length) &&
+          m === numOfMatches(data.tournament.joined.length, a, 1) &&
+          bye
+        ) {
+          input.slot_one = mapped[m - 1][0].id;
+          newConfig.push({
+            id: mapped[m - 1][0].id,
+            arbs: `${a}:${1}:${m}:1`,
+            configured: false,
+          });
+          input.slot_two = mapped[m - 1][1].id;
+          newConfig.push({
+            id: mapped[m - 1][1].id,
+            arbs: `${a}:${1}:${m}:2`,
+            configured: false,
+          });
+          input.bye_slot = mapped[m][0].id;
+          newConfig.push({
+            id: mapped[m][0].id,
+            arbs: `${a}:${1}:${m}:3`,
+            configured: false,
+          });
+        } else {
+          if (mapped[m - 1][0]) {
+            input.slot_one = mapped[m - 1][0].id;
+            newConfig.push({
+              id: mapped[m - 1][0].id,
+              arbs: `${a}:${1}:${m}:1`,
+              configured: false,
+            });
+          }
+          if (mapped[m - 1][1]) {
+            input.slot_two = mapped[m - 1][1].id;
+            newConfig.push({
+              id: mapped[m - 1][1].id,
+              arbs: `${a}:${1}:${m}:2`,
+              configured: false,
+            });
+          }
+        }
+        await saveConfig({ variables: { input } });
+      }
+    }
+    setConfig(() => newConfig);
+    setInitialized(() => true);
+  };
   const removeBye = async (input: {
     id: string;
     arena_number: number;
     round_number: number;
     match_number: number;
+    time?: string;
     slot_one?: string;
     slot_two?: string;
     bye_slot?: string;
   }) => {
     await saveConfig({ variables: { input } });
+    const arbs = `${input.arena_number}:${input.round_number}:${input.match_number}:3`;
+    setConfig((ic) => ic.filter((v) => v.arbs !== arbs));
   };
   const handlePublishModalOpen = () => {
     setShowPublisModal(true);
@@ -215,11 +344,6 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
           ? { ...v, removed: true }
           : v
       );
-    });
-  };
-  const addToConfigured = (id: string, arbs: string) => {
-    setConfig((ic) => {
-      return [...ic, { id, arbs, configured: false }];
     });
   };
   useEffect(() => {
@@ -327,7 +451,6 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
                   removeMarked={removeMarked}
                   markConfigured={markConfigured}
                   config={config}
-                  timeConfig={data.tournament.config}
                   arenaNumber={i + 1}
                   numOfJoined={data.tournament.joined.length}
                   tournamentId={data.tournament.id}

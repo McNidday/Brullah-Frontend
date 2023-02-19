@@ -3,7 +3,6 @@ import Head from "next/head";
 import "swiper/css/bundle";
 import HowToMain from "../modules/howto/HowToMain";
 import styled from "@emotion/styled";
-import Favicon from "../components/Favicon/Favicon";
 
 const Container = styled.div`
   width: 100%;
@@ -26,7 +25,6 @@ const HowTo: NextPage = () => {
           name="description"
           content="Learn how to utilize brullah, for your own benefit"
         />
-        <Favicon></Favicon>
       </Head>
       <HowToMain></HowToMain>
     </Container>

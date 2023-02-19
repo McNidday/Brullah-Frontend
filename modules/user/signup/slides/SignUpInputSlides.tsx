@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import cn from "classnames";
 
 import "swiper/css/bundle";
-import momenttz from "moment-timezone";
+import { DateTime } from "luxon";
 import styles from "./styles.module.scss";
 import SignUpFullName from "./names/SignUpFullName";
 import SignUpArenaName from "./arenaname/SignUpArenaName";
@@ -39,7 +39,7 @@ const CREATE_USER = gql`
 
 const SignUpInputSlides = () => {
   const [profile, setProfile] = useState<{ [key: string]: any }>({
-    timezone: momenttz.tz.guess(),
+    timezone: DateTime.now().zoneName,
   });
   const [localAvatarError, setLocalAvatarError] = useState<string | null>(null);
   const [createUser, { data, loading, error, reset }] = useMutation(
@@ -48,7 +48,7 @@ const SignUpInputSlides = () => {
       errorPolicy: "all",
     }
   );
-  
+
   const updateProfile = useCallback((name: string, value: string) => {
     setProfile((prev) => {
       prev[name] = value;

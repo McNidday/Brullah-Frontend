@@ -28,6 +28,8 @@ const LoginInputs = () => {
   });
 
   const login = () => {
+    if (!arenaName || arenaName === "") return;
+    if (!password || password === "") return;
     userLogin({
       variables: {
         input: {

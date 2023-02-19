@@ -2,7 +2,11 @@ export interface MatchType {
   id: string;
   match_number: number;
   time?: string;
+  status: "NOT-STARTED" | "IN-ZONE" | "IN-PROGRESS" | "DONE";
   slot_one?: {
+    reason?: string;
+    joined: boolean;
+    winner: boolean;
     user: {
       id: string;
       identity: {
@@ -15,6 +19,9 @@ export interface MatchType {
     };
   };
   slot_two?: {
+    winner: boolean;
+    joined: boolean;
+    reason?: string;
     user: {
       id: string;
       identity: {
@@ -27,6 +34,7 @@ export interface MatchType {
     };
   };
   bye_slot?: {
+    reason?: string;
     user: {
       id: string;
       identity: {

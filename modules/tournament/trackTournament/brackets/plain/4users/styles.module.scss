@@ -1,10 +1,18 @@
 @use "../../../../../../styles/theme" as *;
 @use "include-media" as *;
+/*!
+ * Responsive Tournament Bracket
+ * Copyright 2016 Jakub Hájek
+ * Licensed under MIT (https://opensource.org/licenses/MIT)
+ */
 
 .brackets {
   padding: 0px 10px 10px 10px;
   position: relative;
   height: fit-content;
+  @include media("<=phone") {
+    padding: 0px;
+  }
 }
 
 .container {
@@ -12,6 +20,10 @@
   width: 90%;
   min-width: 18em;
   margin: 20px auto;
+  @include media("<=phone") {
+    min-width: 250px;
+    width: 100%;
+  }
 }
 
 .srOnly {
@@ -136,7 +148,7 @@
       order: 2;
       justify-content: flex-end;
 
-      @include media("<=phone") {
+      @include media(">=phone") {
         order: 0;
       }
 

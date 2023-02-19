@@ -26,19 +26,12 @@ interface Props {
   handleActiveArena: (arena: number) => void;
   markConfigured: (id: string) => void;
   removeMarked: (arbs: string) => void;
-  timeConfig: {
-    round_offset: number;
-    before_dq: number;
-    after_dq: number;
-    match_length: number;
-  };
   config: Array<{ id: string; configured: boolean; arbs: string }>;
 }
 
 const EditTournamentArenaBrackets = ({
   time,
   removeBye,
-  timeConfig,
   tournamentId,
   numOfJoined,
   arenaNumber,
@@ -153,7 +146,6 @@ const EditTournamentArenaBrackets = ({
                 removeMarked={removeMarked}
                 config={config}
                 markConfigured={markConfigured}
-                timeConfig={timeConfig}
                 numOfUsersInSection={
                   numOfUsersInArena >= 8 ? 8 : numOfUsersInArena
                 }
@@ -177,7 +169,6 @@ const EditTournamentArenaBrackets = ({
                 removeMarked={removeMarked}
                 config={config}
                 markConfigured={markConfigured}
-                timeConfig={timeConfig}
                 numOfUsersInSection={numOfUsersInArena - 8}
                 tournamentId={tournamentId}
                 activeEdit={activeEdit}

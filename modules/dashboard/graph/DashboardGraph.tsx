@@ -185,9 +185,9 @@ const DashboardGraph = ({ user }: Props) => {
                   const brc = series[seriesIndex][dataPointIndex];
                   const winner = graphData[dataPointIndex].winner;
                   const looser = graphData[dataPointIndex].looser;
-                  const label = DateTime.fromISO(
+                  const label = DateTime.fromMillis(
                     graphData[dataPointIndex].x
-                  ).toLocaleString(DateTime.DATETIME_FULL);
+                  ).toLocaleString(DateTime.DATETIME_MED);
                   return renderToStaticMarkup(
                     <DashboardGraphTooltip
                       brc={brc}

@@ -9,7 +9,7 @@ import styles from "./styles.module.scss";
 const cn = classNames.bind(styles);
 
 const COMPLETED_MATCHES = gql`
-  query JoinedNotStartedMatches(
+  query JoinedNotStartedTournaments(
     $page: Int!
     $limit: Int!
     $search: String
@@ -40,26 +40,40 @@ const COMPLETED_MATCHES = gql`
 
 const CompletedTournaments = () => {
   const [page, setPage] = useState(1);
-  const { data, error, loading, networkStatus, fetchMore, refetch } = useQuery(
-    COMPLETED_MATCHES,
-    {
-      variables: {
-        page: page,
-        limit: 10,
-        search: "",
-        status: ["DONE"],
-      },
-      notifyOnNetworkStatusChange: true,
-    }
-  );
+  const { data, error, loading, networkStatus, fetchMore, refetch } = useQuery<{
+    joinedTournaments: {
+      hasNextPage: boolean;
+      page: number;
+      docs: Array<{
+        id: string;
+        start_date: string;
+        information: {
+          name: string;
+          thumbnail: {
+            image: string;
+            blurhash: string;
+          };
+        };
+      }>;
+    };
+  }>(COMPLETED_MATCHES, {
+    variables: {
+      page: page,
+      limit: 10,
+      search: "",
+      status: ["DONE"],
+    },
+    notifyOnNetworkStatusChange: true,
+  });
 
   const refetchData = useCallback(refetch, [refetch]);
 
   const onLoadMore = () => {
+    if (!data || loading) return;
     if (
       networkStatus === NetworkStatus.fetchMore ||
       networkStatus === NetworkStatus.loading ||
-      !data.joinedMatches.hasNextPage
+      !data.joinedTournaments.hasNextPage
     )
       return;
     fetchMore({
@@ -79,8 +93,8 @@ const CompletedTournaments = () => {
   };
 
   useEffect(() => {
-    if (data?.joinedMatches) {
-      setPage(data.joinedMatches.page);
+    if (data?.joinedTournaments) {
+      setPage(data.joinedTournaments.page);
     }
   }, [data]);
 
@@ -118,9 +132,9 @@ const CompletedTournaments = () => {
           <h4>Completed</h4>
         </div>
       </div>
-      {data?.joinedMatches && data.joinedMatches.docs.length > 0 ? (
+      {data?.joinedTournaments && data.joinedTournaments.docs.length > 0 ? (
         <ul className={cn(styles.tournamentList)} onScroll={handleScroll}>
-          {data.joinedMatches.docs.map((m: any) => {
+          {data.joinedTournaments.docs.map((m) => {
             return <Completed key={m.id} {...m}></Completed>;
           })}
         </ul>

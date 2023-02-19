@@ -232,7 +232,7 @@ const EditTournamentBrackets8 = ({
             time: time,
             arena_number: arenaNumber,
             round_number: roundNumber,
-            match_number: matchNumber,
+            match_number: matchNumber + 1,
           };
           // Check if slotTwo existed
           const slotOneIndex = config.findIndex((s) => {
@@ -269,7 +269,7 @@ const EditTournamentBrackets8 = ({
             time: time,
             arena_number: arenaNumber,
             round_number: roundNumber,
-            match_number: matchNumber,
+            match_number: matchNumber + 2,
           };
           // Check if slotTwo existed
           const slotOneIndex = config.findIndex((s) => {
@@ -306,7 +306,7 @@ const EditTournamentBrackets8 = ({
             time: time,
             arena_number: arenaNumber,
             round_number: roundNumber,
-            match_number: matchNumber,
+            match_number: matchNumber + 3,
           };
           // Check if slotTwo existed
           const slotOneIndex = config.findIndex((s) => {

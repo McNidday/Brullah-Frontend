@@ -6,7 +6,6 @@ import CreateTournamentMain from "../../modules/tournament/createTournament/Crea
 import ApolloClientOnly from "../../Apollo/ApolloClientOnly";
 import Fallback from "../../components/Fallback/Fallback";
 import Navigation from "../../components/Navigation/Navigation";
-import Favicon from "../../components/Favicon/Favicon";
 
 const CreateTournament: NextPage = () => {
   return (
@@ -14,7 +13,6 @@ const CreateTournament: NextPage = () => {
       <Head>
         <title>Create Tournament | Brullah</title>
         <meta name="description" content="Create a new tournament" />
-        <Favicon></Favicon>
       </Head>
       <Navigation hideSideNav={true}></Navigation>
       <ApolloClientOnly fallback={<Fallback></Fallback>}>

@@ -1,10 +1,10 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Tooltip, Typography } from "@mui/material";
 import { NetworkStatus } from "@apollo/client";
 import Button from "../../../../components/Button/Button";
 import { useEffect, useState } from "react";
-import moment from "moment";
+import { DateTime } from "luxon";
 import Cookies from "../../../../functions/Cookies";
 
 interface Props {
@@ -14,15 +14,14 @@ interface Props {
   reward: string;
   rewardAmount: string;
   perUser: string;
-  waiting: number | null;
+  waiting: string | undefined;
   ready: boolean;
   notIn: boolean;
   dq: boolean;
   networkStatus: number;
   recap?: boolean;
   recapNumber?: number | null;
-  status: { progress: string };
-  matchId: string;
+  status: "NOT-STARTED" | "IN-PROGRESS" | "RECONFIGURE" | "DONE";
   winner: {
     id: string;
     identity: {
@@ -48,7 +47,6 @@ const TrackTournamentNav = ({
   notIn,
   dq,
   status,
-  matchId,
 }: Props) => {
   const [countDown, setCountDown] = useState<string | null>(null);
   const [buttonText, setButtonText] = useState("Get the bag 💰");
@@ -62,11 +60,11 @@ const TrackTournamentNav = ({
   useEffect(() => {
     if (!waiting) return;
     const interval = setInterval(() => {
-      if (moment().isSameOrAfter(moment.unix(waiting))) {
+      if (DateTime.now() >= DateTime.fromISO(waiting)) {
         setCountDown(">>>");
         clearInterval(interval);
       } else {
-        setCountDown(moment().to(moment.unix(waiting)));
+        setCountDown(DateTime.fromISO(waiting).diffNow().toFormat("dd hh mm"));
       }
     }, 2000);
     return () => clearInterval(interval);
@@ -75,7 +73,7 @@ const TrackTournamentNav = ({
   return (
     <div className={cn(styles.navigation)}>
       <div className={cn(styles.navigationButtons)}>
-        {recap && recapNumber === 0 && status.progress !== "DONE" ? (
+        {recap && recapNumber === 0 && status !== "DONE" ? (
           <>
             <div className={cn(styles.actionButton)}>
               <Button
@@ -92,7 +90,7 @@ const TrackTournamentNav = ({
               ></Button>
             </div>
           </>
-        ) : recap && recapNumber !== 0 && status.progress === "DONE" ? (
+        ) : recap && recapNumber !== 0 && status === "DONE" ? (
           <div className={cn(styles.actionButton)}>
             <Button
               text={"back"}
@@ -100,7 +98,7 @@ const TrackTournamentNav = ({
               onClick={() => setRecapNumber!(0)}
             ></Button>
           </div>
-        ) : recap && status.progress !== "DONE" ? (
+        ) : recap && status !== "DONE" ? (
           <div className={cn(styles.actionButton)}>
             <Button
               text={"track"}
@@ -117,13 +115,30 @@ const TrackTournamentNav = ({
               text={buttonText}
               link={`${
                 process.env.CHECKERS_URL
-              }?matchId=${matchId}&id=${userId}&token=${Cookies("token")}`}
+              }?tournament=${id}&id=${userId}&token=${Cookies("token")}`}
               disabled={false}
             ></Button>
           </div>
         ) : countDown ? (
           <div className={cn(styles.countDown)}>
-            <h4>{countDown}</h4>
+            <Tooltip
+              componentsProps={{
+                tooltip: {
+                  className: cn(styles.tooltip),
+                },
+              }}
+              title={
+                <>
+                  <div>
+                    <Typography color="inherit" fontFamily={"inherit"}>
+                      🕒 Time to your match
+                    </Typography>
+                  </div>
+                </>
+              }
+            >
+              <h4>{countDown}</h4>
+            </Tooltip>
           </div>
         ) : notIn ? (
           <div className={cn(styles.countDown)}>

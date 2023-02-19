@@ -1,52 +1,100 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
-import moment from "moment";
 import { decodeBlurHash } from "../../../../../../functions/helpers";
 import { Tooltip, Typography } from "@mui/material";
-
-interface User {
-  id: string;
-  identity: {
-    brullah_name: string;
-    avatar: {
-      image: string;
-      blurhash: string;
-    };
-  };
-}
-
-interface Slot {
-  reason: string;
-  winner: boolean;
-  user?: User;
-}
+import { MatchType } from "../../../../../../types/match";
+import { DateTime } from "luxon";
+import { useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 
 interface Props {
   userId: string;
-  time: number | null;
-  bye?: {
-    user: User;
-  };
   makeFinalBefore?: boolean;
   makeFinalAfter?: boolean;
-  match?: {
-    done: boolean;
-    matchNumber: number;
-    slot_one: Slot;
-    slot_two: Slot;
-  };
+  tournamentId: string;
+  arenaNumber: number;
+  roundNumber: number;
+  matchNumber: number;
+  gameNumber: number;
 }
 
+const MATCH = gql`
+  query GetMatch($input: GetMatchInput!) {
+    match(input: $input) {
+      time
+      match_number
+      status
+      slot_two {
+        reason
+        winner
+        joined
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
+            }
+          }
+        }
+      }
+      slot_one {
+        reason
+        winner
+        joined
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
+            }
+          }
+        }
+      }
+      bye_slot {
+        user {
+          id
+          identity {
+            brullah_name
+            avatar {
+              image
+              blurhash
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 const TrackTournamentBracket = ({
+  gameNumber,
+  arenaNumber,
+  roundNumber,
+  matchNumber,
+  tournamentId,
   userId,
   makeFinalBefore,
   makeFinalAfter,
-  time,
-  bye,
-  match,
 }: Props) => {
-  console.log(match, "The match pussy ass nigga");
+  const { data, loading } = useQuery<{
+    match: MatchType;
+  }>(MATCH, {
+    variables: {
+      input: {
+        tournament: tournamentId,
+        game: gameNumber,
+        arena_number: arenaNumber,
+        round_number: roundNumber,
+        match_number: matchNumber,
+      },
+    },
+  });
+
   return (
     <li
       className={cn(
@@ -66,47 +114,43 @@ const TrackTournamentBracket = ({
               <Typography color="inherit" fontFamily={"inherit"}>
                 Reason For Results
               </Typography>
-              {bye ? (
-                <div>
-                  <h3>
-                    {bye.user.identity.brullah_name}: <em>Currently a bye 👋</em>
-                  </h3>
-                </div>
-              ) : match?.slot_one?.reason && match?.slot_two?.reason ? (
+              {data?.match?.slot_one?.reason &&
+              data?.match?.slot_two?.reason ? (
                 <>
                   <div>
                     <h3>
-                      {match?.slot_one?.user?.identity.brullah_name}:{" "}
-                      <em>{match?.slot_one?.reason}</em>
+                      {data?.match?.slot_one?.user?.identity.brullah_name}:{" "}
+                      <em>{data?.match?.slot_one?.reason}</em>
                     </h3>
                   </div>
                   <div>
                     <h3>
-                      {match?.slot_two?.user?.identity.brullah_name}:{" "}
-                      <em>{match?.slot_two?.reason}</em>
+                      {data?.match?.slot_two?.user?.identity.brullah_name}:{" "}
+                      <em>{data?.match?.slot_two?.reason}</em>
                     </h3>
                   </div>
                 </>
-              ) : match?.slot_one?.reason ? (
+              ) : data?.match?.slot_one?.reason ? (
                 <div>
                   <h3>
-                    {match?.slot_one?.user?.identity.brullah_name}:{" "}
-                    <em>{match?.slot_one?.reason}</em>
+                    {data?.match?.slot_one?.user?.identity.brullah_name}:{" "}
+                    <em>{data?.match?.slot_one?.reason}</em>
                   </h3>
                 </div>
-              ) : match?.slot_two?.reason ? (
+              ) : data?.match?.slot_two?.reason ? (
                 <div>
                   <h3>
-                    {match?.slot_two?.user?.identity.brullah_name}:{" "}
-                    <em>{match?.slot_two?.reason}</em>
+                    {data?.match?.slot_two?.user?.identity.brullah_name}:{" "}
+                    <em>{data?.match?.slot_two?.reason}</em>
                   </h3>
                 </div>
-              ) : !match?.slot_two?.user &&
-                match?.slot_one?.user &&
-                !match?.slot_two?.reason &&
-                !match?.slot_one?.reason ? (
+              ) : !data?.match?.slot_two?.user &&
+                data?.match?.slot_one?.user &&
+                !data?.match?.slot_two?.reason &&
+                !data?.match?.slot_one?.reason ? (
                 <h3>Still cooking 👩‍🍳</h3>
-              ) : !match?.slot_two?.user && !match?.slot_one?.user ? (
+              ) : !data?.match?.slot_two?.user &&
+                !data?.match?.slot_one?.user ? (
                 <h3>Empty void 🖤</h3>
               ) : (
                 <h3>Processing 🧠</h3>
@@ -125,74 +169,102 @@ const TrackTournamentBracket = ({
             <div
               className={cn(
                 styles.tournmentBracketCaptionContainer,
-                match?.slot_one?.user?.id === userId && match?.slot_one?.winner
+                data?.match?.slot_one?.user?.id === userId &&
+                  data?.match?.slot_one?.winner
                   ? styles.wonMatch
                   : "",
-                match?.slot_two?.user?.id === userId && match?.slot_two?.winner
+                data?.match?.slot_two?.user?.id === userId &&
+                  data?.match?.slot_two?.winner
                   ? styles.wonMatch
                   : "",
-                match?.slot_one?.user?.id === userId &&
-                  !match?.slot_one?.winner &&
-                  match?.done
+                data?.match?.slot_one?.user?.id === userId &&
+                  !data?.match?.slot_one?.winner &&
+                  data?.match?.status === "DONE"
                   ? styles.lostMatch
                   : "",
-                match?.slot_two?.user?.id === userId &&
-                  !match?.slot_two?.winner &&
-                  match?.done
+                data?.match?.slot_two?.user?.id === userId &&
+                  !data?.match?.slot_two?.winner &&
+                  data?.match?.status === "DONE"
                   ? styles.lostMatch
                   : ""
               )}
             >
-              <span className={cn(styles.tournamentBracketCounter)}></span>
+              <span
+                className={cn(
+                  styles.tournamentBracketCounter,
+                  loading ? styles.tournamentBracketCounterFlicker : ""
+                )}
+              ></span>
+              {data?.match.bye_slot ? (
+                <Tooltip
+                  componentsProps={{
+                    tooltip: {
+                      className: cn(styles.tooltip),
+                    },
+                  }}
+                  title={
+                    <>
+                      <div>
+                        <Typography color="inherit" fontFamily={"inherit"}>
+                          {data?.match.bye_slot.user.identity.brullah_name} is a
+                          bye in this bracket👋
+                        </Typography>
+                      </div>
+                    </>
+                  }
+                >
+                  <div className={cn(styles.tournamentBracketBye)}>
+                    <Image
+                      fill
+                      src={data?.match.bye_slot.user.identity.avatar.image}
+                      alt={data?.match.bye_slot.user.identity.brullah_name}
+                      placeholder="blur"
+                      blurDataURL={decodeBlurHash(
+                        data?.match.bye_slot.user.identity.avatar.blurhash,
+                        50,
+                        50
+                      )}
+                    ></Image>
+                  </div>
+                </Tooltip>
+              ) : (
+                ""
+              )}
+
               <div className={cn(styles.tournamentBracketCaption)}>
                 <time>
-                  {time ? moment.unix(time).format("LLL") : "(⊙_(⊙_⊙)_⊙)"}
+                  {data?.match?.time
+                    ? DateTime.fromISO(data?.match?.time).toLocaleString(
+                        DateTime.DATETIME_MED
+                      )
+                    : "(⊙_(⊙_⊙)_⊙)"}
                 </time>
               </div>
             </div>
 
             <div className={cn(styles.tournamentBracketData)}>
               <div className={cn(styles.tournamentBracketDataProfile)}>
-                {match?.slot_one?.user ? (
+                {data?.match?.slot_one?.user ? (
                   <>
                     <div
                       className={cn(styles.tournamentBracketDataProfilePicture)}
                     >
                       <Image
                         fill
-                        src={match.slot_one.user.identity.avatar.image}
-                        alt={match.slot_one.user.identity.brullah_name}
+                        src={data?.match.slot_one.user.identity.avatar.image}
+                        alt={data?.match.slot_one.user.identity.brullah_name}
                         placeholder="blur"
                         blurDataURL={decodeBlurHash(
-                          match.slot_one.user.identity.avatar.blurhash,
+                          data?.match.slot_one.user.identity.avatar.blurhash,
                           50,
                           50
                         )}
                       ></Image>
                     </div>
                     <div className={cn(styles.tournamentBracketDataName)}>
-                      <span>{match.slot_one.user.identity.brullah_name}</span>
-                    </div>
-                  </>
-                ) : bye ? (
-                  <>
-                    <div
-                      className={cn(styles.tournamentBracketDataProfilePicture)}
-                    >
-                      <Image
-                        fill
-                        src={bye.user.identity.avatar.image}
-                        alt={bye.user.identity.brullah_name}
-                        placeholder="blur"
-                        blurDataURL={decodeBlurHash(
-                          bye.user.identity.avatar.blurhash,
-                          50,
-                          50
-                        )}
-                      ></Image>
-                    </div>
-                    <div className={cn(styles.tournamentBracketDataName)}>
-                      <span>{bye.user.identity.brullah_name}</span>
+                      <span>
+                        {data?.match.slot_one.user.identity.brullah_name}
+                      </span>
                     </div>
                   </>
                 ) : (
@@ -214,25 +286,27 @@ const TrackTournamentBracket = ({
               </div>
               <span>VS</span>
               <div className={cn(styles.tournamentBracketDataProfile)}>
-                {match?.slot_two?.user ? (
+                {data?.match?.slot_two?.user ? (
                   <>
                     <div
                       className={cn(styles.tournamentBracketDataProfilePicture)}
                     >
                       <Image
                         fill
-                        src={match.slot_two.user.identity.avatar.image}
-                        alt={match.slot_two.user.identity.brullah_name}
+                        src={data?.match.slot_two.user.identity.avatar.image}
+                        alt={data?.match.slot_two.user.identity.brullah_name}
                         placeholder="blur"
                         blurDataURL={decodeBlurHash(
-                          match.slot_two.user.identity.avatar.blurhash,
+                          data?.match.slot_two.user.identity.avatar.blurhash,
                           50,
                           50
                         )}
                       ></Image>
                     </div>
                     <div className={cn(styles.tournamentBracketDataName)}>
-                      <span>{match.slot_two.user.identity.brullah_name}</span>
+                      <span>
+                        {data?.match.slot_two.user.identity.brullah_name}
+                      </span>
                     </div>
                   </>
                 ) : (

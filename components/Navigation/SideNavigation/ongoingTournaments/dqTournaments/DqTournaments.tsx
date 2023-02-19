@@ -6,36 +6,30 @@ import { decodeBlurHash } from "../../../../../functions/helpers";
 const cn = classNames.bind(styles);
 
 interface Props {
-  tournament: {
-    id: string;
-    information: {
-      name: string;
-      thumbnail: { image: string; blurhash: string };
-    };
+  id: string;
+  information: {
+    name: string;
+    thumbnail: { image: string; blurhash: string };
   };
 }
 
-const DqTournaments = ({ tournament }: Props) => {
+const DqTournaments = ({ id, information }: Props) => {
   return (
     <li className={cn(styles.container)}>
       <div>
         <Image
           fill
-          src={tournament.information.thumbnail.image}
-          alt={`Tournament ${tournament.information.name}`}
+          src={information.thumbnail.image}
+          alt={`Tournament ${information.name}`}
           placeholder="blur"
-          blurDataURL={decodeBlurHash(
-            tournament.information.thumbnail.blurhash,
-            65,
-            40
-          )}
+          blurDataURL={decodeBlurHash(information.thumbnail.blurhash, 65, 40)}
         ></Image>
       </div>
-      <div>{tournament.information.name}</div>
+      <div>{information.name}</div>
       <Button
         text="dq :("
         disabled={false}
-        link={`/tournament/track?id=${tournament.id}`}
+        link={`/tournament/track?id=${id}`}
       ></Button>
     </li>
   );
