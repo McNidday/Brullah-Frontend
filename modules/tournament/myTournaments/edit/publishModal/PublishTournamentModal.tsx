@@ -49,7 +49,7 @@ const PublishTournamentModal = ({
     }
     if (data && !error) {
       // Redirect to tournament tracker
-      router.replace(`/track?id=${tournament.id}`);
+      router.replace(`/tournament/track?id=${tournament.id}`);
     }
   }, [data, error, router, tournament.id, refetchTournament, resetCallback]);
 

@@ -64,6 +64,33 @@ const CreateTournamentSlides = () => {
     CREATE_TOURNAMENT,
     {
       errorPolicy: "all",
+      update(cache, { data: createdTournament }) {
+        cache.modify({
+          fields: {
+            myTournaments: (existing) => {
+              console.log(existing, "This is the existing piece of shiet");
+              const newTournamentRef = cache.writeFragment({
+                data: createdTournament.createTournament,
+                fragment: gql`
+                  fragment NewTournament on Tournament {
+                    id
+                    information {
+                      name
+                      thumbnail {
+                        image
+                      }
+                    }
+                  }
+                `,
+              });
+              return {
+                ...existing,
+                docs: [...existing.docs, newTournamentRef],
+              };
+            },
+          },
+        });
+      },
     }
   );
 

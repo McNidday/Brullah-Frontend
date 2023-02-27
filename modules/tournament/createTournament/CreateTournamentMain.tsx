@@ -10,6 +10,7 @@ import styles from "./styles.module.scss";
 const USER = gql`
   query GetUser {
     user {
+      id
       security {
         account_verified
       }

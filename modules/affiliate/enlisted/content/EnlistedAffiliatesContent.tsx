@@ -26,8 +26,8 @@ interface Props {
       value: number;
       currency: dinero.Currency;
     };
-    contract_expiry: number;
-    contract_commence: number;
+    contract_expiry: string;
+    contract_commence: string;
   }>;
   totalDocs: number;
   page: number;

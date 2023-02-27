@@ -40,7 +40,6 @@ const TrackTournamentBrackets8 = ({
                   matchNumber={matchNumber}
                   arenaNumber={arenaNumber}
                   userId={userId}
-                  makeFinalAfter={true}
                   key={`${arenaNumber}:${roundNumber}:${matchNumber}`}
                 ></TrackTournamentBracket>
                 <TrackTournamentBracket
@@ -50,7 +49,6 @@ const TrackTournamentBrackets8 = ({
                   matchNumber={matchNumber + 1}
                   arenaNumber={arenaNumber}
                   userId={userId}
-                  makeFinalAfter={true}
                   key={`${arenaNumber}:${roundNumber}:${matchNumber + 1}`}
                 ></TrackTournamentBracket>
                 <TrackTournamentBracket
@@ -60,7 +58,6 @@ const TrackTournamentBrackets8 = ({
                   matchNumber={matchNumber + 2}
                   arenaNumber={arenaNumber}
                   userId={userId}
-                  makeFinalAfter={true}
                   key={`${arenaNumber}:${roundNumber}:${matchNumber + 2}`}
                 ></TrackTournamentBracket>
                 <TrackTournamentBracket
@@ -70,7 +67,6 @@ const TrackTournamentBrackets8 = ({
                   matchNumber={matchNumber + 3}
                   arenaNumber={arenaNumber}
                   userId={userId}
-                  makeFinalAfter={true}
                   key={`${arenaNumber}:${roundNumber}:${matchNumber + 3}`}
                 ></TrackTournamentBracket>
               </ul>
@@ -91,7 +87,6 @@ const TrackTournamentBrackets8 = ({
                   }
                   arenaNumber={arenaNumber}
                   userId={userId}
-                  makeFinalAfter={true}
                   key={`${arenaNumber}:${roundNumber}:${
                     matchNumber % 2 === 0
                       ? matchNumber / 2
@@ -109,7 +104,6 @@ const TrackTournamentBrackets8 = ({
                   }
                   arenaNumber={arenaNumber}
                   userId={userId}
-                  makeFinalAfter={true}
                   key={`${arenaNumber}:${roundNumber}:${
                     (matchNumber + 2) % 2 === 0
                       ? matchNumber / 2

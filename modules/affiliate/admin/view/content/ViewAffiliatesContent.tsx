@@ -24,7 +24,7 @@ interface Props {
     finance: {
       affiliate: {
         code: String;
-        start_date: number;
+        start_date: string;
         enlisted: number;
         commission: number;
       };

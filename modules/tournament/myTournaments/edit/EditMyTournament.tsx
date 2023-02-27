@@ -351,7 +351,7 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
       if (data && !loading) {
         let time = DateTime.fromISO(data?.tournament.start_date);
         do {
-          time = time.plus(Duration.fromObject({ hours: 2 }));
+          time = time.plus(Duration.fromObject({ minutes: 5 }));
         } while (time < DateTime.now());
         setTime(time.toISO());
         for (let i = 1; i <= numOfArenas(data.tournament.joined.length); i++) {
@@ -374,27 +374,41 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
 
             if (res.data?.match.slot_one?.user) {
               setConfig((ic) => {
-                return [
-                  ...ic,
-                  {
-                    id: res.data!.match.slot_one!.user.id,
-                    arbs: `${i}:${1}:${m}:1`,
-                    configured: true,
-                  },
-                ];
+                const icIndex = ic.findIndex((c) => {
+                  return (
+                    c.id === res.data!.match.slot_one!.user.id && c.configured
+                  );
+                });
+                return icIndex <= -1
+                  ? [
+                      ...ic,
+                      {
+                        id: res.data!.match.slot_one!.user.id,
+                        arbs: `${i}:${1}:${m}:1`,
+                        configured: true,
+                      },
+                    ]
+                  : ic;
               });
             }
 
             if (res.data?.match.slot_two?.user) {
               setConfig((ic) => {
-                return [
-                  ...ic,
-                  {
-                    id: res.data!.match.slot_two!.user.id,
-                    arbs: `${i}:${1}:${m}:2`,
-                    configured: true,
-                  },
-                ];
+                const icIndex = ic.findIndex((c) => {
+                  return (
+                    c.id === res.data!.match.slot_two!.user.id && c.configured
+                  );
+                });
+                return icIndex <= -1
+                  ? [
+                      ...ic,
+                      {
+                        id: res.data!.match.slot_two!.user.id,
+                        arbs: `${i}:${1}:${m}:2`,
+                        configured: true,
+                      },
+                    ]
+                  : ic;
               });
             }
 
@@ -407,16 +421,23 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
               ) {
                 num -= 16;
               }
-              if (!isByeNumber(num >= 16 ? 16 : num)) {
+              if (isByeNumber(num >= 16 ? 16 : num)) {
                 setConfig((ic) => {
-                  return [
-                    ...ic,
-                    {
-                      id: res.data!.match.bye_slot!.user.id,
-                      arbs: `${i}:${1}:${m}:3`,
-                      configured: true,
-                    },
-                  ];
+                  const icIndex = ic.findIndex((c) => {
+                    return (
+                      c.id === res.data!.match.bye_slot!.user.id && c.configured
+                    );
+                  });
+                  return icIndex <= -1
+                    ? [
+                        ...ic,
+                        {
+                          id: res.data!.match.bye_slot!.user.id,
+                          arbs: `${i}:${1}:${m}:3`,
+                          configured: true,
+                        },
+                      ]
+                    : ic;
                 });
               }
             }
@@ -426,6 +447,16 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
       }
     })();
   }, [data, loading, getMatch]);
+
+  useEffect(() => {
+    if (time) {
+      setConfig((ic) => {
+        return ic.map((c) => {
+          return { ...c, configured: false };
+        });
+      });
+    }
+  }, [time]);
 
   if (error)
     return <EditMyTournamentError error={error}></EditMyTournamentError>;
@@ -467,6 +498,11 @@ const EditMyTournament = ({ editId, setEditId }: Props) => {
           )}
           <div className={cn(styles.modalContainer)}>
             <EditTournamentModal
+              refetchTournament={async () => {
+                await refetch();
+              }}
+              tournamentId={data.tournament.id}
+              startDate={data.tournament.start_date}
               initialized={initialized}
               config={config}
               addToConfigured={addToConfigured}

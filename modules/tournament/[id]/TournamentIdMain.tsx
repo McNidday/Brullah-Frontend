@@ -70,6 +70,16 @@ const ADD_TO_TOURNAMENT = gql`
   mutation AddToTournament($id: ID!, $secret: String) {
     addToTournament(id: $id, secret: $secret) {
       id
+      joined {
+        id
+        identity {
+          brullah_name
+          avatar {
+            image
+            blurhash
+          }
+        }
+      }
     }
   }
 `;
@@ -78,6 +88,16 @@ const REMOVE_FROM_TOURNAMENT = gql`
   mutation RemoveFromTournament($id: ID!) {
     removeFromTournament(id: $id) {
       id
+      joined {
+        id
+        identity {
+          brullah_name
+          avatar {
+            image
+            blurhash
+          }
+        }
+      }
     }
   }
 `;
@@ -86,6 +106,9 @@ const USER = gql`
   query GetUser {
     user {
       id
+      identity {
+        brullah_name
+      }
     }
   }
 `;

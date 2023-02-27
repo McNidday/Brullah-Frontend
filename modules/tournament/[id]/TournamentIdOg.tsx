@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Favicon from "../../../components/Favicon/Favicon";
 import { gql, useQuery } from "@apollo/client";
 
 interface Props {
@@ -54,7 +53,6 @@ const TournamentIdOg = ({ id, secret }: Props) => {
       <Head>
         <title>{error.name}</title>
         <meta name="description" content={error.message} />
-        <Favicon></Favicon>
       </Head>
     );
   }
@@ -79,7 +77,6 @@ const TournamentIdOg = ({ id, secret }: Props) => {
         property="og:image"
         content={loading ? "..." : data.tournament.information.thumbnail.image}
       />
-      <Favicon></Favicon>
     </Head>
   );
 };

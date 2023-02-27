@@ -1,15 +1,18 @@
 import styles from "./styles.module.scss";
 import cn from "classnames";
 import Image from "next/image";
-import { Duration } from "luxon";
+import { gql, useMutation } from "@apollo/client";
+import { DateTime } from "luxon";
 import Button from "../../../../../components/Button/Button";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { decodeBlurHash } from "../../../../../functions/helpers";
 import { isByeNumber } from "../../../../../functions/helpers";
 import anime from "animejs";
 import Icon from "../../../../../components/Icon/Icon";
 
 interface Props {
+  tournamentId: string;
+  startDate: string;
   initialized: boolean;
   config: Array<{ id: string; configured: boolean; arbs: string }>;
   usersToConfigure: Array<{
@@ -22,21 +25,36 @@ interface Props {
       };
     };
   }>;
+  refetchTournament: () => Promise<void>;
   setActiveEdit: (edit: string | null) => void;
   activeEdit: string | null;
   addToConfigured: (id: string, arbs: string) => void;
   markRemovedFromConfigured: (arbs: string) => void;
 }
 
+const UPDATE_START_DATE = gql`
+  mutation UpdateStartDate($id: ID!, $startDate: String) {
+    updateStartDate(id: $id, startDate: $startDate) {
+      id
+    }
+  }
+`;
+
 const EditTournamentModal = ({
   initialized,
   usersToConfigure,
+  tournamentId,
   config,
+  startDate,
   activeEdit,
   setActiveEdit,
   addToConfigured,
+  refetchTournament,
   markRemovedFromConfigured,
 }: Props) => {
+  const [update, { loading }] = useMutation(UPDATE_START_DATE, {
+    errorPolicy: "all",
+  });
   const [editting, setEditting] = useState<{
     matchNumber: number;
     slot_one?: {
@@ -66,12 +84,18 @@ const EditTournamentModal = ({
   } | null>(null);
   const [bye, setBye] = useState(false);
   const [byeExists, setByeExists] = useState(false);
-  const [offset, setOffset] = useState<number | string>(
-    Duration.fromObject({ hours: 2 }).as("hours")
-  );
   const modalRef = useRef(null);
   const [tab, setTab] = useState<"people" | "time">("people");
   const [closeIconHover, setCloseIconHover] = useState(false);
+  const [displayDate, setDisplayDate] = useState<string | null>();
+  const [date, setDate] = useState<string>(startDate);
+
+  const handleChange = (
+    e: ChangeEvent & { target: Element & { [key: string]: any } }
+  ) => {
+    setDisplayDate(e.target.value);
+    setDate(DateTime.fromISO(e.target.value).toISO());
+  };
 
   useEffect(() => {
     if (activeEdit && initialized) {
@@ -183,100 +207,6 @@ const EditTournamentModal = ({
       } else {
         setBye(false);
       }
-      // Check if  bye exists
-      // const isABye = isByeNumber(
-      //   joinedUsers.slice((arbsArray[0] - 1) * 16, arbsArray[0] * 16).length
-      // );
-      // If bye has been configured, but has not been configured in current edit
-      // Then disable bye
-      // if (isABye) {
-      //   let byeEdit: string | null = null;
-      //   let oneMatchEmpty = false;
-      //   // Check if bye has been configured
-      //   config.forEach((a) => {
-      //     a.rounds.forEach((r, ri) => {
-      //       a.rounds[ri].matches.forEach((m) => {
-      //         if (m.bye && m.bye.user) {
-      //           byeEdit = `${a.arenaNumber}:${r.roundNumber}:${m.matchNumber}`;
-      //         }
-      //       });
-      //     });
-      //   });
-      //   config.forEach((a) => {
-      //     if (arbsArray[0] !== a.arenaNumber) return;
-      //     a.rounds.forEach((r, ri) => {
-      //       if (arbsArray[1] !== r.roundNumber) return;
-      //       a.rounds[ri].matches.forEach((m) => {
-      //         if (arbsArray[2] !== m.matchNumber) return;
-      //         let bye: boolean = false;
-      //         if (m.bye) bye = true;
-      //         if (!m.slot_one.user && !m.slot_two.user) {
-      //           // Check if the neighbouring parent is full
-      //           if (m.matchNumber % 2 === 0) {
-      //             a.rounds[ri].matches.forEach((mc) => {
-      //               if (mc.matchNumber === m.matchNumber - 1) {
-      //                 if (mc.slot_one.user && mc.slot_two.user) {
-      //                   oneMatchEmpty = true;
-      //                   if (mc.bye) bye = true;
-      //                 }
-      //               }
-      //             });
-      //           }
-
-      //           if (m.matchNumber % 2 !== 0) {
-      //             a.rounds[ri].matches.forEach((mc) => {
-      //               if (mc.matchNumber === m.matchNumber + 1) {
-      //                 if (mc.slot_one.user && mc.slot_two.user) {
-      //                   oneMatchEmpty = true;
-      //                   if (mc.bye) bye = true;
-      //                 }
-      //               }
-      //             });
-      //           }
-      //         }
-      //         if (m.slot_one.user && m.slot_two.user) {
-      //           // Check if the neighbouring parent is full
-      //           if (m.matchNumber % 2 === 0) {
-      //             a.rounds[ri].matches.forEach((mc) => {
-      //               if (mc.matchNumber === m.matchNumber - 1) {
-      //                 if (!mc.slot_one.user && !mc.slot_two.user) {
-      //                   oneMatchEmpty = true;
-      //                   if (mc.bye) bye = true;
-      //                 }
-      //               }
-      //             });
-      //           }
-
-      //           if (m.matchNumber % 2 !== 0) {
-      //             a.rounds[ri].matches.forEach((mc) => {
-      //               if (mc.matchNumber === m.matchNumber + 1) {
-      //                 if (!mc.slot_one.user && !mc.slot_two.user) {
-      //                   oneMatchEmpty = true;
-      //                   if (mc.bye) bye = true;
-      //                 }
-      //               }
-      //             });
-      //           }
-      //         }
-      //         if (!bye && byeEdit) oneMatchEmpty = false;
-      //       });
-      //     });
-      //   });
-
-      //   if (oneMatchEmpty && byeEdit) {
-      //     setEmptyByes(true);
-      //   } else {
-      //     setEmptyByes(false);
-      //   }
-
-      //   if (byeEdit === activeEdit) {
-      //     setBye(true);
-      //   } else if (byeEdit === null && oneMatchEmpty) {
-      //     setBye(true);
-      //   } else {
-      //     setBye(false);
-      //   }
-      // }
       // Show modal
       anime({
         targets: modalRef.current,
@@ -443,17 +373,26 @@ const EditTournamentModal = ({
           ) : (
             <div className={cn(styles.setTime)}>
               <input
-                type="number"
                 placeholder="offset ~ hours"
-                value={offset}
-                onChange={(e) =>
-                  setOffset(e.target.value ? parseInt(e.target.value) : "")
+                type="datetime-local"
+                value={
+                  displayDate ||
+                  DateTime.fromISO(startDate).toFormat("yyyy-MM-dd'T'hh:mm")
                 }
+                onChange={handleChange}
               ></input>
               <Button
                 text="Set time"
-                disabled={false}
-                onClick={() => {}}
+                disabled={loading}
+                onClick={async () => {
+                  await update({
+                    variables: {
+                      id: tournamentId,
+                      startDate: date,
+                    },
+                  });
+                  refetchTournament();
+                }}
               ></Button>
             </div>
           )}

@@ -31,7 +31,6 @@
   &::after {
     transition: width 0.2s linear;
   }
-
   @include media("<=phone") {
     width: 100%;
     &:nth-child(odd),
@@ -40,7 +39,6 @@
       margin-right: 0;
     }
   }
-
   @include media(">=desktop") {
     padding: 0.5em 1em;
     // flex-grow: 2;
@@ -184,7 +182,6 @@
   &::after {
     transition: all 0.2s linear;
   }
-
   @include media("<=phone") {
     padding: 0.75em 0.5em;
   }

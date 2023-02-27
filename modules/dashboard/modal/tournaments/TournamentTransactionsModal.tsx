@@ -72,7 +72,7 @@ const TournamentTransactionsModal = ({
         currency: dinero.Currency;
       };
       id: string;
-      joinDate: number;
+      joinDate: string;
       status: string;
     }>
   >([]);

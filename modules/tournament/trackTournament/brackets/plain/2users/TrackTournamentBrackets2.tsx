@@ -59,6 +59,7 @@ const TrackTournamentBrackets2 = ({
                   arenaNumber={arenaNumber}
                   userId={userId}
                   makeFinalAfter={true}
+                  makeFinalBefore={true}
                   key={`${arenaNumber}:${roundNumber + 1}:${
                     matchNumber % 2 === 0
                       ? matchNumber / 2

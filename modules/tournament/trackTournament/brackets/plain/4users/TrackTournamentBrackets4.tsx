@@ -39,7 +39,6 @@ const TrackTournamentBrackets4 = ({
                   matchNumber={matchNumber}
                   arenaNumber={arenaNumber}
                   userId={userId}
-                  makeFinalAfter={true}
                   key={`${arenaNumber}:${roundNumber}:${matchNumber}`}
                 ></TrackTournamentBracket>
                 <TrackTournamentBracket
@@ -49,7 +48,6 @@ const TrackTournamentBrackets4 = ({
                   matchNumber={matchNumber + 1}
                   arenaNumber={arenaNumber}
                   userId={userId}
-                  makeFinalAfter={true}
                   key={`${arenaNumber}:${roundNumber}:${matchNumber + 1}`}
                 ></TrackTournamentBracket>
               </ul>
