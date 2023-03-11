@@ -46,7 +46,7 @@ const UpdateUserInputSlides = ({ user }: Props) => {
     }
   );
 
-  const updateProfile = (name: string, value: string) => {
+  const updateProfile = useCallback((name: string, value: string) => {
     setProfileUpload((prev) => {
       if (value === "" || !value) {
         delete prev[name];
@@ -65,7 +65,7 @@ const UpdateUserInputSlides = ({ user }: Props) => {
         return { ...prev };
       }
     });
-  };
+  }, []);
 
   const update = async () => {
     let profileInput: any = {};

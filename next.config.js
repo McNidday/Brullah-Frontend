@@ -6,7 +6,7 @@ const nextConfig = {
   },
   reactStrictMode: true,
   images: {
-    domains: ["localhost"],
+    domains: ["localhost", "s3.us-east-2.amazonaws.com"],
   },
   env: {
     RELAY_API_ENDPOINT: "http://localhost:8080",
