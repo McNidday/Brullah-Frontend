@@ -60,7 +60,10 @@ const customFetch = (uri: string, options: any) => {
   // Get the auth token if present
   const token = Cookies("token");
   options.headers.Authorization = `Bearer ${token}`;
-  return fetch(`${uri}/${ENDPOINTS[operationName]}`, options);
+  return fetch(
+    `${uri.split("/graphql")[0]}/${ENDPOINTS[operationName]}`,
+    options
+  );
 };
 
 const uploadLink = createUploadLink({
