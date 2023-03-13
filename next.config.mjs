@@ -37,7 +37,7 @@ const nextConfig =
           CHECKERS_URL: "https://checkers.brullah.com",
           PAYPAL_CLIENT_ID:
             "AXIsuLVGpnxP1eAn6k5g8zJYP_blLEFOIwacjvbEOvwJ-z_3M-b5TvFqnScjbnunOcR85yXtJWDVkqTM",
-          YOUTUBE: "https://www.youtube.com/channel/UCfMxzWvxGN45lWiFQODymLA",
+          YOUTUBE: "https://www.youtube.com/@kibeandrew",
         },
       };
 
