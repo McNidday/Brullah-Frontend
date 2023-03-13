@@ -36,7 +36,7 @@ const nextConfig =
           BRULLAH_URL: "https://www.brullah.com",
           CHECKERS_URL: "https://checkers.brullah.com",
           PAYPAL_CLIENT_ID:
-            "AXIsuLVGpnxP1eAn6k5g8zJYP_blLEFOIwacjvbEOvwJ-z_3M-b5TvFqnScjbnunOcR85yXtJWDVkqTM",
+            "ASf-GFd_frMTNgapii1Gi7jUCfCM9Kq5JgI2tOre68fvONTpJRYldWtBSq_k5w3EG33zZINrQAsMo9V8",
           YOUTUBE: "https://www.youtube.com/@kibeandrew",
         },
       };
